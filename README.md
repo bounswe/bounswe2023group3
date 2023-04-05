@@ -9,7 +9,7 @@ A platform where users open “polls” for the other users (and themselves) to 
 ### Team Members
 
 - [Ali Üçer](https://github.com/bounswe/bounswe2023group3/wiki/About-Ali-%C3%9C%C3%A7er)
-- [Alp Tuna](https://github.com/bounswe/bounswe2023group3/wiki/About-Alp-Tuna)
+- [Alp Tuna](https://github.com/bounswe/bounswe2023group3/wiki/About-Alp-Tuna) (Communicator)
 - [Batuhan Çetin](https://github.com/bounswe/bounswe2023group3/wiki/About-Batuhan-%C3%87etin)
 - [Beyza Akçınar](https://github.com/bounswe/bounswe2023group3/wiki/About-Beyza-Ak%C3%A7%C4%B1nar)
 - [Esad Yusuf Atik](https://github.com/bounswe/bounswe2023group3/wiki/About-Esad-Yusuf-Atik)
