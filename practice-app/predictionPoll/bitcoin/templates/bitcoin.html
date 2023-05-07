@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script>
+        const getBitcoinPrice = async () => {
+            const response = await fetch('bitcoin-price');
+            const data = await response.json();
+            document.getElementById('btc-price').innerText = 'Bitcoin price: $' + (Math.round(data.price * 100) / 100).toString();
+        }
+    </script>
+</head>
+
+<body>
+    <button onclick="getBitcoinPrice()">Get Bitcion Price</button>
+    <p id="btc-price"></p>
+</body>
+
+</html>
