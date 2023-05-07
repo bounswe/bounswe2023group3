@@ -3,5 +3,6 @@ from . import views
 
 urlpatterns = [
     path('', views.renderBTCPage),
-    path('bitcoin-price', views.getBTCPrice)
+    path('bitcoin-price', views.getBTCPrice),
+    path('orders', views.getAllOrders)
 ] 
