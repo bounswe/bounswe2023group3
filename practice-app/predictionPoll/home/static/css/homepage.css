@@ -1,0 +1,61 @@
+/* Body styles */
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+/* Header styles */
+header {
+  background-color: #222;
+  color: #fff;
+  padding: 20px;
+}
+
+header h1 {
+  margin: 0;
+}
+
+/* Main styles */
+main {
+  margin: 20px;
+}
+
+/* Blog post styles */
+.blog-posts {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 20px;
+}
+
+.blog-posts article {
+  border: 1px solid #ddd;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  transition: transform 0.2s ease-in-out;
+}
+
+.blog-posts article:hover {
+  transform: scale(1.05);
+}
+
+.blog-posts img {
+  max-width: 100%;
+  height: auto;
+}
+
+.blog-posts p {
+  padding: 20px;
+  margin: 0;
+  
+}
+
+/* Link styles */
+a {
+  color: #222;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
