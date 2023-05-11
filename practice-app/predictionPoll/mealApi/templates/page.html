@@ -5,7 +5,7 @@
     <link rel="stylesheet" href="../static/style/style.css">
 </head>
 <body>
-    <div class="background-image"></div> <!-- Add the background image div -->
+    <div class="background-image"></div> 
 
 	<h1 id="random-meal">Random Meal</h1>
 	<button onclick="getRandomMeal()">Get Random Meal</button>
@@ -15,13 +15,13 @@
 	<button onclick="getReviews()" id="hide-reviews-button">Show Reviews</button>
 	<div id="reviews-container"></div>
 
-	<h1 id="add-review">Add Review</h1>
+	<h1 id="addReview">Add Review</h1>
 	<form id="review-form">
-		<label id="name" for="name">Name:</label><br>
+		<label id="nameId" for="name">Name:</label><br>
 		<input type="text" id="name" name="name"><br>
-		<label id="meal" for="meal">Meal:</label><br>
+		<label id="mealId" for="meal">Meal:</label><br>
 		<input type="text" id="meal" name="meal"><br>
-		<label id="review" for="review">Review:</label><br>
+		<label id="reviewId" for="review">Review:</label><br>
 		<textarea id="review" name="review"></textarea><br><br>
 		<input type="submit" value="Submit">
 	</form>

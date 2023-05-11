@@ -9,8 +9,8 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    z-index: -1; /* Set a lower z-index to place it behind the content */
-    opacity: 0.9; /* Adjust the opacity of the background image */
+    z-index: -1; 
+    opacity: 0.9; 
     background-image: url('../images/background.jpg');
     background-repeat: no-repeat;
     background-attachment: fixed;
@@ -38,7 +38,6 @@ button:hover {
     background-color: #0056b3;
 }
 
-/* Example styles for submit button */
 input[type="submit"] {
     padding: 10px 20px;
     border: none;
@@ -101,6 +100,10 @@ input[type="submit"]:hover {
     margin-bottom: 10px;
 }
 
-#meal-name, #instruction, #random-meal, #reviews, #add-review, #name, #meal, #review {
+#meal-name, #instruction, #random-meal, #reviews, #mealId, #nameId, #reviewId, #addReview {
     color: ivory;
+}
+
+#name, #meal, #review {
+    color: black;
 }
