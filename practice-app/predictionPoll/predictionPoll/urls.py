@@ -22,4 +22,5 @@ urlpatterns = [
     path('universities/', include('universities.urls')),
     path('', include('home.urls')),
     path('transportation/', include('public_transport_app.urls'))
+    path('commentVerification/', include('commentVerification.urls'))
 ]
