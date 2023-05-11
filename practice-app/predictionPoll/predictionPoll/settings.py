@@ -37,6 +37,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'home',
     'universities',
+    'public_transport_app',
+    'rest_framework'
 ]
 
 MIDDLEWARE = [
