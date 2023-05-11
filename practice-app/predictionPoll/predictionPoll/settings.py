@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'home',
+    'mealApi',
     'weatherApp',
     'universities',
     'public_transport_app',
