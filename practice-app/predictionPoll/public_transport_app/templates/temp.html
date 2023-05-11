@@ -29,7 +29,7 @@
             dataDiv1.innerHTML = html;
           }
         };
-          xhr.open('GET', 'http://127.0.0.1:8000/transportation/ticket-prices/');
+          xhr.open('GET', './ticket-prices/');
           xhr.send();
         } else {
           dataDiv1.style.display = 'none';
@@ -60,7 +60,7 @@
             dataDiv2.innerHTML = html;
           }
         };
-          xhr.open('GET', 'http://127.0.0.1:8000/transportation/feedbacks/');
+          xhr.open('GET', './feedbacks/');
           xhr.send();
         } else {
           dataDiv2.style.display = 'none';
@@ -100,7 +100,7 @@
             }, 3000);
           }
         };
-        xhr.open('POST', 'http://127.0.0.1:8000/transportation/feedbacks/');
+        xhr.open('POST', './feedbacks/');
         xhr.setRequestHeader('Content-Type', 'application/json');
         xhr.send(JSON.stringify(Object.fromEntries(formData.entries()))); // convert FormData to JSON string
       });
