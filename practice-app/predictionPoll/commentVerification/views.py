@@ -5,6 +5,10 @@ from perspective import PerspectiveAPI
 from urllib.error import HTTPError
 from .models import ValidationState,CommentValidationHistory
 
+
+def display(request):
+    return render(request,"temp.html")
+
 def moderate_comment(request):
     result = None
     if request.method == "GET":
