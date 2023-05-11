@@ -1,0 +1,63 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Universities</title>
+    <link rel="stylesheet" href="{% static '../static/css/style.css' %}">
+</head>
+<body>
+<h1 id="title"></h1>
+<form id="post-form">
+    <label for="name">Name:</label>
+    <input type="text" id="name" name="name"><br>
+    <label for="review">review:</label>
+    <input type="text" id="review" name="review"><br>
+    <label for="web_page">web_page:</label>
+    <input type="text" id="web_page" name="web_page"><br>
+    <button type="submit">Create New University</button>
+</form>
+<br>
+<button onclick="promptGet('listall')">List all universities in Turkey</button>
+<button onclick="promptGet('list')">List all universities in my DB</button>
+
+<div id="response"></div>
+
+<script>
+    const postForm = document.getElementById('post-form');
+    const responseDiv = document.getElementById('response');
+    const titleElement = document.getElementById('title');
+
+    postForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const formData = new FormData(e.target);
+        const jsonData = {};
+        for (let [key, value] of formData.entries()) {
+            jsonData[key] = value;
+        }
+        const response = await fetch(window.location.pathname + 'add', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(jsonData),
+        });
+        const json = await response.json();
+        responseDiv.innerHTML = JSON.stringify(json);
+    });
+
+    async function promptGet(url) {
+        const response = await fetch(window.location.pathname + url);
+        const json = await response.json();
+        responseDiv.innerHTML = '';
+        const list = document.createElement('ul');
+        responseDiv.appendChild(list);
+        for (let item of json) {
+            const listItem = document.createElement('li');
+            listItem.textContent = JSON.stringify(item);
+            list.appendChild(listItem);
+        }
+    }
+
+    titleElement.textContent = "University Info";
+</script>
+</body>
+</html>

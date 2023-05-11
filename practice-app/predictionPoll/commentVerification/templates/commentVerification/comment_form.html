@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <h1>Check Comment</h1>
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}<!-- I use the form object here. 
+        that is passed by the view return.
+    rendered version of the form will be put here-->
+    
+    <button type="submit">Check comment</button>
+  </form>
+
+  {% if result %}
+    <h2>Result:</h2>
+    <pre>{{ result|safe }}</pre>
+    
+  {% endif %}
+{% endblock %}
