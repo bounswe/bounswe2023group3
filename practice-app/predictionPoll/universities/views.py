@@ -29,7 +29,7 @@ def createUniversityWithReview(request):
         review = Review(comment=request_body["review"], university=university)
         review.save()
 
-        return JsonResponse({"name": university.name, "web-page": university.web_page, "review": review.comment})
+        return JsonResponse({"name": university.name, "web_page": university.web_page, "review": review.comment})
     else:
         return HttpResponse(status=405)
 
@@ -42,6 +42,6 @@ def listUniversities(request):
         review_list = []
         for review in reviews:
             review_list.append({"comment": review.comment})
-        context.append({"name": university.name, "web-page": university.web_page,
+        context.append({"name": university.name, "web_page": university.web_page,
                         "reviews": review_list})
     return JsonResponse(context, safe=False)
