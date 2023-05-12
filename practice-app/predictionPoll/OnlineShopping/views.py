@@ -31,7 +31,7 @@ def myAccount(request):
 def dataReq(request):
     if(request.method == "GET"):
         data = {
-            'username': currentUser.password,
+            'username': currentUser.username,
             'password': False,
             'text': 'Need authority to see password.'
         }
