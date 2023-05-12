@@ -44,4 +44,5 @@ urlpatterns = [
     path('transportation/', include('public_transport_app.urls')),
     path('commentVerification/', include('commentVerification.urls')),
     path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
+    path('countries/', include('countries.urls'))
 ]
