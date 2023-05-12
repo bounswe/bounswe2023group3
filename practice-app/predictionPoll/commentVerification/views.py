@@ -1,8 +1,8 @@
 from django.shortcuts import render,redirect
 from .forms import CommentCheckForm
 from os import getenv
-from perspective import PerspectiveAPI
-from urllib.error import HTTPError
+import json
+import requests
 from .models import ValidationState,CommentValidationHistory
 
 
@@ -30,23 +30,30 @@ def moderate_comment(request):
         if form.is_valid():
             text = form.cleaned_data["comment"]
             api_key= getenv("PERSPECTIVE_API_KEY")
-            perspective_connect=PerspectiveAPI(api_key=api_key)
-            try:
-                result= perspective_connect.score(text)
-            except HTTPError as e:
-                result=None
-            validation_state = None
+            
+            url = "https://commentanalyzer.googleapis.com/v1alpha1/comments:analyze"
+            querystring = {"key": api_key}
+
+            payload = {
+                "comment": {"text": text},
+                "requestedAttributes": {"TOXICITY": {}}
+            }
+
+            headers = {'Content-Type': 'application/json'}
+
+            response = requests.post(url, params=querystring, headers=headers, data=json.dumps(payload))
+            result = response.json()
+            
+
+            validation_state = ValidationState.COULD_NOT_VALIDATE
             toxicity_level = None
             if result:
-                toxicity_level = result["TOXICITY"] 
+                toxicity_level = result["attributeScores"]["TOXICITY"]["summaryScore"]["value"]
                 rejected=toxicity_level > .7
                 result= "we cannot publish your comment" if rejected else "comment is publishable"
                 result +=" according to our community rules. toxicity level: "+ str(toxicity_level)
                 validation_state= ValidationState.REJECTED if rejected else ValidationState.ACCEPTED
-
-            elif result==None:
-                result= "comment cannot be analyzed"
-                validation_state = ValidationState.COULD_NOT_VALIDATE
+            
             CommentValidationHistory.objects.create(comment_body=text, validation_state=validation_state, toxicity_level =toxicity_level)
 
         form = CommentCheckForm()
