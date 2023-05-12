@@ -7,7 +7,7 @@ from .models import ValidationState,CommentValidationHistory
 
 
 def display(request):
-    return render(request,"temp.html")
+    return render(request,"commentVerification/temp.html")
 
 def moderate_comment(request):
     result = None
@@ -45,9 +45,12 @@ def moderate_comment(request):
             result = response.json()
             
 
-            validation_state = ValidationState.COULD_NOT_VALIDATE
+            validation_state = None
             toxicity_level = None
-            if result:
+            if "error" in result and result['error']['code']==400 and result['error']['status'] == 'INVALID_ARGUMENT':
+                validation_state = ValidationState.COULD_NOT_VALIDATE
+                result = "comment cannot be analyzed"
+            else:
                 toxicity_level = result["attributeScores"]["TOXICITY"]["summaryScore"]["value"]
                 rejected=toxicity_level > .7
                 result= "we cannot publish your comment" if rejected else "comment is publishable"
