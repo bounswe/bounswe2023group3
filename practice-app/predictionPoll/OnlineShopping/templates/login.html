@@ -1,0 +1,41 @@
+<html lang="en">
+<head>
+  	<title>Login</title>
+  	
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+	<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+</head>
+<body>
+	<div class="wrapper">
+        <div style="background-color:lavender;" class="jumbotron text-center bg-primary">
+            <h1> Welcome to XX Online Shopping!</h1>
+            <p>
+                Please login to proceed.
+            </p>
+        </div>
+	</div>
+	
+	<div class="container">
+		<div class="row">
+			<div class="d-flex justify-content-around" style="margin-top: 20px">  
+					<form action="/OnlineShopping/home/" method="post">
+					<input type="hidden" name="pageName" value="login">
+					  <div class="form-group">
+					    <label for="inputUsername">Username</label>
+					    <input type="username" class="form-control" name="username" aria-describedby="emailHelp" placeholder="Enter Username">
+					  </div>
+					  <div class="form-group">
+					    <label for="inputPassword">Password</label>
+					    <input type="password" class="form-control" name="password" placeholder="Enter Password">
+					  </div>
+					  {%csrf_token%}
+					  <button type="logIn" class="btn btn-primary"> Log In</button>
+					</form>
+					
+			</div>
+		</div>
+	</div>
+</body>
+</html>
+
+				

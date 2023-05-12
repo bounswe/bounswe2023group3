@@ -39,6 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'home',
     'bitcoin',
+    'weather_app',
+    'bitcoin',
     'mealApi',
     'weatherApp',
     'universities',
@@ -63,7 +65,7 @@ ROOT_URLCONF = 'predictionPoll.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [ BASE_DIR/ 'OnlineShopping/templates' ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
