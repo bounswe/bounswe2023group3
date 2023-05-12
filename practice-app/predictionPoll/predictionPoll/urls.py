@@ -35,7 +35,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('universities/', include('universities.urls')),
     path('', include('home.urls')),
-    path('bitcoin/', include('bitcoin.urls'))
+    path('bitcoin/', include('bitcoin.urls')),
     path('meal/', include('mealApi.urls')),
     path('weather-app/', include('weatherApp.urls')),
     path('transportation/', include('public_transport_app.urls')),
