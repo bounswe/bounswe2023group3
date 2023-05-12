@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <h1>Comment History</h1>
+  <table>
+    <thead>
+      <tr>
+        <th>Comment</th>
+        <th>Validation State</th>
+        <th>Toxicity Level</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for record in history %}
+        <tr>
+          <td>{{ record.comment_body }}</td>
+          <td>{{ record.validation_state }}</td>
+          <td>{{ record.toxicity_level }}</td>
+        </tr>
+      {% empty %}
+        <tr>
+          <td colspan="3">No records found</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}

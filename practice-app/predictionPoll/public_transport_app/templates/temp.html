@@ -1,0 +1,109 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>HTTP Request Example</title>
+    <link rel="stylesheet" href="{% static '../static/css/styles.css' %}">
+  </head>
+  <body>
+    <button id="get-ticket-price">Get Ticket Prices</button>
+    <div id="ticket-price" style="display: none;"></div>
+    <script>
+      const button1 = document.getElementById('get-ticket-price');
+      const dataDiv1 = document.getElementById('ticket-price');
+      button1.addEventListener('click', function() {
+        if (dataDiv1.style.display === 'none') {
+          dataDiv1.style.display = 'block';
+          button1.textContent = 'Hide Ticket Prices';
+          const xhr = new XMLHttpRequest();
+          xhr.onreadystatechange = function() {
+          if (xhr.readyState === 4 && xhr.status === 200) {
+            const response = JSON.parse(xhr.responseText);
+            // dataDiv1.innerHTML = '<pre>' + JSON.stringify(response, null, 2) + '</pre>';
+            let html = '<table><thead><tr><th>Card Name</th><th>Card Type</th><th>Fee</th></tr></thead><tbody>';
+            response.forEach(function(item) {
+              html += '<tr><td>' + item.card_name + '</td><td>' + item.type + '</td><td>' + item.price + '</td></tr>';
+            });
+            html += '</tbody></table>';
+            dataDiv1.innerHTML = html;
+          }
+        };
+          xhr.open('GET', './ticket-prices/');
+          xhr.send();
+        } else {
+          dataDiv1.style.display = 'none';
+          button1.textContent = 'Get Ticket Prices';
+        }
+      });
+    </script>
+  </body>
+  <body>
+    <button id="get-feedback">Get Feedbacks</button>
+    <div id="feedback-response"></div>
+    <script>
+      const button2 = document.getElementById('get-feedback');
+      const dataDiv2 = document.getElementById('feedback-response');
+      button2.addEventListener('click', function() {
+        if (dataDiv2.style.display === 'none') {
+          dataDiv2.style.display = 'block';
+          button2.textContent = 'Hide Feedbacks';
+          const xhr = new XMLHttpRequest();
+          xhr.onreadystatechange = function() {
+          if (xhr.readyState === 4 && xhr.status === 200) {
+            const response = JSON.parse(xhr.responseText);
+            let html = '<table><thead><tr><th>Name</th><th>Email</th><th>Message</th></tr></thead><tbody>';
+            response.forEach(function(item) {
+              html += '<tr><td>' + item.name + '</td><td>' + item.email + '</td><td>' + item.feedback + '</td></tr>';
+            });
+            html += '</tbody></table>';
+            dataDiv2.innerHTML = html;
+          }
+        };
+          xhr.open('GET', './feedbacks/');
+          xhr.send();
+        } else {
+          dataDiv2.style.display = 'none';
+          button2.textContent = 'Get Feedbacks';
+        }
+      });
+    </script>
+  </body>
+  <body>
+    <form id="feedback-form">
+      <label for="name">Name:</label>
+      <input type="text" id="name" name="name" required>
+      <br>
+      <label for="email">Email:</label>
+      <input type="email" id="email" name="email" required>
+      <br>
+      <label for="feedback">Message:</label>
+      <textarea id="feedback" name="feedback" required></textarea>
+      <br>
+      <button type="submit">Submit</button>
+    </form>
+    <div id="submit-response"></div>
+    <script>
+      const form = document.getElementById('feedback-form');
+      const responseDiv = document.getElementById('submit-response');
+      form.addEventListener('submit', function(event) {
+        event.preventDefault(); // prevent default form submission behavior
+        const formData = new FormData(form); // construct FormData object from form data
+        const xhr = new XMLHttpRequest();
+        xhr.onreadystatechange = function() {
+          if (xhr.readyState === 4 && xhr.status === 201) {
+            const response = JSON.parse(xhr.responseText);
+            responseDiv.innerHTML = response.message;
+            form.reset(); // reset the form after submission
+            setTimeout(function() {
+              responseDiv.innerHTML = '';
+            }, 3000);
+          }
+        };
+        xhr.open('POST', './feedbacks/');
+        xhr.setRequestHeader('Content-Type', 'application/json');
+        xhr.send(JSON.stringify(Object.fromEntries(formData.entries()))); // convert FormData to JSON string
+      });
+    </script>
+  </body>
+</html>
