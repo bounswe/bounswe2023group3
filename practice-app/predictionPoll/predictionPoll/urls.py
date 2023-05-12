@@ -24,5 +24,6 @@ urlpatterns = [
     path('meal/', include('mealApi.urls')),
     path('weather-app/', include('weatherApp.urls')),
     path('transportation/', include('public_transport_app.urls')),
-    path('commentVerification/', include('commentVerification.urls'))
+    path('commentVerification/', include('commentVerification.urls')),
+    path('countries/', include('countries.urls'))
 ]
