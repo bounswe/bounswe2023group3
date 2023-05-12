@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Country Info</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+<body>
+    <h1>Country Info</h1>
+    <input type="text" id="country_name" placeholder="Country name">
+    <button onclick="searchCountry()">Search</button>
+    <button onclick="addToFavorites()">Add to Favorites</button>
+    <button onclick="removeFromFavorites()">Remove from Favorites</button>
+    <button onclick="listFavorites()">List Favorites</button>
+
+    <div id="country_info"></div>
+    <div id="favorites"></div>
+
+    <script>
+    function searchCountry() {
+        var countryName = $("#country_name").val();
+        $.get("/search/?country_name=" + countryName, function(data, status){
+            $("#country_info").html(JSON.stringify(data));
+        });
+    }
+    
+    function addToFavorites() {
+        var countryName = $("#country_name").val();
+        $.get("/add_to_favorites/?country_name=" + countryName, function(data, status){
+            alert(data.message);
+        });
+    }
+    
+    function removeFromFavorites() {
+        var countryName = $("#country_name").val();
+        $.get("/remove_from_favorites/?country_name=" + countryName, function(data, status){
+            alert(data.message);
+        });
+    }
+    
+    function listFavorites() {
+        $.get("/list_favorites/", function(data, status){
+            $("#favorites").html(JSON.stringify(data.favorites));
+        });
+    }
+    </script>
+</body>
+</html>
