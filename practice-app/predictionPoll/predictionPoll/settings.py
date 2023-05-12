@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'weather_app',
     'mealApi',
     'weatherApp',
+    'countries',
     'universities',
     'public_transport_app',
     'rest_framework',
