@@ -43,7 +43,8 @@ INSTALLED_APPS = [
     'universities',
     'public_transport_app',
     'rest_framework',
-    'commentVerification'
+    'commentVerification',
+    'drf_yasg',
 ]
 
 MIDDLEWARE = [

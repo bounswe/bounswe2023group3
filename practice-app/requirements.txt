@@ -3,3 +3,4 @@ requests==2.30.0
 djangorestframework==3.14.0
 perspective==1.0.3
 python-dotenv==1.0.0
+drf-yasg==1.21.5
