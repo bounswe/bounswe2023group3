@@ -40,7 +40,6 @@ INSTALLED_APPS = [
     'home',
     'bitcoin',
     'weather_app',
-    'bitcoin',
     'mealApi',
     'weatherApp',
     'universities',
