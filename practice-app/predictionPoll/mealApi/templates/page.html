@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Page</title>
+    <link rel="stylesheet" href="../static/style/style.css">
+</head>
+<body>
+    <div class="background-image"></div> 
+
+	<h1 id="random-meal">Random Meal</h1>
+	<button onclick="getRandomMeal()">Get Random Meal</button>
+	<div id="meal-container"></div>
+
+	<h1 id="reviews">Reviews</h1>
+	<button onclick="getReviews()" id="hide-reviews-button">Show Reviews</button>
+	<div id="reviews-container"></div>
+
+	<h1 id="addReview">Add Review</h1>
+	<form id="review-form">
+		<label id="nameId" for="name">Name:</label><br>
+		<input type="text" id="name" name="name"><br>
+		<label id="mealId" for="meal">Meal:</label><br>
+		<input type="text" id="meal" name="meal"><br>
+		<label id="reviewId" for="review">Review:</label><br>
+		<textarea id="review" name="review"></textarea><br><br>
+		<input type="submit" value="Submit">
+	</form>
+
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	<script>
+        getReviews();
+		function getRandomMeal() {
+			$.ajax({
+				url: "/meal/getRandomMeal/",
+				method: "GET",
+				success: function(data) {
+					if (data) {
+						$("#meal-container").html("<h2 id='meal-name'>" + data.strMeal + "</h2><img id='meal-image' src='" + data.strMealThumb + "' alt='" + data.strMeal + "'><p id='instruction'>" + data.strInstructions + "</p>");
+					} else {
+						alert("No meal found.");
+					}
+				},
+				error: function() {
+					alert("Error getting random meal.");
+				}
+			});
+		}
+
+		function getReviews() {
+            var reviewsContainer = $("#reviews-container");
+            var hideReviewsButton = $("#hide-reviews-button");
+
+
+            if (reviewsContainer.is(":visible")) {
+                reviewsContainer.hide();
+                hideReviewsButton.text("Show Reviews");
+            } else {
+                $.ajax({
+                    url: "/meal/reviews/",
+                    method: "GET",
+                    success: function(data) {
+                        var reviews = "";
+                        for (var i = 0; i < data.length; i++) {
+                            reviews += "<div class='review-item'><h3>" + data[i].name + " - " + data[i].meal + "</h3><p>" + data[i].review + "</p></div>";
+                        }
+                        reviewsContainer.html(reviews);
+                        hideReviewsButton.text("Hide Reviews");
+                        reviewsContainer.show();
+                    },
+                    error: function() {
+                        alert("Error getting reviews.");
+                    }
+                });
+            }
+        }
+
+
+		$("#review-form").submit(function(event) {
+			event.preventDefault();
+			var formData = {
+				"name": $("#name").val(),
+				"meal": $("#meal").val(),
+				"review": $("#review").val()
+			};
+			$.ajax({
+				url: "/meal/reviews/",
+				method: "POST",
+				data: formData,
+				success: function(data) {
+					alert(data.message);
+				},
+				error: function(jqXHR, textStatus, errorThrown) {
+					alert("Error adding review: " + errorThrown);
+				}
+			});
+		});
+	</script>
+</body>
+</html>
