@@ -1,0 +1,45 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather App</title>
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+</head>
+<body>
+<h1>Weather App</h1>
+  
+<form method="post">
+  {% csrf_token %}
+  <input type="text" name="city" placeholder="Enter a country or a city" size="50">
+  <button type="submit">See the Weather</button>
+</form>
+
+<div class="full-container">
+  {% if weather_data %}
+    <div class="city-container">
+    <h1>{{ weather_data.city }}</h1>
+    <h2>{{ weather_data.temperature }}°C</h2>
+    <p>{{ weather_data.description }}</p>
+    <img src="http://openweathermap.org/img/w/{{ weather_data.icon }}.png" alt="{{ weather_data.description }}">
+  {% endif %}
+
+  {% if forecast_data %}
+    <h2>5-Day Weather Forecast</h2>
+    <div class="forecast-container">
+        {% for forecast in forecast_data %}
+            <div class="forecast">
+                <h3>{{ forecast.day }}</h3>
+                <p>{{ forecast.min_temperature }}°C - {{ forecast.max_temperature }}°C</p>
+                <p>{{ forecast.description }}</p>
+                <img src="http://openweathermap.org/img/w/{{ forecast.icon }}.png" alt="{{ forecast.description }}">
+            </div>
+        {% endfor %}
+    </div>
+{% endif %}
+
+</div>
+
+</body>
+</html>
