@@ -2,3 +2,4 @@ Django==4.2.1
 requests==2.30.0
 djangorestframework==3.14.0
 python-dotenv==1.0.0
+drf-yasg==1.21.5
