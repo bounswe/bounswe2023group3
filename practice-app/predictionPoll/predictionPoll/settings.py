@@ -38,12 +38,14 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'home',
+    'bitcoin'
     'mealApi',
     'weatherApp',
     'universities',
     'public_transport_app',
     'rest_framework',
-    'commentVerification'
+    'commentVerification',
+    'drf_yasg',
 ]
 
 MIDDLEWARE = [
