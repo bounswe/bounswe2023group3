@@ -1,4 +1,7 @@
 from django.shortcuts import render
+from rest_framework.decorators import api_view
+from drf_yasg import openapi
+from drf_yasg.utils import swagger_auto_schema
 import requests
 import datetime
 
@@ -7,10 +10,61 @@ weather_url = "https://api.openweathermap.org/data/2.5/weather?q={}&appid={}"
 forecast_url = "https://api.openweathermap.org/data/2.5/forecast?lat={}&lon={}&appid={}"
 air_url = "http://api.openweathermap.org/data/2.5/air_pollution?lat={}&lon={}&appid={}"
 
+@swagger_auto_schema(
+    method='GET',
+    operation_summary='Show the main page',
+    responses={
+        200: 'Success'
+    }
+)
+
+@api_view(['GET'])
 def weather(request):
     if request.method == "GET":
         return render(request, "weather_app/weather.html")
 
+@swagger_auto_schema(
+    methods=['POST'],
+    operation_summary='',
+    request_body=openapi.Schema(
+        type=openapi.TYPE_OBJECT,
+        properties={
+            'city': openapi.Schema(type=openapi.TYPE_STRING)
+        },
+        required=['city']
+    ),
+    responses={
+        200: openapi.Schema(
+            type=openapi.TYPE_OBJECT,
+            properties={
+                'weather_data': openapi.Schema(
+                    type=openapi.TYPE_OBJECT,
+                    properties={
+                        'city': openapi.Schema(type=openapi.TYPE_STRING),
+                        'temperature': openapi.Schema(type=openapi.TYPE_NUMBER),
+                        'description': openapi.Schema(type=openapi.TYPE_STRING),
+                        'icon': openapi.Schema(type=openapi.TYPE_STRING),
+                    }
+                ),
+                'forecast_data': openapi.Schema(
+                    type=openapi.TYPE_ARRAY,
+                    items=openapi.Schema(
+                        type=openapi.TYPE_OBJECT,
+                        properties={
+                            'day': openapi.Schema(type=openapi.TYPE_STRING),
+                            'min_temperature': openapi.Schema(type=openapi.TYPE_NUMBER),
+                            'max_temperature': openapi.Schema(type=openapi.TYPE_NUMBER),
+                            'description': openapi.Schema(type=openapi.TYPE_STRING),
+                            'icon': openapi.Schema(type=openapi.TYPE_STRING),
+                        }
+                    )
+                )
+            }
+        )
+    }
+)
+
+@api_view(['GET', 'POST'])
 def forecast(request):
     if request.method == "POST":
         city = request.POST.get('city', None)
@@ -20,6 +74,7 @@ def forecast(request):
         else:
             return render(request, "weather_app/forecast.html")
         return render(request, "weather_app/forecast.html", {"weather_data" : weather_data, "forecast_data" : forecast_data})
+        
 
     elif request.method == "GET":
         return render(request, "weather_app/forecast.html")
@@ -55,6 +110,47 @@ def fetch_weather_data(city, API_key, weather_url, forecast_url):
 
     return weather_data, forecast_data
 
+@swagger_auto_schema(
+    methods=['POST'],
+    operation_summary='',
+    request_body=openapi.Schema(
+        type=openapi.TYPE_OBJECT,
+        properties={
+            'city': openapi.Schema(type=openapi.TYPE_STRING)
+        },
+        required=['city']
+    ),
+    responses={
+        200: openapi.Schema(
+            type=openapi.TYPE_OBJECT,
+            properties={
+                'weather_data': openapi.Schema(
+                    type=openapi.TYPE_OBJECT,
+                    properties={
+                        'city': openapi.Schema(type=openapi.TYPE_STRING)
+                    }
+                ),
+                'air_quality_data': openapi.Schema(
+                    type=openapi.TYPE_ARRAY,
+                    items=openapi.Schema(
+                        type=openapi.TYPE_OBJECT,
+                        properties={
+                            'day': openapi.Schema(type=openapi.TYPE_STRING),
+                            'index': openapi.Schema(type=openapi.TYPE_STRING),
+                            'CO': openapi.Schema(type=openapi.TYPE_NUMBER),
+                            'NO': openapi.Schema(type=openapi.TYPE_NUMBER),
+                            'NO2': openapi.Schema(type=openapi.TYPE_NUMBER),
+                            'O3': openapi.Schema(type=openapi.TYPE_NUMBER),
+                            'SO2': openapi.Schema(type=openapi.TYPE_NUMBER),
+                        }
+                    )
+                )
+            }
+        )
+    }
+)
+
+@api_view(['GET', 'POST'])
 def air_quality(request):
 
     if request.method == "POST":
