@@ -38,13 +38,15 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'home',
+    'bitcoin'
     'mealApi',
     'weatherApp',
     'universities',
     'countries',
     'public_transport_app',
     'rest_framework',
-    'commentVerification'
+    'commentVerification',
+    'drf_yasg',
 ]
 
 MIDDLEWARE = [
@@ -62,7 +64,7 @@ ROOT_URLCONF = 'predictionPoll.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [ BASE_DIR/ 'OnlineShopping/templates' ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
