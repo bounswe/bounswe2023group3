@@ -39,7 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'home',
     'weather_app',
-    'bitcoin'
+    'bitcoin',
     'mealApi',
     'weatherApp',
     'universities',
