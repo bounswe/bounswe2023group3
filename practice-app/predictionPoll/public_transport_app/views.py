@@ -10,7 +10,7 @@ import json
 # Create your views here.
 
 def display(request):
-    return render(request, 'transport.html')
+    return render(request, 'temp.html')
 
 @api_view(['GET', 'POST'])
 def feedback_list(request):
