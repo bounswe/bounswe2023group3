@@ -12,7 +12,7 @@ from drf_yasg.utils import swagger_auto_schema
 # Create your views here.
 
 def display(request):
-    return render(request, 'transport.html')
+    return render(request, 'temp.html')
 
 
 
