@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        /* Set some basic styles for the page */
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            font-size: 16px;
+            line-height: 1.5;
+            color: #333;
+        }
+
+        /* Center form horizontally */
+        form#new-order-form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* Style submit button */
+        form#new-order-form input[type="submit"] {
+            padding: 10px 20px;
+            border-radius: 5px;
+            background-color: #007bff;
+            color: #fff;
+            font-size: 1rem;
+            cursor: pointer;
+        }
+
+        /* Style Bitcoin price button and text */
+        #btc-price {
+            display: block;
+            margin: 0 auto;
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        button#get-price-btn {
+            display: block;
+            margin: 0 auto;
+            padding: 10px 20px;
+            border-radius: 5px;
+            background-color: #007bff;
+            color: #fff;
+            font-size: 1rem;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+
+        /* Style orders table */
+        table#orders {
+            border-collapse: collapse;
+            margin-top: 20px;
+            width: 100%;
+        }
+
+        table#orders th,
+        table#orders td {
+            border: 1px solid #ddd;
+            padding: 10px;
+        }
+
+        table#orders th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+        }
+
+        /* Center the "Get Orders" button */
+        button#get-orders-btn {
+            display: block;
+            margin: 0 auto;
+            padding: 10px 20px;
+            border-radius: 5px;
+            background-color: #007bff;
+            color: #fff;
+            font-size: 1rem;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+    </style>
+    <script>
+        const getBitcoinPrice = async () => {
+            const response = await fetch('bitcoin-price');
+            const data = await response.json();
+            document.getElementById('btc-price').innerText = 'Bitcoin price: $' + (Math.round(data.price * 100) / 100).toString();
+        }
+
+        const getOrders = async () => {
+            const response = await fetch('orders');
+            const data = await response.json();
+            data.orders.forEach((o) => {
+                const row = document.getElementById('orders').insertRow()
+
+                row.insertCell().innerText = o.price
+                row.insertCell().innerText = o.quantity
+                row.insertCell().innerText = o.side
+                row.insertCell().innerText = o.type
+
+            })
+        }
+    </script>
+</head>
+
+<body>
+    <form id="new-order-form" action="" method="post">
+        {% csrf_token %}
+        {{ form }}
+        <input type="submit" value="Submit">
+    </form>
+
+    <button id="get-price-btn" onclick="getBitcoinPrice()">Get Bitcion Price</button>
+    <p id="btc-price"></p>
+
+    <button id="get-orders-btn" onclick="getOrders()">Get Orders</button>
+    <table id="orders">
+        <th>Price</th>
+        <th>Quantity</th>
+        <th>Side</th>
+        <th>Type</th>
+    </table>
+</body>
+
+</html>
