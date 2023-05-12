@@ -47,7 +47,7 @@
     <script>
     function searchCountry() {
         var countryName = $("#country_name").val();
-        $.get("/search/?country_name=" + countryName, function(data, status){
+        $.get("search/?country_name=" + countryName, function(data, status){
             var countryInfo = '<h2>' + data.name + '</h2>';
             countryInfo += '<img src="' + data.flag + '" alt="' + data.name + ' flag" style="width: 100px;"><br>';
             countryInfo += 'Capital: ' + data.capital + '<br>';
@@ -61,20 +61,20 @@
 
     function addToFavorites() {
         var countryName = $("#country_name").val();
-        $.get("/add_to_favorites/?country_name=" + countryName, function(data, status){
+        $.get("add_to_favorites/?country_name=" + countryName, function(data, status){
             alert(data.message);
         });
     }
 
     function removeFromFavorites() {
         var countryName = $("#country_name").val();
-        $.get("/remove_from_favorites/?country_name=" + countryName, function(data, status){
+        $.get("remove_from_favorites/?country_name=" + countryName, function(data, status){
             alert(data.message);
         });
     }
 
     function listFavorites() {
-        $.get("/list_favorites/", function(data, status){
+        $.get("list_favorites/", function(data, status){
             var favorites = '<h2>Favorites:</h2>';
             for (var i = 0; i < data.favorites.length; i++) {
                 favorites += data.favorites[i].country_name + '<br>';

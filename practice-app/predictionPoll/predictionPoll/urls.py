@@ -34,7 +34,6 @@ schema_view = get_schema_view(
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('universities/', include('universities.urls')),
-    path('', include('home.urls')),
     path('weather/', include('weather_app.urls')),
     path('transportation/', include('public_transport_app.urls')),
     path('OnlineShopping/', include('OnlineShopping.urls')),
@@ -45,5 +44,6 @@ urlpatterns = [
     path('transportation/', include('public_transport_app.urls')),
     path('commentVerification/', include('commentVerification.urls')),
     path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
-    path('', include('countries.urls')),
+    path('', include('home.urls')),
+    
 ]
