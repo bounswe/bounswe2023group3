@@ -21,3 +21,4 @@ A platform where users open “polls” for the other users (and themselves) to 
 - [Simar Achmet Kechagia](https://github.com/bounswe/bounswe2023group3/wiki/About-Simar-Achmet-Kechagia)
 - [Mustafa Berk Turgut](https://github.com/bounswe/bounswe2023group3/wiki/About-Berk-Turgut)
 - [Berke Çalışkan](https://github.com/bounswe/bounswe2023group3/wiki/About-Berke-Çalışkan)
+- [Taha Baturhan Akbulut](https://github.com/bounswe/bounswe2023group3/wiki/About-Taha-Baturhan-Akbulut)
