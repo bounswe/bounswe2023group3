@@ -1,0 +1,35 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    float: left;
+    background-color: #8fc6df; 
+    padding: 10px; 
+    border: 1px solid #1b1818; 
+    border-radius: 15px; 
+    width: 150px; 
+    margin: 0 auto; 
+    text-align: left;
+}
+
+.image {
+    max-width: 100%;
+    height: 100%;
+}
+
+.buttons {
+    margin-top: 20px;
+}
+
+.button {
+    display: block;
+    width: 140px;
+    padding: 10px;
+    margin-bottom: 10px;
+    background-color: #8fc6df;
+    text-align: center;
+    cursor: pointer;
+    border-radius: 15px; 
+    border: 1px solid #1b1818; 
+}
+
