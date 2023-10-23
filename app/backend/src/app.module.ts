@@ -15,7 +15,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
       database: 'postgres',
       synchronize: true,
       logging: true,
-    })
+    }),
   ],
   controllers: [AppController],
   providers: [AppService],
