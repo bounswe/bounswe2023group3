@@ -1,22 +1,27 @@
-import { Injectable, UnauthorizedException, NotFoundException  } from '@nestjs/common';
+import {
+  Injectable,
+  UnauthorizedException,
+  NotFoundException,
+  BadRequestException,
+} from '@nestjs/common';
 import { UserService } from '../user/user.service';
-import { Not } from 'typeorm';
 import { JwtService } from '@nestjs/jwt';
-import { CreateUserDto } from 'src/user/dto/create-user.dto';
+import { CreateUserDto } from '../user/dto/create-user.dto';
+import { VerifyUserDto } from './dto/verify-user.dto';
 
 @Injectable()
 export class AuthService {
   constructor(
     private userService: UserService,
     private jwtService: JwtService,
-    ) {}
+  ) {}
 
   async signIn(email: string, pass: string): Promise<any> {
-    const users = await this.userService.searchUser({email});
+    const users = await this.userService.searchUser({ email });
     if (!users) {
       throw new NotFoundException('User not found');
     }
-    if (users[0].password !== pass) {
+    if (!users[0].compareEncryptedPassword(pass)) {
       throw new UnauthorizedException();
     }
     const payload = { sub: users[0].id, username: users[0].username };
@@ -26,15 +31,36 @@ export class AuthService {
   }
 
   async signUp(createUserDto: CreateUserDto): Promise<any> {
-    const users = await this.userService.searchUser({email: createUserDto.email});
+    const users = await this.userService.searchUser({
+      email: createUserDto.email,
+    });
     if (users.length > 0) {
       throw new UnauthorizedException('User already exists');
     }
     await this.userService.createUser(createUserDto);
-    const newUser = await this.userService.searchUser({email: createUserDto.email});
+    const newUser = await this.userService.searchUser({
+      email: createUserDto.email,
+    });
     const payload = { sub: newUser[0].id, username: newUser[0].username };
     return {
+      user: newUser[0],
       access_token: await this.jwtService.signAsync(payload),
     };
+  }
+
+  async verifyUser(verifyUserDto: VerifyUserDto): Promise<any> {
+    const user = await this.userService.searchUser({
+      email: verifyUserDto.email,
+    });
+
+    if (!user[0]) {
+      throw new NotFoundException('User not found');
+    }
+    if (user[0].verification_code !== verifyUserDto.verificationCode) {
+      throw new BadRequestException('Wrong verification Code');
+    }
+
+    await this.userService.verifyUser(verifyUserDto.email);
+    return 'User is verified';
   }
 }
