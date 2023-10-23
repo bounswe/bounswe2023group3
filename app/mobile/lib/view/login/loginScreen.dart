@@ -17,23 +17,51 @@ class _LoginScreenState extends State<LoginScreen> {
 
   bool isEmailValid = true; // Track email validation
   bool isPasswordValid = true; // Add more validation as needed for password
+  bool emptyEmail = false;
+  bool emptyPassword = false;
 
   void validateEmail(String email) {
     setState(() {
-      isEmailValid = EmailValidator.validate(email);
+      emptyPassword = false;
+      emptyEmail = false;
+      if (email.isEmpty) {
+        isEmailValid = true;
+      } else {
+        isEmailValid = EmailValidator.validate(email);
+      }
     });
   }
 
   // Add more validation logic for password as needed
   void validatePassword(String password) {
     setState(() {
-      isPasswordValid = password.length >= 6; // For example, password should be at least 6 characters
+      emptyPassword = false;
+      emptyEmail = false;
+      if (password.isEmpty) {
+        isPasswordValid = true;
+      }
+      else {
+        isPasswordValid = password.length >= 6; // For example, password should be at least 6 characters
+      }
     });
   }
 
   void login() async {
     String email = emailController.text;
     String password = passwordController.text;
+    if (email.isEmpty) {
+      setState(() {
+        emptyEmail = true;
+      });
+    }
+    if (password.isEmpty) {
+      setState(() {
+        emptyPassword = true;
+      });
+    }
+    if (emptyEmail || emptyPassword) {
+      return;
+    }
     // Perform login validation and navigate to the next screen if successful
     AuthService authService = AuthService();
     http.Response response = await authService.login(email, password);
@@ -71,6 +99,25 @@ class _LoginScreenState extends State<LoginScreen> {
               onPressed: isEmailValid && isPasswordValid ? login : null,
               child: const Text('Login'),
             ),
+            Padding(
+              padding: const EdgeInsets.all(10),
+              child: Column(
+                children: [
+                  Text(
+                    emptyEmail ? 'Email cannot be empty' : '',
+                    style: TextStyle(
+                      color: Colors.red[900],
+                    ),
+                  ),
+                  Text(
+                    emptyPassword ? 'Password cannot be empty' : '',
+                    style: TextStyle(
+                      color: Colors.red[900],
+                    ),
+                  ),
+                ],
+              ),
+            )
           ],
         ),
       ),
