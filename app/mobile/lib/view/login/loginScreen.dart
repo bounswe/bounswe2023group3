@@ -68,6 +68,14 @@ class _LoginScreenState extends State<LoginScreen> {
     print(response.body);
   }
 
+  void showErrorMessage() {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('Email or password is incorrect'),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -96,7 +104,7 @@ class _LoginScreenState extends State<LoginScreen> {
             ),
             const SizedBox(height: 16),
             ElevatedButton(
-              onPressed: isEmailValid && isPasswordValid ? login : null,
+              onPressed: isEmailValid && isPasswordValid ? login : showErrorMessage,
               child: const Text('Login'),
             ),
             Padding(
