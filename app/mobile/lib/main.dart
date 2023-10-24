@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:mobile_app/view/welcome/welcome.dart';
 import 'view/login/loginScreen.dart';
 
 void main() => runApp(MaterialApp(
-    initialRoute: '/login',
-    routes: {
-      '/login': (context) => const LoginScreen(),
-    }
-));
+      initialRoute: '/welcome',
+      routes: {
+        '/login': (context) => const LoginScreen(),
+        '/welcome': (context) => const WelcomeScreen(),
+      },
+    ));
