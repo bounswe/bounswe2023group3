@@ -51,6 +51,8 @@ class WelcomeScreen extends StatelessWidget {
             TextButton(
               onPressed: () {
                 // Continue as Guest
+                print("welcome.WelcomeScreen.build.Scaffold.Center.Column."
+                    "TextButton: Continue as Guest");
               },
               child: Text('Continue as Guest'),
             ),
