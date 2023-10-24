@@ -3,7 +3,6 @@ import 'package:email_validator/email_validator.dart';
 import 'package:mobile_app/view/login/customTextField.dart';
 import 'package:mobile_app/services/signuser.dart';
 
-
 class SignupScreen extends StatefulWidget {
   const SignupScreen({super.key});
 
@@ -65,7 +64,6 @@ class _SignupScreenState extends State<SignupScreen> {
           isDigitValid;
     });
   }
-
 
   void showErrorMessage() {
     ScaffoldMessenger.of(context).showSnackBar(
@@ -151,40 +149,43 @@ class _SignupScreenState extends State<SignupScreen> {
               '• At least one uppercase character',
               style: TextStyle(
                 color: isPasswordValid ||
-                    RegExp(r'[A-Z]').hasMatch(passwordController.text) ? Colors
-                    .green : Colors.red,
+                        RegExp(r'[A-Z]').hasMatch(passwordController.text)
+                    ? Colors.green
+                    : Colors.red,
               ),
             ),
             Text(
               '• At least one lowercase character',
               style: TextStyle(
                 color: isPasswordValid ||
-                    RegExp(r'[a-z]').hasMatch(passwordController.text) ? Colors
-                    .green : Colors.red,
+                        RegExp(r'[a-z]').hasMatch(passwordController.text)
+                    ? Colors.green
+                    : Colors.red,
               ),
             ),
             Text(
               '• At least one special character (e.g., !@#)',
               style: TextStyle(
                 color: isPasswordValid ||
-                    RegExp(r'[!@#\$%^&*(),.?":{}|<>]').hasMatch(passwordController.text) ? Colors
-                    .green : Colors.red,
+                        RegExp(r'[!@#\$%^&*(),.?":{}|<>]')
+                            .hasMatch(passwordController.text)
+                    ? Colors.green
+                    : Colors.red,
               ),
             ),
             Text(
               '• At least one digit',
               style: TextStyle(
                 color: isPasswordValid ||
-                    RegExp(r'[0-9]').hasMatch(passwordController.text) ? Colors
-                    .green : Colors.red,
+                        RegExp(r'[0-9]').hasMatch(passwordController.text)
+                    ? Colors.green
+                    : Colors.red,
               ),
             ),
             // End of password criteria display
             const SizedBox(height: 16),
             ElevatedButton(
-              onPressed: isEmailValid && isPasswordValid
-                  ? signup
-                  : null,
+              onPressed: isEmailValid && isPasswordValid ? signup : null,
               child: const Text('Sign Up'),
             ),
             Padding(

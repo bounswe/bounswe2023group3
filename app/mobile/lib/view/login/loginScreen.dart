@@ -40,9 +40,9 @@ class _LoginScreenState extends State<LoginScreen> {
       emptyEmail = false;
       if (password.isEmpty) {
         isPasswordValid = true;
-      }
-      else {
-        isPasswordValid = password.length >= 6; // For example, password should be at least 6 characters
+      } else {
+        isPasswordValid = password.length >=
+            6; // For example, password should be at least 6 characters
       }
     });
   }
@@ -78,7 +78,8 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   void navigateToSignupPage() {
-    Navigator.push(context, MaterialPageRoute(builder: (context) => const SignupScreen()));
+    Navigator.push(
+        context, MaterialPageRoute(builder: (context) => const SignupScreen()));
   }
 
   @override
@@ -105,7 +106,9 @@ class _LoginScreenState extends State<LoginScreen> {
               controller: passwordController,
               obscureText: true,
               onChanged: validatePassword,
-              errorText: isPasswordValid ? "" : 'Password must be at least 6 characters',
+              errorText: isPasswordValid
+                  ? ""
+                  : 'Password must be at least 6 characters',
             ),
             const SizedBox(height: 16),
             ElevatedButton(

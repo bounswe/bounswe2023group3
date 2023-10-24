@@ -2,7 +2,8 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 class SignUser {
-  static const String baseUrl = 'https://restcountries.com/v3.1/name/'; // To be replaced with our backend API
+  static const String baseUrl =
+      'https://restcountries.com/v3.1/name/'; // To be replaced with our backend API
 
   Future<http.Response> sign(String username, String password) async {
     const String signEndpoint = '/sign'; // Replace with your login endpoint
