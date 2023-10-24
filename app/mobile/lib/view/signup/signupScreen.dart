@@ -184,7 +184,7 @@ class _SignupScreenState extends State<SignupScreen> {
             ElevatedButton(
               onPressed: isEmailValid && isPasswordValid
                   ? signup
-                  : showErrorMessage,
+                  : null,
               child: const Text('Sign Up'),
             ),
             Padding(
@@ -203,7 +203,6 @@ class _SignupScreenState extends State<SignupScreen> {
                       color: Colors.red[900],
                     ),
                   ),
-                  const SizedBox(height: 16),
                 ],
               ),
             )

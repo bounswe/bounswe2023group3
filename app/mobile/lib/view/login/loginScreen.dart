@@ -109,7 +109,7 @@ class _LoginScreenState extends State<LoginScreen> {
             ),
             const SizedBox(height: 16),
             ElevatedButton(
-              onPressed: isEmailValid && isPasswordValid ? login : showErrorMessage,
+              onPressed: isEmailValid && isPasswordValid ? login : null,
               child: const Text('Login'),
             ),
             Padding(
