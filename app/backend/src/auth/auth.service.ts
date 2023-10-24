@@ -22,9 +22,9 @@ export class AuthService {
       throw new NotFoundException('User not found');
     }
     if (!users[0].compareEncryptedPassword(pass)) {
-      throw new UnauthorizedException();
+      throw new BadRequestException('Wrong password');
     }
-    const payload = { sub: users[0].id, username: users[0].username };
+    const payload = { sub: users[0].id, email: users[0].email };
     return {
       access_token: await this.jwtService.signAsync(payload),
     };
@@ -41,7 +41,7 @@ export class AuthService {
     const newUser = await this.userService.searchUser({
       email: createUserDto.email,
     });
-    const payload = { sub: newUser[0].id, username: newUser[0].username };
+    const payload = { sub: newUser[0].id, email: newUser[0].email };
     return {
       user: newUser[0],
       access_token: await this.jwtService.signAsync(payload),
