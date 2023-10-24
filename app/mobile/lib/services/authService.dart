@@ -2,11 +2,12 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 class AuthService {
-
-  static const String baseUrl = 'https://restcountries.com/v3.1/name/'; // To be replaced with our backend API
+  static const String baseUrl =
+      'https://restcountries.com/v3.1/name/'; // To be replaced with our backend API
 
   Future<http.Response> login(String email, String password) async {
-    const String loginEndpoint = '/turkey'; // To be replaced with the login endpoint
+    const String loginEndpoint =
+        '/turkey'; // To be replaced with the login endpoint
 
     final Map<String, String> data = {
       'email': email,

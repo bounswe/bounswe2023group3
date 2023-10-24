@@ -7,7 +7,7 @@ class WelcomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Welcome'),
+        title: const Text('Welcome'),
         centerTitle: true,
       ),
       body: Center(
@@ -22,39 +22,38 @@ class WelcomeScreen extends StatelessWidget {
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(8),
                 ),
-                minimumSize: Size(150, 50),
+                minimumSize: const Size(150, 50),
               ),
-              child: Text(
+              child: const Text(
                 'Log in',
                 style: TextStyle(fontSize: 20),
               ),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
                 // Navigate to Sign Up Page
-                print("welcome.WelcomeScreen.build.Scaffold.Center.Column."
-                    "ElevatedButton: navigate to sign up page");
+                Navigator.pushNamed(context, '/sign');
               },
-              child: Text(
-                'Sign Up',
-                style: TextStyle(fontSize: 20),
-              ),
               style: ElevatedButton.styleFrom(
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(8),
                 ),
                 minimumSize: Size(150, 50),
               ),
+              child: const Text(
+                'Sign Up',
+                style: TextStyle(fontSize: 20),
+              ),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             TextButton(
               onPressed: () {
                 // Continue as Guest
                 print("welcome.WelcomeScreen.build.Scaffold.Center.Column."
                     "TextButton: Continue as Guest");
               },
-              child: Text('Continue as Guest'),
+              child: const Text('Continue as Guest'),
             ),
           ],
         ),
