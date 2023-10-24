@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
 
+import '../../constants.dart';
+
+
 class WelcomeScreen extends StatelessWidget {
   const WelcomeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
         title: Text('Welcome'),
@@ -14,19 +18,26 @@ class WelcomeScreen extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            ElevatedButton(
-              onPressed: () {
-                Navigator.pushNamed(context, '/login');
-              },
-              style: ElevatedButton.styleFrom(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: ElevatedButton(
+
+                onPressed: () {
+                  Navigator.pushNamed(context, '/login');
+                },
+                style: ElevatedButton.styleFrom(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  minimumSize: Size(size.width*0.7, 50),
+                  backgroundColor: primaryColor,
+
                 ),
-                minimumSize: Size(150, 50),
-              ),
-              child: Text(
-                'Log in',
-                style: TextStyle(fontSize: 20),
+                child: Text(
+                  'Login',
+                  style: TextStyle(fontSize: 20),
+                ),
+
               ),
             ),
             SizedBox(height: 20),
@@ -42,9 +53,10 @@ class WelcomeScreen extends StatelessWidget {
               ),
               style: ElevatedButton.styleFrom(
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8),
+                  borderRadius: BorderRadius.circular(12),
                 ),
-                minimumSize: Size(150, 50),
+                minimumSize: Size(size.width*0.7, 50),
+                backgroundColor: primaryLightColor,
               ),
             ),
             SizedBox(height: 20),

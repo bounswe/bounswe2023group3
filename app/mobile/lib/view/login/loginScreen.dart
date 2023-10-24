@@ -86,7 +86,7 @@ class _LoginScreenState extends State<LoginScreen> {
               onChanged: validateEmail,
               errorText: isEmailValid ? "" : 'Enter a valid email',
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: 12),
             CustomTextField(
               labelText: 'Password',
               controller: passwordController,
@@ -99,8 +99,16 @@ class _LoginScreenState extends State<LoginScreen> {
               onPressed: isEmailValid && isPasswordValid ? login : null,
               child: const Text('Login'),
             ),
+            TextButton(
+              onPressed: () {
+                // Continue as Guest
+                print("login.loginScreen.build.Scaffold.Padding.Column."
+                    "TextButton: Continue as Guest");
+              },
+              child: Text('Forgot password'),
+            ),
             Padding(
-              padding: const EdgeInsets.all(10),
+              padding: const EdgeInsets.fromLTRB(0, 20, 0, 10),
               child: Column(
                 children: [
                   Text(
