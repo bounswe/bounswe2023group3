@@ -19,10 +19,10 @@ class WelcomeScreen extends StatelessWidget {
                 Navigator.pushNamed(context, '/login');
               },
               style: ElevatedButton.styleFrom(
-                padding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 40),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(8),
                 ),
+                minimumSize: Size(150, 50),
               ),
               child: Text(
                 'Log in',
@@ -41,10 +41,10 @@ class WelcomeScreen extends StatelessWidget {
                 style: TextStyle(fontSize: 20),
               ),
               style: ElevatedButton.styleFrom(
-                padding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 34),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(8),
                 ),
+                minimumSize: Size(150, 50),
               ),
             ),
             SizedBox(height: 20),
