@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:mobile_app/services/authService.dart';
 import 'customTextField.dart';
+import 'package:mobile_app/view/signup/signupScreen.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -70,10 +71,14 @@ class _LoginScreenState extends State<LoginScreen> {
 
   void showErrorMessage() {
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
+      const SnackBar(
         content: Text('Email or password is incorrect'),
       ),
     );
+  }
+
+  void navigateToSignupPage() {
+    Navigator.push(context, MaterialPageRoute(builder: (context) => const SignupScreen()));
   }
 
   @override
@@ -121,6 +126,17 @@ class _LoginScreenState extends State<LoginScreen> {
                     emptyPassword ? 'Password cannot be empty' : '',
                     style: TextStyle(
                       color: Colors.red[900],
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  GestureDetector(
+                    onTap: navigateToSignupPage,
+                    child: const Text(
+                      'Don\'t have an account? Sign up here',
+                      style: TextStyle(
+                        color: Colors.blue,
+                        decoration: TextDecoration.underline,
+                      ),
                     ),
                   ),
                 ],
