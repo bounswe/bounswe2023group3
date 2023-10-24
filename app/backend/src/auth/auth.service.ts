@@ -18,9 +18,10 @@ export class AuthService {
 
   async signIn(email: string, pass: string): Promise<any> {
     const users = await this.userService.searchUser({ email });
-    if (!users) {
+    if (!users.length) {
       throw new NotFoundException('User not found');
     }
+
     if (!users[0].compareEncryptedPassword(pass)) {
       throw new BadRequestException('Wrong password');
     }
