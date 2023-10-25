@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:email_validator/email_validator.dart';
-import 'package:mobile_app/view/login/customTextField.dart';
+import 'package:mobile_app/view/utils/customTextField.dart';
 import 'package:mobile_app/services/signuser.dart';
 
 class SignupScreen extends StatefulWidget {

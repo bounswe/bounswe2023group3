@@ -2,7 +2,7 @@ import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:mobile_app/services/authService.dart';
-import 'customTextField.dart';
+import 'package:mobile_app/view/utils/customTextField.dart';
 import 'package:mobile_app/view/signup/signupScreen.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -78,9 +78,11 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   void navigateToSignupPage() {
+
     Navigator.push(
         context, MaterialPageRoute(builder: (context) => const SignupScreen()));
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -115,8 +117,15 @@ class _LoginScreenState extends State<LoginScreen> {
               onPressed: isEmailValid && isPasswordValid ? login : null,
               child: const Text('Login'),
             ),
+            TextButton(
+              onPressed: () {
+                // Continue as Guest
+                Navigator.pushNamed(context, "/fpassinit");
+              },
+              child: const Text('Forget Password?'),
+            ),
             Padding(
-              padding: const EdgeInsets.all(10),
+              padding: const EdgeInsets.all(8),
               child: Column(
                 children: [
                   Text(
@@ -133,7 +142,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   const SizedBox(height: 16),
                   GestureDetector(
-                    onTap: navigateToSignupPage,
+                    onTap: () {Navigator.pushNamed(context, "/sign");},
                     child: const Text(
                       'Don\'t have an account? Sign up here',
                       style: TextStyle(
