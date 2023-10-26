@@ -3,6 +3,7 @@ import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:mobile_app/services/tagCompletionService.dart';
 import 'package:mobile_app/view/pollRequest/customTextField.dart';
 import 'package:mobile_app/view/pollRequest/pollCreationData.dart';
+import 'package:mobile_app/view/pollRequest/sectionHeader.dart';
 
 class PollRequestPage extends StatefulWidget {
   const PollRequestPage({super.key});
@@ -235,25 +236,6 @@ class _PollRequestPageState extends State<PollRequestPage> {
               ),
             ],
           ),
-        ),
-      ),
-    );
-  }
-}
-
-class SectionHeader extends StatelessWidget {
-  final String headerText;
-  const SectionHeader({super.key, required this.headerText});
-
-  @override
-  Widget build(BuildContext context) {
-    return Align(
-      alignment: Alignment.centerLeft,
-      child: Text(
-        headerText,
-        style: const TextStyle(
-          fontWeight: FontWeight.bold,
-          fontSize: 18,
         ),
       ),
     );
