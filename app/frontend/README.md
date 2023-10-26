@@ -1,27 +1,32 @@
-# AppFrontend
+# CMPE451 Fall Group 3 - Prediction Poll Frontend
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 16.2.0.
+Welcome to the frontend section of our project! 
 
-## Development server
+Our project uses different technologies for backend, frontend and mobile development. The frontend is created with [Angular CLI](https://github.com/angular/angular-cli) version 16.2.0.
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+### Frontend Team Members
 
-## Code scaffolding
+- [Ali Üçer](https://github.com/bounswe/bounswe2023group3/wiki/About-Ali-%C3%9C%C3%A7er)
+- [Beyza Akçınar](https://github.com/bounswe/bounswe2023group3/wiki/About-Beyza-Ak%C3%A7%C4%B1nar)
+- [Hatice Serra Hakyemez](https://github.com/bounswe/bounswe2023group3/wiki/About-Hatice-Serra-Hakyemez)
+- [Mustafa Berk Turgut](https://github.com/bounswe/bounswe2023group3/wiki/About-Berk-Turgut)
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+## Running the app
 
-## Build
+1. Change directory to the `frontend` folder:
+    ```
+    cd frontend
+    ```
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+2. Install necessary packages:
+    ```
+    npm install
+    ```
 
-## Running unit tests
+3. Activate the server:
+    ```
+    ng serve
+    ```
+    
+Go to `http://localhost:4200/` to access the welcome page of our app. From there, you can navigate to other pages according to your needs.
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
