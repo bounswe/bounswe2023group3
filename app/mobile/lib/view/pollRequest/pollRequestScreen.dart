@@ -97,13 +97,14 @@ class _PollRequestPageState extends State<PollRequestPage> {
                     border: OutlineInputBorder(),
                     labelText: 'Enter tag',
                   ),
-                  onSubmitted: (_) {
-                    if (_pollTagController.text.isNotEmpty) {
-                      FocusScope.of(context).requestFocus(_pollTagFocus);
-                    }
-                  },
+                  // onSubmitted: (_) {
+                  //   if (_pollTagController.text.isNotEmpty) {
+                  //     FocusScope.of(context).requestFocus(_pollTagFocus);
+                  //   }
+                  // },
                 ),
                 suggestionsCallback: (pattern) async {
+                  print("v\nvsuggestioncallback\nv\n");
                   return await TagCompletionService.getPossibleCompletions(
                       pattern);
                 },
@@ -117,7 +118,10 @@ class _PollRequestPageState extends State<PollRequestPage> {
                     pollData.tags.add(suggestion);
                     _pollTagController.clear();
                   });
-                  FocusScope.of(context).requestFocus(_pollTagFocus);
+                  // FocusScope.of(context).unfocus();
+                  // Future.delayed(const Duration(milliseconds: 50), () {
+                  // });
+                  FocusScope.of(context).requestFocus(_pollOptionFocus);
                 },
               ),
 
@@ -140,20 +144,19 @@ class _PollRequestPageState extends State<PollRequestPage> {
               TextField(
                 controller: _pollOptionController,
                 focusNode: _pollOptionFocus,
-                // onSubmitted: (_) {
-                //   // TODO: burasini kontrol et
-                //   if (_pollOptionController.text.isNotEmpty) {
-                //     FocusScope.of(context).requestFocus(_pollImageUrlFocus);
-                //   }
-                // },
-                decoration: InputDecoration(
-                  border: const OutlineInputBorder(),
+                onSubmitted: (_) {
+                  // TODO: burasini kontrol et
+                  if (_pollOptionController.text.isNotEmpty) {
+                    setState(() {
+                      pollData.options.add(_pollOptionController.text);
+                      _pollOptionController.clear();
+                    });
+                    FocusScope.of(context).requestFocus(_pollImageUrlFocus);
+                  }
+                },
+                decoration: const InputDecoration(
+                  border: OutlineInputBorder(),
                   labelText: 'Enter option',
-                  suffixIcon: IconButton(
-                      icon: const Icon(Icons.add),
-                      onPressed: () => addContentIfExists(
-                          targetList: pollData.options,
-                          controller: _pollOptionController)),
                 ),
               ),
 
@@ -199,6 +202,7 @@ class _PollRequestPageState extends State<PollRequestPage> {
               const SizedBox(height: 16),
               TextField(
                 controller: _pollImageUrlController,
+                focusNode: _pollImageUrlFocus,
                 decoration: InputDecoration(
                   border: const OutlineInputBorder(),
                   labelText: 'URL of image resource',
