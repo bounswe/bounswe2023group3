@@ -18,13 +18,19 @@ class _PollRequestPageState extends State<PollRequestPage> {
   final _pollTitleController = TextEditingController();
   final _pollDescriptionController = TextEditingController();
   final _pollTagController = TextEditingController();
-  final _pollOptionController = TextEditingController();
+  final List<TextEditingController> _pollOptionControllers = [
+    TextEditingController(),
+    TextEditingController(),
+  ];
   final _pollImageUrlController = TextEditingController();
 
   final _pollTitleFocus = FocusNode();
   final _pollDescriptionFocus = FocusNode();
   final _pollTagFocus = FocusNode();
-  final _pollOptionFocus = FocusNode();
+  final List<FocusNode> _pollOptionFocuses = [
+    FocusNode(),
+    FocusNode(),
+  ];
   final _pollImageUrlFocus = FocusNode();
 
   void addContentIfExists(
@@ -36,6 +42,35 @@ class _PollRequestPageState extends State<PollRequestPage> {
         controller.clear();
       });
     }
+  }
+
+  void _updateOptionFields() {
+    bool allFilled = _pollOptionControllers.every(
+      (controller) => controller.text.isNotEmpty,
+    );
+
+    // Check for more than one empty field when there's at least one filled field.
+    int emptyFields =
+        _pollOptionControllers.where((c) => c.text.isEmpty).length;
+    bool hasFilledField = _pollOptionControllers.any((c) => c.text.isNotEmpty);
+
+    if (allFilled) {
+      _pollOptionControllers.add(TextEditingController());
+      _pollOptionFocuses.add(FocusNode());
+    } else if (emptyFields > 1 && hasFilledField) {
+      // Remove all empty fields except one
+      while (emptyFields > 1) {
+        int lastEmpty =
+            _pollOptionControllers.lastIndexWhere((c) => c.text.isEmpty);
+        if (lastEmpty > -1) {
+          _pollOptionControllers.removeAt(lastEmpty);
+          _pollOptionFocuses.removeAt(lastEmpty);
+          emptyFields--;
+        }
+      }
+    }
+
+    setState(() {});
   }
 
   @override
@@ -121,44 +156,38 @@ class _PollRequestPageState extends State<PollRequestPage> {
                   // FocusScope.of(context).unfocus();
                   // Future.delayed(const Duration(milliseconds: 50), () {
                   // });
-                  FocusScope.of(context).requestFocus(_pollOptionFocus);
+                  FocusScope.of(context).requestFocus(_pollOptionFocuses[0]);
                 },
               ),
 
               const SizedBox(height: 16),
               const SectionHeader(headerText: "Options"),
-              ...pollData.options.map((option) => ListTile(
-                    title: Text(option),
-                    trailing: IconButton(
-                      icon: const Icon(Icons.remove_circle_outline),
-                      onPressed: () {
-                        setState(() {
-                          pollData.options.remove(option);
-                        });
-                      },
+              for (var i = 0; i < _pollOptionControllers.length; i++)
+                Container(
+                  padding: const EdgeInsets.fromLTRB(0, 16, 0, 0),
+                  child: TextField(
+                    controller: _pollOptionControllers[i],
+                    focusNode: _pollOptionFocuses[i],
+                    onChanged: (_) => _updateOptionFields(),
+                    onSubmitted: (_) => {
+                      if (_pollOptionControllers[i].text.isNotEmpty &&
+                          i < _pollOptionControllers.length - 1)
+                        {
+                          FocusScope.of(context)
+                              .requestFocus(_pollOptionFocuses[i + 1])
+                        }
+                      else
+                        {
+                          FocusScope.of(context)
+                              .requestFocus(_pollImageUrlFocus)
+                        }
+                    },
+                    decoration: InputDecoration(
+                      border: const OutlineInputBorder(),
+                      labelText: 'Enter option ${i + 1}',
                     ),
-                  )),
-
-              // new option input
-              const SizedBox(height: 16),
-              TextField(
-                controller: _pollOptionController,
-                focusNode: _pollOptionFocus,
-                onSubmitted: (_) {
-                  // TODO: burasini kontrol et
-                  if (_pollOptionController.text.isNotEmpty) {
-                    setState(() {
-                      pollData.options.add(_pollOptionController.text);
-                      _pollOptionController.clear();
-                    });
-                    FocusScope.of(context).requestFocus(_pollImageUrlFocus);
-                  }
-                },
-                decoration: const InputDecoration(
-                  border: OutlineInputBorder(),
-                  labelText: 'Enter option',
+                  ),
                 ),
-              ),
 
               const SizedBox(height: 16),
               const SectionHeader(headerText: "Image URLs"),
