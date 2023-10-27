@@ -1,8 +1,10 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Get, Post, Req, UseGuards } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { LoginDto } from './dto/login.dto';
 import { VerifyUserDto } from './dto/verify-user.dto';
+import { AuthGuard } from './guards/auth.guard';
+import { VerificationGuard } from './guards/verification.guard';
 
 @Controller('auth')
 export class AuthController {
@@ -21,5 +23,11 @@ export class AuthController {
   @Post('verify')
   verify(@Body() verifyUserDto: VerifyUserDto) {
     return this.authService.verifyUser(verifyUserDto);
+  }
+
+  @UseGuards(AuthGuard, VerificationGuard)
+  @Get('me')
+  getMe(@Req() request: any) {
+    return this.authService.getMe(request.user.id);
   }
 }

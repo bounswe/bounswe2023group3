@@ -63,4 +63,12 @@ export class AuthService {
     await this.userService.verifyUser(verifyUserDto.email);
     return 'User is verified';
   }
+
+  async getMe(id: string): Promise<any> {
+    const user = await this.userService.findUserById(id);
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+    return user;
+  }
 }
