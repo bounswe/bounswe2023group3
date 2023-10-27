@@ -73,6 +73,64 @@ class _PollRequestPageState extends State<PollRequestPage> {
     setState(() {});
   }
 
+  List<String> nonEmptyTexts(List<TextEditingController> controllers) {
+    return controllers
+        .map((c) => c.text)
+        .where((text) => text.isNotEmpty)
+        .toList();
+  }
+
+  void sendForApproval() {
+    if (pollData.pollTitle.isEmpty) {
+      _showAlert('Title field cannot be empty');
+      FocusScope.of(context).requestFocus(_pollTitleFocus);
+      return;
+    }
+
+    if (pollData.pollDescription.isEmpty) {
+      _showAlert('Description field cannot be empty');
+      FocusScope.of(context).requestFocus(_pollDescriptionFocus);
+      return;
+    }
+    if (pollData.tags.isEmpty) {
+      _showAlert('At least one tag is required');
+      FocusScope.of(context).requestFocus(_pollTagFocus);
+      return;
+    }
+    pollData.options = nonEmptyTexts(_pollOptionControllers);
+    if (pollData.options.length < 2) {
+      _showAlert('At least two options are required');
+      int lastEmpty =
+          _pollOptionControllers.lastIndexWhere((c) => c.text.isEmpty);
+      FocusScope.of(context).requestFocus(_pollOptionFocuses[lastEmpty]);
+      return;
+    }
+
+    // All checks passed
+    print("Send pollData to approval");
+    _showAlert("Your poll creation request is succesfully sent");
+    // Implement the logic to send data
+  }
+
+  void _showAlert(String message) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          content: Text(message),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('OK'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -132,14 +190,16 @@ class _PollRequestPageState extends State<PollRequestPage> {
                     border: OutlineInputBorder(),
                     labelText: 'Enter tag',
                   ),
-                  // onSubmitted: (_) {
-                  //   if (_pollTagController.text.isNotEmpty) {
-                  //     FocusScope.of(context).requestFocus(_pollTagFocus);
-                  //   }
-                  // },
+                  onSubmitted: (_) {
+                    if (_pollTagController.text.isEmpty) {
+                      FocusScope.of(context)
+                          .requestFocus(_pollOptionFocuses[0]);
+                    } else {
+                      FocusScope.of(context).unfocus();
+                    }
+                  },
                 ),
                 suggestionsCallback: (pattern) async {
-                  print("v\nvsuggestioncallback\nv\n");
                   return await TagCompletionService.getPossibleCompletions(
                       pattern);
                 },
@@ -153,9 +213,6 @@ class _PollRequestPageState extends State<PollRequestPage> {
                     pollData.tags.add(suggestion);
                     _pollTagController.clear();
                   });
-                  // FocusScope.of(context).unfocus();
-                  // Future.delayed(const Duration(milliseconds: 50), () {
-                  // });
                   FocusScope.of(context).requestFocus(_pollOptionFocuses[0]);
                 },
               ),
@@ -169,18 +226,14 @@ class _PollRequestPageState extends State<PollRequestPage> {
                     controller: _pollOptionControllers[i],
                     focusNode: _pollOptionFocuses[i],
                     onChanged: (_) => _updateOptionFields(),
-                    onSubmitted: (_) => {
+                    onSubmitted: (_) {
                       if (_pollOptionControllers[i].text.isNotEmpty &&
-                          i < _pollOptionControllers.length - 1)
-                        {
-                          FocusScope.of(context)
-                              .requestFocus(_pollOptionFocuses[i + 1])
-                        }
-                      else
-                        {
-                          FocusScope.of(context)
-                              .requestFocus(_pollImageUrlFocus)
-                        }
+                          i < _pollOptionControllers.length - 1) {
+                        FocusScope.of(context)
+                            .requestFocus(_pollOptionFocuses[i + 1]);
+                      } else {
+                        FocusScope.of(context).requestFocus(_pollImageUrlFocus);
+                      }
                     },
                     decoration: InputDecoration(
                       border: const OutlineInputBorder(),
@@ -189,8 +242,26 @@ class _PollRequestPageState extends State<PollRequestPage> {
                   ),
                 ),
 
+              // image url input
               const SizedBox(height: 16),
               const SectionHeader(headerText: "Image URLs"),
+              const SizedBox(height: 16),
+              TextField(
+                controller: _pollImageUrlController,
+                focusNode: _pollImageUrlFocus,
+                decoration: InputDecoration(
+                  border: const OutlineInputBorder(),
+                  labelText: 'URL of image resource',
+                  suffixIcon: IconButton(
+                    icon: const Icon(Icons.add),
+                    onPressed: () => addContentIfExists(
+                      targetList: pollData.imageURLs,
+                      controller: _pollImageUrlController,
+                    ),
+                  ),
+                ),
+              ),
+
               ...pollData.imageURLs.map((url) => ListTile(
                     title: Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -227,38 +298,13 @@ class _PollRequestPageState extends State<PollRequestPage> {
                     ),
                   )),
 
-              // image url input
-              const SizedBox(height: 16),
-              TextField(
-                controller: _pollImageUrlController,
-                focusNode: _pollImageUrlFocus,
-                decoration: InputDecoration(
-                  border: const OutlineInputBorder(),
-                  labelText: 'URL of image resource',
-                  suffixIcon: IconButton(
-                    icon: const Icon(Icons.add),
-                    onPressed: () => addContentIfExists(
-                      targetList: pollData.imageURLs,
-                      controller: _pollImageUrlController,
-                    ),
-                  ),
-                ),
-              ),
-
               const SizedBox(height: 16),
               // submit and cancel buttons
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
                   ElevatedButton(
-                    onPressed: () {
-                      // Handle the Send for Approval action here
-                      print(pollData.pollTitle);
-                      print(pollData.pollDescription);
-                      print(pollData.options);
-                      print(pollData.imageURLs);
-                      print(pollData.tags);
-                    },
+                    onPressed: sendForApproval,
                     child: const Text('Send for Approval'),
                   ),
                   ElevatedButton(
