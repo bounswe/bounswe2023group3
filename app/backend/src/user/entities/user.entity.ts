@@ -29,6 +29,9 @@ export class User {
   @Column({ nullable: true })
   verification_code: number;
 
+  @Column({ nullable: true })
+  reset_password_token: number;
+
   @BeforeInsert()
   async hashPasswordBeforeInsert() {
     if (this.password) {
