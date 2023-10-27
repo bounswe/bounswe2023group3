@@ -47,10 +47,11 @@ class _PollRequestPageState extends State<PollRequestPage> {
           title: const Text('Create New Poll Request'),
         ),
         body: Padding(
-          padding: const EdgeInsets.all(16.0),
+          padding: const EdgeInsets.all(16),
           child: ListView(
             children: <Widget>[
               // poll title
+              const SizedBox(height: 4),
               CustomTextField(
                 controller: _pollTitleController,
                 focusNode: _pollTitleFocus,
@@ -67,6 +68,7 @@ class _PollRequestPageState extends State<PollRequestPage> {
                 nextFocusNode: _pollTagFocus,
                 onChanged: (value) => pollData.pollDescription = value,
                 label: 'Enter poll description',
+                lines: 3,
               ),
 
               // added tags
