@@ -48,13 +48,13 @@ export class AuthService {
     this.mailerService
       .sendMail({
         to: createUserDto.email, // list of receivers
-        from: 'noreply@nestjs.com', // sender address
+        from: 'esbatuhanes@gmail.com', // sender address
         subject: 'Verification Code', // Subject line
-        text: newUser[0].verification_code.toString(), // plaintext body
-        html: `<b>${newUser[0].verification_code}</b>`, // HTML body content      
+        text: 'Here is your verification code: ' + newUser[0].verification_code.toString(), // plaintext body
+        html: `<b>Here is your verification code: ${newUser[0].verification_code.toString()}</b>`, // HTML body content      
       })
       .then(() => console.log('Verification code is sent'))
-      .catch(() => console.log('Verification code is not sent'));
+      .catch((err) => console.log(err));
     const payload = { sub: newUser[0].id, email: newUser[0].email };
     return {
       user: newUser[0],
@@ -92,11 +92,11 @@ export class AuthService {
         to: forgotPasswordDto.email, // list of receivers
         from: 'esbatuhanes@gmail.com', // sender address
         subject: 'Reset Password', // Subject line
-        text: reset_password_token.toString(), // plaintext body
-        html: `<b>${reset_password_token}</b>`, // HTML body content
+        text: 'Reset password token is here: ' + reset_password_token.toString(), // plaintext body
+        html: `<b>Reset password token is here: ${reset_password_token.toString()}</b>`, // HTML body content
       })
-      .then(() => {})
-      .catch(() => {});
+      .then(() => console.log('Reset password token is sent'))
+      .catch((err) => console.log(err));
   }
 
   async resetPassword(

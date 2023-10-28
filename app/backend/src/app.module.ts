@@ -21,7 +21,18 @@ import { MailerModule } from '@nestjs-modules/mailer';
       logging: true,
     }),
     MailerModule.forRoot({
-      transport: 'smtps://user@domain.com:pass@smtp.domain.com',
+      transport: {
+        host: 'smtp.gmail.com',
+        auth: {
+          user: 'esbatuhanes@gmail.com',
+          pass: 'eigo ngbm jwnw liyh'
+        },
+        port: 465,
+        secure : true,
+        tls: {
+          rejectUnauthorized: false
+        },
+      },
       defaults: {
         from: '"nest-modules" <modules@nestjs.com>',
       }
