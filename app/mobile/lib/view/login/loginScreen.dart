@@ -4,6 +4,8 @@ import 'package:http/http.dart' as http;
 import 'package:mobile_app/services/authService.dart';
 import 'customTextField.dart';
 import 'package:mobile_app/view/signup/signupScreen.dart';
+import 'package:mobile_app/view/homePage/homePage.dart';
+
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -66,6 +68,8 @@ class _LoginScreenState extends State<LoginScreen> {
     // Perform login validation and navigate to the next screen if successful
     AuthService authService = AuthService();
     http.Response response = await authService.login(email, password);
+    //you can give arguments to next page with arguments: option in below code
+    Navigator.pushReplacementNamed(context, '/home',);
     print(response.body);
   }
 
