@@ -5,6 +5,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserModule } from './user/user.module';
 import { User } from './user/entities/user.entity';
 import { AuthModule } from './auth/auth.module';
+import { MailerModule } from '@nestjs-modules/mailer';
 
 @Module({
   imports: [
@@ -18,6 +19,23 @@ import { AuthModule } from './auth/auth.module';
       database: 'postgres',
       synchronize: true,
       logging: true,
+    }),
+    MailerModule.forRoot({
+      transport: {
+        host: 'smtp.gmail.com',
+        auth: {
+          user: 'esbatuhanes@gmail.com',
+          pass: 'eigo ngbm jwnw liyh'
+        },
+        port: 465,
+        secure : true,
+        tls: {
+          rejectUnauthorized: false
+        },
+      },
+      defaults: {
+        from: '"nest-modules" <modules@nestjs.com>',
+      }
     }),
     UserModule,
     AuthModule,
