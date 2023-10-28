@@ -1,8 +1,10 @@
-import { Body, Controller, Get, Post, Req } from '@nestjs/common';
+import { Body, Controller, Get, Post, Req, UseGuards } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { LoginDto } from './dto/login.dto';
 import { VerifyUserDto } from './dto/verify-user.dto';
+import { AuthGuard } from './guards/auth.guard';
+import { VerificationGuard } from './guards/verification.guard';
 import { ForgotPasswordDto } from './dto/forgot-password.dto';
 import { ResetPasswordDto } from './dto/reset-password.dto';
 
@@ -25,6 +27,7 @@ export class AuthController {
     return this.authService.verifyUser(verifyUserDto);
   }
 
+
   @Post('forgot-password')
   forgotPassword(@Body() forgotPasswordDto: ForgotPasswordDto) {
     return this.authService.forgotPassword(forgotPasswordDto);
@@ -35,6 +38,7 @@ export class AuthController {
     return this.authService.resetPassword(resetPasswordDto);
   }
 
+  @UseGuards(AuthGuard, VerificationGuard)
   @Get('me')
   getMe(@Req() request: any) {
     return this.authService.getMe(request.user.id);

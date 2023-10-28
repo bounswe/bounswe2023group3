@@ -78,6 +78,7 @@ export class AuthService {
     return 'User is verified';
   }
 
+
   async forgotPassword(forgotPasswordDto: ForgotPasswordDto): Promise<any> {
     const user = await this.userService.searchUser({ 
       email: forgotPasswordDto.email,
@@ -121,5 +122,6 @@ export class AuthService {
     }
     return user;
   }
+
 
 }
