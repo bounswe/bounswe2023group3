@@ -30,6 +30,8 @@ environment:
 dependencies:
   email_validator: ^2.1.17
   http: ^1.1.0
+  flutter_typeahead: ^4.8.0
+
   flutter:
     sdk: flutter
 
