@@ -1,5 +1,6 @@
-import { Controller, Get, Post, Body, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Param, Delete } from '@nestjs/common';
 import { UserService } from './user.service';
+
 import { ApiBearerAuth } from '@nestjs/swagger';
 
 @ApiBearerAuth()
