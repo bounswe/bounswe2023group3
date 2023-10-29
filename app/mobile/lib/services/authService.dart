@@ -1,31 +1,37 @@
 import 'dart:convert';
-import 'package:http/http.dart' as http;
+import 'package:dio/dio.dart';
+import 'package:mobile_app/services/apiService.dart';
 
 class AuthService {
-  static const String baseUrl =
-      'https://restcountries.com/v3.1/name/'; // To be replaced with our backend API
 
-  Future<http.Response> login(String email, String password) async {
+
+  Future<Response> login(String email, String password) async {
     const String loginEndpoint =
-        '/turkey'; // To be replaced with the login endpoint
+        '/login'; // To be replaced with the login endpoint
 
     final Map<String, String> data = {
-      'email': email,
+      'user': email,
       'password': password,
     };
 
-    final Uri url = Uri.parse('$baseUrl$loginEndpoint');
-
     try {
-      final http.Response response = await http.get(
-        url,
-        // body: data,  // To be uncommented
+      final Response response = await ApiService.dio.post(
+        loginEndpoint,
+        data: data,
+        options: Options(
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+          },
+        ),
       );
-
       return response;
     } catch (e) {
       print('Error: $e');
       rethrow;
     }
+  }
+
+  void saveToken(String token) {
+    ApiService.setJwtToken(token);
   }
 }
