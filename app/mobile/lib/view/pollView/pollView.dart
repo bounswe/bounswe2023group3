@@ -71,8 +71,12 @@ class PollPage extends StatelessWidget {
                 label: const Text('Like'),
               ),
             ),
-            LikeCountWidget(likeCount: likeCount),
-            DateTimeWidget(dateTime: dateTime),
+            Row(
+              children: [
+                LikeCountWidget(likeCount: likeCount),
+                DateTimeWidget(dateTime: dateTime),
+              ],
+            ),
             const CommentEntryFieldWidget(),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -112,10 +116,17 @@ class CommentEntryFieldWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(16.0),
-      child: TextFormField(
-        decoration: const InputDecoration(
-          labelText: 'Add a comment...',
-          border: OutlineInputBorder(),
+      child: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(20.0),
+          border: Border.all(color: Colors.blue),
+          color: Colors.blue,
+        ),
+        child: TextFormField(
+          decoration: const InputDecoration(
+            labelText: 'Add a comment...',
+            border: InputBorder.none,
+          ),
         ),
       ),
     );
@@ -131,8 +142,22 @@ class LikeCountWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16.0),
-      child: Text('Like Count: $likeCount',
-          style: const TextStyle(fontSize: 16.0)),
+      child: Row(
+        children: [
+          Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(20.0),
+              border: Border.all(color: Colors.blue),
+              color: Colors.blue,
+            ),
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text('$likeCount Likes',
+                  style: const TextStyle(fontSize: 16.0)),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
@@ -145,9 +170,20 @@ class DateTimeWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16.0),
-      child: Text('Date and Time: $dateTime',
-          style: const TextStyle(fontSize: 16.0)),
+      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 16.0),
+      child: Row(
+        children: [
+          Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(20.0),
+              border: Border.all(color: Colors.grey),
+              color: Colors.blue,
+            ),
+            child: Text(dateTime,
+                style: const TextStyle(fontSize: 16.0)),
+          ),
+        ],
+      ),
     );
   }
 }
