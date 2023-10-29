@@ -1,0 +1,246 @@
+/* Reset default margin and padding */
+body, h1, h2, h3, p, ul, li {
+    margin: 0;
+    padding: 0;
+}
+
+body, html, #background { 
+    width: 100vw;
+    min-height: 100vh;
+    background-color: #202A40;
+}
+
+/* Set the font family for the entire page */
+body {
+    background-color: #202A40;
+    font-family: Arial, sans-serif;
+    
+}
+
+/* Header Styles */
+header {
+    background-color: #232F44;
+    color: #fff;
+    text-align: center;
+    padding: 10px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 30px;
+}
+
+.logo {
+    font-size: 24px;
+}
+
+.header-links {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+}
+
+.header-links a {
+    text-decoration: none;
+    color: #FFF;
+}
+
+.download-button {
+    background-color: #E57F84;
+    color: #fff;
+    font-size: medium;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.download-button:hover {
+    background-color: #30568F;
+}
+
+
+/* Navigation Bar Styles */
+.logo {
+    font-size: 24px;
+    margin-right: 10px;
+    color: #fff;
+}
+
+.user-profile {
+    display: flex;
+    align-items: center;
+    color: #fff;
+}
+
+.user-profile img {
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    margin-right: 5px;
+}
+
+/* App Features Styles */
+.features {
+    background-color: #fff;
+    display: flex;
+    justify-content: space-around;
+    padding: 20px;
+}
+
+.feature {
+    text-align: center;
+    max-width: 300px;
+}
+
+.feature img {
+    width: 80px;
+    height: 80px;
+}
+
+.feature h3 {
+    margin: 10px 0;
+    font-size: 18px;
+    color: #232F44;
+}
+
+.feature p {
+    font-size: 14px;
+    color: #4E4E4E;
+}
+
+/* FAQ Styles */
+.faq-section {
+    margin-top: 20px;
+    padding: 20px;
+    background-color:#9DBAC4;
+    border-radius: 20px;
+    margin-left: 20px;
+    margin-right: 20px;
+  }
+
+  .faq-section h2 {
+    color:#fff;
+  }
+  
+  .faq-item {
+    margin-top: 20px;
+  }
+  
+  .faq-item h3 {
+    font-size: 18px;
+    color: #232F44;
+  }
+  
+  .faq-item p {
+    font-size: 16px;
+    color: #4E4E4E;
+  }
+
+
+
+/* Login and Sign-Up Styles */
+.login, .sign-up {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.cta-section {
+    margin-top: 20px;
+    background-color: #fff;
+    color: #232F44;
+    text-align: center;
+    padding: 10px 10px;
+}
+
+.cta-section p {
+    margin-top: 15px;
+    background-color: #fff;
+    color: #232F44;
+    text-align: center;
+    padding: 5px;
+}
+
+.cta-section h2 {
+    margin-top: 10px;
+    background-color: #fff;
+    color: #232F44;
+    text-align: center;
+    padding: 10px 10px;
+}
+
+.cta-button {
+    background-color:#9DC0C4;
+    color: #fff;
+    border: none;
+    font-size: medium;
+    border-radius: 20px;
+    padding: 10px 20px;
+    cursor: pointer;
+    margin-bottom: 10px;
+}
+
+.cta-button:hover {
+    background-color:#E57F84;
+}
+
+/* About the App Styles */
+.about-app {
+    margin-top: 20px;
+    background-color: #fff;
+    color: #202A40;
+    text-align: left;
+    padding: 20px;
+    width: 40%;
+    box-sizing: border-box;
+}
+
+.about-app h2 {
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.about-app p {
+    line-height: 1.5;
+}
+
+/* Footer Styles */
+footer {
+    background-color: #232F44;
+    color: #fff;
+    text-align: center;
+    padding: 20px 0;
+}
+
+/* Copyright and Links Styles */
+footer p {
+    font-size: 12px;
+    margin-bottom: 10px;
+}
+
+ul {
+    list-style: none;
+    display: flex;
+    justify-content: center;
+}
+
+ul li {
+    margin: 0 10px;
+}
+
+ul li a {
+    text-decoration: none;
+    color: #fff;
+}
+
+/* Responsive Layout */
+@media (max-width: 768px) {
+    header, footer, .user-profile {
+        padding: 10px 0;
+    }
+
+    ul {
+        flex-direction: column;
+        align-items: center;
+    }
+}
