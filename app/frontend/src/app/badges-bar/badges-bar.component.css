@@ -7,7 +7,7 @@
     padding: 10px; 
     border: 1px solid #1b1818; 
     border-radius: 15px; 
-    width: 150px; 
+    width: 200px; 
     margin: 0 auto; 
     text-align: left;
 }
@@ -34,7 +34,7 @@
 
 .button {
     display: block;
-    width: 140px;
+    width: 190px;
     padding: 10px;
     margin-bottom: 10px;
     background-color: #8fc6df;
