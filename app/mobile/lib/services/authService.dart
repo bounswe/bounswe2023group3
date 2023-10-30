@@ -7,7 +7,7 @@ class AuthService {
 
   Future<Response> login(String email, String password) async {
     const String loginEndpoint =
-        '/login'; // To be replaced with the login endpoint
+        '/auth/login'; // To be replaced with the login endpoint
 
     final Map<String, String> data = {
       'user': email,
@@ -18,11 +18,6 @@ class AuthService {
       final Response response = await ApiService.dio.post(
         loginEndpoint,
         data: data,
-        options: Options(
-          headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-          },
-        ),
       );
       return response;
     } catch (e) {
