@@ -14,6 +14,9 @@ import { AuthService } from './auth.service';
 import { HttpClientModule } from '@angular/common/http';
 import { WelcomeComponent } from './welcome/welcome.component';
 import { ForgetpasswordComponent } from './forgetpassword/forgetpassword.component';
+import { ResetPasswordComponent } from './resetpassword/resetpassword.component';
+import { ResetPasswordService } from './resetpassword.service';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HomeComponent } from './home/home.component';
 import { TagsBarComponent } from './tags-bar/tags-bar.component';
 import { LeaderboardBarComponent } from './leaderboard-bar/leaderboard-bar.component';
@@ -29,6 +32,7 @@ import { LeaderboardBarComponent } from './leaderboard-bar/leaderboard-bar.compo
     RegisterComponent,
     WelcomeComponent,
     ForgetpasswordComponent,
+    ResetPasswordComponent
     HomeComponent,
     TagsBarComponent,
     LeaderboardBarComponent
@@ -38,10 +42,12 @@ import { LeaderboardBarComponent } from './leaderboard-bar/leaderboard-bar.compo
     AppRoutingModule,
     FormsModule,
     ReactiveFormsModule,
-    HttpClientModule
+    HttpClientModule,
+    BrowserAnimationsModule
   ],
   providers: [
-    AuthService
+    AuthService,
+    ResetPasswordService
   ],
   bootstrap: [AppComponent]
 })

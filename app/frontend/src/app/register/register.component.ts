@@ -9,6 +9,7 @@ import { AuthService } from '../auth.service';
 })
 export class RegisterComponent implements OnInit{
   registrationForm: FormGroup  = new FormGroup({});
+  errorMessage: string = '';
 
   constructor(private formBuilder: FormBuilder, private authService: AuthService) {}
 
@@ -31,6 +32,8 @@ onSubmit() {
       (error) => {
         // Registration failed, handle the error as needed
         console.error('Registration error:', error);
+        this.errorMessage = 'Invalid email or password';
+
       }
     );
   }
