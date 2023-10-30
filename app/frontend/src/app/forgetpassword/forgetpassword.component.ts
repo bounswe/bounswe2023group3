@@ -7,7 +7,7 @@ import { HttpClient } from '@angular/common/http';
   styleUrls: ['./forgetpassword.component.css']
 })
 export class ForgetpasswordComponent {
-  email: string = 'test1@denrox.com';
+  email!: string;
   errorMessage: string = '';
   constructor(private http: HttpClient) {}
 
@@ -17,10 +17,10 @@ export class ForgetpasswordComponent {
     };
 
     // Send a POST request to the backend for authentication
-    this.http.post('https://your-backend-url/auth/login', userCredentials).subscribe(
+    this.http.post('http://51.20.129.231:1923/auth/forgot-password', userCredentials).subscribe(
       (response: any) => {
         // Authentication successful, you can handle the response here
-        console.log('Authentication successful');
+        console.log('Code is sent');
       },
       (error) => {
         // Authentication failed, handle the error

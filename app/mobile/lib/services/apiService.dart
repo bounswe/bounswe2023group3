@@ -39,6 +39,9 @@ class ApiService {
   static Future<String> getToken() async {
     return jwtToken;
   }
+  static void logout() {
+    setJwtToken('');
+  }
   static bool shouldIgnoreInterceptor(Uri uri) {
     List<String> ignoredEndpoints = ['/auth/login', '/auth/register', '/auth/verify', '/auth/forgot-password', '/auth/reset-password'];
     // Check if the current URL should be ignored
