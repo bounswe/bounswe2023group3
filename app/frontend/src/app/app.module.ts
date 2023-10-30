@@ -32,7 +32,7 @@ import { LeaderboardBarComponent } from './leaderboard-bar/leaderboard-bar.compo
     RegisterComponent,
     WelcomeComponent,
     ForgetpasswordComponent,
-    ResetPasswordComponent
+    ResetPasswordComponent,
     HomeComponent,
     TagsBarComponent,
     LeaderboardBarComponent
