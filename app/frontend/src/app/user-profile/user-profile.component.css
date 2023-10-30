@@ -34,6 +34,8 @@
     height: 120px;
     margin-top: 15px;
     margin-bottom: 15px;
+    align-items: center;
+    justify-content: center;
 }
 
 .button {
