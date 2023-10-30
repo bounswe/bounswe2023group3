@@ -10,7 +10,7 @@ class AuthService {
         '/auth/login'; // To be replaced with the login endpoint
 
     final Map<String, String> data = {
-      'user': email,
+      'email': email,
       'password': password,
     };
 
