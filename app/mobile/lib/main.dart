@@ -15,7 +15,7 @@ void main() async{
         '/login': (context) => const LoginScreen(),
         '/welcome': (context) => const WelcomeScreen(),
         '/sign': (context) => const SignupScreen(),
-        '/home': (context) => const HomePage(),
+        '/home': (context) => HomePage(),
         '/fpassinit': (context) => const ForgetPassInitScreen(),
       },
   ));
