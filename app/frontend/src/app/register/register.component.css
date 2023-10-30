@@ -39,7 +39,7 @@ header {
     color: #fff;
     text-align: left;
     padding: 40px;
-    margin-top: 120px;
+    margin-top: 75px;
     margin-left: 70px;
     width: 50%;
     float: left;
@@ -136,12 +136,12 @@ button[type="submit"]:hover {
 .register-container a {
     color: #202A40;
     font-size: 16px;
-    margin-top: 20px;
+    margin-top: 0px;
 }
   
 /* Error Message Styles */
 .register-container p {
-    color: #E57F84;
+    color: #202A40;
     font-size: 16px;
     margin: 10px 15px;
 }

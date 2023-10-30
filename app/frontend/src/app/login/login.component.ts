@@ -7,8 +7,8 @@ import { HttpClient } from '@angular/common/http';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent {
-  email: string = 'test1@denrox.com';
-  password: string = 'test11';
+  email!: string;
+  password!: string;
   errorMessage: string = '';
 
   constructor(private http: HttpClient) {}
@@ -20,14 +20,14 @@ export class LoginComponent {
     };
 
     // Send a POST request to the backend for authentication
-    this.http.post('https://your-backend-url/auth/login', userCredentials).subscribe(
+    this.http.post('http://51.20.129.231:1923//auth/login', userCredentials).subscribe(
       (response: any) => {
         // Authentication successful, you can handle the response here
-        console.log('Authentication successful');
+        console.log('Login successful');
       },
       (error) => {
         // Authentication failed, handle the error
-        console.error('Authentication failed');
+        console.error('Login failed');
         this.errorMessage = 'Invalid email or password'; // Display an error message
       }
     );

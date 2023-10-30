@@ -7,7 +7,7 @@ import { catchError, tap } from 'rxjs/operators';
   providedIn: 'root',
 })
 export class AuthService {
-  private apiUrl = 'http://your-api-endpoint/auth'; // Replace with your API endpoint
+  private apiUrl = 'http://51.20.129.231:1923/auth'; // Replace with your API endpoint
 
   constructor(private http: HttpClient) {}
 
