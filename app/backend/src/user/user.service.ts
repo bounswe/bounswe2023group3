@@ -49,17 +49,11 @@ export class UserService {
     );
   }
 
-  public async updateById(
-    id: string,
-    updateUserDto: any,
-  ): Promise<void> {
+  public async updateById(id: string, updateUserDto: any): Promise<void> {
     await this.userRepository.update(id, updateUserDto);
   }
 
-  public async updatePassword(
-    user: User,
-    password: string,
-  ): Promise<void> {
+  public async updatePassword(user: User, password: string): Promise<void> {
     user.password = password;
     await this.userRepository.save(user);
   }

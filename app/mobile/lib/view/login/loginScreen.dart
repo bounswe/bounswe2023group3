@@ -1,9 +1,12 @@
+import 'package:dio/dio.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:mobile_app/services/authService.dart';
 import 'customTextField.dart';
 import 'package:mobile_app/view/signup/signupScreen.dart';
+import 'package:mobile_app/view/homePage/homePage.dart';
+
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -65,8 +68,14 @@ class _LoginScreenState extends State<LoginScreen> {
     }
     // Perform login validation and navigate to the next screen if successful
     AuthService authService = AuthService();
-    http.Response response = await authService.login(email, password);
-    print(response.body);
+    Response response = await authService.login(email, password);
+    if (response.statusCode == 200) {
+      authService.saveToken(response.headers['authorization'] as String);
+      Navigator.pushReplacementNamed(context, '/home',);
+    } else {
+    }
+    print(response.headers);
+
   }
 
   void showErrorMessage() {
@@ -112,8 +121,16 @@ class _LoginScreenState extends State<LoginScreen> {
             ),
             const SizedBox(height: 16),
             ElevatedButton(
-              onPressed: isEmailValid && isPasswordValid ? login : null,
+              // onPressed: isEmailValid && isPasswordValid ? login : null,
+              onPressed: login,
               child: const Text('Login'),
+            ),
+            TextButton(
+              onPressed: () {
+                // Continue as Guest
+                Navigator.pushNamed(context, "/fpassinit");
+              },
+              child: const Text('Forget Password?'),
             ),
             Padding(
               padding: const EdgeInsets.all(10),
@@ -133,7 +150,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   const SizedBox(height: 16),
                   GestureDetector(
-                    onTap: navigateToSignupPage,
+                    onTap: () {Navigator.pushNamed(context, "/sign");},
                     child: const Text(
                       'Don\'t have an account? Sign up here',
                       style: TextStyle(

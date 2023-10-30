@@ -1,10 +1,35 @@
 <html lang="en">
-    <p>user-profile works!</p>
     <body>
-        <div class="container">
-            <app-side-bar></app-side-bar>
-            <app-badges-bar></app-badges-bar>
-            <app-ranks-bar></app-ranks-bar>
+        <div class="page-layout">
+            <app-side-bar ></app-side-bar>
+            <div class="container" style="position: relative;">
+                <div class="post-widget" style="display: flex; align-items: start;">
+                    <img class="user-avatar" src="https://images.pexels.com/photos/415829/pexels-photo-415829.jpeg?cs=srgb&dl=pexels-pixabay-415829.jpg&fm=jpg"
+                     alt="User Avatar" style="width:90px; height:90px;border-radius: 50%; margin-right: 5px;">
+                    <div class="post-content" style="display: flex; flex-direction: column; align-items: start;
+                    margin-left: 5px;">
+                        <b class="name" style=" font-size:xx-large;">Jane</b>
+                        <p class="user-name" style="margin-top:2px;">@janesmith</p>
+                    </div>
+                </div>
+                <button class="button" style="position: absolute; top: 0; right: 0;">Edit Profile</button>
+                <div style="margin-bottom: 15px; margin-top: 10px; text-align: center;">
+                    <p class="follow-text" style="margin-right: 100px;"> <b>52</b> followings</p>
+                    <p class="follow-text"> <b>10</b> followers</p>
+                </div>
+                <div class="user-polls" style="display: flex; justify-content: space-between;
+                width: 100%; border: 2px solid #000000; margin-bottom: 20px;">
+                    <div class="user-polls-column">Created</div>
+                    <div class="user-polls-column">Liked</div>
+                    <div class="user-polls-column">Voted</div>
+                </div>
+                <div class="poll"></div>
+                <div class="poll"></div>
+            </div>
+            <div style="display: flex; flex-direction: column;">
+                <app-ranks-bar></app-ranks-bar>
+                <app-badges-bar></app-badges-bar>
+            </div>
         </div>
     </body>
 </html>
