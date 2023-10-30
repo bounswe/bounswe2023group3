@@ -29,7 +29,6 @@ export class AuthController {
     return this.authService.verifyUser(verifyUserDto);
   }
 
-
   @Post('forgot-password')
   forgotPassword(@Body() forgotPasswordDto: ForgotPasswordDto) {
     return this.authService.forgotPassword(forgotPasswordDto);
