@@ -6,10 +6,10 @@ import 'package:mobile_app/services/apiService.dart';
 class SignUser {
 
   Future<Response> sign(String email, String username, String password) async {
-    const String signEndpoint = '/auth/sign'; // Replace with your login endpoint
+    const String signEndpoint = '/auth/register'; // Replace with your login endpoint
 
     final Map<String, String> data = {
-      'email': username,
+      'email': email,
       'password': password,
       'username': username
     };
