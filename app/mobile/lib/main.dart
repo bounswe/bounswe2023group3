@@ -10,7 +10,7 @@ void main() async{
   ApiService.setup();
   await ApiService.init();
   runApp(MaterialApp(
-    initialRoute: '/home',
+    initialRoute: '/welcome',
       routes: {
         '/login': (context) => const LoginScreen(),
         '/welcome': (context) => const WelcomeScreen(),
