@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mobile_app/view/homePage/homePage.dart';
+import 'package:mobile_app/services/apiService.dart';
 
 class Sidebar extends StatelessWidget {
   const Sidebar({super.key});
@@ -62,7 +63,23 @@ class Sidebar extends StatelessWidget {
             leading: const Icon(Icons.add),
             title: const Text('Create a poll request'),
             onTap: () {
+                Navigator.pushNamed(
+                  context,
+                  '/pollreq'
+                );
               // Navigate to the settings page or perform other actions
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.logout),
+            title: const Text('Log out'),
+            onTap: () {
+              ApiService.logout();
+              Navigator.pushNamedAndRemoveUntil(
+                context,
+                '/welcome',
+                    (Route<dynamic> route) => false, // This condition ensures removing all previous routes
+              );
             },
           ),
           // Add more ListTiles for other navigation options
