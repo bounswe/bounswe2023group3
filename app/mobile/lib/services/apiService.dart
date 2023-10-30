@@ -20,7 +20,7 @@ class ApiService {
     dio.interceptors.add(InterceptorsWrapper(
       onRequest: (RequestOptions options, RequestInterceptorHandler handler) async{
         if (!shouldIgnoreInterceptor(options.uri)) {
-          options.headers['Authorization'] = await getToken();
+          options.headers['Authorization'] = 'Bearer ${await getToken()}';
         }
         return handler.next(options);
       },
@@ -40,7 +40,7 @@ class ApiService {
     return jwtToken;
   }
   static bool shouldIgnoreInterceptor(Uri uri) {
-    List<String> ignoredEndpoints = ['/login', '/signup'];
+    List<String> ignoredEndpoints = ['/auth/login', '/auth/register', '/auth/verify', '/auth/forgot-password', '/auth/reset-password'];
     // Check if the current URL should be ignored
     bool shouldIgnore = ignoredEndpoints.any((endpoint) => uri.path.startsWith(endpoint));
     return shouldIgnore;
