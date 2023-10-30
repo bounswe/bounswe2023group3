@@ -68,17 +68,25 @@ class _LoginScreenState extends State<LoginScreen> {
     }
     // Perform login validation and navigate to the next screen if successful
     AuthService authService = AuthService();
-    Response response = await authService.login(email, password);
-    if (response.statusCode == 200) {
-      authService.saveToken(response.headers['authorization'] as String);
-      Navigator.pushReplacementNamed(context, '/home',);
-    } else {
+    try {
+      Response response = await authService.login(email, password);
+      print(response);
+      if (response.statusCode == 201) {
+        authService.saveToken(response.data['access_token']);
+        if (!context.mounted) return;
+        Navigator.pushNamed(context, '/home');
+      } else {
+        if (!context.mounted) return;
+        showErrorMessage(context);
+      }
     }
-    print(response.headers);
+    catch (e) {
+      showErrorMessage(context);
+    }
 
   }
 
-  void showErrorMessage() {
+  void showErrorMessage(BuildContext context) {
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(
         content: Text('Email or password is incorrect'),
