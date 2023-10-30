@@ -14,6 +14,9 @@ import { AuthService } from './auth.service';
 import { HttpClientModule } from '@angular/common/http';
 import { WelcomeComponent } from './welcome/welcome.component';
 import { ForgetpasswordComponent } from './forgetpassword/forgetpassword.component';
+import { ResetPasswordComponent } from './resetpassword/resetpassword.component';
+import { ResetPasswordService } from './resetpassword.service';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [
@@ -25,17 +28,20 @@ import { ForgetpasswordComponent } from './forgetpassword/forgetpassword.compone
     LoginComponent,
     RegisterComponent,
     WelcomeComponent,
-    ForgetpasswordComponent
+    ForgetpasswordComponent,
+    ResetPasswordComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     FormsModule,
     ReactiveFormsModule,
-    HttpClientModule
+    HttpClientModule,
+    BrowserAnimationsModule
   ],
   providers: [
-    AuthService
+    AuthService,
+    ResetPasswordService
   ],
   bootstrap: [AppComponent]
 })

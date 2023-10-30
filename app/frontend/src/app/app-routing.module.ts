@@ -5,6 +5,7 @@ import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
 import { WelcomeComponent } from './welcome/welcome.component';
 import { ForgetpasswordComponent } from './forgetpassword/forgetpassword.component';
+import { ResetPasswordComponent } from './resetpassword/resetpassword.component';
 
 const routes: Routes = [
   { path: 'app-user-profile', component: UserProfileComponent }, //may be deleted later, just for test viewing
@@ -12,6 +13,7 @@ const routes: Routes = [
   { path: 'app-welcome', component: WelcomeComponent },
   { path: 'app-register', component: RegisterComponent },
   { path: 'app-forget-password', component: ForgetpasswordComponent },
+  { path: 'app-reset-password', component: ResetPasswordComponent },
 ];
 
 @NgModule({

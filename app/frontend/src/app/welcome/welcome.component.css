@@ -100,27 +100,29 @@ header {
 
 .feature h3 {
     margin: 10px 0;
-    font-size: 18px;
+    font-size: 20px;
     color: #232F44;
 }
 
 .feature p {
-    font-size: 14px;
+    font-size: 16px;
     color: #4E4E4E;
 }
 
 /* FAQ Styles */
 .faq-section {
-    margin-top: 20px;
-    padding: 20px;
-    background-color:#9DBAC4;
-    border-radius: 20px;
-    margin-left: 20px;
-    margin-right: 20px;
+    margin-top: 30px;
+    margin-bottom: 30px;
+    padding: 40px;
+    background-color:#9DC0C4;
+    border-radius: 30px;
+    margin-left: 30px;
+    margin-right: 30px;
   }
 
   .faq-section h2 {
-    color:#fff;
+    font-size: 40;
+    color:#FFF;
   }
   
   .faq-item {
@@ -128,16 +130,18 @@ header {
   }
   
   .faq-item h3 {
-    font-size: 18px;
+    font-size: 22px;
     color: #232F44;
+    margin-bottom: 10px;
   }
   
   .faq-item p {
-    font-size: 16px;
-    color: #4E4E4E;
+    font-size: 18px;
+    color: #2E2E2E;
+
+    line-height: 1.5;
+    
   }
-
-
 
 /* Login and Sign-Up Styles */
 .login, .sign-up {
@@ -201,6 +205,7 @@ header {
 }
 
 .about-app p {
+    font-size: 16px;
     line-height: 1.5;
 }
 
