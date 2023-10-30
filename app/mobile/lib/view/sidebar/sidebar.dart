@@ -75,9 +75,10 @@ class Sidebar extends StatelessWidget {
             title: const Text('Log out'),
             onTap: () {
               ApiService.logout();
-              Navigator.pushReplacementNamed(
+              Navigator.pushNamedAndRemoveUntil(
                 context,
-                '/welcome'
+                '/welcome',
+                    (Route<dynamic> route) => false, // This condition ensures removing all previous routes
               );
             },
           ),
