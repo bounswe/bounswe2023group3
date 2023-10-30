@@ -6,6 +6,10 @@ import { UserModule } from './user/user.module';
 import { User } from './user/entities/user.entity';
 import { AuthModule } from './auth/auth.module';
 import { MailerModule } from '@nestjs-modules/mailer';
+import { PollModule } from './poll/poll.module';
+import { Poll } from './poll/entities/poll.entity';
+import { Tag } from './poll/entities/tag.entity';
+import { Option } from './poll/entities/option.entity';
 
 @Module({
   imports: [
@@ -15,7 +19,7 @@ import { MailerModule } from '@nestjs-modules/mailer';
       port: 5432,
       password: 'password',
       username: 'postgres',
-      entities: [User],
+      entities: [User, Poll, Tag, Option],
       database: 'postgres',
       synchronize: true,
       logging: true,
@@ -25,20 +29,21 @@ import { MailerModule } from '@nestjs-modules/mailer';
         host: 'smtp.gmail.com',
         auth: {
           user: 'esbatuhanes@gmail.com',
-          pass: 'eigo ngbm jwnw liyh'
+          pass: 'eigo ngbm jwnw liyh',
         },
         port: 465,
-        secure : true,
+        secure: true,
         tls: {
-          rejectUnauthorized: false
+          rejectUnauthorized: false,
         },
       },
       defaults: {
         from: '"nest-modules" <modules@nestjs.com>',
-      }
+      },
     }),
     UserModule,
     AuthModule,
+    PollModule,
   ],
   controllers: [AppController],
   providers: [AppService],

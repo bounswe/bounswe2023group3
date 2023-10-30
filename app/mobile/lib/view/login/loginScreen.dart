@@ -119,6 +119,13 @@ class _LoginScreenState extends State<LoginScreen> {
               onPressed: isEmailValid && isPasswordValid ? login : null,
               child: const Text('Login'),
             ),
+            TextButton(
+              onPressed: () {
+                // Continue as Guest
+                Navigator.pushNamed(context, "/fpassinit");
+              },
+              child: const Text('Forget Password?'),
+            ),
             Padding(
               padding: const EdgeInsets.all(10),
               child: Column(
@@ -137,7 +144,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   const SizedBox(height: 16),
                   GestureDetector(
-                    onTap: navigateToSignupPage,
+                    onTap: () {Navigator.pushNamed(context, "/sign");},
                     child: const Text(
                       'Don\'t have an account? Sign up here',
                       style: TextStyle(

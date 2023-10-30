@@ -1,4 +1,5 @@
 import { NgModule } from '@angular/core';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -7,6 +8,12 @@ import { SideBarComponent } from './side-bar/side-bar.component';
 import { RanksBarComponent } from './ranks-bar/ranks-bar.component';
 import { BadgesBarComponent } from './badges-bar/badges-bar.component';
 import { UserProfileComponent } from './user-profile/user-profile.component';
+import { LoginComponent } from './login/login.component';
+import { RegisterComponent } from './register/register.component';
+import { AuthService } from './auth.service';
+import { HttpClientModule } from '@angular/common/http';
+import { WelcomeComponent } from './welcome/welcome.component';
+import { ForgetpasswordComponent } from './forgetpassword/forgetpassword.component';
 
 @NgModule({
   declarations: [
@@ -14,13 +21,22 @@ import { UserProfileComponent } from './user-profile/user-profile.component';
     SideBarComponent,
     RanksBarComponent,
     BadgesBarComponent,
-    UserProfileComponent
+    UserProfileComponent,
+    LoginComponent,
+    RegisterComponent,
+    WelcomeComponent,
+    ForgetpasswordComponent
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    FormsModule,
+    ReactiveFormsModule,
+    HttpClientModule
   ],
-  providers: [],
+  providers: [
+    AuthService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
