@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:mobile_app/view/sidebar/sidebar.dart'; // Import your custom drawer widget
 import 'package:mobile_app/view/pollViewHomePage//pollViewHomePage.dart';
+import 'package:mobile_app/view/pollView/pollView.dart';
 
 class HomePage extends StatelessWidget {
   HomePage({super.key});
 
+
+
   final List<PollViewHomePage> posts = [
-    const PollViewHomePage(userName: "berkecaliskan",
+    PollViewHomePage(userName: "berkecaliskan",
         userUsername: "@berke",
         profilePictureUrl: "https://yt3.googleusercontent.com/bWL_Q46Ob6MxdYmMP7hWaox_pFLja8uh1iI02F9CtV-eaeR409j3xfWLG0GbmTzVEwX5R38ur2k=s900-c-k-c0x00ffffff-no-rj",
         postTitle: "Who will win the Super Cup?",
@@ -16,7 +19,7 @@ class HomePage extends StatelessWidget {
         postOptions: ["Fenerbahçe", "Galatasaray"],
         likeCount: 13,
         dateTime: "12:01",
-        comments: []),
+        comments: [CommentData(user: "real_elijah", commentText: "mazinde bir tarih yatar")]),
     const PollViewHomePage(userName: "elijahwood",
         userUsername: "@real_elijah",
         profilePictureUrl: "https://m.media-amazon.com/images/M/MV5BMTM0NDIxMzQ5OF5BMl5BanBnXkFtZTcwNzAyNTA4Nw@@._V1_FMjpg_UX1000_.jpg",
@@ -41,6 +44,15 @@ class HomePage extends StatelessWidget {
         comments: []),
   ];
 
+  void tapOnPoll(BuildContext context, userName, userUsername, profilePictureUrl, postTitle, tags, tagColors, voteCount, postOptions, likeCount, dateTime, comments){
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => PollPage(userName: userName, userUsername: userUsername, profilePictureUrl: profilePictureUrl, postTitle: postTitle, tags: tags, tagColors: tagColors, voteCount: voteCount, postOptions: postOptions, likeCount: likeCount, dateTime: dateTime, comments: comments),
+        ),
+      );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -61,17 +73,30 @@ class HomePage extends StatelessWidget {
                 return SizedBox(
                     width: 50,
                     height: 500,
-                    child: PollViewHomePage(userName: post.userName,
-                            userUsername: post.userUsername,
-                            profilePictureUrl: post.profilePictureUrl,
-                            postTitle: post.postTitle,
-                            tags: post.tags,
-                            tagColors: post.tagColors,
-                            voteCount: post.voteCount,
-                            postOptions: post.postOptions,
-                            likeCount: post.likeCount,
-                            dateTime: post.dateTime,
-                            comments: post.comments,
+                    child: GestureDetector(
+                      onTap: (){tapOnPoll(context, post.userName,
+                        post.userUsername,
+                        post.profilePictureUrl,
+                        post.postTitle,
+                        post.tags,
+                        post.tagColors,
+                        post.voteCount,
+                        post.postOptions,
+                        post.likeCount,
+                        post.dateTime,
+                        post.comments);},
+                      child: PollViewHomePage(userName: post.userName,
+                              userUsername: post.userUsername,
+                              profilePictureUrl: post.profilePictureUrl,
+                              postTitle: post.postTitle,
+                              tags: post.tags,
+                              tagColors: post.tagColors,
+                              voteCount: post.voteCount,
+                              postOptions: post.postOptions,
+                              likeCount: post.likeCount,
+                              dateTime: post.dateTime,
+                              comments: post.comments,
+                      ),
                     ),
                 );
               },

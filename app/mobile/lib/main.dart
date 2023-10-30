@@ -5,6 +5,7 @@ import 'view/signup/signupScreen.dart';
 import 'view/forgetpassword/forgetpassinitScreen.dart';
 import 'package:mobile_app/view/homePage/homePage.dart';
 import 'package:mobile_app/services/apiService.dart';
+import 'view/pollRequest/pollRequestScreen.dart';
 
 void main() async{
   ApiService.setup();
@@ -17,6 +18,7 @@ void main() async{
         '/sign': (context) => const SignupScreen(),
         '/home': (context) => HomePage(),
         '/fpassinit': (context) => const ForgetPassInitScreen(),
+        '/pollreq': (context) => const PollRequestPage(),
       },
   ));
 }

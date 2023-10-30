@@ -3,6 +3,7 @@ import 'package:mobile_app/view/pollView/commentWidget.dart';
 import 'package:mobile_app/view/pollView/tagWidget.dart';
 import 'package:mobile_app/view/pollView/postOptionWidget.dart';
 import 'package:mobile_app/view/pollView/userInformationWidget.dart';
+import 'package:mobile_app/view/pollView/pollView.dart';
 
 class PollViewHomePage extends StatelessWidget {
   final String userName;
@@ -95,12 +96,6 @@ class PollViewHomePage extends StatelessWidget {
   }
 }
 
-class CommentData {
-  final String user;
-  final String commentText;
-
-  CommentData({required this.user, required this.commentText});
-}
 
 class LikeCountWidget extends StatelessWidget {
   final int likeCount;
