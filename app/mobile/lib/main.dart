@@ -4,10 +4,13 @@ import 'view/login/loginScreen.dart';
 import 'view/signup/signupScreen.dart';
 import 'view/forgetpassword/forgetpassinitScreen.dart';
 import 'package:mobile_app/view/homePage/homePage.dart';
+import 'package:mobile_app/services/apiService.dart';
 
-
-void main() => runApp(MaterialApp(
-      initialRoute: '/welcome',
+void main() async{
+  ApiService.setup();
+  await ApiService.init();
+  runApp(MaterialApp(
+    initialRoute: '/welcome',
       routes: {
         '/login': (context) => const LoginScreen(),
         '/welcome': (context) => const WelcomeScreen(),
@@ -15,4 +18,5 @@ void main() => runApp(MaterialApp(
         '/home': (context) => const HomePage(),
         '/fpassinit': (context) => const ForgetPassInitScreen(),
       },
-    ));
+  ));
+}
