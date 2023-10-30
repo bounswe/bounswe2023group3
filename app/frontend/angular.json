@@ -25,8 +25,7 @@
               "src/assets"
             ],
             "styles": [
-              "src/styles.css",
-              "node_modules/material-design-icons/iconfont/material-icons.css"
+              "src/styles.css"
             ],
             "scripts": []
           },
@@ -96,5 +95,8 @@
         }
       }
     }
+  },
+  "cli": {
+    "analytics": false
   }
 }
