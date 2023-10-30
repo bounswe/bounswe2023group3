@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -67,13 +68,25 @@ class _LoginScreenState extends State<LoginScreen> {
     }
     // Perform login validation and navigate to the next screen if successful
     AuthService authService = AuthService();
-    http.Response response = await authService.login(email, password);
-    //you can give arguments to next page with arguments: option in below code
-    Navigator.pushReplacementNamed(context, '/home',);
-    print(response.body);
+    try {
+      Response response = await authService.login(email, password);
+      print(response);
+      if (response.statusCode == 201) {
+        authService.saveToken(response.data['access_token']);
+        if (!context.mounted) return;
+        Navigator.pushNamed(context, '/home');
+      } else {
+        if (!context.mounted) return;
+        showErrorMessage(context);
+      }
+    }
+    catch (e) {
+      showErrorMessage(context);
+    }
+
   }
 
-  void showErrorMessage() {
+  void showErrorMessage(BuildContext context) {
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(
         content: Text('Email or password is incorrect'),
@@ -116,7 +129,8 @@ class _LoginScreenState extends State<LoginScreen> {
             ),
             const SizedBox(height: 16),
             ElevatedButton(
-              onPressed: isEmailValid && isPasswordValid ? login : null,
+              // onPressed: isEmailValid && isPasswordValid ? login : null,
+              onPressed: login,
               child: const Text('Login'),
             ),
             TextButton(

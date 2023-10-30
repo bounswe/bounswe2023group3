@@ -14,14 +14,13 @@
     margin: 0 auto; 
     margin-top: 10px;
 }
-.image {
-    max-width: 100%;
-    height: 100%;
-}
 .user-polls-column{
-    flex: 1;
-    border: 1px solid #000000;
+    height: 40px;
+    border: 2px solid #000000;
+    justify-content: center;
+    align-items: center;
     text-align: center;
+    flex: 1;
 }
 .poll {
     display: flex;
@@ -47,9 +46,5 @@
     text-align: center;
     border-radius: 15px; 
     border: 1px solid #1b1818; 
-}
-
-.follow-text {
-    display: inline-block;
-    border-bottom: 2px solid #000; margin-bottom: 5px;
+    cursor: pointer;
 }

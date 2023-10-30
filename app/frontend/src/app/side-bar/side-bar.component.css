@@ -3,7 +3,7 @@
     flex-direction: column;
     align-items: center;
     float: left;
-    background-color: #8fc6df; 
+    background-color: #9DC0C4; 
     padding: 10px; 
     border: 1px solid #1b1818; 
     border-radius: 15px; 
@@ -26,7 +26,7 @@
     width: 190px;
     padding: 10px;
     margin-bottom: 10px;
-    background-color: #8fc6df;
+    background-color: #9DC0C4;
     text-align: center;
     cursor: pointer;
     border-radius: 15px; 

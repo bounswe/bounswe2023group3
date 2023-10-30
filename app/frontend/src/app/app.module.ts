@@ -14,6 +14,9 @@ import { AuthService } from './auth.service';
 import { HttpClientModule } from '@angular/common/http';
 import { WelcomeComponent } from './welcome/welcome.component';
 import { ForgetpasswordComponent } from './forgetpassword/forgetpassword.component';
+import { HomeComponent } from './home/home.component';
+import { TagsBarComponent } from './tags-bar/tags-bar.component';
+import { LeaderboardBarComponent } from './leaderboard-bar/leaderboard-bar.component';
 
 @NgModule({
   declarations: [
@@ -25,7 +28,10 @@ import { ForgetpasswordComponent } from './forgetpassword/forgetpassword.compone
     LoginComponent,
     RegisterComponent,
     WelcomeComponent,
-    ForgetpasswordComponent
+    ForgetpasswordComponent,
+    HomeComponent,
+    TagsBarComponent,
+    LeaderboardBarComponent
   ],
   imports: [
     BrowserModule,

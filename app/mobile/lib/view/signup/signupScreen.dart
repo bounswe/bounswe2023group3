@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:mobile_app/view/login/customTextField.dart';
@@ -13,11 +14,14 @@ class SignupScreen extends StatefulWidget {
 class _SignupScreenState extends State<SignupScreen> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
+  final TextEditingController usernameController = TextEditingController();
 
   bool isEmailValid = false;
   bool isPasswordValid = false;
+  bool isUsernameValid = false;
   bool emptyEmail = false;
   bool emptyPassword = false;
+  bool emptyUsername = false;
   Color lengthColor = Colors.red;
   Color uppercaseColor = Colors.red;
   Color lowercaseColor = Colors.red;
@@ -27,6 +31,7 @@ class _SignupScreenState extends State<SignupScreen> {
   void validateEmail(String email) {
     setState(() {
       emptyPassword = false;
+      emptyUsername = false;
       emptyEmail = false;
       if (email.isEmpty) {
         isEmailValid = true;
@@ -35,11 +40,23 @@ class _SignupScreenState extends State<SignupScreen> {
       }
     });
   }
+  void validateUsername(String username){
+    setState(() {
+      emptyPassword = false;
+      emptyUsername = false;
+      emptyEmail = false;
+      final lengthPattern = RegExp(r'.{6,}');
 
+      final isLengthValid = lengthPattern.hasMatch(username);
+
+      isUsernameValid = isLengthValid;
+    });
+  }
   // Add more validation logic for password as needed
   void validatePassword(String password) {
     setState(() {
       emptyPassword = false;
+      emptyUsername = false;
       emptyEmail = false;
 
       // Define patterns to check for each password criteria
@@ -77,6 +94,7 @@ class _SignupScreenState extends State<SignupScreen> {
     if (isEmailValid && isPasswordValid) {
       String email = emailController.text;
       String password = passwordController.text;
+      String username = usernameController.text;
       if (email.isEmpty) {
         setState(() {
           emptyEmail = true;
@@ -87,11 +105,16 @@ class _SignupScreenState extends State<SignupScreen> {
           emptyPassword = true;
         });
       }
-      if (emptyEmail || emptyPassword) {
+      if (username.isEmpty) {
+        setState(() {
+          emptyUsername = true;
+        });
+      }
+      if (emptyEmail || emptyPassword || emptyUsername) {
         return;
       }
       SignUser signUser = SignUser();
-      await signUser.sign(email, password);
+      Response response = await signUser.sign(email, username, password);
     }
   }
 
@@ -112,6 +135,13 @@ class _SignupScreenState extends State<SignupScreen> {
               keyboardType: TextInputType.emailAddress,
               onChanged: validateEmail,
               errorText: isEmailValid ? "" : 'Enter a valid email',
+            ),
+            const SizedBox(height: 16),
+            CustomTextField(
+              labelText: 'Username',
+              controller: usernameController,
+              onChanged: validateUsername,
+              errorText: isUsernameValid ? "" : 'Enter a username with at least 6 characters',
             ),
             const SizedBox(height: 16),
             CustomTextField(
