@@ -20,7 +20,7 @@ class ApiService {
     dio.interceptors.add(InterceptorsWrapper(
       onRequest: (RequestOptions options, RequestInterceptorHandler handler) async{
         if (!shouldIgnoreInterceptor(options.uri)) {
-          options.headers['Authorization'] = 'Bearer $jwtToken';
+          options.headers['Authorization'] = 'Bearer ${await getToken()}';
         }
         return handler.next(options);
       },
