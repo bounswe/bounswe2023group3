@@ -31,6 +31,10 @@ dependencies:
   email_validator: ^2.1.17
   http: ^1.1.0
   flutter_typeahead: ^4.8.0
+  dio: ^5.3.3
+  get_it: ^7.6.4
+  curl_logger_dio_interceptor: ^1.0.0
+
 
   flutter:
     sdk: flutter

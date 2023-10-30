@@ -1,0 +1,30 @@
+<html lang="en">
+    <body>
+        <div class="page-layout">
+            <app-side-bar ></app-side-bar>
+            <div class="container" style="position: relative;">
+                <div style="text-align: right;">
+                    <button class="button" style="display: inline-block;">Ongoing</button>
+                    <button class="button" style="display: inline-block;">Settled</button>
+                </div>
+                
+                <form action="/search" method="GET" style="margin-bottom: 15px; margin-top: 20px;">
+                    <input style= "width: 100%; border-radius: 15px; text-align: center;"placeholder="What are you looking for?" />
+                </form>                
+
+                <div class="user-polls" style="display: flex; justify-content: space-between;
+                width: 100%; border: 2px solid #000000; margin-bottom: 20px; height:40px;
+                align-items: center; text-align: center;">
+                    <div class="user-polls-column">Following</div>
+                    <div class="user-polls-column">Trending</div>
+                </div>
+                <div class="poll"></div>
+                <div class="poll"></div>
+            </div>
+            <div style="display: flex; flex-direction: column;">
+                <app-tags-bar></app-tags-bar>
+                <app-leaderboard-bar></app-leaderboard-bar>
+            </div>
+        </div>
+    </body>
+</html>

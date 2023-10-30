@@ -17,6 +17,9 @@ import { ForgetpasswordComponent } from './forgetpassword/forgetpassword.compone
 import { ResetPasswordComponent } from './resetpassword/resetpassword.component';
 import { ResetPasswordService } from './resetpassword.service';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { HomeComponent } from './home/home.component';
+import { TagsBarComponent } from './tags-bar/tags-bar.component';
+import { LeaderboardBarComponent } from './leaderboard-bar/leaderboard-bar.component';
 
 @NgModule({
   declarations: [
@@ -30,6 +33,9 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     WelcomeComponent,
     ForgetpasswordComponent,
     ResetPasswordComponent
+    HomeComponent,
+    TagsBarComponent,
+    LeaderboardBarComponent
   ],
   imports: [
     BrowserModule,
