@@ -9,7 +9,8 @@ import { ResetPasswordComponent } from './resetpassword/resetpassword.component'
 import { HomeComponent } from './home/home.component';
 
 const routes: Routes = [
-  { path: 'app-user-profile', component: UserProfileComponent }, //may be deleted later, just for test viewing
+  { path: '', component: WelcomeComponent },
+  { path: 'app-user-profile', component: UserProfileComponent }, 
   { path: 'app-login', component: LoginComponent },
   { path: 'app-welcome', component: WelcomeComponent },
   { path: 'app-register', component: RegisterComponent },
