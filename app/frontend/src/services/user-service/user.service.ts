@@ -8,16 +8,17 @@ import { environment } from '../../environments/environment';
 export class UserService {
   private baseUrl;
   constructor(private httpClient: HttpClient) { 
-    this.baseUrl = '${environment.apiBaseUrl}/user'; 
+    this.baseUrl = `${environment.apiBaseUrl}/user`; 
   }
 
   private makeUrl(path: string): string {
-    return '${this.baseUrl}/${path}';
+    return `${this.baseUrl}/${path}`;
   }
 
-  getUser(id: int): Promise<UserModel>{
-    return this.httpClient.get<UserModel>(this.makeUrl(id)).toPromise();
+  login(payload: Object): Promise<any>{
+    return this.httpClient.post<any>(this.makeUrl('login'), payload).toPromise();
   }
+
 
 
 }
