@@ -3,6 +3,7 @@ import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:mobile_app/services/authService.dart';
+import '../constants.dart';
 import 'customTextField.dart';
 import 'package:mobile_app/view/signup/signupScreen.dart';
 import 'package:mobile_app/view/homePage/homePage.dart';
@@ -166,7 +167,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         child: const Text(
                           'Don\'t have an account? Sign up here',
                           style: TextStyle(
-                            color: Colors.blue,
+                            color: navy,
                             decoration: TextDecoration.underline,
                           ),
                         ),

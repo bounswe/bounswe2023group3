@@ -5,6 +5,8 @@ import 'package:mobile_app/view/pollRequest/customTextField.dart';
 import 'package:mobile_app/view/pollRequest/pollCreationData.dart';
 import 'package:mobile_app/view/pollRequest/sectionHeader.dart';
 
+import '../constants.dart';
+
 class PollRequestPage extends StatefulWidget {
   const PollRequestPage({super.key});
 
@@ -170,6 +172,7 @@ class _PollRequestPageState extends State<PollRequestPage> {
                 spacing: 8,
                 children: pollData.tags.map((tag) {
                   return Chip(
+                    backgroundColor: pink,
                     label: Text(tag),
                     deleteIcon: const Icon(Icons.close),
                     onDeleted: () {
@@ -182,62 +185,77 @@ class _PollRequestPageState extends State<PollRequestPage> {
               ),
 
               // new tag input
-              TypeAheadField(
-                textFieldConfiguration: TextFieldConfiguration(
-                  controller: _pollTagController,
-                  focusNode: _pollTagFocus,
-                  decoration: const InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: 'Enter tag',
+              Container(
+                decoration: BoxDecoration(
+                  color: whitish,
+                  border: Border.all(color: navy),
+                  borderRadius: BorderRadius.circular(4),
+                ),
+                child: TypeAheadField(
+                  textFieldConfiguration: TextFieldConfiguration(
+                    controller: _pollTagController,
+                    focusNode: _pollTagFocus,
+                    decoration: const InputDecoration(
+                      border: OutlineInputBorder(),
+                      labelText: 'Enter tag',
+                    ),
+                    onSubmitted: (_) {
+                      if (_pollTagController.text.isEmpty) {
+                        FocusScope.of(context)
+                            .requestFocus(_pollOptionFocuses[0]);
+                      } else {
+                        FocusScope.of(context).unfocus();
+                      }
+                    },
                   ),
-                  onSubmitted: (_) {
-                    if (_pollTagController.text.isEmpty) {
-                      FocusScope.of(context)
-                          .requestFocus(_pollOptionFocuses[0]);
-                    } else {
-                      FocusScope.of(context).unfocus();
-                    }
+                  suggestionsCallback: (pattern) async {
+                    return await TagCompletionService.getPossibleCompletions(
+                        pattern);
+                  },
+                  itemBuilder: (context, suggestion) {
+                    return ListTile(
+                      title: Text(suggestion),
+                    );
+                  },
+                  onSuggestionSelected: (suggestion) {
+                    setState(() {
+                      pollData.tags.add(suggestion);
+                      _pollTagController.clear();
+                    });
+                    FocusScope.of(context).requestFocus(_pollOptionFocuses[0]);
                   },
                 ),
-                suggestionsCallback: (pattern) async {
-                  return await TagCompletionService.getPossibleCompletions(
-                      pattern);
-                },
-                itemBuilder: (context, suggestion) {
-                  return ListTile(
-                    title: Text(suggestion),
-                  );
-                },
-                onSuggestionSelected: (suggestion) {
-                  setState(() {
-                    pollData.tags.add(suggestion);
-                    _pollTagController.clear();
-                  });
-                  FocusScope.of(context).requestFocus(_pollOptionFocuses[0]);
-                },
               ),
 
               const SizedBox(height: 16),
               const SectionHeader(headerText: "Options"),
               for (var i = 0; i < _pollOptionControllers.length; i++)
-                Container(
-                  padding: const EdgeInsets.fromLTRB(0, 16, 0, 0),
-                  child: TextField(
-                    controller: _pollOptionControllers[i],
-                    focusNode: _pollOptionFocuses[i],
-                    onChanged: (_) => _updateOptionFields(),
-                    onSubmitted: (_) {
-                      if (_pollOptionControllers[i].text.isNotEmpty &&
-                          i < _pollOptionControllers.length - 1) {
-                        FocusScope.of(context)
-                            .requestFocus(_pollOptionFocuses[i + 1]);
-                      } else {
-                        FocusScope.of(context).requestFocus(_pollImageUrlFocus);
-                      }
-                    },
-                    decoration: InputDecoration(
-                      border: const OutlineInputBorder(),
-                      labelText: 'Enter option ${i + 1}',
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 8),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: whitish,
+                      border: Border.all(color: navy),
+                      borderRadius: BorderRadius.circular(4),
+                    ),
+                    // padding: const EdgeInsets.fromLTRB(0, 16, 0, 0),
+                    child: TextField(
+                      controller: _pollOptionControllers[i],
+                      focusNode: _pollOptionFocuses[i],
+                      onChanged: (_) => _updateOptionFields(),
+                      onSubmitted: (_) {
+                        if (_pollOptionControllers[i].text.isNotEmpty &&
+                            i < _pollOptionControllers.length - 1) {
+                          FocusScope.of(context)
+                              .requestFocus(_pollOptionFocuses[i + 1]);
+                        } else {
+                          FocusScope.of(context).requestFocus(_pollImageUrlFocus);
+                        }
+                      },
+                      decoration: InputDecoration(
+                        border: const OutlineInputBorder(),
+                        labelText: 'Enter option ${i + 1}',
+                      ),
                     ),
                   ),
                 ),
@@ -246,17 +264,24 @@ class _PollRequestPageState extends State<PollRequestPage> {
               const SizedBox(height: 16),
               const SectionHeader(headerText: "Image URLs"),
               const SizedBox(height: 16),
-              TextField(
-                controller: _pollImageUrlController,
-                focusNode: _pollImageUrlFocus,
-                decoration: InputDecoration(
-                  border: const OutlineInputBorder(),
-                  labelText: 'URL of image resource',
-                  suffixIcon: IconButton(
-                    icon: const Icon(Icons.add),
-                    onPressed: () => addContentIfExists(
-                      targetList: pollData.imageURLs,
-                      controller: _pollImageUrlController,
+              Container(
+                decoration: BoxDecoration(
+                  color: whitish,
+                  border: Border.all(color: navy),
+                  borderRadius: BorderRadius.circular(4),
+                ),
+                child: TextField(
+                  controller: _pollImageUrlController,
+                  focusNode: _pollImageUrlFocus,
+                  decoration: InputDecoration(
+                    border: const OutlineInputBorder(),
+                    labelText: 'URL of image resource',
+                    suffixIcon: IconButton(
+                      icon: const Icon(Icons.add),
+                      onPressed: () => addContentIfExists(
+                        targetList: pollData.imageURLs,
+                        controller: _pollImageUrlController,
+                      ),
                     ),
                   ),
                 ),

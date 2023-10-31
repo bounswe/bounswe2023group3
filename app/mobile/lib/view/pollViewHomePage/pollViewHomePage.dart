@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mobile_app/view/constants.dart';
 import 'package:mobile_app/view/pollView/commentWidget.dart';
 import 'package:mobile_app/view/pollView/tagWidget.dart';
 import 'package:mobile_app/view/pollView/postOptionWidget.dart';
@@ -111,13 +112,13 @@ class LikeCountWidget extends StatelessWidget {
           Container(
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(20.0),
-              border: Border.all(color: Colors.blue),
-              color: Colors.blue,
+              border: Border.all(color: pink),
+              color: pink,
             ),
             child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: Text('$likeCount Likes',
-                  style: const TextStyle(fontSize: 16.0)),
+                  style: const TextStyle(fontSize: 16.0, color: whitish)),
             ),
           ),
         ],
@@ -140,13 +141,13 @@ class DateTimeWidget extends StatelessWidget {
           Container(
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(20.0),
-              border: Border.all(color: Colors.grey),
-              color: Colors.blue,
+              border: Border.all(color: pink),
+              color: pink,
             ),
             child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: Text(dateTime,
-                  style: const TextStyle(fontSize: 16.0)),
+                  style: const TextStyle(fontSize: 16.0, color: whitish)),
             ),
           ),
         ],

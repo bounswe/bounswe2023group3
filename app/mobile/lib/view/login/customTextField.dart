@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:mobile_app/view/constants.dart';
+
 
 class CustomTextField extends StatelessWidget {
   final String labelText;
@@ -26,9 +28,10 @@ class CustomTextField extends StatelessWidget {
         Container(
           padding: const EdgeInsets.all(8.0),
           decoration: BoxDecoration(
+            color: whitish,
             borderRadius: BorderRadius.circular(10.0),
             border: Border.all(
-              color: Colors.blue,
+              color: navy,
               width: 3.0,
             ),
           ),

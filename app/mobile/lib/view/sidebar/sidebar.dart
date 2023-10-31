@@ -2,24 +2,32 @@ import 'package:flutter/material.dart';
 import 'package:mobile_app/view/homePage/homePage.dart';
 import 'package:mobile_app/services/apiService.dart';
 
+import '../constants.dart';
+
 class Sidebar extends StatelessWidget {
   const Sidebar({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Drawer(
+      backgroundColor: lightBlue,
       child: ListView(
         padding: EdgeInsets.zero,
         children: <Widget>[
-          const DrawerHeader(
-            decoration: BoxDecoration(
-              color: Colors.blue,
-            ),
-            child: Text(
-              'Side Menu',
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 24,
+          const SizedBox(
+            height: 150.0,
+            child: DrawerHeader(
+              decoration: BoxDecoration(
+                color: navy,
+              ),
+              child: Center(
+                child: Text(
+                  'Side Menu',
+                  style: TextStyle(
+                    color: whitish,
+                    fontSize: 24,
+                  ),
+                ),
               ),
             ),
           ),
