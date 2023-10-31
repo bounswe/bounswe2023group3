@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mobile_app/view/signup/signVerifyScreen.dart';
 import 'package:mobile_app/view/welcome/welcome.dart';
 import 'view/login/loginScreen.dart';
 import 'view/signup/signupScreen.dart';
@@ -21,6 +22,7 @@ void main() async{
         '/fpassinit': (context) => const ForgetPassInitScreen(),
         '/fpassverify': (context) => const ForgetPassVerifyScreen(),
         '/pollreq': (context) => const PollRequestPage(),
+        '/signverify': (context) => const SignVerifyScreen(),
       },
   ));
 }
