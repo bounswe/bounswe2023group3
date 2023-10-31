@@ -22,11 +22,11 @@ class _SignupScreenState extends State<SignupScreen> {
   bool emptyEmail = false;
   bool emptyPassword = false;
   bool emptyUsername = false;
-  Color lengthColor = Colors.red;
-  Color uppercaseColor = Colors.red;
-  Color lowercaseColor = Colors.red;
-  Color specialCharColor = Colors.red;
-  Color digitColor = Colors.red;
+  Color lengthColor = Colors.red.shade900;
+  Color uppercaseColor = Colors.red.shade900;
+  Color lowercaseColor = Colors.red.shade900;
+  Color specialCharColor = Colors.red.shade900;
+  Color digitColor = Colors.red.shade900;
 
   void validateEmail(String email) {
     setState(() {
@@ -202,14 +202,13 @@ class _SignupScreenState extends State<SignupScreen> {
                     color: Colors.red[900],
                   ),
                 ),
-                const SizedBox(height: 16),
                 // Display the password criteria
                 Text(
                   '• At least 6 characters',
                   style: TextStyle(
                     color: isPasswordValid || passwordController.text.length >= 6
-                        ? Colors.green
-                        : Colors.red,
+                        ? Colors.green.shade900
+                        : Colors.red.shade900,
                   ),
                 ),
                 Text(
@@ -217,8 +216,8 @@ class _SignupScreenState extends State<SignupScreen> {
                   style: TextStyle(
                     color: isPasswordValid ||
                             RegExp(r'[A-Z]').hasMatch(passwordController.text)
-                        ? Colors.green
-                        : Colors.red,
+                        ? Colors.green.shade900
+                        : Colors.red.shade900,
                   ),
                 ),
                 Text(
@@ -226,8 +225,8 @@ class _SignupScreenState extends State<SignupScreen> {
                   style: TextStyle(
                     color: isPasswordValid ||
                             RegExp(r'[a-z]').hasMatch(passwordController.text)
-                        ? Colors.green
-                        : Colors.red,
+                        ? Colors.green.shade900
+                        : Colors.red.shade900,
                   ),
                 ),
                 Text(
@@ -236,8 +235,8 @@ class _SignupScreenState extends State<SignupScreen> {
                     color: isPasswordValid ||
                             RegExp(r'[!@#\$%^&*(),.?":{}|<>]')
                                 .hasMatch(passwordController.text)
-                        ? Colors.green
-                        : Colors.red,
+                        ? Colors.green.shade900
+                        : Colors.red.shade900,
                   ),
                 ),
                 Text(
@@ -245,8 +244,8 @@ class _SignupScreenState extends State<SignupScreen> {
                   style: TextStyle(
                     color: isPasswordValid ||
                             RegExp(r'[0-9]').hasMatch(passwordController.text)
-                        ? Colors.green
-                        : Colors.red,
+                        ? Colors.green.shade900
+                        : Colors.red.shade900,
                   ),
                 ),
                 // End of password criteria display

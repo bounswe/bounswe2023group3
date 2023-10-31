@@ -17,27 +17,24 @@ class ForgetPassVerifyScreen extends StatefulWidget {
 class _ForgetPassVerifyScreenState extends State<ForgetPassVerifyScreen> {
 
   bool emptyPassword = false;
-  bool emptyUsername = false;
   bool emptyOTP = false;
 
   bool isPasswordValid = true;
   bool isOTPNumeric = true;
   bool isOTPCorrectLength = true;
   bool arePasswordsMatch = true;
-  bool isUsernameValid = true;
+  bool emptyMail = false;
 
 
   final TextEditingController passwordController = TextEditingController();
   final TextEditingController OTPController = TextEditingController();
-  final TextEditingController usernameController = TextEditingController();
   final TextEditingController confirmPasswordController = TextEditingController();
-
+  String email = "";
 
   // Add more validation logic for password as needed
   void validatePassword(String password) {
     setState(() {
       emptyPassword = false;
-      emptyUsername = false;
       emptyOTP = false;
 
       if(password.isEmpty){
@@ -77,24 +74,10 @@ class _ForgetPassVerifyScreenState extends State<ForgetPassVerifyScreen> {
     });
   }
 
-  void validateUsername(String username){
-    setState(() {
-      emptyPassword = false;
-      emptyOTP = false;
-      emptyUsername = false;
-      if (username.isEmpty) {
-        isUsernameValid = true;
-      } else {
-        isUsernameValid = username.length >=
-            6; // For example, username should be at least 6 characters
-      }
-    });
-  }
 
   void validateOTP(String OTP){
     setState(() {
       emptyPassword = false;
-      emptyUsername = false;
       emptyOTP = false;
 
       RegExp numericPattern = RegExp(r'^-?[0-9]+$'); //check if the string is numeric or not
@@ -130,7 +113,6 @@ class _ForgetPassVerifyScreenState extends State<ForgetPassVerifyScreen> {
 
   void resetPass() async {
     String password = passwordController.text;
-    String username = usernameController.text;
     String confirmPassword = confirmPasswordController.text;
     String OTP = OTPController.text;
 
@@ -139,9 +121,9 @@ class _ForgetPassVerifyScreenState extends State<ForgetPassVerifyScreen> {
         emptyPassword = true;
       });
     }
-    if (username.isEmpty) {
+    if(email.isEmpty){
       setState(() {
-        emptyUsername = true;
+        emptyMail = true;
       });
     }
     if (OTP.isEmpty) {
@@ -149,7 +131,7 @@ class _ForgetPassVerifyScreenState extends State<ForgetPassVerifyScreen> {
         emptyOTP = true;
       });
     }
-    if (emptyPassword || emptyUsername || emptyOTP) {
+    if (emptyPassword || emptyMail || emptyOTP) {
       return;
     }
     // Perform code verification and navigate to the next screen if successful
@@ -157,7 +139,7 @@ class _ForgetPassVerifyScreenState extends State<ForgetPassVerifyScreen> {
 
     try {
 
-      Response response = await passwordResetVerification.submitPass(int.parse(OTP) , username, password);
+      Response response = await passwordResetVerification.submitPass(int.parse(OTP) , email, password);
       if(response.statusCode == 201) {
 
         if(!context.mounted) return;
@@ -193,6 +175,8 @@ class _ForgetPassVerifyScreenState extends State<ForgetPassVerifyScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final data = ModalRoute.of(context)!.settings.arguments as String;
+    email = data;
 
     return Scaffold(
       resizeToAvoidBottomInset: true,
@@ -220,13 +204,6 @@ class _ForgetPassVerifyScreenState extends State<ForgetPassVerifyScreen> {
               ),
               const SizedBox(height: 10.0),
               CustomTextField(
-                labelText: 'Username',
-                controller: usernameController,
-                onChanged: validateUsername,
-                errorText: isUsernameValid ? "" : 'Enter a valid username!',
-              ),
-              const SizedBox(height: 10.0),
-              CustomTextField(
                 labelText: 'New Password',
                 controller: passwordController,
                 onChanged: validatePassword,
@@ -249,12 +226,6 @@ class _ForgetPassVerifyScreenState extends State<ForgetPassVerifyScreen> {
                 padding: const EdgeInsets.all(10),
                 child: Column(
                   children: [
-                    Text(
-                      emptyUsername ? 'Username cannot be empty' : '',
-                      style: TextStyle(
-                        color: Colors.red[900],
-                      ),
-                    ),
                     Text(
                       emptyPassword ? 'Password cannot be empty' : '',
                       style: TextStyle(
