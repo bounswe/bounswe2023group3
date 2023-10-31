@@ -52,12 +52,12 @@ class _ForgetPassInitScreenState extends State<ForgetPassInitScreen> {
 
       if (response.statusCode == 201) {
         if (!context.mounted) return;
-        Navigator.pushNamed(context, '/fpassverify');
+        Navigator.pushNamed(context, '/fpassverify', arguments:email);
       }
 
       else {
         if (!context.mounted) return;
-        Navigator.pushNamed(context, '/fpassverify');
+        Navigator.pushNamed(context, '/fpassverify', arguments:"");
       }
     }
     catch (e) {

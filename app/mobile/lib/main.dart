@@ -16,6 +16,7 @@ void main() async{
   await ApiService.init();
 
   runApp(MaterialApp(
+    debugShowCheckedModeBanner: false,
     theme: ThemeData(
       primaryColor: navy,
       scaffoldBackgroundColor: lightBlue,
