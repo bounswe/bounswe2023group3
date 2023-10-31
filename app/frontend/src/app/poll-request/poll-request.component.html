@@ -8,37 +8,51 @@
         </div>
         
         <!-- Anket oluşturma kısmı -->
-        <div class="poll-create-section">
-          <h2>Create a New Poll</h2>
+        <div class="poll-create-section" style="text-align: center;">
+          <h2>Create a New Poll Request</h2>
           <form [formGroup]="pollForm">
 
-            <label for="creator">Creator ID:</label>
-            <input type="text" id="creator" name="creator"><br><br>
+            <input class="poll-info" type="text" id="creator" name="creator" placeholder="Creator ID"><br><br>
 
-            <label for="question">Question:</label>
-            <input type="text" id="question" name="question"><br><br>
+            <input class="poll-info" type="text" id="poll-name" name="creator" placeholder="Enter Poll Name"><br><br>
+
+            <input class="poll-info" type="text" id="question" name="creator" 
+            style= "height: 80px;" placeholder="Enter Poll Description"><br><br>
+            
 
             <!-- Add Tags -->
-            <label for="tags">Tags:</label>
             <div formArrayName="tags">
             <div *ngFor="let tag of tags.controls; let i = index">
-                <input [formControlName]="i" type="text">
+                <input class="poll-info" [formControlName]="i" type="text" placeholder="Enter a tag">
             </div>
             </div>
-            <button type="button" (click)="addTag()">Add Tag</button><br><br>
-
+            <div style="display: flex; justify-content: center;">
+              <button class="button" (click)="addTag()">Add Tag</button><br><br></div>
+            
             <!-- Add Options -->
-            <label for="options">Options:</label>
+            <label for="options"><b>Options:</b></label>
             <div formArrayName="options">
             <div *ngFor="let option of options.controls; let i = index">
-                <input [formControlName]="i" type="text">
+                <input  class="poll-info" [formControlName]="i" type="text" [placeholder]="'Option ' + (i+1)">
             </div>
             </div>
-            <button type="button" (click)="addOption()">Add Option</button><br><br>
+            <div style="display: flex; justify-content: center;"><button class="button" (click)="addOption()">Add Option</button><br><br></div>
+            
+            <input class="poll-info" type="text" name="due-date" placeholder="Enter due date"><br><br>
 
-            <input type="submit" value="Create Poll" (click)="onSubmit()">
+            <br><br>
+
+            <div style="display: flex; justify-content: center;">
+              <input class="button" type="submit" value="Send for approval" 
+              style="width: 150px; height: 45px; background-color: #2d7665;"(click)="onSubmit()">
+              <input class="button" style="width: 150px; height: 45px;  background-color: #2d7665;" type="submit" value="Cancel" 
+              (click)="reload()">
+            </div>
+            
           </form>
         </div>
+
+    
 
         <!-- Diğer kullanıcı bilgileri ve aktiviteler -->
         <div class="user-polls" style="display: flex; justify-content: space-between;">

@@ -43,4 +43,8 @@ export class PollRequestComponent implements OnInit {
       console.log('Poll created', response);
     });
   }
+
+  reload(){
+    window.location.reload();
+  }
 }
