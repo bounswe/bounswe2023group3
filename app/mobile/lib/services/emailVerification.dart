@@ -24,7 +24,5 @@ class EmailVerification {
       rethrow;
     }
   }
-  void saveToken(String token) {
-    ApiService.setJwtToken(token);
-  }
+
 }

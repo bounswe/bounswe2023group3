@@ -24,7 +24,5 @@ class SignUser {
       rethrow;
     }
   }
-  void saveToken(String token) {
-    ApiService.setJwtToken(token);
-  }
+
 }
