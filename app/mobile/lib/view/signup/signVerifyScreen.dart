@@ -116,59 +116,61 @@ class _SignVerifyScreen extends State<SignVerifyScreen> {
       appBar: AppBar(
         title: Text('Verify Your Email'),
       ),
-      body: SingleChildScrollView(
-        scrollDirection: Axis.vertical,
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              const Text(
-                'Enter your email and verification code for verification',
-                style: TextStyle(fontSize: 15.0),
-              ),
-              const SizedBox(height: 20.0),
-              CustomTextField(
-                labelText: 'Email',
-                controller: emailController,
-                keyboardType: TextInputType.emailAddress,
-                onChanged: validateEmail,
-                errorText: isEmailValid ? "" : 'Enter a valid email',
-              ),
-              const SizedBox(height: 20.0),
-              CustomTextField(
-                labelText: 'Verification Code',
-                controller: OTPController,
-                onChanged: validateOTP,
-                errorText: errorTextOTP(),
-              ),
-              const SizedBox(height: 20.0),
-              ElevatedButton(
-                onPressed: (isEmailValid && isOTPNumeric && isOTPCorrectLength)
-                    ? verify
-                    : null,
-                child: Text('Verify!'),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(10),
-                child: Column(
-                  children: [
-                    Text(
-                      emptyEmail ? 'Email cannot be empty' : '',
-                      style: TextStyle(
-                        color: Colors.red[900],
-                      ),
-                    ),
-                    Text(
-                      emptyOTP ? 'OTP cannot be empty' : '',
-                      style: TextStyle(
-                        color: Colors.red[900],
-                      ),
-                    ),
-                  ],
+      body: Center(
+        child: SingleChildScrollView(
+          scrollDirection: Axis.vertical,
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                const Text(
+                  'Enter your email and verification code for verification',
+                  style: TextStyle(fontSize: 15.0),
                 ),
-              ),
-            ],
+                const SizedBox(height: 20.0),
+                CustomTextField(
+                  labelText: 'Email',
+                  controller: emailController,
+                  keyboardType: TextInputType.emailAddress,
+                  onChanged: validateEmail,
+                  errorText: isEmailValid ? "" : 'Enter a valid email',
+                ),
+                const SizedBox(height: 20.0),
+                CustomTextField(
+                  labelText: 'Verification Code',
+                  controller: OTPController,
+                  onChanged: validateOTP,
+                  errorText: errorTextOTP(),
+                ),
+                const SizedBox(height: 20.0),
+                ElevatedButton(
+                  onPressed: (isEmailValid && isOTPNumeric && isOTPCorrectLength)
+                      ? verify
+                      : null,
+                  child: Text('Verify!'),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(10),
+                  child: Column(
+                    children: [
+                      Text(
+                        emptyEmail ? 'Email cannot be empty' : '',
+                        style: TextStyle(
+                          color: Colors.red[900],
+                        ),
+                      ),
+                      Text(
+                        emptyOTP ? 'OTP cannot be empty' : '',
+                        style: TextStyle(
+                          color: Colors.red[900],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),

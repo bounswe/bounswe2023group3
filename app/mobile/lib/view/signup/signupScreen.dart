@@ -158,122 +158,124 @@ class _SignupScreenState extends State<SignupScreen> {
       appBar: AppBar(
         title: const Text('Sign Up'),
       ),
-      body: SingleChildScrollView(
-        scrollDirection: Axis.vertical,
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              CustomTextField(
-                labelText: 'Email',
-                controller: emailController,
-                keyboardType: TextInputType.emailAddress,
-                onChanged: validateEmail,
-                errorText: isEmailValid ? "" : 'Enter a valid email',
-              ),
-              const SizedBox(height: 16),
-              CustomTextField(
-                labelText: 'Username',
-                controller: usernameController,
-                onChanged: validateUsername,
-                errorText: isUsernameValid ? "" : 'Enter a username with at least 6 characters',
-              ),
-              const SizedBox(height: 16),
-              CustomTextField(
-                labelText: 'Password',
-                controller: passwordController,
-                obscureText: true,
-                onChanged: validatePassword,
-                errorText: isPasswordValid
-                    ? ""
-                    : 'Password must meet the following criteria:',
-              ),
-              Text(
-                emptyEmail ? 'Email cannot be empty' : '',
-                style: TextStyle(
-                  color: Colors.red[900],
+      body: Center(
+        child: SingleChildScrollView(
+          scrollDirection: Axis.vertical,
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                CustomTextField(
+                  labelText: 'Email',
+                  controller: emailController,
+                  keyboardType: TextInputType.emailAddress,
+                  onChanged: validateEmail,
+                  errorText: isEmailValid ? "" : 'Enter a valid email',
                 ),
-              ),
-              Text(
-                emptyPassword ? 'Password cannot be empty' : '',
-                style: TextStyle(
-                  color: Colors.red[900],
+                const SizedBox(height: 16),
+                CustomTextField(
+                  labelText: 'Username',
+                  controller: usernameController,
+                  onChanged: validateUsername,
+                  errorText: isUsernameValid ? "" : 'Enter a username with at least 6 characters',
                 ),
-              ),
-              const SizedBox(height: 16),
-              // Display the password criteria
-              Text(
-                '• At least 6 characters',
-                style: TextStyle(
-                  color: isPasswordValid || passwordController.text.length >= 6
-                      ? Colors.green
-                      : Colors.red,
+                const SizedBox(height: 16),
+                CustomTextField(
+                  labelText: 'Password',
+                  controller: passwordController,
+                  obscureText: true,
+                  onChanged: validatePassword,
+                  errorText: isPasswordValid
+                      ? ""
+                      : 'Password must meet the following criteria:',
                 ),
-              ),
-              Text(
-                '• At least one uppercase character',
-                style: TextStyle(
-                  color: isPasswordValid ||
-                          RegExp(r'[A-Z]').hasMatch(passwordController.text)
-                      ? Colors.green
-                      : Colors.red,
+                Text(
+                  emptyEmail ? 'Email cannot be empty' : '',
+                  style: TextStyle(
+                    color: Colors.red[900],
+                  ),
                 ),
-              ),
-              Text(
-                '• At least one lowercase character',
-                style: TextStyle(
-                  color: isPasswordValid ||
-                          RegExp(r'[a-z]').hasMatch(passwordController.text)
-                      ? Colors.green
-                      : Colors.red,
+                Text(
+                  emptyPassword ? 'Password cannot be empty' : '',
+                  style: TextStyle(
+                    color: Colors.red[900],
+                  ),
                 ),
-              ),
-              Text(
-                '• At least one special character (e.g., !@#)',
-                style: TextStyle(
-                  color: isPasswordValid ||
-                          RegExp(r'[!@#\$%^&*(),.?":{}|<>]')
-                              .hasMatch(passwordController.text)
-                      ? Colors.green
-                      : Colors.red,
+                const SizedBox(height: 16),
+                // Display the password criteria
+                Text(
+                  '• At least 6 characters',
+                  style: TextStyle(
+                    color: isPasswordValid || passwordController.text.length >= 6
+                        ? Colors.green
+                        : Colors.red,
+                  ),
                 ),
-              ),
-              Text(
-                '• At least one digit',
-                style: TextStyle(
-                  color: isPasswordValid ||
-                          RegExp(r'[0-9]').hasMatch(passwordController.text)
-                      ? Colors.green
-                      : Colors.red,
+                Text(
+                  '• At least one uppercase character',
+                  style: TextStyle(
+                    color: isPasswordValid ||
+                            RegExp(r'[A-Z]').hasMatch(passwordController.text)
+                        ? Colors.green
+                        : Colors.red,
+                  ),
                 ),
-              ),
-              // End of password criteria display
-              const SizedBox(height: 16),
-              ElevatedButton(
-                onPressed: isEmailValid && isPasswordValid ? signup : null,
-                child: const Text('Sign Up'),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(10),
-                child: Column(
-                  children: [
-                    Text(
-                      emptyEmail ? 'Email cannot be empty' : '',
-                      style: TextStyle(
-                        color: Colors.red[900],
+                Text(
+                  '• At least one lowercase character',
+                  style: TextStyle(
+                    color: isPasswordValid ||
+                            RegExp(r'[a-z]').hasMatch(passwordController.text)
+                        ? Colors.green
+                        : Colors.red,
+                  ),
+                ),
+                Text(
+                  '• At least one special character (e.g., !@#)',
+                  style: TextStyle(
+                    color: isPasswordValid ||
+                            RegExp(r'[!@#\$%^&*(),.?":{}|<>]')
+                                .hasMatch(passwordController.text)
+                        ? Colors.green
+                        : Colors.red,
+                  ),
+                ),
+                Text(
+                  '• At least one digit',
+                  style: TextStyle(
+                    color: isPasswordValid ||
+                            RegExp(r'[0-9]').hasMatch(passwordController.text)
+                        ? Colors.green
+                        : Colors.red,
+                  ),
+                ),
+                // End of password criteria display
+                const SizedBox(height: 16),
+                ElevatedButton(
+                  onPressed: isEmailValid && isPasswordValid ? signup : null,
+                  child: const Text('Sign Up'),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(10),
+                  child: Column(
+                    children: [
+                      Text(
+                        emptyEmail ? 'Email cannot be empty' : '',
+                        style: TextStyle(
+                          color: Colors.red[900],
+                        ),
                       ),
-                    ),
-                    Text(
-                      emptyPassword ? 'Password cannot be empty' : '',
-                      style: TextStyle(
-                        color: Colors.red[900],
+                      Text(
+                        emptyPassword ? 'Password cannot be empty' : '',
+                        style: TextStyle(
+                          color: Colors.red[900],
+                        ),
                       ),
-                    ),
-                  ],
-                ),
-              )
-            ],
+                    ],
+                  ),
+                )
+              ],
+            ),
           ),
         ),
       ),
