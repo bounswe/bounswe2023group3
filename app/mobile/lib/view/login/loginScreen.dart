@@ -102,75 +102,81 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: true,
       appBar: AppBar(
         title: const Text('Login'),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            CustomTextField(
-              labelText: 'Email',
-              controller: emailController,
-              keyboardType: TextInputType.emailAddress,
-              onChanged: validateEmail,
-              errorText: isEmailValid ? "" : 'Enter a valid email',
-            ),
-            const SizedBox(height: 16),
-            CustomTextField(
-              labelText: 'Password',
-              controller: passwordController,
-              obscureText: true,
-              onChanged: validatePassword,
-              errorText: isPasswordValid
-                  ? ""
-                  : 'Password must be at least 6 characters',
-            ),
-            const SizedBox(height: 16),
-            ElevatedButton(
-              // onPressed: isEmailValid && isPasswordValid ? login : null,
-              onPressed: login,
-              child: const Text('Login'),
-            ),
-            TextButton(
-              onPressed: () {
-                // Continue as Guest
-                Navigator.pushNamed(context, "/fpassinit");
-              },
-              child: const Text('Forget Password?'),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(10),
-              child: Column(
-                children: [
-                  Text(
-                    emptyEmail ? 'Email cannot be empty' : '',
-                    style: TextStyle(
-                      color: Colors.red[900],
-                    ),
-                  ),
-                  Text(
-                    emptyPassword ? 'Password cannot be empty' : '',
-                    style: TextStyle(
-                      color: Colors.red[900],
-                    ),
-                  ),
-                  const SizedBox(height: 16),
-                  GestureDetector(
-                    onTap: () {Navigator.pushNamed(context, "/sign");},
-                    child: const Text(
-                      'Don\'t have an account? Sign up here',
-                      style: TextStyle(
-                        color: Colors.blue,
-                        decoration: TextDecoration.underline,
+      body: Center(
+        child: SingleChildScrollView(
+          scrollDirection: Axis.vertical,
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                CustomTextField(
+                  labelText: 'Email',
+                  controller: emailController,
+                  keyboardType: TextInputType.emailAddress,
+                  onChanged: validateEmail,
+                  errorText: isEmailValid ? "" : 'Enter a valid email',
+                ),
+                const SizedBox(height: 16),
+                CustomTextField(
+                  labelText: 'Password',
+                  controller: passwordController,
+                  obscureText: true,
+                  onChanged: validatePassword,
+                  errorText: isPasswordValid
+                      ? ""
+                      : 'Password must be at least 6 characters',
+                ),
+                const SizedBox(height: 16),
+                ElevatedButton(
+                  // onPressed: isEmailValid && isPasswordValid ? login : null,
+                  onPressed: login,
+                  child: const Text('Login'),
+                ),
+                TextButton(
+                  onPressed: () {
+                    // Continue as Guest
+                    Navigator.pushNamed(context, "/fpassinit");
+                  },
+                  child: const Text('Forget Password?'),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(10),
+                  child: Column(
+                    children: [
+                      Text(
+                        emptyEmail ? 'Email cannot be empty' : '',
+                        style: TextStyle(
+                          color: Colors.red[900],
+                        ),
                       ),
-                    ),
+                      Text(
+                        emptyPassword ? 'Password cannot be empty' : '',
+                        style: TextStyle(
+                          color: Colors.red[900],
+                        ),
+                      ),
+                      const SizedBox(height: 16),
+                      GestureDetector(
+                        onTap: () {Navigator.pushNamed(context, "/sign");},
+                        child: const Text(
+                          'Don\'t have an account? Sign up here',
+                          style: TextStyle(
+                            color: Colors.blue,
+                            decoration: TextDecoration.underline,
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
-                ],
-              ),
-            )
-          ],
+                )
+              ],
+            ),
+          ),
         ),
       ),
     );
