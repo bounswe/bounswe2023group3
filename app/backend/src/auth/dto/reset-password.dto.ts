@@ -9,10 +9,11 @@ export class ResetPasswordDto {
     resetPasswordToken: number;
 
     @ApiProperty({
-        example: 'id',
+        example: 'test@gmail.com',
     })
+    @IsEmail()
     @IsNotEmpty()
-    id: string;
+    email: string;
 
     @ApiProperty({
         example: '123456',

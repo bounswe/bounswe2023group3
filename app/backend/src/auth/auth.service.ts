@@ -103,15 +103,15 @@ export class AuthService {
   async resetPassword(
     resetPasswordDto: ResetPasswordDto,
   ): Promise<any> {
-    const user = await this.userService.findUserById(resetPasswordDto.id);
-    if (!user) {
+    const user = await this.userService.searchUser({email : resetPasswordDto.email});
+    if (!user.length) {
       throw new NotFoundException('User not found');
     }
-    if (user.reset_password_token !== resetPasswordDto.resetPasswordToken) {
+    if (user[0].reset_password_token !== resetPasswordDto.resetPasswordToken) {
       throw new BadRequestException('Wrong reset password token');
     }
-    await this.userService.updatePassword(user, resetPasswordDto.password);
-    await this.userService.updateById(user.id, { reset_password_token: null });
+    await this.userService.updatePassword(user[0], resetPasswordDto.password);
+    await this.userService.updateById(user[0].id, { reset_password_token: null });
     return 'Password is reset';
   }
 
