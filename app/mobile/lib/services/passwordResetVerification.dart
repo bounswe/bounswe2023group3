@@ -4,7 +4,7 @@ import 'package:mobile_app/services/apiService.dart';
 
 class PasswordResetVerification {
 
-  Future<Response> submitPass(int OTP, String id, String password) async {
+  Future<Response> submitPass(int OTP, String email, String password) async {
     const String resetPasswordEndpoint =
         '/auth/reset-password';
 
@@ -14,7 +14,7 @@ class PasswordResetVerification {
       final Response response = await ApiService.dio.post(
         resetPasswordEndpoint,
         data: {'resetPasswordToken': OTP,
-          'id': id,
+          'email': email,
           'password': password,},
       );
 
