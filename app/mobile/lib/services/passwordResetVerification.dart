@@ -23,7 +23,5 @@ class PasswordResetVerification {
       rethrow;
     }
   }
-  void saveToken(String token) {
-    ApiService.setJwtToken(token);
-  }
+
 }
