@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:email_validator/email_validator.dart';
-import 'package:mobile_app/services/codeVerification.dart';
+import 'package:mobile_app/services/passwordResetVerification.dart';
 import 'package:mobile_app/services/emailVerification.dart';
 import 'package:mobile_app/view/forgetPassword/customTextField.dart';
 import 'dart:developer';
@@ -153,11 +153,11 @@ class _ForgetPassVerifyScreenState extends State<ForgetPassVerifyScreen> {
       return;
     }
     // Perform code verification and navigate to the next screen if successful
-    CodeVerification codeVerification = CodeVerification();
+    PasswordResetVerification passwordResetVerification = PasswordResetVerification();
 
     try {
 
-      Response response = await codeVerification.submitPass(int.parse(OTP) , username, password);
+      Response response = await passwordResetVerification.submitPass(int.parse(OTP) , username, password);
       if(response.statusCode == 201) {
 
         if(!context.mounted) return;
@@ -197,7 +197,7 @@ class _ForgetPassVerifyScreenState extends State<ForgetPassVerifyScreen> {
     return Scaffold(
       resizeToAvoidBottomInset: true,
       appBar: AppBar(
-        title: Text('Enter the code'),
+        title: Text('Change Your Password'),
       ),
       body: SingleChildScrollView(
         scrollDirection: Axis.vertical,
@@ -207,20 +207,20 @@ class _ForgetPassVerifyScreenState extends State<ForgetPassVerifyScreen> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               Text(
-                'Enter the OTP in your email',
+                'Enter your username, new password, and token in your email',
                 style: TextStyle(fontSize: 15.0),
               ),
               const SizedBox(height: 10.0),
               CustomTextField(
 
-                labelText: 'Verification Code',
+                labelText: 'Reset Password Token',
                 controller: OTPController,
                 onChanged: validateOTP,
                 errorText: errorTextOTP(),
               ),
               const SizedBox(height: 10.0),
               CustomTextField(
-                labelText: 'ID',
+                labelText: 'Username',
                 controller: usernameController,
                 onChanged: validateUsername,
                 errorText: isUsernameValid ? "" : 'Enter a valid username!',
