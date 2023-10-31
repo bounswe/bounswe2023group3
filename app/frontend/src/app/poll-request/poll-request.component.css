@@ -40,18 +40,29 @@
 
 .button {
     display: block;
-    width: 120px;
-    padding: 10px;
-    margin-top: 10px;
-    margin-bottom: 10px;
+    width: 100px;
+    padding: 5px;
+    margin-top: 5px;
+    margin-bottom: 20px;
     margin-right: 10px;
-    background-color: #d1e0e7;
+    background-color: #587283;
     text-align: center;
     border-radius: 15px; 
     border: 1px solid #1b1818; 
+    cursor: pointer;
 }
 
 .follow-text {
     display: inline-block;
     border-bottom: 2px solid #000; margin-bottom: 5px;
+}
+
+.poll-info{
+    text-align: center;
+    height: 30px;
+    border-radius: 10px;
+    width: 70%;
+    border: #000000;
+    margin-top: 10px;
+    margin-bottom: 10px;
 }
