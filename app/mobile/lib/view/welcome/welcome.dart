@@ -22,8 +22,18 @@ class WelcomeScreen extends StatelessWidget {
       ),
       body: Center(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.start,
           children: [
+            const SizedBox(height: 80),
+            Padding(
+              padding: const EdgeInsets.all(30.0),
+              child: const Text(
+                "Poll'up",
+                style: TextStyle(fontSize: 50),
+                textAlign: TextAlign.start,
+              ),
+            ),
+            const SizedBox(height: 60),
             ElevatedButton(
               onPressed: () {
                 Navigator.pushNamed(context, '/login');
