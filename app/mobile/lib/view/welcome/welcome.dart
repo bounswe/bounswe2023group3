@@ -1,11 +1,21 @@
 import 'package:flutter/material.dart';
 
 class WelcomeScreen extends StatelessWidget {
+
+
   const WelcomeScreen({super.key});
+
+
+
+
+
 
   @override
   Widget build(BuildContext context) {
+    final GlobalKey<ScaffoldState> scaffoldKey = new GlobalKey<ScaffoldState>();
+
     return Scaffold(
+      key: scaffoldKey,
       appBar: AppBar(
         title: const Text('Welcome'),
         centerTitle: true,

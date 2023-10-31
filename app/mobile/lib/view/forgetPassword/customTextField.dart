@@ -24,7 +24,7 @@ class CustomTextField extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Container(
-          padding: const EdgeInsets.all(8.0),
+          padding: const EdgeInsets.all(2.0),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10.0),
             border: Border.all(
@@ -33,7 +33,9 @@ class CustomTextField extends StatelessWidget {
             ),
           ),
           child: TextField(
+
             controller: controller,
+            scrollPadding: EdgeInsets.only(bottom:40),
             keyboardType: keyboardType,
             obscureText: obscureText,
             onChanged: onChanged,
@@ -47,7 +49,7 @@ class CustomTextField extends StatelessWidget {
           ),
         ),
         Padding(
-          padding: const EdgeInsets.only(top: 8.0, left: 12.0),
+          padding: const EdgeInsets.only(top: 4.0, left: 12.0),
           child: Text(
             errorText,
             style: TextStyle(color: Colors.red[900]),

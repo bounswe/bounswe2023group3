@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:mobile_app/services/emailVerification.dart';
-import 'package:mobile_app/view/forgetpassword/customTextField.dart';
-import 'package:http/http.dart' as http;
+import 'customTextField.dart';
+import 'package:dio/dio.dart';
+
 
 class ForgetPassInitScreen extends StatefulWidget {
 
@@ -45,17 +46,36 @@ class _ForgetPassInitScreenState extends State<ForgetPassInitScreen> {
     }
     // Perform email verification and navigate to the next screen if successful
     EmailVerification emailVerification = EmailVerification();
-    http.Response response = await emailVerification.login(email);
-    print(response.body);
 
-    //NEW: there will be code that connects response to emailFound
-    Navigator.pushReplacementNamed(context, '/fpassOTP',);
-    if(emailFound == true){
-      //Navigator.pushNamed(context, "");
+    try {
+      Response response = await emailVerification.submitMail(email);
+
+      if (response.statusCode == 201) {
+        if (!context.mounted) return;
+        Navigator.pushNamed(context, '/fpassverify');
+      }
+
+      else {
+        if (!context.mounted) return;
+        Navigator.pushNamed(context, '/fpassverify');
+      }
+    }
+    catch (e) {
+      showErrorMessage(context);
     }
 
 
 
+
+
+  }
+
+  void showErrorMessage(BuildContext context) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text('Email is incorrect'),
+      ),
+    );
   }
 
   @override
@@ -86,7 +106,15 @@ class _ForgetPassInitScreenState extends State<ForgetPassInitScreen> {
               onPressed: isEmailValid ? resetPass : null,
               child: Text('Reset Password'),
             ),
-
+            Padding(
+              padding: const EdgeInsets.all(10),
+              child: Text(
+                    emptyEmail ? 'Email cannot be empty' : '',
+                    style: TextStyle(
+                      color: Colors.red[900],
+                    ),
+                  ),
+              ),
           ],
         ),
       ),

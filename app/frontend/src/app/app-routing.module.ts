@@ -7,15 +7,18 @@ import { WelcomeComponent } from './welcome/welcome.component';
 import { ForgetpasswordComponent } from './forgetpassword/forgetpassword.component';
 import { ResetPasswordComponent } from './resetpassword/resetpassword.component';
 import { HomeComponent } from './home/home.component';
+import { PollRequestComponent } from './poll-request/poll-request.component';
 
 const routes: Routes = [
-  { path: 'app-user-profile', component: UserProfileComponent }, //may be deleted later, just for test viewing
+  { path: '', component: WelcomeComponent },
+  { path: 'app-user-profile', component: UserProfileComponent }, 
   { path: 'app-login', component: LoginComponent },
   { path: 'app-welcome', component: WelcomeComponent },
   { path: 'app-register', component: RegisterComponent },
   { path: 'app-forget-password', component: ForgetpasswordComponent },
   { path: 'app-reset-password', component: ResetPasswordComponent },
   { path: 'app-home', component: HomeComponent },
+  { path: 'app-poll-request', component: PollRequestComponent },
 ];
 
 @NgModule({

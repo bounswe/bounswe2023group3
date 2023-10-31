@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -11,8 +12,9 @@ export class LoginComponent {
   password!: string;
   errorMessage: string = '';
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient,private router: Router) {}
 
+  
   onSubmit() {
     const userCredentials = {
       email: this.email,
@@ -20,10 +22,11 @@ export class LoginComponent {
     };
 
     // Send a POST request to the backend for authentication
-    this.http.post('http://51.20.129.231:1923//auth/login', userCredentials).subscribe(
+    this.http.post('http://51.20.129.231:1923/auth/login', userCredentials).subscribe(
       (response: any) => {
         // Authentication successful, you can handle the response here
         console.log('Login successful');
+        this.router.navigate(["/app-home"]);
       },
       (error) => {
         // Authentication failed, handle the error
@@ -33,3 +36,7 @@ export class LoginComponent {
     );
   }
 }
+
+
+
+

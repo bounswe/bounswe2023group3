@@ -16,9 +16,9 @@ class _SignupScreenState extends State<SignupScreen> {
   final TextEditingController passwordController = TextEditingController();
   final TextEditingController usernameController = TextEditingController();
 
-  bool isEmailValid = false;
-  bool isPasswordValid = false;
-  bool isUsernameValid = false;
+  bool isEmailValid = true;
+  bool isPasswordValid = true;
+  bool isUsernameValid = true;
   bool emptyEmail = false;
   bool emptyPassword = false;
   bool emptyUsername = false;
@@ -45,11 +45,19 @@ class _SignupScreenState extends State<SignupScreen> {
       emptyPassword = false;
       emptyUsername = false;
       emptyEmail = false;
-      final lengthPattern = RegExp(r'.{6,}');
 
-      final isLengthValid = lengthPattern.hasMatch(username);
+      if(username.isEmpty){
+        isUsernameValid=true;
+      }
+      else{
+        final lengthPattern = RegExp(r'.{6,}');
 
-      isUsernameValid = isLengthValid;
+        final isLengthValid = lengthPattern.hasMatch(username);
+
+        isUsernameValid = isLengthValid;
+      }
+
+
     });
   }
   // Add more validation logic for password as needed
@@ -59,36 +67,35 @@ class _SignupScreenState extends State<SignupScreen> {
       emptyUsername = false;
       emptyEmail = false;
 
-      // Define patterns to check for each password criteria
-      final lengthPattern = RegExp(r'.{6,}');
-      final uppercasePattern = RegExp(r'[A-Z]');
-      final lowercasePattern = RegExp(r'[a-z]');
-      final specialCharPattern = RegExp(r'[!@#\$%^&*(),.?":{}|<>]');
-      final digitPattern = RegExp(r'[0-9]');
+      if(password.isEmpty){
+        isPasswordValid=true;
+      }
+      else {
+        // Define patterns to check for each password criteria
+        final lengthPattern = RegExp(r'.{6,}');
+        final uppercasePattern = RegExp(r'[A-Z]');
+        final lowercasePattern = RegExp(r'[a-z]');
+        final specialCharPattern = RegExp(r'[!@#\$%^&*(),.?":{}|<>]');
+        final digitPattern = RegExp(r'[0-9]');
 
-      // Check each criteria
-      final isLengthValid = lengthPattern.hasMatch(password);
-      final isUppercaseValid = uppercasePattern.hasMatch(password);
-      final isLowercaseValid = lowercasePattern.hasMatch(password);
-      final isSpecialCharValid = specialCharPattern.hasMatch(password);
-      final isDigitValid = digitPattern.hasMatch(password);
+        // Check each criteria
+        final isLengthValid = lengthPattern.hasMatch(password);
+        final isUppercaseValid = uppercasePattern.hasMatch(password);
+        final isLowercaseValid = lowercasePattern.hasMatch(password);
+        final isSpecialCharValid = specialCharPattern.hasMatch(password);
+        final isDigitValid = digitPattern.hasMatch(password);
 
-      // Set isPasswordValid to true if all criteria are met
-      isPasswordValid = isLengthValid &&
-          isUppercaseValid &&
-          isLowercaseValid &&
-          isSpecialCharValid &&
-          isDigitValid;
+        // Set isPasswordValid to true if all criteria are met
+        isPasswordValid = isLengthValid &&
+            isUppercaseValid &&
+            isLowercaseValid &&
+            isSpecialCharValid &&
+            isDigitValid;
+      }
     });
   }
 
-  void showErrorMessage() {
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text('Email or password is incorrect'),
-      ),
-    );
-  }
+
 
   void signup() async {
     if (isEmailValid && isPasswordValid) {
@@ -114,130 +121,162 @@ class _SignupScreenState extends State<SignupScreen> {
         return;
       }
       SignUser signUser = SignUser();
-      Response response = await signUser.sign(email, username, password);
+      try {
+
+        Response response = await signUser.sign(email, username, password);
+        if (response.statusCode == 201) {
+
+          if (!context.mounted) return;
+          Navigator.pushNamed(context, '/signverify');
+        }
+        else {
+
+
+          if (!context.mounted) return;
+          showErrorMessage(context);
+        }
+      }
+      catch (e) {
+        showErrorMessage(context);
+
+      }
     }
+  }
+
+  void showErrorMessage(BuildContext context) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text('Email or username is already found!'),
+      ),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: true,
       appBar: AppBar(
         title: const Text('Sign Up'),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            CustomTextField(
-              labelText: 'Email',
-              controller: emailController,
-              keyboardType: TextInputType.emailAddress,
-              onChanged: validateEmail,
-              errorText: isEmailValid ? "" : 'Enter a valid email',
-            ),
-            const SizedBox(height: 16),
-            CustomTextField(
-              labelText: 'Username',
-              controller: usernameController,
-              onChanged: validateUsername,
-              errorText: isUsernameValid ? "" : 'Enter a username with at least 6 characters',
-            ),
-            const SizedBox(height: 16),
-            CustomTextField(
-              labelText: 'Password',
-              controller: passwordController,
-              obscureText: true,
-              onChanged: validatePassword,
-              errorText: isPasswordValid
-                  ? ""
-                  : 'Password must meet the following criteria:',
-            ),
-            Text(
-              emptyEmail ? 'Email cannot be empty' : '',
-              style: TextStyle(
-                color: Colors.red[900],
-              ),
-            ),
-            Text(
-              emptyPassword ? 'Password cannot be empty' : '',
-              style: TextStyle(
-                color: Colors.red[900],
-              ),
-            ),
-            const SizedBox(height: 16),
-            // Display the password criteria
-            Text(
-              '• At least 6 characters',
-              style: TextStyle(
-                color: isPasswordValid || passwordController.text.length >= 6
-                    ? Colors.green
-                    : Colors.red,
-              ),
-            ),
-            Text(
-              '• At least one uppercase character',
-              style: TextStyle(
-                color: isPasswordValid ||
-                        RegExp(r'[A-Z]').hasMatch(passwordController.text)
-                    ? Colors.green
-                    : Colors.red,
-              ),
-            ),
-            Text(
-              '• At least one lowercase character',
-              style: TextStyle(
-                color: isPasswordValid ||
-                        RegExp(r'[a-z]').hasMatch(passwordController.text)
-                    ? Colors.green
-                    : Colors.red,
-              ),
-            ),
-            Text(
-              '• At least one special character (e.g., !@#)',
-              style: TextStyle(
-                color: isPasswordValid ||
-                        RegExp(r'[!@#\$%^&*(),.?":{}|<>]')
-                            .hasMatch(passwordController.text)
-                    ? Colors.green
-                    : Colors.red,
-              ),
-            ),
-            Text(
-              '• At least one digit',
-              style: TextStyle(
-                color: isPasswordValid ||
-                        RegExp(r'[0-9]').hasMatch(passwordController.text)
-                    ? Colors.green
-                    : Colors.red,
-              ),
-            ),
-            // End of password criteria display
-            const SizedBox(height: 16),
-            ElevatedButton(
-              onPressed: isEmailValid && isPasswordValid ? signup : null,
-              child: const Text('Sign Up'),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(10),
-              child: Column(
-                children: [
-                  Text(
-                    emptyEmail ? 'Email cannot be empty' : '',
-                    style: TextStyle(
-                      color: Colors.red[900],
-                    ),
+      body: Center(
+        child: SingleChildScrollView(
+          scrollDirection: Axis.vertical,
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                CustomTextField(
+                  labelText: 'Email',
+                  controller: emailController,
+                  keyboardType: TextInputType.emailAddress,
+                  onChanged: validateEmail,
+                  errorText: isEmailValid ? "" : 'Enter a valid email',
+                ),
+                const SizedBox(height: 16),
+                CustomTextField(
+                  labelText: 'Username',
+                  controller: usernameController,
+                  onChanged: validateUsername,
+                  errorText: isUsernameValid ? "" : 'Enter a username with at least 6 characters',
+                ),
+                const SizedBox(height: 16),
+                CustomTextField(
+                  labelText: 'Password',
+                  controller: passwordController,
+                  obscureText: true,
+                  onChanged: validatePassword,
+                  errorText: isPasswordValid
+                      ? ""
+                      : 'Password must meet the following criteria:',
+                ),
+                Text(
+                  emptyEmail ? 'Email cannot be empty' : '',
+                  style: TextStyle(
+                    color: Colors.red[900],
                   ),
-                  Text(
-                    emptyPassword ? 'Password cannot be empty' : '',
-                    style: TextStyle(
-                      color: Colors.red[900],
-                    ),
+                ),
+                Text(
+                  emptyPassword ? 'Password cannot be empty' : '',
+                  style: TextStyle(
+                    color: Colors.red[900],
                   ),
-                ],
-              ),
-            )
-          ],
+                ),
+                const SizedBox(height: 16),
+                // Display the password criteria
+                Text(
+                  '• At least 6 characters',
+                  style: TextStyle(
+                    color: isPasswordValid || passwordController.text.length >= 6
+                        ? Colors.green
+                        : Colors.red,
+                  ),
+                ),
+                Text(
+                  '• At least one uppercase character',
+                  style: TextStyle(
+                    color: isPasswordValid ||
+                            RegExp(r'[A-Z]').hasMatch(passwordController.text)
+                        ? Colors.green
+                        : Colors.red,
+                  ),
+                ),
+                Text(
+                  '• At least one lowercase character',
+                  style: TextStyle(
+                    color: isPasswordValid ||
+                            RegExp(r'[a-z]').hasMatch(passwordController.text)
+                        ? Colors.green
+                        : Colors.red,
+                  ),
+                ),
+                Text(
+                  '• At least one special character (e.g., !@#)',
+                  style: TextStyle(
+                    color: isPasswordValid ||
+                            RegExp(r'[!@#\$%^&*(),.?":{}|<>]')
+                                .hasMatch(passwordController.text)
+                        ? Colors.green
+                        : Colors.red,
+                  ),
+                ),
+                Text(
+                  '• At least one digit',
+                  style: TextStyle(
+                    color: isPasswordValid ||
+                            RegExp(r'[0-9]').hasMatch(passwordController.text)
+                        ? Colors.green
+                        : Colors.red,
+                  ),
+                ),
+                // End of password criteria display
+                const SizedBox(height: 16),
+                ElevatedButton(
+                  onPressed: isEmailValid && isPasswordValid ? signup : null,
+                  child: const Text('Sign Up'),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(10),
+                  child: Column(
+                    children: [
+                      Text(
+                        emptyEmail ? 'Email cannot be empty' : '',
+                        style: TextStyle(
+                          color: Colors.red[900],
+                        ),
+                      ),
+                      Text(
+                        emptyPassword ? 'Password cannot be empty' : '',
+                        style: TextStyle(
+                          color: Colors.red[900],
+                        ),
+                      ),
+                    ],
+                  ),
+                )
+              ],
+            ),
+          ),
         ),
       ),
     );

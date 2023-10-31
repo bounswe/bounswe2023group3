@@ -2,21 +2,20 @@ import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:mobile_app/services/apiService.dart';
 
-class EmailVerification {
+class SignUpVerification {
 
-  Future<Response> submitMail(String email) async {
+  Future<Response> submitMailandOTP(String email, int OTP) async {
     const String forgotPasswordEndpoint =
-        '/auth/forgot-password';
+        '/auth/verify';
 
-    final Map<String, String> data = {
-      'email': email,
-    };
+
 
 
     try {
       final Response response = await ApiService.dio.post(
         forgotPasswordEndpoint,
-        data: data,
+        data: {'email': email,
+        'verificationCode': OTP},
       );
 
       return response;
@@ -24,5 +23,7 @@ class EmailVerification {
       rethrow;
     }
   }
-
+  void saveToken(String token) {
+    ApiService.setJwtToken(token);
+  }
 }
