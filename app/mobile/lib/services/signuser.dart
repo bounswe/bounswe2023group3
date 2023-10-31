@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'package:dio/dio.dart';
-import 'package:http/http.dart' as http;
 import 'package:mobile_app/services/apiService.dart';
 
 class SignUser {
@@ -11,7 +10,7 @@ class SignUser {
     final Map<String, String> data = {
       'email': email,
       'password': password,
-      'username': username
+      'username': username,
     };
 
     try {
@@ -24,5 +23,8 @@ class SignUser {
       print('Error: $e');
       rethrow;
     }
+  }
+  void saveToken(String token) {
+    ApiService.setJwtToken(token);
   }
 }
