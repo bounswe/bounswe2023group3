@@ -1,0 +1,55 @@
+<html lang="en">
+  <body>
+    <div class="page-layout">
+      <app-side-bar></app-side-bar>
+      <div class="container" style="position: relative;">
+        <div class="post-widget" style="display: flex; align-items: start;">
+          <!-- Kullanıcı avatar ve bilgileri -->
+        </div>
+        
+        <!-- Anket oluşturma kısmı -->
+        <div class="poll-create-section">
+          <h2>Create a New Poll</h2>
+          <form [formGroup]="pollForm">
+
+            <label for="creator">Creator ID:</label>
+            <input type="text" id="creator" name="creator"><br><br>
+
+            <label for="question">Question:</label>
+            <input type="text" id="question" name="question"><br><br>
+
+            <!-- Add Tags -->
+            <label for="tags">Tags:</label>
+            <div formArrayName="tags">
+            <div *ngFor="let tag of tags.controls; let i = index">
+                <input [formControlName]="i" type="text">
+            </div>
+            </div>
+            <button type="button" (click)="addTag()">Add Tag</button><br><br>
+
+            <!-- Add Options -->
+            <label for="options">Options:</label>
+            <div formArrayName="options">
+            <div *ngFor="let option of options.controls; let i = index">
+                <input [formControlName]="i" type="text">
+            </div>
+            </div>
+            <button type="button" (click)="addOption()">Add Option</button><br><br>
+
+            <input type="submit" value="Create Poll" (click)="onSubmit()">
+          </form>
+        </div>
+
+        <!-- Diğer kullanıcı bilgileri ve aktiviteler -->
+        <div class="user-polls" style="display: flex; justify-content: space-between;">
+          <!-- İçerik -->
+        </div>
+      </div>
+
+      <div style="display: flex; flex-direction: column;">
+        <app-ranks-bar></app-ranks-bar>
+        <app-badges-bar></app-badges-bar>
+      </div>
+    </div>
+  </body>
+</html>

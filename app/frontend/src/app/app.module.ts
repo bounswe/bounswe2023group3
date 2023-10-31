@@ -20,6 +20,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HomeComponent } from './home/home.component';
 import { TagsBarComponent } from './tags-bar/tags-bar.component';
 import { LeaderboardBarComponent } from './leaderboard-bar/leaderboard-bar.component';
+import { PollRequestComponent } from './poll-request/poll-request.component';
 
 @NgModule({
   declarations: [
@@ -35,7 +36,8 @@ import { LeaderboardBarComponent } from './leaderboard-bar/leaderboard-bar.compo
     ResetPasswordComponent,
     HomeComponent,
     TagsBarComponent,
-    LeaderboardBarComponent
+    LeaderboardBarComponent,
+    PollRequestComponent
   ],
   imports: [
     BrowserModule,
