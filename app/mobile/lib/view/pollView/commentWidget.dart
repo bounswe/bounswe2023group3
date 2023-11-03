@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../constants.dart';
+
 class CommentWidget extends StatelessWidget {
   final String user;
   final String commentText;
@@ -14,8 +16,8 @@ class CommentWidget extends StatelessWidget {
       child: Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(20.0),
-          border: Border.all(color: Colors.blue),
-          color: Colors.blue,
+          border: Border.all(color: navy),
+          color: gray,
         ),
         child: ListTile(
           title: Text(user),

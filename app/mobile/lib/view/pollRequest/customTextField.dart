@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mobile_app/view/constants.dart';
 
 class CustomTextField extends StatelessWidget {
   final TextEditingController controller;
@@ -20,20 +21,29 @@ class CustomTextField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return TextField(
-      controller: controller,
-      focusNode: focusNode,
-      onChanged: onChanged,
-      minLines: lines ?? 1,
-      maxLines: 7,
-      onSubmitted: (_) {
-        if (nextFocusNode != null && controller.text.isNotEmpty) {
-          FocusScope.of(context).requestFocus(nextFocusNode);
-        }
-      },
-      decoration: InputDecoration(
-        border: const OutlineInputBorder(),
-        labelText: label,
+    return Container(
+      decoration: BoxDecoration(
+        color: whitish,
+        borderRadius: BorderRadius.circular(10.0),
+        border: Border.all(
+          color: navy,
+        ),
+      ),
+      child: TextField(
+        controller: controller,
+        focusNode: focusNode,
+        onChanged: onChanged,
+        minLines: lines ?? 1,
+        maxLines: 7,
+        onSubmitted: (_) {
+          if (nextFocusNode != null && controller.text.isNotEmpty) {
+            FocusScope.of(context).requestFocus(nextFocusNode);
+          }
+        },
+        decoration: InputDecoration(
+          border: const OutlineInputBorder(),
+          labelText: label,
+        ),
       ),
     );
   }

@@ -73,7 +73,8 @@ class WelcomeScreen extends StatelessWidget {
                 print("welcome.WelcomeScreen.build.Scaffold.Center.Column."
                     "TextButton: Continue as Guest");
               },
-              child: const Text('Continue as Guest'),
+              child: const Text('Continue as Guest',
+                style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),),
             ),
           ],
         ),
