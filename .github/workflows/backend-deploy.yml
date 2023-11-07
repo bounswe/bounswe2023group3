@@ -4,9 +4,10 @@ on:
   push:
     branches:
       - deneme
-  pull_request:
-    branches:
-      - deneme
+    paths:
+      - 'app/backend/**'
+      - '.github/workflows/backend-deploy.yml'
+
       
 jobs:
   deploy:
