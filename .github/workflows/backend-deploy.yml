@@ -68,6 +68,6 @@ jobs:
           EXCLUDE: .env
           SCRIPT_AFTER: |
             cd ~/backend
-            docker build -t pollup:backend
+            docker build -t pollup:backend .
             docker run -d pollup:backend
             
