@@ -68,5 +68,5 @@ jobs:
           EXCLUDE: .env
           SCRIPT_AFTER: |
             cd ~
-            touch test.txt            
+            touch test1.txt            
             
