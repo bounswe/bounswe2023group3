@@ -17,7 +17,7 @@ import { Option } from './poll/entities/option.entity';
       type: 'postgres',
       host: 'localhost',
       port: 5432,
-      password: 'password',
+      password: 'pass',
       username: 'postgres',
       entities: [User, Poll, Tag, Option],
       database: 'postgres',
