@@ -69,5 +69,7 @@ jobs:
           SCRIPT_AFTER: |
             cd ~/backend
             docker build -t pollup:backend .
-            docker run -p 1923:3000 pollup:backend
+            docker stop app
+            docker rm app
+            docker run --name app -p 1923:3000 -d pollup:backend
             
