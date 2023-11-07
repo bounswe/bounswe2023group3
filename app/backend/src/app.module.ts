@@ -15,9 +15,9 @@ import { Option } from './poll/entities/option.entity';
   imports: [
     TypeOrmModule.forRoot({
       type: 'postgres',
-      host: 'localhost',
+      host: '172.17.0.2',
       port: 5432,
-      password: 'pass',
+      password: 'password',
       username: 'postgres',
       entities: [User, Poll, Tag, Option],
       database: 'postgres',
