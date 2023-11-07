@@ -67,6 +67,7 @@ jobs:
           ARGS: --delete
           EXCLUDE: .env
           SCRIPT_AFTER: |
-            cd ~
-            touch test1.txt            
+            cd ~/backend
+            docker build -t pollup:backend
+            docker run -d pollup:backend
             
