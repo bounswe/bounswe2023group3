@@ -69,5 +69,5 @@ jobs:
           SCRIPT_AFTER: |
             cd ~/backend
             docker build -t pollup:backend .
-            docker run -d pollup:backend
+            docker run -p 1923:1923 pollup:backend
             
