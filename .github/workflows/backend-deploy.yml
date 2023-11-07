@@ -10,7 +10,7 @@ on:
       
 jobs:
   deploy:
-    name: Deploy to Compute Engine
+    name: Deploy to Compute Engine1
     runs-on: ubuntu-latest
 
     steps:
