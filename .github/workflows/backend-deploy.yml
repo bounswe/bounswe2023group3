@@ -1,0 +1,75 @@
+name: Deploy-Backend-to-Compute-Engine
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'app/backend/**'
+      - '.github/workflows/backend-deploy.yml'
+
+      
+jobs:
+  deploy:
+    name: Deploy to Compute Engine
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout the files
+        uses: actions/checkout@v2
+
+      - name: Deploy to server
+        uses: easingthemes/ssh-deploy@main
+        env:
+          SSH_PRIVATE_KEY: |
+            -----BEGIN OPENSSH PRIVATE KEY-----
+            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
+            -----END OPENSSH PRIVATE KEY-----
+            '
+          REMOTE_HOST: 34.105.66.254
+          REMOTE_USER: alp.tuna.453
+          SOURCE: app/backend/
+          TARGET: ~/backend
+          ARGS: --delete
+          EXCLUDE: .env
+          SCRIPT_AFTER: |
+            cd ~/backend
+            docker build -t pollup:backend .
+            docker stop app
+            docker rm app
+            docker run --name app -p 1923:3000 -d pollup:backend
