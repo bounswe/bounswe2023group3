@@ -26,8 +26,7 @@
 .poll {
     display: flex;
     flex-direction: column;
-    background-color: #9DC0C4; 
-    border: 1px solid #1b1818; 
+    background-color: #7fb7be; 
     border-radius: 15px; 
     width: 80%; 
     padding: 10%;

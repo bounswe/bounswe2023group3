@@ -21,6 +21,7 @@ import { HomeComponent } from './home/home.component';
 import { TagsBarComponent } from './tags-bar/tags-bar.component';
 import { LeaderboardBarComponent } from './leaderboard-bar/leaderboard-bar.component';
 import { PollRequestComponent } from './poll-request/poll-request.component';
+import { PollComponent } from './poll/poll.component';
 
 @NgModule({
   declarations: [
@@ -37,7 +38,8 @@ import { PollRequestComponent } from './poll-request/poll-request.component';
     HomeComponent,
     TagsBarComponent,
     LeaderboardBarComponent,
-    PollRequestComponent
+    PollRequestComponent,
+    PollComponent
   ],
   imports: [
     BrowserModule,
