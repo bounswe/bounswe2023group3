@@ -22,20 +22,7 @@
     text-align: center;
     flex: 1;
 }
-.poll {
-    display: flex;
-    flex-direction: column;
-    background-color: #9DC0C4; 
-    border: 1px solid #1b1818; 
-    border-radius: 15px; 
-    width: 80%; 
-    padding: 10%;
-    height: 120px;
-    margin-top: 15px;
-    margin-bottom: 15px;
-    align-items: center;
-    justify-content: center;
-}
+
 
 .button {
     display: block;
