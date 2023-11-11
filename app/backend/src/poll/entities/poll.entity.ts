@@ -1,8 +1,11 @@
+import { User } from '../../user/entities/user.entity';
 import {
   Entity,
   Column,
   PrimaryGeneratedColumn,
   CreateDateColumn,
+  ManyToOne,
+  JoinColumn,
 } from 'typeorm';
 
 // @Todo Some entities are not ready, therefore this is not the finalized version.
@@ -14,8 +17,8 @@ export class Poll {
   @Column({ nullable: false })
   question: string;
 
-  //@ManyToOne(() => User) // Establishing the many-to-one relationship
-  //@JoinColumn({ name: 'id' }) // Specifying the foreign key column
+  @ManyToOne(() => User, user => user.polls) // Establishing the many-to-one relationship
+  @JoinColumn({ name: 'creator_id' }) // Specifying the foreign key column
   @Column({ nullable: false })
   creator: string;
 
