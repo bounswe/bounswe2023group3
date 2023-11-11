@@ -5,19 +5,18 @@ import {
   PrimaryGeneratedColumn,
   ManyToOne,
   JoinColumn,
+  Relation,
 } from 'typeorm';
 
-@Entity('tags')
-export class Tag {
+@Entity('options')
+export class Option {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
   @Column({ nullable: false })
-  name: string;
+  answer: string;
 
-  /*
-  @ManyToOne(() => Poll) // Establishing the many-to-one relationship
-  @JoinColumn({ name: 'id' }) // Specifying the foreign key column
-  */
-  poll: Poll;
+  @ManyToOne(() => Poll, poll => poll.options) // Establishing the many-to-one relationship
+  @JoinColumn() // Specifying the foreign key column
+  poll: Relation<Poll>;
 }

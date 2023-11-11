@@ -1,4 +1,6 @@
+import { Tag } from '../../tag/entities/tag.entity';
 import { User } from '../../user/entities/user.entity';
+import { Option } from '../../option/entities/option.entity';
 import {
   Entity,
   Column,
@@ -6,6 +8,10 @@ import {
   CreateDateColumn,
   ManyToOne,
   JoinColumn,
+  OneToMany,
+  ManyToMany,
+  JoinTable,
+  Relation
 } from 'typeorm';
 
 // @Todo Some entities are not ready, therefore this is not the finalized version.
@@ -18,21 +24,21 @@ export class Poll {
   question: string;
 
   @ManyToOne(() => User, user => user.polls) // Establishing the many-to-one relationship
-  @JoinColumn({ name: 'creator_id' }) // Specifying the foreign key column
-  @Column({ nullable: false })
-  creator: string;
+  @JoinColumn() // Specifying the foreign key column
+  creator: Relation<User>;
 
   //@ManyToOne(() => User) // Establishing the many-to-one relationship
   //@JoinColumn({ name: 'id' })
   @Column({ nullable: true })
   moderator: string;
 
-  // @Todo Replace with tag entity
-  //@Column({ nullable: false })
-  //tag_list: Array<string>;
+  @ManyToMany(() => Tag)
+  @JoinTable()
+  tags: Relation<Tag[]>;
 
-  //@Column({ nullable: false })
-  //options: Array<string>;
+  @OneToMany(() => Option, option => option.poll)
+  options: Relation<Option[]>;
+
   @Column({ nullable: true })
   outcome: string;
 
