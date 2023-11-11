@@ -1,10 +1,12 @@
 import * as bcrypt from 'bcrypt';
+import { Poll } from '../../poll/entities/poll.entity';
 import {
   Entity,
   Column,
   PrimaryGeneratedColumn,
   BeforeInsert,
   BeforeUpdate,
+  OneToMany,
 } from 'typeorm';
 
 const SALT_ROUNDS = 10;
@@ -31,6 +33,9 @@ export class User {
 
   @Column({ nullable: true })
   reset_password_token: number;
+
+  @OneToMany(() => Poll, poll => poll.creator)
+  polls: Poll[];
 
   @BeforeInsert()
   async hashPasswordBeforeInsert() {
