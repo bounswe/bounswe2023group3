@@ -7,6 +7,7 @@ import {
   BeforeInsert,
   BeforeUpdate,
   OneToMany,
+  Relation,
 } from 'typeorm';
 
 const SALT_ROUNDS = 10;
@@ -35,7 +36,7 @@ export class User {
   reset_password_token: number;
 
   @OneToMany(() => Poll, poll => poll.creator)
-  polls: Poll[];
+  polls: Relation<Poll[]>;
 
   @BeforeInsert()
   async hashPasswordBeforeInsert() {
