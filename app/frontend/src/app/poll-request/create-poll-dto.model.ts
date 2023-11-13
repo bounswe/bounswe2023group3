@@ -3,6 +3,6 @@ export class CreatePollDto {
     public creator: string = '',
     public question: string = '',
     public tags: string[] = [],
-    public options: string[] = []
+    public options: string[] = [],
   ) {}
 }

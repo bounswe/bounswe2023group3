@@ -1,18 +1,17 @@
 .container {
-    align-items: center;
-    background-color: #9DC0C4; 
-    padding: 20px; 
-    border: 1px solid #1b1818; 
-    border-radius: 15px; 
-    width: 100%; 
+  align-items: center;
+  background-color: #9dc0c4;
+  padding: 20px;
+  border: 1px solid #1b1818;
+  border-radius: 15px;
+  width: 100%;
 }
 
 .button {
-    width: 100px;
-    padding: 5px;
-    margin-top: 5px;
-    margin-bottom: 20px;
-    margin-right: 10px;
-    background-color: #587283;
+  width: 100px;
+  padding: 5px;
+  margin-top: 5px;
+  margin-bottom: 20px;
+  margin-right: 10px;
+  background-color: #587283;
 }
-

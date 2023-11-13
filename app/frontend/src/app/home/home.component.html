@@ -1,32 +1,42 @@
 <html lang="en">
-    <body>
-        <div class="page-layout">
-            <app-side-bar ></app-side-bar>
-            <div class="container" style="position: relative;">
-                <div style="text-align: right;">
-                    <button class="button" style="display: inline-block; margin-right: 5px;">Ongoing</button>
-                    <button class="button" style="display: inline-block;">Settled</button>
-                </div>
-                
-                <form action="/search" method="GET" style="margin-bottom: 15px; margin-top: 20px;">
-                    <input style= "width: 100%; border-radius: 15px; text-align: center;"placeholder="What are you looking for?" />
-                </form>                
-
-                <div class="user-polls">
-                    <button class="user-polls-column">Following</button>
-                    <button class="user-polls-column">Trending</button>
-                </div>
-                
-                <div>
-                    <app-poll></app-poll>
-                </div>
-
-                
-            </div>
-            <div style="display: flex; flex-direction: column;">
-                <app-tags-bar></app-tags-bar>
-                <app-leaderboard-bar></app-leaderboard-bar>
-            </div>
+  <body>
+    <div class="page-layout">
+      <app-side-bar></app-side-bar>
+      <div class="container" style="position: relative">
+        <div style="text-align: right">
+          <button
+            class="button"
+            style="display: inline-block; margin-right: 5px"
+          >
+            Ongoing
+          </button>
+          <button class="button" style="display: inline-block">Settled</button>
         </div>
-    </body>
+
+        <form
+          action="/search"
+          method="GET"
+          style="margin-bottom: 15px; margin-top: 20px"
+        >
+          <input
+            style="width: 100%; border-radius: 15px; text-align: center"
+            placeholder="What are you looking for?"
+          />
+        </form>
+
+        <div class="user-polls">
+          <button class="user-polls-column">Following</button>
+          <button class="user-polls-column">Trending</button>
+        </div>
+
+        <div>
+          <app-poll></app-poll>
+        </div>
+      </div>
+      <div style="display: flex; flex-direction: column">
+        <app-tags-bar></app-tags-bar>
+        <app-leaderboard-bar></app-leaderboard-bar>
+      </div>
+    </div>
+  </body>
 </html>
