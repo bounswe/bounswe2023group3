@@ -1,149 +1,155 @@
 /* Reset default margin and padding */
-html, body, h1, h2, h3, p, ul, li {
-    margin: 0;
-    padding: 0;
+html,
+body,
+h1,
+h2,
+h3,
+p,
+ul,
+li {
+  margin: 0;
+  padding: 0;
 }
-  
-body, html, #background { 
-    width: 100vw;
-    min-height: 100vh;
-    background-color: #202A40;
+
+body,
+html,
+#background {
+  width: 100vw;
+  min-height: 100vh;
+  background-color: #202a40;
 }
-  
+
 /* Set the font family for the entire page */
 body {
-    background-color: #202A40;
-    font-family: Arial, sans-serif;
-    
+  background-color: #202a40;
+  font-family: Arial, sans-serif;
 }
-  
+
 /* Header Styles */
 header {
-    background-color: #232F44;
-    color: #fff;
-    text-align: center;
-    padding: 10px 0;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 20px 30px;
+  background-color: #232f44;
+  color: #fff;
+  text-align: center;
+  padding: 10px 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 30px;
 }
-  
+
 .logo {
-    font-size: 24px;
+  font-size: 24px;
 }
 
 /* Style for the content on the left */
 .content {
-    background-color: #202A40;
-    color: #fff;
-    text-align: left;
-    padding: 40px;
-    margin-top: 75px;
-    margin-left: 70px;
-    width: 50%;
-    float: left;
-    box-sizing: border-box;
+  background-color: #202a40;
+  color: #fff;
+  text-align: left;
+  padding: 40px;
+  margin-top: 75px;
+  margin-left: 70px;
+  width: 50%;
+  float: left;
+  box-sizing: border-box;
 }
 
 .content h2 {
-    font-size: 50px;
-    margin-bottom: 20px;
+  font-size: 50px;
+  margin-bottom: 20px;
 }
 
 .content p {
-    font-size: 30px;
-    line-height: 1.5;
+  font-size: 30px;
+  line-height: 1.5;
 }
 
 /* Clear the float to prevent overlapping with other elements */
 .content::after {
-    content: "";
-    display: table;
-    clear: both;
+  content: '';
+  display: table;
+  clear: both;
 }
-  
+
 /* Style for the register container */
 .register-container {
-    background-color:#9DC0C4;
-    color: #fff;
-    text-align: center;
-    padding: 30px;
-    border-radius: 4px;
-    max-width: 400px;
-    margin-right: 70px;
-    margin-left:  auto;
-    margin-top: 50px;
+  background-color: #9dc0c4;
+  color: #fff;
+  text-align: center;
+  padding: 30px;
+  border-radius: 4px;
+  max-width: 400px;
+  margin-right: 70px;
+  margin-left: auto;
+  margin-top: 50px;
 }
-  
+
 /* Style for the form title */
 .register-container h2 {
-    font-size: 28px;
-    margin: 0 0 40px;
-    color:#232F44;
+  font-size: 28px;
+  margin: 0 0 40px;
+  color: #232f44;
 }
-  
+
 /* Style for form groups (labels and input fields) */
 .form-group {
-    margin-bottom: 40px;
-    text-align: left;
-    width: 100%;
+  margin-bottom: 40px;
+  text-align: left;
+  width: 100%;
 }
-  
+
 .login-form {
-    text-align: center;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
-  
+
 .form-group label {
-    display: block;
-    margin-bottom: 10px;
-    font-size: 16px;
-    color: #202A40;
+  display: block;
+  margin-bottom: 10px;
+  font-size: 16px;
+  color: #202a40;
 }
-  
-.form-group input[type="text"],
-.form-group input[type="password"] {
-      width: calc(100% - 10px); 
-      padding: 10px 0px;
-      border-color: #232F44;
-      border: none;
-      border-radius: 10px;
-      font-size: 16px;
-      background-color: #F4EAE6;
-      color: #232F44;
-      padding-left: 10px;
+
+.form-group input[type='text'],
+.form-group input[type='password'] {
+  width: calc(100% - 10px);
+  padding: 10px 0px;
+  border-color: #232f44;
+  border: none;
+  border-radius: 10px;
+  font-size: 16px;
+  background-color: #f4eae6;
+  color: #232f44;
+  padding-left: 10px;
 }
-  
+
 /* Button Styles */
-button[type="submit"] {
-    background-color: #30568F;
-    color: #fff;
-    border: none;
-    border-radius: 20px;
-    padding: 10px 20px;
-    cursor: pointer;
-    font-size: 16px;
-    margin-bottom: 60px;
+button[type='submit'] {
+  background-color: #30568f;
+  color: #fff;
+  border: none;
+  border-radius: 20px;
+  padding: 10px 20px;
+  cursor: pointer;
+  font-size: 16px;
+  margin-bottom: 60px;
 }
-  
-button[type="submit"]:hover {
-    background-color: #232F44;
+
+button[type='submit']:hover {
+  background-color: #232f44;
 }
-  
+
 .register-container a {
-    color: #202A40;
-    font-size: 16px;
-    margin-top: 0px;
+  color: #202a40;
+  font-size: 16px;
+  margin-top: 0px;
 }
-  
+
 /* Error Message Styles */
 .register-container p {
-    color: #202A40;
-    font-size: 16px;
-    margin: 10px 15px;
+  color: #202a40;
+  font-size: 16px;
+  margin: 10px 15px;
 }
-  
-  

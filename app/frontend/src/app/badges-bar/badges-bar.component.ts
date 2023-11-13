@@ -1,10 +1,8 @@
-import { Component } from '@angular/core';
+import { Component } from '@angular/core'
 
 @Component({
   selector: 'app-badges-bar',
   templateUrl: './badges-bar.component.html',
-  styleUrls: ['./badges-bar.component.css']
+  styleUrls: ['./badges-bar.component.css'],
 })
-export class BadgesBarComponent {
-
-}
+export class BadgesBarComponent {}

@@ -1,68 +1,69 @@
 .page-layout {
-    display: flex;
-    flex-direction: row;
-    gap:20px;
-    width: 100%;
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+  width: 100%;
 }
 .container {
-    align-items: center;
-    background-color: #9DC0C4; 
-    padding: 20px; 
-    border: 1px solid #1b1818; 
-    border-radius: 15px; 
-    width: 100%; 
-    margin: 0 auto; 
-    margin-top: 10px;
+  align-items: center;
+  background-color: #9dc0c4;
+  padding: 20px;
+  border: 1px solid #1b1818;
+  border-radius: 15px;
+  width: 100%;
+  margin: 0 auto;
+  margin-top: 10px;
 }
 .image {
-    max-width: 100%;
-    height: 100%;
+  max-width: 100%;
+  height: 100%;
 }
-.user-polls-column{
-    flex: 1;
-    border: 1px solid #000000;
-    text-align: center;
+.user-polls-column {
+  flex: 1;
+  border: 1px solid #000000;
+  text-align: center;
 }
 .poll {
-    display: flex;
-    flex-direction: column;
-    background-color: #9DC0C4; 
-    border: 1px solid #1b1818; 
-    border-radius: 15px; 
-    width: 80%; 
-    padding: 10%;
-    height: 120px;
-    margin-top: 15px;
-    margin-bottom: 15px;
-    align-items: center;
-    justify-content: center;
+  display: flex;
+  flex-direction: column;
+  background-color: #9dc0c4;
+  border: 1px solid #1b1818;
+  border-radius: 15px;
+  width: 80%;
+  padding: 10%;
+  height: 120px;
+  margin-top: 15px;
+  margin-bottom: 15px;
+  align-items: center;
+  justify-content: center;
 }
 
 .button {
-    display: block;
-    width: 100px;
-    padding: 5px;
-    margin-top: 5px;
-    margin-bottom: 20px;
-    margin-right: 10px;
-    background-color: #587283;
-    text-align: center;
-    border-radius: 15px; 
-    border: 1px solid #1b1818; 
-    cursor: pointer;
+  display: block;
+  width: 100px;
+  padding: 5px;
+  margin-top: 5px;
+  margin-bottom: 20px;
+  margin-right: 10px;
+  background-color: #587283;
+  text-align: center;
+  border-radius: 15px;
+  border: 1px solid #1b1818;
+  cursor: pointer;
 }
 
 .follow-text {
-    display: inline-block;
-    border-bottom: 2px solid #000; margin-bottom: 5px;
+  display: inline-block;
+  border-bottom: 2px solid #000;
+  margin-bottom: 5px;
 }
 
-.poll-info{
-    text-align: center;
-    height: 30px;
-    border-radius: 10px;
-    width: 70%;
-    border: #000000;
-    margin-top: 10px;
-    margin-bottom: 10px;
+.poll-info {
+  text-align: center;
+  height: 30px;
+  border-radius: 10px;
+  width: 70%;
+  border: #000000;
+  margin-top: 10px;
+  margin-bottom: 10px;
 }

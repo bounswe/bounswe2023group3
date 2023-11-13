@@ -1,35 +1,34 @@
 .container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    float: left;
-    background-color: #9DC0C4; 
-    padding: 10px; 
-    border: 1px solid #1b1818; 
-    border-radius: 15px; 
-    width: 200px; 
-    margin: 0 auto; 
-    text-align: left;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  float: left;
+  background-color: #9dc0c4;
+  padding: 10px;
+  border: 1px solid #1b1818;
+  border-radius: 15px;
+  width: 200px;
+  margin: 0 auto;
+  text-align: left;
 }
 
 .image {
-    max-width: 100%;
-    height: 100%;
+  max-width: 100%;
+  height: 100%;
 }
 
 .buttons {
-    margin-top: 20px;
+  margin-top: 20px;
 }
 
 .button {
-    display: block;
-    width: 190px;
-    padding: 10px;
-    margin-bottom: 10px;
-    background-color: #9DC0C4;
-    text-align: center;
-    cursor: pointer;
-    border-radius: 15px; 
-    border: 1px solid #1b1818; 
+  display: block;
+  width: 190px;
+  padding: 10px;
+  margin-bottom: 10px;
+  background-color: #9dc0c4;
+  text-align: center;
+  cursor: pointer;
+  border-radius: 15px;
+  border: 1px solid #1b1818;
 }
-

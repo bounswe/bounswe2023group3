@@ -2,63 +2,103 @@
   <body>
     <div class="page-layout">
       <app-side-bar></app-side-bar>
-      <div class="container" style="position: relative;">
-        <div class="post-widget" style="display: flex; align-items: start;">
+      <div class="container" style="position: relative">
+        <div class="post-widget" style="display: flex; align-items: start">
           <!-- Kullanıcı avatar ve bilgileri -->
         </div>
-        
+
         <!-- Anket oluşturma kısmı -->
-        <div class="poll-create-section" style="text-align: center;">
+        <div class="poll-create-section" style="text-align: center">
           <h2>Create a New Poll Request</h2>
           <form [formGroup]="pollForm">
+            <input
+              class="poll-info"
+              type="text"
+              id="poll-name"
+              name="creator"
+              placeholder="Enter Poll Name"
+            /><br /><br />
 
-            <input class="poll-info" type="text" id="poll-name" name="creator" placeholder="Enter Poll Name"><br><br>
-
-            <input class="poll-info" type="text" id="question" name="creator" 
-            style= "height: 80px;" placeholder="Enter Poll Description"><br><br>
-            
+            <input
+              class="poll-info"
+              type="text"
+              id="question"
+              name="creator"
+              style="height: 80px"
+              placeholder="Enter Poll Description"
+            /><br /><br />
 
             <!-- Add Tags -->
             <div formArrayName="tags">
-            <div *ngFor="let tag of tags.controls; let i = index">
-                <input class="poll-info" [formControlName]="i" type="text" placeholder="Enter a tag">
+              <div *ngFor="let tag of tags.controls; let i = index">
+                <input
+                  class="poll-info"
+                  [formControlName]="i"
+                  type="text"
+                  placeholder="Enter a tag"
+                />
+              </div>
             </div>
+            <div style="display: flex; justify-content: center">
+              <button class="button" (click)="addTag()">Add Tag</button
+              ><br /><br />
             </div>
-            <div style="display: flex; justify-content: center;">
-              <button class="button" (click)="addTag()">Add Tag</button><br><br></div>
-            
+
             <!-- Add Options -->
             <label for="options"><b>Options:</b></label>
             <div formArrayName="options">
-            <div *ngFor="let option of options.controls; let i = index">
-                <input  class="poll-info" [formControlName]="i" type="text" [placeholder]="'Option ' + (i+1)">
+              <div *ngFor="let option of options.controls; let i = index">
+                <input
+                  class="poll-info"
+                  [formControlName]="i"
+                  type="text"
+                  [placeholder]="'Option ' + (i + 1)"
+                />
+              </div>
             </div>
+            <div style="display: flex; justify-content: center">
+              <button class="button" (click)="addOption()">Add Option</button
+              ><br /><br />
             </div>
-            <div style="display: flex; justify-content: center;"><button class="button" (click)="addOption()">Add Option</button><br><br></div>
-            
-            <input class="poll-info" type="text" name="due-date" placeholder="Enter due date"><br><br>
 
-            <br><br>
+            <input
+              class="poll-info"
+              type="text"
+              name="due-date"
+              placeholder="Enter due date"
+            /><br /><br />
 
-            <div style="display: flex; justify-content: center;">
-              <input class="button" type="submit" value="Send for approval" 
-              style="width: 150px; height: 45px; background-color: #2d7665;"(click)="onSubmit()">
-              <input class="button" style="width: 150px; height: 45px;  background-color: #2d7665;" type="submit" value="Cancel" 
-              (click)="reload()">
+            <br /><br />
+
+            <div style="display: flex; justify-content: center">
+              <input
+                class="button"
+                type="submit"
+                value="Send for approval"
+                style="width: 150px; height: 45px; background-color: #2d7665"
+                (click)="onSubmit()"
+              />
+              <input
+                class="button"
+                style="width: 150px; height: 45px; background-color: #2d7665"
+                type="submit"
+                value="Cancel"
+                (click)="reload()"
+              />
             </div>
-            
           </form>
         </div>
 
-    
-
         <!-- Diğer kullanıcı bilgileri ve aktiviteler -->
-        <div class="user-polls" style="display: flex; justify-content: space-between;">
+        <div
+          class="user-polls"
+          style="display: flex; justify-content: space-between"
+        >
           <!-- İçerik -->
         </div>
       </div>
 
-      <div style="display: flex; flex-direction: column;">
+      <div style="display: flex; flex-direction: column">
         <app-ranks-bar></app-ranks-bar>
         <app-badges-bar></app-badges-bar>
       </div>
