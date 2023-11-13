@@ -9,6 +9,7 @@ import 'view/forgetPassword/forgetPassVerifyScreen.dart';
 import 'package:mobile_app/view/homePage/homePage.dart';
 import 'package:mobile_app/services/apiService.dart';
 import 'view/pollRequest/pollRequestScreen.dart';
+import 'view/searchPage/searchPage.dart';
 
 
 void main() async{
@@ -65,6 +66,7 @@ void main() async{
         '/welcome': (context) => const WelcomeScreen(),
         '/sign': (context) => const SignupScreen(),
         '/home': (context) => HomePage(),
+        '/search': (context) => const SearchPage(),
         '/fpassinit': (context) => const ForgetPassInitScreen(),
         '/fpassverify': (context) => const ForgetPassVerifyScreen(),
         '/pollreq': (context) => const PollRequestPage(),
