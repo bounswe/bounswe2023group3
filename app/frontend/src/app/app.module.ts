@@ -22,6 +22,7 @@ import { TagsBarComponent } from './tags-bar/tags-bar.component';
 import { LeaderboardBarComponent } from './leaderboard-bar/leaderboard-bar.component';
 import { PollRequestComponent } from './poll-request/poll-request.component';
 import { PollComponent } from './poll/poll.component';
+import { OthersProfileComponent } from './others-profile/others-profile.component';
 
 @NgModule({
   declarations: [
@@ -39,7 +40,8 @@ import { PollComponent } from './poll/poll.component';
     TagsBarComponent,
     LeaderboardBarComponent,
     PollRequestComponent,
-    PollComponent
+    PollComponent,
+    OthersProfileComponent
   ],
   imports: [
     BrowserModule,

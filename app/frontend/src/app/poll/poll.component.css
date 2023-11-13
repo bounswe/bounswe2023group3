@@ -1,18 +1,8 @@
 body {background-color: #9DC0C4; height: 70%;}
 .container {
     background-color: #63989f; 
-    border-radius: 15px; 
     padding: 20px;
-    margin-top: 15px;
-    margin-bottom: 15px;
-    align-items: center;
-    justify-content: center;
 }
-.image {
-    max-width: 100%;
-    height: 100%;
-}
-
 .button {
     display: block;
     width: 100%;
