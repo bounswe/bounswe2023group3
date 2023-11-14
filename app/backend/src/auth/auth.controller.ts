@@ -39,9 +39,15 @@ export class AuthController {
     return this.authService.resetPassword(resetPasswordDto);
   }
 
-  @UseGuards(AuthGuard, VerificationGuard)
+  @UseGuards(AuthGuard)
   @Get('me')
   getMe(@Req() request: any) {
+    return this.authService.getMe(request.user.id);
+  }
+
+  @UseGuards(AuthGuard, VerificationGuard)
+  @Get('verified-me')
+  getVerifiedMe(@Req() request: any) {
     return this.authService.getMe(request.user.id);
   }
 }

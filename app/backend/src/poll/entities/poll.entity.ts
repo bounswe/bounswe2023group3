@@ -27,11 +27,6 @@ export class Poll {
   @JoinColumn() // Specifying the foreign key column
   creator: Relation<User>;
 
-  //@ManyToOne(() => User) // Establishing the many-to-one relationship
-  //@JoinColumn({ name: 'id' })
-  @Column({ nullable: true })
-  moderator: string;
-
   @ManyToMany(() => Tag)
   @JoinTable()
   tags: Relation<Tag[]>;
