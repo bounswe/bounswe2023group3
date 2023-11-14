@@ -3,7 +3,7 @@ name: Deploy-Backend-to-Compute-Engine
 on:
   push:
     branches:
-      - be-308/auto-deploy-bug-fix
+      - main
     paths:
       - "app/backend/**"
       - ".github/workflows/backend-deploy.yml"
