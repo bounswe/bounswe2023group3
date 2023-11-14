@@ -33,4 +33,4 @@ jobs:
             docker rm app
             docker rmi pollup:backend
             docker build -t pollup:backend .
-            docker run --name app -p 1923:3000 pollup:backend
+            docker run --name app -p 1923:3000 -d pollup:backend
