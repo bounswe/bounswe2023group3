@@ -3,12 +3,11 @@ name: Deploy-Backend-to-Compute-Engine
 on:
   push:
     branches:
-      - main
+      - be-308/auto-deploy-bug-fix
     paths:
-      - 'app/backend/**'
-      - '.github/workflows/backend-deploy.yml'
+      - "app/backend/**"
+      - ".github/workflows/backend-deploy.yml"
 
-      
 jobs:
   deploy:
     name: Deploy to Compute Engine
@@ -30,7 +29,8 @@ jobs:
           EXCLUDE: .env
           SCRIPT_AFTER: |
             cd ~/backend
-            docker build -t pollup:backend .
-            docker stop app
+            docker stop app 
             docker rm app
+            docker rmi pollup:backend
+            docker build -t pollup:backend .
             docker run --name app -p 1923:3000 -d pollup:backend
