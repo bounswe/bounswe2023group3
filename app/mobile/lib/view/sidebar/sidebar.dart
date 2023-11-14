@@ -51,6 +51,16 @@ class Sidebar extends StatelessWidget {
             },
           ),
           ListTile(
+            leading: const Icon(Icons.search),
+            title: const Text('Search'),
+            onTap: () {
+              Navigator.pushReplacementNamed(
+                context,
+                '/search',
+              );
+            },
+          ),
+          ListTile(
             leading: const Icon(Icons.notifications),
             title: const Text('Notifications'),
             onTap: () {
