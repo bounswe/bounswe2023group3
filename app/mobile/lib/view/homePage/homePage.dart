@@ -7,7 +7,6 @@ class HomePage extends StatelessWidget {
   HomePage({super.key});
 
 
-
   final List<PollViewHomePage> posts = [
     PollViewHomePage(userName: "berkecaliskan",
         userUsername: "@berke",
@@ -19,7 +18,10 @@ class HomePage extends StatelessWidget {
         postOptions: ["Fenerbahçe", "Galatasaray"],
         likeCount: 13,
         dateTime: "12:01",
-        comments: [CommentData(user: "real_elijah", commentText: "mazinde bir tarih yatar")]),
+        comments: [
+          CommentData(
+              user: "real_elijah", commentText: "mazinde bir tarih yatar")
+        ]),
     const PollViewHomePage(userName: "elijahwood",
         userUsername: "@real_elijah",
         profilePictureUrl: "https://m.media-amazon.com/images/M/MV5BMTM0NDIxMzQ5OF5BMl5BanBnXkFtZTcwNzAyNTA4Nw@@._V1_FMjpg_UX1000_.jpg",
@@ -44,13 +46,26 @@ class HomePage extends StatelessWidget {
         comments: []),
   ];
 
-  void tapOnPoll(BuildContext context, userName, userUsername, profilePictureUrl, postTitle, tags, tagColors, voteCount, postOptions, likeCount, dateTime, comments){
+  void tapOnPoll(BuildContext context, userName, userUsername,
+      profilePictureUrl, postTitle, tags, tagColors, voteCount, postOptions,
+      likeCount, dateTime, comments) {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => PollPage(userName: userName, userUsername: userUsername, profilePictureUrl: profilePictureUrl, postTitle: postTitle, tags: tags, tagColors: tagColors, voteCount: voteCount, postOptions: postOptions, likeCount: likeCount, dateTime: dateTime, comments: comments),
-        ),
-      );
+        builder: (context) =>
+            PollPage(userName: userName,
+                userUsername: userUsername,
+                profilePictureUrl: profilePictureUrl,
+                postTitle: postTitle,
+                tags: tags,
+                tagColors: tagColors,
+                voteCount: voteCount,
+                postOptions: postOptions,
+                likeCount: likeCount,
+                dateTime: dateTime,
+                comments: comments),
+      ),
+    );
   }
 
   @override
@@ -62,7 +77,6 @@ class HomePage extends StatelessWidget {
       drawer: const Sidebar(), // Use the custom drawer widget
       body: Column(
         children: [
-          // Scrollable Post Section
           Expanded(
             child: ListView.separated(
               separatorBuilder: (context, index) => const SizedBox(height: 20), // Add spacing between posts
@@ -70,11 +84,10 @@ class HomePage extends StatelessWidget {
               itemCount: posts.length,
               itemBuilder: (context, index) {
                 final post = posts[index];
+                double postHeight = calculatePostHeight(post);
                 return SizedBox(
-                    width: 50,
-                    height: 500,
-                    child: GestureDetector(
-                      onTap: (){tapOnPoll(context, post.userName,
+                  child: GestureDetector(
+                    onTap: (){tapOnPoll(context, post.userName,
                         post.userUsername,
                         post.profilePictureUrl,
                         post.postTitle,
@@ -85,19 +98,22 @@ class HomePage extends StatelessWidget {
                         post.likeCount,
                         post.dateTime,
                         post.comments);},
+                    child: SizedBox(
+                      height: postHeight,
                       child: PollViewHomePage(userName: post.userName,
-                              userUsername: post.userUsername,
-                              profilePictureUrl: post.profilePictureUrl,
-                              postTitle: post.postTitle,
-                              tags: post.tags,
-                              tagColors: post.tagColors,
-                              voteCount: post.voteCount,
-                              postOptions: post.postOptions,
-                              likeCount: post.likeCount,
-                              dateTime: post.dateTime,
-                              comments: post.comments,
+                        userUsername: post.userUsername,
+                        profilePictureUrl: post.profilePictureUrl,
+                        postTitle: post.postTitle,
+                        tags: post.tags,
+                        tagColors: post.tagColors,
+                        voteCount: post.voteCount,
+                        postOptions: post.postOptions,
+                        likeCount: post.likeCount,
+                        dateTime: post.dateTime,
+                        comments: post.comments,
                       ),
                     ),
+                  ),
                 );
               },
             ),
@@ -106,4 +122,25 @@ class HomePage extends StatelessWidget {
       ),
     );
   }
+
+  double calculatePostHeight(PollViewHomePage post) {
+    if (post == null) {
+      // Handle null case
+      return 0;
+    }
+    double height = 0;
+
+    // Add the heights of various components within PollViewHomePage
+    height += 150;
+    height += post.postOptions.length * 65; // Assuming a fixed height for each option
+    height += 100; // Adjust as needed for padding or spacing
+    height += 50; // Adjust as needed for the Like button
+    height += 50; // Adjust as needed for the Row with LikeCount and DateTime
+    height += 30; // Adjust as needed for padding or spacing
+    height += 16; // Adjust as needed for the 'Comments' text
+
+    return height;
+  }
+
+
 }
