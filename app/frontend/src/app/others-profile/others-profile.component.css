@@ -1,0 +1,10 @@
+.container {
+  align-items: center;
+  width: 100%;
+}
+
+.button {
+  width: 120px;
+  margin-top: 10px;
+  margin-right: 10px;
+}

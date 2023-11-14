@@ -1,5 +1,8 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsArray, IsNotEmpty, IsString, IsUUID } from 'class-validator';
+import { Option } from '../../option/entities/option.entity';
+import { Tag } from '../../tag/entities/tag.entity';
+import { User } from '../../user/entities/user.entity';
 
 export class CreatePollDto {
   @ApiProperty({
@@ -7,7 +10,7 @@ export class CreatePollDto {
   })
   @IsNotEmpty()
   @IsUUID()
-  creator: string;
+  creator: User;
 
   @ApiProperty({
     example:
@@ -28,4 +31,10 @@ export class CreatePollDto {
   })
   @IsArray()
   options: Array<string>;
+
+  @ApiProperty({
+    example: '2023-05-19T15:23:46.789Z',
+  })
+  @IsNotEmpty()
+  due_date: Date;
 }

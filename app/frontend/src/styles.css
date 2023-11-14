@@ -1,12 +1,128 @@
-/* You can add global styles to this file, and also import other style files */
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; background-color: #202A40;}
+html,
+body {
+  height: 100%;
+}
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+  background-color: #202a40;
+}
 
 ::-webkit-scrollbar {
-    width: 10px;
-  }
-  
-  ::-webkit-scrollbar-thumb {
-    background-color: #007bff; /* Change to your desired color */
-  }
-  
+  width: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #2f3e5e;
+}
+
+.container {
+  background-color: #9dc0c4;
+  padding: 10px;
+  border-radius: 20px;
+  text-align: left;
+  margin-top: 20px;
+  margin-bottom: 15px;
+}
+
+.image {
+  max-width: 100%;
+  height: 100%;
+}
+
+.buttons {
+  margin-top: 20px;
+  padding: 5px;
+}
+
+.buttons::-webkit-scrollbar {
+  width: 3px;
+  box-shadow: inset 0 0 3px #645858;
+}
+
+.buttons::-webkit-scrollbar-thumb {
+  background: rgb(37, 37, 43);
+  border-radius: 5px;
+}
+
+.button {
+  display: block;
+  width: 190px;
+  padding: 10px;
+  margin-bottom: 10px;
+  background-color: #9dc0c4;
+  text-align: center;
+  cursor: pointer;
+  border-radius: 15px;
+  border: 1px solid #1b1818;
+}
+
+.page-layout {
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+  width: 100%;
+}
+
+.user-polls-column {
+  height: 40px;
+  border: 2px solid #000000;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  flex: 1;
+  background-color: #9dc0c4;
+  cursor: pointer;
+}
+
+.user-polls-column:hover {
+  background-color: #779295;
+}
+
+.poll {
+  display: flex;
+  flex-direction: column;
+  background-color: #7fb7be;
+  border-radius: 15px;
+  width: 80%;
+  padding: 10%;
+  height: 120px;
+  margin-top: 15px;
+  margin-bottom: 15px;
+  align-items: center;
+  justify-content: center;
+}
+
+.follow-text {
+  display: inline-block;
+  border-bottom: 2px solid #000;
+  margin-bottom: 5px;
+}
+
+.user-polls {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  border: 2px solid #000000;
+  margin-bottom: 20px;
+  height: 40px;
+  align-items: center;
+  text-align: center;
+}
+
+.post-content {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  margin-left: 5px;
+}
+
+.poll-info {
+  text-align: center;
+  height: 30px;
+  border-radius: 10px;
+  width: 70%;
+  border: #000000;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}

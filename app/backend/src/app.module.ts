@@ -8,8 +8,10 @@ import { AuthModule } from './auth/auth.module';
 import { MailerModule } from '@nestjs-modules/mailer';
 import { PollModule } from './poll/poll.module';
 import { Poll } from './poll/entities/poll.entity';
-import { Tag } from './poll/entities/tag.entity';
-import { Option } from './poll/entities/option.entity';
+import { Tag } from './tag/entities/tag.entity';
+import { Option } from './option/entities/option.entity';
+import { TagModule } from './tag/tag.module';
+import { OptionModule } from './option/option.module';
 
 @Module({
   imports: [
@@ -44,6 +46,8 @@ import { Option } from './poll/entities/option.entity';
     UserModule,
     AuthModule,
     PollModule,
+    TagModule,
+    OptionModule,
   ],
   controllers: [AppController],
   providers: [AppService],

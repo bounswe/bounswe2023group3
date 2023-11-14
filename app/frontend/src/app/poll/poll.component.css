@@ -1,0 +1,19 @@
+body {
+  background-color: #9dc0c4;
+  height: 70%;
+}
+.container {
+  background-color: #63989f;
+  padding: 20px;
+}
+.button {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  background-color: #9dc0c4;
+  text-align: center;
+  cursor: pointer;
+  border-radius: 15px;
+  border: 1px solid #1b1818;
+}

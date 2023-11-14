@@ -18,7 +18,10 @@ export class UserService {
   }
 
   public async findUserById(id: string): Promise<User> {
-    return await this.userRepository.findOneBy({ id });
+    return await this.userRepository.findOne({ 
+      where: {id: id},
+      relations: ['polls'],
+    });
   }
 
   public async createUser(user: CreateUserDto): Promise<User> {
@@ -37,7 +40,9 @@ export class UserService {
   }
 
   public async findAll(): Promise<User[]> {
-    return await this.userRepository.find();
+    return await this.userRepository.find({
+      relations: ['polls'],
+    });
   }
 
   public async verifyUser(email: string): Promise<void> {
