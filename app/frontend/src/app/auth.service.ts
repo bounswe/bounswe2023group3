@@ -7,7 +7,7 @@ import { catchError, tap } from 'rxjs/operators'
   providedIn: 'root',
 })
 export class AuthService {
-  private apiUrl = 'http://51.20.129.231:1923/auth' // Replace with your API endpoint
+  private apiUrl = 'http://34.105.66.254:1923/auth' // Replace with your API endpoint
 
   constructor(private http: HttpClient) {}
 
@@ -25,6 +25,13 @@ export class AuthService {
     return this.http
       .post<any>(`${this.apiUrl}/register`, user)
       .pipe(catchError(this.handleError('Registration', {})))
+  }
+
+  resetPassword(resetPasswordToken: number, email: string, password: string): Observable<any> {
+    const user = { resetPasswordToken, email, password }
+    return this.http
+      .post<any>(`${this.apiUrl}/reset-password`, user)
+      .pipe(catchError(this.handleError('Reset Password', {})))
   }
 
   // Handle errors
