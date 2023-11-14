@@ -7,6 +7,7 @@ import 'view/signup/signupScreen.dart';
 import 'view/forgetPassword/forgetPassInitScreen.dart';
 import 'view/forgetPassword/forgetPassVerifyScreen.dart';
 import 'package:mobile_app/view/homePage/homePage.dart';
+import 'package:mobile_app/view/moderatorHomePage/moderatorHomePage.dart';
 import 'package:mobile_app/services/apiService.dart';
 import 'view/pollRequest/pollRequestScreen.dart';
 
@@ -69,6 +70,7 @@ void main() async{
         '/fpassverify': (context) => const ForgetPassVerifyScreen(),
         '/pollreq': (context) => const PollRequestPage(),
         '/signverify': (context) => const SignVerifyScreen(),
+        '/moderatorHome': (context) => ModeratorHomePage(),
       },
   ));
 }
