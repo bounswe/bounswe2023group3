@@ -2,7 +2,7 @@ import { ConflictException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './entities/user.entity';
 import { Repository } from 'typeorm';
-import { CreateUserDto } from './dto/create-user.dto';
+import { CreateUserDto, FollowUserDto } from './dto/create-user.dto';
 
 @Injectable()
 export class UserService {
@@ -41,7 +41,7 @@ export class UserService {
 
   public async findAll(): Promise<User[]> {
     return await this.userRepository.find({
-      relations: ['polls'],
+      relations: ['polls','followings'],
     });
   }
 
@@ -52,6 +52,40 @@ export class UserService {
         isVerified: true,
       },
     );
+  }
+
+  public async followUser(followDto: FollowUserDto): Promise<void>{
+    
+    if(followDto.followerUserID === followDto.followerUserID){
+      throw new ConflictException('Users cannot follow themselves');
+    }
+    let followingUser : User= await this.userRepository.findOne({ 
+      where: {id: followDto.followingUserID},
+
+    });
+    let followerUser : User = await this.userRepository.findOne({ 
+      where: {id: followDto.followerUserID},
+      relations:['polls','followings']
+    });
+
+    followerUser.followings = followerUser.followings ?? [];
+    followerUser.followings.push(followingUser);
+    await this.userRepository.save(followerUser);
+  }
+
+  public async unfollowUser(followDto: FollowUserDto): Promise<void>{
+    
+    let followerUser : User = await this.userRepository.findOne({ 
+      where: {id: followDto.followerUserID},
+      relations:['polls','followings']
+    });
+    followerUser.followings = followerUser.followings ?? [];
+    const indexToRemove = followerUser.followings.findIndex((user) => user.id === followDto.followingUserID);
+    if(indexToRemove===-1){
+      throw new ConflictException('Currently not following');
+    }
+    followerUser.followings.splice(indexToRemove, 1);
+    await this.userRepository.save(followerUser);
   }
 
   public async updateById(id: string, updateUserDto: any): Promise<void> {
