@@ -5,4 +5,10 @@
   float: left;
   text-align: left;
   margin-left: 20px;
+  width: 200px;
+}
+
+.button {
+  background-color: #63989f;
+  border: none;
 }

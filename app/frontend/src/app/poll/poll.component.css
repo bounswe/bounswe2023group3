@@ -1,10 +1,13 @@
 body {
   background-color: #9dc0c4;
   height: 70%;
+  margin: 0;
+  padding: 0;
 }
 .container {
   background-color: #63989f;
   padding: 20px;
+  margin: 0;
 }
 .button {
   display: block;
@@ -15,5 +18,5 @@ body {
   text-align: center;
   cursor: pointer;
   border-radius: 15px;
-  border: 1px solid #1b1818;
+  border: none;
 }

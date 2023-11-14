@@ -5,4 +5,9 @@
   float: left;
   width: 200px;
   margin-right: 20px;
+  min-height: 200px;
+}
+.button {
+  border: none;
+  color: #fff;
 }
