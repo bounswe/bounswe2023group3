@@ -27,7 +27,11 @@ export class AuthService {
       .pipe(catchError(this.handleError('Registration', {})))
   }
 
-  resetPassword(resetPasswordToken: number, email: string, password: string): Observable<any> {
+  resetPassword(
+    resetPasswordToken: number,
+    email: string,
+    password: string,
+  ): Observable<any> {
     const user = { resetPasswordToken, email, password }
     return this.http
       .post<any>(`${this.apiUrl}/reset-password`, user)
