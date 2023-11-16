@@ -1,0 +1,132 @@
+/* Reset default margin and padding */
+html,
+body,
+h1,
+h2,
+h3,
+p,
+ul,
+li {
+  margin: 0;
+  padding: 0;
+}
+
+body,
+html,
+#background {
+  width: 100vw;
+  min-height: 100vh;
+  background-color: #202a40;
+}
+
+/* Set the font family for the entire page */
+body {
+  background-color: #202a40;
+  font-family: Arial, sans-serif;
+}
+
+/* Page Layout Styles */
+.page-layout {
+    display: flex;
+  }
+
+.poll-container {
+    width: 600px;
+    height: 90%;
+    background-color: #9dc0c4;
+    text-align: center;
+    padding-top: 40px;
+    padding-right: 40px;
+    padding-left: 40px;
+    padding-bottom: 40px;
+    border-radius: 20px;
+    margin: 0 auto;
+    margin-top: 20px;
+}
+
+.poll-comments {
+    background-color: #232f44;
+    text-align: right;
+    padding: 30px;
+    border-radius: 20px;
+    max-width: 1000px;
+    margin: 0 auto;
+    margin-top: 20px;
+}
+
+.poll-comments input[type='comment'] {
+    width: calc(100% - 40px);
+    padding: 30px 30px;
+    border-color: #232f44;
+    border: none;
+    border-radius: 12px;
+    font-size: 16px;
+    background-color: #f4eae6;
+    color: #232f44;
+    padding-left: 10px;
+}
+
+/* Button Styles */
+button[type='submit'] {
+    background-color: #30568f;
+    color: #f4eae6;
+    border: none;
+    border-radius: 20px;
+    padding: 10px 20px;
+    margin-top: 10px;
+    margin-bottom: 15px;
+    cursor: pointer;
+    font-size: 12px;
+  }
+  
+  button[type='submit']:hover {
+    background-color: #232f44;
+  }
+
+.all-comments-container {
+    width: calc(100% - 5px);
+}
+
+.comment-wrapper {
+    text-align: left;
+    margin-bottom: 20px;
+    padding: 10px;
+    background-color: #e1e8ed;
+    border-radius: 12px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+  }
+
+.comment-list {
+    list-style: none;
+    padding: 0;
+}
+
+.comment-list li {
+    border-bottom: 1px solid #e1e8ed;
+    padding-bottom: 15px;
+    margin-bottom: 15px;
+}
+
+.comment-user {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.comment-user img {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.comment-user p {
+    font-size: 14px;
+    color: #555;
+  }
+  
+  .comment-wrapper p {
+    font-size: 16px;
+    line-height: 1.4;
+    color: #333;
+  }

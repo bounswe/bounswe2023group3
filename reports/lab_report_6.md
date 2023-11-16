@@ -12,6 +12,8 @@
 | Implement Poll View | [#277](https://github.com/bounswe/bounswe2023group3/issues/277) | FE/Beyza | 14.11.2023 | [#277](https://github.com/bounswe/bounswe2023group3/issues/277), [#332](https://github.com/bounswe/bounswe2023group3/pull/332)  | 2.5hr | 2hr |
 | Implement Other's Profile View  | [#278](https://github.com/bounswe/bounswe2023group3/issues/278) | FE/Serra, FE/Ali | 14.11.2023 | [#298](https://github.com/bounswe/bounswe2023group3/pull/298) | 1hr | 1hr |
 | Implement Detailed Tag Page | [#279](https://github.com/bounswe/bounswe2023group3/issues/279) | FE/Ali | 14.11.2023 | --- | 2hr | 2hr |
+| Implement Other's Profile View  | [#278](https://github.com/bounswe/bounswe2023group3/issues/278) | FE/Serra, FE/Ali | 14.11.2023 | [#278](https://github.com/bounswe/bounswe2023group3/issues/278) | 1hr | 1hr |
+| Implement Detailed Tag Page | [#279](https://github.com/bounswe/bounswe2023group3/issues/279) | FE/Ali | 14.11.2023 | [#279](https://github.com/bounswe/bounswe2023group3/issues/279) | 2hr | 2hr |
 | Reviewing our work according to Milestone 1 feedback | [#280](https://github.com/bounswe/bounswe2023group3/issues/280) | Frontend Team | 14.11.2023 | [#280](https://github.com/bounswe/bounswe2023group3/issues/280) | 1hr | 2hr |
 | Modify our code according to Prettier Format  | [#281](https://github.com/bounswe/bounswe2023group3/issues/281) | FE/Berk | 14.11.2023 | [#304](https://github.com/bounswe/bounswe2023group3/pull/304) | 2hr | 1hr |
 | Modify CSS and HTML files to prevent redundancy | [#282](https://github.com/bounswe/bounswe2023group3/issues/282) | Frontend Team | 14.11.2023 | [#282](https://github.com/bounswe/bounswe2023group3/issues/282) | 1hr | 1hr |
@@ -30,7 +32,6 @@
 
 ## Planned vs. Actual
 My adding many to many relationship task([#284](https://github.com/bounswe/bounswe2023group3/issues/284)) is done later than planned time but it is done before the lab.(Batuhan İlhan)
-
 Detailed tag page given in [#279](https://github.com/bounswe/bounswe2023group3/issues/279) was not implemented. It will be added to the new plans after this week, and will be completed before the second milestone.
 
 ## Your plans for the next week

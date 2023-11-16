@@ -22,7 +22,7 @@ export class ForgetpasswordComponent {
 
     // Send a POST request to the backend for authentication
     this.http
-      .post('http://51.20.129.231:1923/auth/forgot-password', userCredentials)
+      .post('http://34.105.66.254:1923/auth/forgot-password', userCredentials)
       .subscribe(
         (response: any) => {
           // Authentication successful, you can handle the response here
