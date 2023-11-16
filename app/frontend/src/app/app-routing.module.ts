@@ -9,6 +9,7 @@ import { ResetPasswordComponent } from './resetpassword/resetpassword.component'
 import { HomeComponent } from './home/home.component'
 import { PollRequestComponent } from './poll-request/poll-request.component'
 import { OthersProfileComponent } from './others-profile/others-profile.component'
+import { PollViewComponent } from './poll-view/poll-view.component'
 
 const routes: Routes = [
   { path: '', component: WelcomeComponent },
@@ -21,6 +22,7 @@ const routes: Routes = [
   { path: 'app-home', component: HomeComponent },
   { path: 'app-poll-request', component: PollRequestComponent },
   { path: 'app-others-profile', component: OthersProfileComponent },
+  { path: 'app-poll-view', component: PollViewComponent },
 ]
 
 @NgModule({

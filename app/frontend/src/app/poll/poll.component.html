@@ -4,7 +4,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
         .button.clicked {
-          background-color:rgb(162, 92, 227) !important;
+          background-color:#B74F6F !important;
           color: white;
         }
       </style>
@@ -13,20 +13,20 @@
     <div class="container" style="position: relative; ">
         <div class="post-widget" style="display: flex; align-items: start;">
             <img class="user-avatar" src="assets/unknown.jpg"
-             alt="User Avatar" style="width:50px; height:50px;border-radius: 50%; margin-right: 5px;">
+             alt="User Avatar" style="width:50px; height:50px;border-radius: 50%; margin-right: 5px;margin-top: 5px;">
             <div class="post-content" style="display: flex; flex-direction: column; align-items: start;
             margin-left: 5px;">
-                <b class="name" style=" font-size:small;">Jane</b>
-                <p class="user-name" style="margin-top:2px;">&#64;janesmith</p>
+                <b class="name" style=" font-size:small; margin-top: 12px;">Jane</b>
+                <p class="user-name" style="font-size:small;margin-top:3px;">&#64;janesmith</p>
             </div>
         </div>
         <h3>Who will be the next James Bond?</h3>
         <div style="display: flex; justify-content: space-between;">
             <div>
-                <button style="width: 120px; height: 25px; background-color: rgb(231, 146, 85); cursor: pointer; 
-            border-radius: 15px;  border: 1px solid #1b1818; font-size: smaller; margin-bottom: 10px;margin-right: 5px;">Movies</button>
-            <button style="width: 120px; height: 25px; background-color: rgb(180, 231, 85); cursor: pointer; 
-            border-radius: 15px;  border: 1px solid #1b1818; font-size: smaller; margin-bottom: 10px;">Trending</button>
+                <button style="width: 120px; height: 25px; background-color: #DA9F93; cursor: pointer; 
+            border-radius: 15px; font-size: smaller; margin-bottom: 10px;margin-right: 5px;">Movies</button>
+            <button style="width: 120px; height: 25px; background-color: #C5D86D; cursor: pointer; 
+            border-radius: 15px; font-size: smaller; margin-bottom: 10px;">Trending</button>
             </div>
             
             <p style="text-align: right; font-size: smaller;">1567 Votes</p>    
@@ -37,8 +37,8 @@
         <button class="button" #button3 id = "button3" (click)="toggleButton(button3)" [disabled]="selectedButton != null && selectedButton != button3">Other</button>
 
         <div style="display: flex; justify-content: space-between; ">
-            <button style="width: 100px; height: 35px; background-color: rgb(82, 190, 244); cursor: pointer; 
-            border-radius: 15px;  border: 1px solid #1b1818; font-size: smaller; margin-bottom: 10px; margin-top: 20px;">Like</button>
+            <button style="width: 100px; height: 35px; background-color: #187795; color: #fff; cursor: pointer; 
+            border-radius: 15px; font-size: smaller; margin-bottom: 10px; margin-top: 20px; border: none;">Like</button>
             <p style="text-align: center; margin-right: 170px; margin-left: 100px;">52 Comments</p>
             <p style="text-align: right;">3d</p>
         </div>

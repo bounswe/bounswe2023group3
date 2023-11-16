@@ -4,6 +4,7 @@
   align-items: center;
   float: left;
   width: 200px;
+  min-height: 200px;
   text-align: left;
   margin-top: 10px;
 }

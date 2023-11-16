@@ -1,5 +1,6 @@
 <html lang="en">
   <body>
+    <app-header></app-header>
     <div class="page-layout">
       <app-side-bar></app-side-bar>
       <div class="container" style="position: relative">
@@ -63,7 +64,7 @@
 
             <input
               class="poll-info"
-              type="text"
+              type="date"
               name="due-date"
               placeholder="Enter due date"
             /><br /><br />
@@ -75,12 +76,12 @@
                 class="button"
                 type="submit"
                 value="Send for approval"
-                style="width: 150px; height: 45px; background-color: #2d7665"
+                style="width: 150px; height: 45px; background-color: #E57F84"
                 (click)="onSubmit()"
               />
               <input
                 class="button"
-                style="width: 150px; height: 45px; background-color: #2d7665"
+                style="width: 150px; height: 45px; background-color: 30568f"
                 type="submit"
                 value="Cancel"
                 (click)="reload()"
@@ -90,10 +91,7 @@
         </div>
       </div>
 
-      <div style="display: flex; flex-direction: column">
-        <app-ranks-bar></app-ranks-bar>
-        <app-badges-bar></app-badges-bar>
-      </div>
+      
     </div>
   </body>
 </html>
