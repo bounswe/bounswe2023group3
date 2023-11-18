@@ -23,8 +23,8 @@
                     <button class="user-polls-column">Voted</button>
                 </div>
                 <div>
-                    <app-poll></app-poll>
-                </div>   
+                    <app-poll *ngFor="let poll of polls" [pollId]="poll.id"></app-poll>
+                  </div>
             </div>
             <div style="display: flex; flex-direction: column;">
                 <app-ranks-bar></app-ranks-bar>

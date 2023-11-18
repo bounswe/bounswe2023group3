@@ -1,6 +1,7 @@
-import { Component } from '@angular/core'
+import { Component, OnInit } from '@angular/core'
 import { HttpClient } from '@angular/common/http'
 import { Router } from '@angular/router'
+import { AuthService } from '../auth.service'
 
 @Component({
   selector: 'app-login',
@@ -8,35 +9,38 @@ import { Router } from '@angular/router'
   styleUrls: ['./login.component.css'],
 })
 export class LoginComponent {
-  email!: string
-  password!: string
   errorMessage: string = ''
+  email: string = ''; 
+  password: string = '';
 
   constructor(
     private http: HttpClient,
     private router: Router,
-  ) {}
+    private authService: AuthService,
+  ) {
+  }
 
   onSubmit() {
-    const userCredentials = {
-      email: this.email,
-      password: this.password,
-    }
+      const userCredentials = {
+        email: this.email,
+        password: this.password,
+      };
+    
 
-    // Send a POST request to the backend for authentication
-    this.http
-      .post('http://51.20.129.231:1923/auth/login', userCredentials)
-      .subscribe(
-        (response: any) => {
-          // Authentication successful, you can handle the response here
-          console.log('Login successful')
+      this.authService.login(userCredentials.email, userCredentials.password).subscribe(
+        (response) => {
+          // Registration successful, handle the response as needed
+          console.log('Login success:', response)
+          this.errorMessage = 'Login success'
           this.router.navigate(['/app-home'])
         },
         (error) => {
-          // Authentication failed, handle the error
-          console.error('Login failed')
-          this.errorMessage = 'Invalid email or password' // Display an error message
+          // Registration failed, handle the error as needed
+          console.error('Login error:', error)
+          this.errorMessage = 'Invalid email or password'
         },
       )
+
   }
+
 }

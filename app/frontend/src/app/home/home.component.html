@@ -11,7 +11,7 @@
           >
             Ongoing
           </button>
-          <button class="button" style="width: 100px; display: inline-block; background-color: #232F44;">Settled</button>
+          <button class="button" style="width: 100px; display: inline-block; background-color: #374968;">Settled</button>
         </div>
 
         <form
@@ -32,8 +32,9 @@
         </div>
 
         <div>
-          <app-poll></app-poll>
+          <app-poll *ngFor="let poll of polls" [pollId]="poll.id"></app-poll>
         </div>
+        
       </div>
       <div style="display: flex; flex-direction: column">
         <app-tags-bar></app-tags-bar>

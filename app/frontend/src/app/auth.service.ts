@@ -7,7 +7,8 @@ import { catchError, tap } from 'rxjs/operators'
   providedIn: 'root',
 })
 export class AuthService {
-  private apiUrl = 'http://34.105.66.254:1923/auth' // Replace with your API endpoint
+  loggedIn!: boolean;
+  private apiUrl = 'http://34.105.66.254:1923/auth'
 
   constructor(private http: HttpClient) {}
 
@@ -16,7 +17,10 @@ export class AuthService {
     const credentials = { email, password }
     return this.http
       .post<any>(`${this.apiUrl}/login`, credentials)
-      .pipe(catchError(this.handleError('Login', {})))
+      .pipe(tap((response: any) => {
+        localStorage.setItem('authToken', response.access_token);
+        this.loggedIn = true
+      }),catchError(this.handleError('Login', {})))
   }
 
   // User registration
@@ -41,5 +45,9 @@ export class AuthService {
       // Handle the error, e.g., display a user-friendly message
       return of(result as T)
     }
+  }
+  
+  isLoggedIn(){
+    return this.loggedIn;
   }
 }
