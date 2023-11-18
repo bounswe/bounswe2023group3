@@ -1,34 +1,57 @@
 <html lang="en">
-    <body>
-        <app-header></app-header>
-        <div class="page-layout">
-            <app-side-bar ></app-side-bar>
-            <div class="container" style="position: relative;margin-bottom: 80px;padding-right: 20px; padding-left: 20px;padding-bottom: 30px; padding-top: 20px;">
-                <div class="post-widget" style="display: flex; align-items: start;">
-                    <img class="user-avatar-style" src="assets/unknown.jpg" alt="User Avatar">
-                    <div class="post-content">
-                        <b class="name" style=" font-size:xx-large; padding-top: 10px;">John Doe</b>
-                        <p class="user-name" style="margin-top:2px;">@johndoe</p>
-                    </div>
-                </div>
-                <button class="button" style="background-color: #E57F84; border: none;color: #fff;">FOLLOW</button>
-                <div style="margin-bottom: 15px; margin-top: 10px; text-align: center;">
-                    <p class="follow-text" style="margin-right: 100px;"> <b>256</b> followings</p>
-                    <p class="follow-text"> <b>10k</b> followers</p>
-                </div>
-                <div class="user-polls">
-                    <button class="user-polls-column">Created</button>
-                    <button class="user-polls-column">Liked</button>
-                    <button class="user-polls-column">Voted</button>
-                </div>
-                <div>
-                    <app-poll></app-poll>
-                </div>   
-            </div>
-            <div class="flex-column">
-                <app-ranks-bar></app-ranks-bar>
-                <app-badges-bar></app-badges-bar>
-            </div>
+  <body>
+    <app-header></app-header>
+    <div class="page-layout">
+      <app-side-bar></app-side-bar>
+      <div
+        class="container"
+        style="
+          position: relative;
+          margin-bottom: 80px;
+          padding-right: 20px;
+          padding-left: 20px;
+          padding-bottom: 30px;
+          padding-top: 20px;
+        "
+      >
+        <div class="post-widget" style="display: flex; align-items: start">
+          <img
+            class="user-avatar-style"
+            src="assets/unknown.jpg"
+            alt="User Avatar"
+          />
+          <div class="post-content">
+            <b class="name" style="font-size: xx-large; padding-top: 10px"
+              >John Doe</b
+            >
+            <p class="user-name" style="margin-top: 2px">&#64;johndoe</p>
+          </div>
         </div>
-    </body>
+        <button
+          class="button"
+          style="background-color: #e57f84; border: none; color: #fff"
+        >
+          FOLLOW
+        </button>
+        <div style="margin-bottom: 15px; margin-top: 10px; text-align: center">
+          <p class="follow-text" style="margin-right: 100px">
+            <b>256</b> followings
+          </p>
+          <p class="follow-text"><b>10k</b> followers</p>
+        </div>
+        <div class="user-polls">
+          <button class="user-polls-column">Created</button>
+          <button class="user-polls-column">Liked</button>
+          <button class="user-polls-column">Voted</button>
+        </div>
+        <div>
+          <app-poll *ngFor="let poll of polls" [pollId]="poll.id"></app-poll>
+        </div>
+      </div>
+      <div class="flex-column">
+        <app-ranks-bar></app-ranks-bar>
+        <app-badges-bar></app-badges-bar>
+      </div>
+    </div>
+  </body>
 </html>

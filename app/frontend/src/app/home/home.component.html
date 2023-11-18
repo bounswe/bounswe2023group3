@@ -7,11 +7,25 @@
         <div style="text-align: right">
           <button
             class="button"
-            style="width: 100px; display: inline-block; margin-right: 5px; background-color: #63989f;"
+            style="
+              width: 100px;
+              display: inline-block;
+              margin-right: 5px;
+              background-color: #63989f;
+            "
           >
             Ongoing
           </button>
-          <button class="button" style="width: 100px; display: inline-block; background-color: #232F44;">Settled</button>
+          <button
+            class="button"
+            style="
+              width: 100px;
+              display: inline-block;
+              background-color: #374968;
+            "
+          >
+            Settled
+          </button>
         </div>
 
         <form
@@ -32,7 +46,7 @@
         </div>
 
         <div>
-          <app-poll></app-poll>
+          <app-poll *ngFor="let poll of polls" [pollId]="poll.id"></app-poll>
         </div>
       </div>
       <div style="display: flex; flex-direction: column">

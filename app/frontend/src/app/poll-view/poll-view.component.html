@@ -1,52 +1,41 @@
-
 <!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   </head>
-<body>
+  <body>
     <app-header></app-header>
     <div class="page-layout">
-                
-        <div class="poll-container">
-            <app-poll></app-poll>
-            <div class="poll-comments">
-                <div class="comment-input-container">
-                    <input type="comment" placeholder="Add a comment...">
-                    <button type="submit">Comment</button>
-                  </div>
-                <div class="all-comments-container">
-                    <div class="comment-wrapper">
-                        <div class="comment-user">
-                            <img src="user-avatar.png" alt="User Avatar">
-                            <span class="user-info">
-                                <p>@himily • Date</p>
-                            </span>
-                        </div>
-                        <p>Theo James for sure bro</p>
-                    </div>
-                    <div class="comment-wrapper">
-                        <div class="comment-user">
-                            <img src="user-avatar.png" alt="User Avatar">
-                            <span class="user-info">
-                                <p>@bradium • Date</p>
-                            </span>
-                        </div>
-                        <p>Fun poll!</p>
-                    </div>
-
-                </div>
-        </div>  
+      <div class="poll-container">
+        <app-poll [pollId]="pollId"></app-poll>
+        <div class="poll-comments">
+          <div class="comment-input-container">
+            <input type="comment" placeholder="Add a comment..." />
+            <button type="submit">Comment</button>
+          </div>
+          <div class="all-comments-container">
+            <div class="comment-wrapper">
+              <div class="comment-user">
+                <img src="user-avatar.png" alt="User Avatar" />
+                <span class="user-info">
+                  <p>&#64;himily • Date</p>
+                </span>
+              </div>
+              <p>Theo James for sure bro</p>
+            </div>
+            <div class="comment-wrapper">
+              <div class="comment-user">
+                <img src="user-avatar.png" alt="User Avatar" />
+                <span class="user-info">
+                  <p>&#64;bradium • Date</p>
+                </span>
+              </div>
+              <p>Fun poll!</p>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-        
-    
-
-
-
-
-
-
-    </div>
-</body>
+  </body>
 </html>
