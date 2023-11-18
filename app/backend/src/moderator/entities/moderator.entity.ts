@@ -15,7 +15,7 @@ import {
 const SALT_ROUNDS = 10;
 
 @Entity('moderators')
-export class User {
+export class Moderator {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
