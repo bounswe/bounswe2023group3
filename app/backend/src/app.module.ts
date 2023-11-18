@@ -12,6 +12,7 @@ import { Tag } from './tag/entities/tag.entity';
 import { Option } from './option/entities/option.entity';
 import { TagModule } from './tag/tag.module';
 import { OptionModule } from './option/option.module';
+import { ModeratorModule } from './moderator/moderator.module';
 
 @Module({
   imports: [
@@ -48,6 +49,7 @@ import { OptionModule } from './option/option.module';
     PollModule,
     TagModule,
     OptionModule,
+    ModeratorModule,
   ],
   controllers: [AppController],
   providers: [AppService],
