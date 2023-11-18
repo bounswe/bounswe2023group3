@@ -22,7 +22,7 @@
 body {
   height: 100%;
   margin: 0;
-  font-family: Arial, Helvetica, sans-serif, "Helvetica Neue", sans-serif;
+  font-family: Arial, Helvetica, sans-serif, 'Helvetica Neue', sans-serif;
   background-color: #202a40;
 }
 
@@ -54,8 +54,3 @@ label {
   display: block;
   margin-bottom: 10px;
 }
-
-
-
-
-    

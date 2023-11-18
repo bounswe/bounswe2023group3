@@ -1,60 +1,111 @@
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <style>
-        .button.clicked {
-          background-color:#B74F6F !important;
-          color: white;
-        }
-      </style>
-</head>
-<body style="margin-top: 20px;">
-    <div class="container" style="position: relative; ">
-        <div class="post-widget" style="display: flex; align-items: start;">
-            <img class="user-avatar" src="assets/unknown.jpg"
-             alt="User Avatar" style="width:50px; height:50px;border-radius: 50%; margin-right: 5px;margin-top: 5px;">
-            <div class="post-content" style="display: flex; flex-direction: column; align-items: start;
-            margin-left: 5px;">
-                <b class="name" style=" font-size:small; margin-top: 12px;  cursor: pointer; " 
-                (click)="navigateToProfile(creator)" >{{creator}}</b>
-                <p class="user-name" style="font-size:small;margin-top:3px;">&#64;{{creator}}</p>
-            </div>
+      .button.clicked {
+        background-color: #b74f6f !important;
+        color: white;
+      }
+    </style>
+  </head>
+  <body style="margin-top: 20px">
+    <div class="container" style="position: relative">
+      <div class="post-widget" style="display: flex; align-items: start">
+        <img
+          class="user-avatar"
+          src="assets/unknown.jpg"
+          alt="User Avatar"
+          style="
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            margin-right: 5px;
+            margin-top: 5px;
+          "
+        />
+        <div
+          class="post-content"
+          style="
+            display: flex;
+            flex-direction: column;
+            align-items: start;
+            margin-left: 5px;
+          "
+        >
+          <b
+            class="name"
+            style="font-size: small; margin-top: 12px; cursor: pointer"
+            (click)="navigateToProfile(creator)"
+            >{{ creator }}</b
+          >
+          <p class="user-name" style="font-size: small; margin-top: 3px">
+            &#64;{{ creator }}
+          </p>
         </div>
-        <h3 style="cursor: pointer;" 
-        (click)="navigateToPoll()">{{question}}</h3>
-        <div style="display: flex; justify-content: space-between;">
-            <div>
-                <button *ngFor="let tag of tags"
-                  style="width: auto; height: 25px; cursor: pointer; 
-                  border-radius: 15px; font-size: smaller; margin-bottom: 10px; margin-right: 5px; 
-                  background-color: #DA9F93;">
-                  {{ tag.name }}
-                </button>
-              </div>
-            
-            <p style="text-align: right; font-size: smaller;">{{vote_count}} Votes</p>    
-        </div>
-     
+      </div>
+      <h3 style="cursor: pointer" (click)="navigateToPoll()">
+        {{ question }} (details)
+      </h3>
+      <div style="display: flex; justify-content: space-between">
         <div>
-            <button *ngFor="let option of options; let i = index"
-              class="button"
-              #buttonRef
-              id="'button' + i"
-              (click)="toggleButton(buttonRef)"
-              [disabled]="selectedButton != buttonRef && selectedButton != null">
-              {{ option.answer }}
-            </button>
+          <button
+            *ngFor="let tag of tags"
+            style="
+              width: auto;
+              height: 25px;
+              cursor: pointer;
+              border-radius: 15px;
+              font-size: smaller;
+              margin-bottom: 10px;
+              margin-right: 5px;
+              background-color: #da9f93;
+            "
+          >
+            {{ tag.name }}
+          </button>
         </div>
-          
 
-        <div style="display: flex; justify-content: space-between; ">
-            <button style="width: 100px; height: 35px; background-color: #187795; color: #fff; cursor: pointer; 
-            border-radius: 15px; font-size: smaller; margin-bottom: 10px; margin-top: 20px; border: none;">Like</button>
-            <p style="text-align: center; margin-right: 170px; margin-left: 100px;">{{comment_count}} Comments</p>
-            <p style="text-align: right;">3d</p>
-        </div>
-        
+        <p style="text-align: right; font-size: smaller">
+          {{ vote_count }} Votes
+        </p>
+      </div>
+
+      <div>
+        <button
+          *ngFor="let option of options; let i = index"
+          class="button"
+          #buttonRef
+          id="'button' + i"
+          (click)="toggleButton(buttonRef)"
+          [disabled]="selectedButton != buttonRef && selectedButton != null"
+        >
+          {{ option.answer }}
+        </button>
+      </div>
+
+      <div style="display: flex; justify-content: space-between">
+        <button
+          style="
+            width: 100px;
+            height: 35px;
+            background-color: #187795;
+            color: #fff;
+            cursor: pointer;
+            border-radius: 15px;
+            font-size: smaller;
+            margin-bottom: 10px;
+            margin-top: 20px;
+            border: none;
+          "
+        >
+          Like
+        </button>
+        <p style="text-align: center; margin-right: 170px; margin-left: 100px">
+          {{ comment_count }} Comments
+        </p>
+        <p style="text-align: right">3d</p>
+      </div>
     </div>
-</body>
+  </body>
 </html>

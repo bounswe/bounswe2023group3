@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http'
 import { Component } from '@angular/core'
 
 @Component({
@@ -10,15 +10,13 @@ export class UserProfileComponent {
   polls!: any[]
 
   constructor(private http: HttpClient) {
-    this.http
-    .get('http://34.105.66.254:1923/poll/')
-    .subscribe(
+    this.http.get('http://34.105.66.254:1923/poll/').subscribe(
       (response: any) => {
-        this.polls =   response
+        this.polls = response
       },
       (error) => {
-        console.error('Error fetching polls:', error);
-      }
-    );
+        console.error('Error fetching polls:', error)
+      },
+    )
   }
 }

@@ -10,24 +10,24 @@ import { AuthService } from '../auth.service'
 })
 export class LoginComponent {
   errorMessage: string = ''
-  email: string = ''; 
-  password: string = '';
+  email: string = ''
+  password: string = ''
 
   constructor(
     private http: HttpClient,
     private router: Router,
     private authService: AuthService,
-  ) {
-  }
+  ) {}
 
   onSubmit() {
-      const userCredentials = {
-        email: this.email,
-        password: this.password,
-      };
-    
+    const userCredentials = {
+      email: this.email,
+      password: this.password,
+    }
 
-      this.authService.login(userCredentials.email, userCredentials.password).subscribe(
+    this.authService
+      .login(userCredentials.email, userCredentials.password)
+      .subscribe(
         (response) => {
           // Registration successful, handle the response as needed
           console.log('Login success:', response)
@@ -40,7 +40,5 @@ export class LoginComponent {
           this.errorMessage = 'Invalid email or password'
         },
       )
-
   }
-
 }

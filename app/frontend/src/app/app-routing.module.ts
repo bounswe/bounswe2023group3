@@ -14,16 +14,36 @@ import { AuthGuard } from './authorize.guard'
 
 const routes: Routes = [
   { path: '', component: WelcomeComponent },
-  { path: 'app-user-profile', component: UserProfileComponent , canActivate: [AuthGuard]},
+  {
+    path: 'app-user-profile',
+    component: UserProfileComponent,
+    canActivate: [AuthGuard],
+  },
   { path: 'app-login', component: LoginComponent },
   { path: 'app-welcome', component: WelcomeComponent },
   { path: 'app-register', component: RegisterComponent },
   { path: 'app-forget-password', component: ForgetpasswordComponent },
-  { path: 'app-reset-password', component: ResetPasswordComponent , canActivate: [AuthGuard]},
-  { path: 'app-home', component: HomeComponent , canActivate: [AuthGuard]},
-  { path: 'app-poll-request', component: PollRequestComponent , canActivate: [AuthGuard]},
-  { path: 'app-profile/:username', component: OthersProfileComponent , canActivate: [AuthGuard]},
-  { path: 'app-poll-view/:pollId', component: PollViewComponent , canActivate: [AuthGuard]},
+  {
+    path: 'app-reset-password',
+    component: ResetPasswordComponent,
+    canActivate: [AuthGuard],
+  },
+  { path: 'app-home', component: HomeComponent, canActivate: [AuthGuard] },
+  {
+    path: 'app-poll-request',
+    component: PollRequestComponent,
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'app-profile/:username',
+    component: OthersProfileComponent,
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'app-poll-view/:pollId',
+    component: PollViewComponent,
+    canActivate: [AuthGuard],
+  },
 ]
 
 @NgModule({

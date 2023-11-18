@@ -8,7 +8,7 @@ import { Router } from '@angular/router'
   styleUrls: ['./poll.component.css'],
 })
 export class PollComponent {
-  @Input() pollId!: string;
+  @Input() pollId!: string
   selectedButton: HTMLButtonElement | null = null
   question!: string
   tags!: any[]
@@ -18,14 +18,13 @@ export class PollComponent {
   vote_count!: number
   creator!: string
 
-  constructor(private http: HttpClient,private router: Router) {
-   
-  }
+  constructor(
+    private http: HttpClient,
+    private router: Router,
+  ) {}
 
   ngOnInit() {
-    this.http
-    .get('http://34.105.66.254:1923/poll/'+ this.pollId)
-    .subscribe(
+    this.http.get('http://34.105.66.254:1923/poll/' + this.pollId).subscribe(
       (response: any) => {
         this.question = response.question
         this.tags = response.tags
@@ -33,12 +32,12 @@ export class PollComponent {
         this.due_date = response.due_date
         this.comment_count = response.comment_count
         this.vote_count = response.vote_count
-        this.creator =   response.creator.username
+        this.creator = response.creator.username
       },
       (error) => {
-        console.error('Error fetching poll:', error);
-      }
-    );
+        console.error('Error fetching poll:', error)
+      },
+    )
     const selectedButtonId = localStorage.getItem('selectedButtonId')
     if (selectedButtonId) {
       this.selectedButton = document.getElementById(
@@ -68,10 +67,10 @@ export class PollComponent {
   }
 
   navigateToProfile(user: string) {
-    this.router.navigate(['/app-profile', user]);
+    this.router.navigate(['/app-profile', user])
   }
 
   navigateToPoll() {
-    this.router.navigate(['/app-poll-view', this.pollId]);
+    this.router.navigate(['/app-poll-view', this.pollId])
   }
 }

@@ -10,19 +10,15 @@ export class HomeComponent {
   polls!: any[]
 
   constructor(private http: HttpClient) {
-    this.http
-    .get('http://34.105.66.254:1923/poll/')
-    .subscribe(
+    this.http.get('http://34.105.66.254:1923/poll/').subscribe(
       (response: any) => {
-        this.polls =   response
+        this.polls = response
       },
       (error) => {
-        console.error('Error fetching polls:', error);
-      }
-    );
+        console.error('Error fetching polls:', error)
+      },
+    )
   }
 
-  ngOnInit() {
-    
-  }
+  ngOnInit() {}
 }

@@ -7,7 +7,7 @@ import { catchError, tap } from 'rxjs/operators'
   providedIn: 'root',
 })
 export class AuthService {
-  loggedIn!: boolean;
+  loggedIn!: boolean
   private apiUrl = 'http://34.105.66.254:1923/auth'
 
   constructor(private http: HttpClient) {}
@@ -15,12 +15,13 @@ export class AuthService {
   // User login
   login(email: string, password: string): Observable<any> {
     const credentials = { email, password }
-    return this.http
-      .post<any>(`${this.apiUrl}/login`, credentials)
-      .pipe(tap((response: any) => {
-        localStorage.setItem('authToken', response.access_token);
+    return this.http.post<any>(`${this.apiUrl}/login`, credentials).pipe(
+      tap((response: any) => {
+        localStorage.setItem('authToken', response.access_token)
         this.loggedIn = true
-      }),catchError(this.handleError('Login', {})))
+      }),
+      catchError(this.handleError('Login', {})),
+    )
   }
 
   // User registration
@@ -31,7 +32,11 @@ export class AuthService {
       .pipe(catchError(this.handleError('Registration', {})))
   }
 
-  resetPassword(resetPasswordToken: number, email: string, password: string): Observable<any> {
+  resetPassword(
+    resetPasswordToken: number,
+    email: string,
+    password: string,
+  ): Observable<any> {
     const user = { resetPasswordToken, email, password }
     return this.http
       .post<any>(`${this.apiUrl}/reset-password`, user)
@@ -46,8 +51,8 @@ export class AuthService {
       return of(result as T)
     }
   }
-  
-  isLoggedIn(){
-    return this.loggedIn;
+
+  isLoggedIn() {
+    return this.loggedIn
   }
 }

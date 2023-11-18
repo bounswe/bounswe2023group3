@@ -21,8 +21,8 @@ import { TagsBarComponent } from './tags-bar/tags-bar.component'
 import { LeaderboardBarComponent } from './leaderboard-bar/leaderboard-bar.component'
 import { PollRequestComponent } from './poll-request/poll-request.component'
 import { PollComponent } from './poll/poll.component'
-import { OthersProfileComponent } from './others-profile/others-profile.component';
-import { PollViewComponent } from './poll-view/poll-view.component';
+import { OthersProfileComponent } from './others-profile/others-profile.component'
+import { PollViewComponent } from './poll-view/poll-view.component'
 import { HeaderComponent } from './header/header.component'
 
 @NgModule({

@@ -23,8 +23,8 @@ export class PollRequestComponent implements OnInit {
   }
 
   getToken(): string | null {
-    return localStorage.getItem('authToken');
-  }  
+    return localStorage.getItem('authToken')
+  }
 
   get tags() {
     return this.pollForm.get('tags') as FormArray
@@ -46,11 +46,11 @@ export class PollRequestComponent implements OnInit {
 
   onSubmit() {
     const formValue = this.pollForm.value
-    const token = this.getToken(); 
+    const token = this.getToken()
     const headers = new HttpHeaders({
-      'Authorization': `Bearer ${token}`
-    });
-    const options = { headers };
+      Authorization: `Bearer ${token}`,
+    })
+    const options = { headers }
     console.log(formValue)
     this.http
       .post('http://34.105.66.254:1923/poll', formValue, options)
