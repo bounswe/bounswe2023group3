@@ -4,7 +4,6 @@ import { Poll } from './entities/poll.entity';
 import { Repository } from 'typeorm';
 import { Option } from '../option/entities/option.entity';
 import { Tag } from '../tag/entities/tag.entity';
-import { CreatePollDto } from './dto/create-poll.dto';
 
 @Injectable()
 export class PollService {

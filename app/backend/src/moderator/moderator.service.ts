@@ -3,7 +3,6 @@ import {
   ConflictException,
   Injectable,
   NotFoundException,
-  UnauthorizedException,
 } from '@nestjs/common';
 import { CreateModeratorDto } from './dto/create_moderator.dto';
 import { InjectRepository } from '@nestjs/typeorm';

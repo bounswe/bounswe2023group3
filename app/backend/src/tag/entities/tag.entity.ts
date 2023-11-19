@@ -1,4 +1,3 @@
-import { Poll } from '../../poll/entities/poll.entity';
 import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity('tags')
