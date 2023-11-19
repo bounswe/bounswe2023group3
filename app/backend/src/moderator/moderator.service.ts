@@ -6,12 +6,15 @@ import { Moderator } from './entities/moderator.entity';
 import { MailerService } from '@nestjs-modules/mailer';
 import { JwtService } from '@nestjs/jwt';
 import { VerifyModeratorDto } from './dto/verify_moderator.dto';
+import { Poll } from '../poll/entities/poll.entity';
+
 
 @Injectable()
 export class ModeratorService {
 
     constructor(
         @InjectRepository(Moderator) private readonly moderatorRepository: Repository<Moderator>,
+        @InjectRepository(Poll) private readonly pollRepository: Repository<Poll>,
         private mailerService: MailerService,
         private jwtService: JwtService,
       ) {}
@@ -93,6 +96,15 @@ export class ModeratorService {
           },
         );
       }
+  
+      public async fetchUnapprovedPolls(): Promise<Poll[]> {
+        return await this.pollRepository.find({
+            where: {
+                is_approved_by_moderator: false
+            },
+            relations: ['options', 'tags', 'creator'],
+        });
+      }
 
       public async updateById(id: string, updateUserDto: any): Promise<void> {
         await this.moderatorRepository.update(id, updateUserDto);
@@ -110,7 +122,5 @@ export class ModeratorService {
       public generateCode(): number {
         return Math.floor(Math.random() * 9000 + 1000);
       }
-
-
 
 }

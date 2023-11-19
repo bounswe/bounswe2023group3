@@ -1,13 +1,18 @@
+import { ApiBearerAuth } from '@nestjs/swagger';
 import { Body, Controller, Get, Post } from '@nestjs/common';
 import { ModeratorService } from './moderator.service';
 import { CreateModeratorDto } from './dto/create_moderator.dto';
 import { Verify } from 'crypto';
 import { VerifyModeratorDto } from './dto/verify_moderator.dto';
 
+@ApiBearerAuth()
 @Controller('moderator')
 export class ModeratorController {
   constructor(private readonly moderatorService: ModeratorService) {}
 
+  @Get()
+  fetchUnapprovedPolls() {
+    return this.moderatorService.fetchUnapprovedPolls();
   @Post("register")
   createModerator (@Body() createModeratorDto: CreateModeratorDto){
     return this.moderatorService.createModerator(createModeratorDto)
