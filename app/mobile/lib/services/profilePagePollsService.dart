@@ -4,10 +4,12 @@ import 'package:mobile_app/models/pollInfo.dart';
 
 class ProfilePagePollsService {
   static Future<List<PollInfo>> getLikedPolls(String username) async {
+    await Future.delayed(const Duration(seconds: 1));
     return mockList;
   }
 
   static Future<List<PollInfo>> getVotedPolls(String username) async {
+    await Future.delayed(const Duration(seconds: 1));
     return mockList;
   }
 
