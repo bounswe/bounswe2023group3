@@ -19,11 +19,11 @@ import { Moderator } from './moderator/entities/moderator.entity';
   imports: [
     TypeOrmModule.forRoot({
       type: 'postgres',
-      host: 'localhost',
+      host: '172.17.0.2',
       port: 5432,
       password: 'password',
       username: 'postgres',
-      entities: [User, Poll, Tag, Option,Moderator],
+      entities: [User, Poll, Tag, Option, Moderator],
       database: 'postgres',
       synchronize: true,
       logging: true,

@@ -1,5 +1,4 @@
 import * as bcrypt from 'bcrypt';
-import { Poll } from '../../poll/entities/poll.entity';
 import {
   Entity,
   Column,
