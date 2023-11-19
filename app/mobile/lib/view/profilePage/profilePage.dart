@@ -1,4 +1,8 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:mobile_app/models/pollInfo.dart';
+import 'package:mobile_app/models/profileInfo.dart';
+import 'package:mobile_app/services/apiService.dart';
 import 'package:mobile_app/services/profilePagePollsService.dart';
 import 'package:mobile_app/view/constants.dart';
 import 'package:mobile_app/view/pollView/pollView.dart';
@@ -9,58 +13,68 @@ import 'package:mobile_app/view/sidebar/sidebar.dart';
 enum ProfilePagePollType { Created, Liked, Voted }
 
 class ProfilePage extends StatefulWidget {
-  final String profilePictureUrl;
-  final String username;
-  final String nickname;
-
-  const ProfilePage({
-    Key? key,
-    required this.profilePictureUrl,
-    required this.username,
-    required this.nickname,
-  }) : super(key: key);
+  final String userId;
+  const ProfilePage({Key? key, required this.userId}) : super(key: key);
 
   @override
   State<ProfilePage> createState() => _ProfilePageState();
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-  List<PollViewHomePage> polls = [];
-  bool isLoading = false;
+  List<PollInfo> viewedPolls = [];
+  ProfileInfo? profileInfo;
+  List<PollInfo> likedPolls = [];
+  List<PollInfo> votedPolls = [];
+  bool isLoadingPolls = false;
+  bool isLoadingProfile = false;
   ProfilePagePollType activeCategory = ProfilePagePollType.Created;
+
+  _fetchUserData() async {
+    isLoadingProfile = true;
+
+    Response response = await ApiService.dio.get('/user/${widget.userId}');
+    if (response.statusCode == 200) {
+      var userData = response.data;
+      profileInfo = ProfileInfo.fromJson(userData);
+    }
+    _loadPolls(activeCategory); // to make sure viewed poll list is updated
+    // after user id is fetched.
+  }
 
   @override
   void initState() {
     super.initState();
+    _fetchUserData();
     _loadPolls(ProfilePagePollType.Created); // Load 'Created' polls initially
   }
 
   Future<void> _loadPolls(ProfilePagePollType category) async {
     setState(() {
-      isLoading = true;
+      isLoadingPolls = true;
       activeCategory = category;
     });
 
-    // Simulate a network call to fetch polls based on the category
-    await Future.delayed(const Duration(seconds: 1));
-
     // Set the state to display the fetched polls
-    setState(() {
-      switch (category) {
-        case ProfilePagePollType.Created:
-          polls = ProfilePagePollsService.getCreatedPolls(widget.username);
-          break;
-        case ProfilePagePollType.Liked:
-          polls = ProfilePagePollsService.getLikedPolls(widget.username);
-          break;
-        case ProfilePagePollType.Voted:
-          polls = ProfilePagePollsService.getVotedPolls(widget.username);
-          break;
-        default:
-          polls = [];
-      }
-      isLoading = false;
-    });
+
+    switch (category) {
+      case ProfilePagePollType.Created:
+        viewedPolls = profileInfo == null ? [] : profileInfo!.createdPolls;
+        break;
+      case ProfilePagePollType.Liked:
+        likedPolls = viewedPolls = likedPolls.isEmpty
+            ? await ProfilePagePollsService.getLikedPolls(widget.userId)
+            : likedPolls;
+        break;
+      case ProfilePagePollType.Voted:
+        votedPolls = viewedPolls = votedPolls.isEmpty
+            ? await ProfilePagePollsService.getVotedPolls(widget.userId)
+            : votedPolls;
+        break;
+      default:
+        viewedPolls = [];
+    }
+    setState(() {});
+    isLoadingPolls = false;
   }
 
   @override
@@ -74,11 +88,9 @@ class _ProfilePageState extends State<ProfilePage> {
       body: CustomScrollView(
         slivers: <Widget>[
           SliverToBoxAdapter(
-            child: UserInfoSection(
-              profilePictureUrl: widget.profilePictureUrl,
-              username: widget.username,
-              nickname: widget.nickname,
-            ),
+            child: profileInfo == null
+                ? const CircularProgressIndicator()
+                : UserInfoSection(profileInfo: profileInfo!),
           ),
           SliverToBoxAdapter(
             child: Container(
@@ -126,7 +138,7 @@ class _ProfilePageState extends State<ProfilePage> {
               ),
             ),
           ),
-          if (isLoading)
+          if (isLoadingPolls)
             const SliverFillRemaining(
               child: Center(child: CircularProgressIndicator()),
             )
@@ -134,7 +146,7 @@ class _ProfilePageState extends State<ProfilePage> {
             SliverList(
               delegate: SliverChildBuilderDelegate(
                 (context, index) {
-                  final post = polls[index];
+                  final post = viewedPolls[index];
                   return SizedBox(
                     child: GestureDetector(
                       onTap: () => tapOnPoll(context, post),
@@ -150,13 +162,13 @@ class _ProfilePageState extends State<ProfilePage> {
                             voteCount: post.voteCount,
                             postOptions: post.postOptions,
                             likeCount: post.likeCount,
-                            dateTime: post.dateTime,
+                            dateTime: post.dateTime.toString(),
                             comments: post.comments),
                       ),
                     ),
                   );
                 },
-                childCount: polls.length,
+                childCount: viewedPolls.length,
               ),
             ),
         ],
@@ -164,7 +176,7 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
-  void tapOnPoll(BuildContext context, PollViewHomePage poll) {
+  void tapOnPoll(BuildContext context, PollInfo poll) {
     Navigator.push(
       context,
       MaterialPageRoute(
@@ -178,13 +190,13 @@ class _ProfilePageState extends State<ProfilePage> {
             voteCount: poll.voteCount,
             postOptions: poll.postOptions,
             likeCount: poll.likeCount,
-            dateTime: poll.dateTime,
+            dateTime: poll.dateTime.toString(),
             comments: poll.comments),
       ),
     );
   }
 
-  double calculatePostHeight(PollViewHomePage post) {
+  double calculatePostHeight(PollInfo post) {
     double height = 0;
 
     // Add the heights of various components within PollViewHomePage

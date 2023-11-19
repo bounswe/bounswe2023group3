@@ -121,13 +121,8 @@ class Sidebar extends StatelessWidget {
               Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => ProfilePage(
-                    profilePictureUrl:
-                        "https://cdn.pixabay.com/photo/2015/10/05/22/37/"
-                        "blank-profile-picture-973460_1280.png",
-                    username: "username",
-                    nickname: "nickname",
-                  ),
+                  builder: (context) =>
+                      ProfilePage(userId: AppState.loggedInUserId),
                 ),
               );
             },

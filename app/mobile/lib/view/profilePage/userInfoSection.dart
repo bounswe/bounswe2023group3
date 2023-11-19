@@ -1,15 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:mobile_app/models/profileInfo.dart';
 
 class UserInfoSection extends StatelessWidget {
-  final String profilePictureUrl;
-  final String username;
-  final String nickname;
-
-  const UserInfoSection({
+  ProfileInfo profileInfo;
+  UserInfoSection({
     Key? key,
-    required this.profilePictureUrl,
-    required this.username,
-    required this.nickname,
+    required this.profileInfo,
   }) : super(key: key);
 
   @override
@@ -19,7 +15,7 @@ class UserInfoSection extends StatelessWidget {
       child: Row(
         children: [
           CircleAvatar(
-            backgroundImage: NetworkImage(profilePictureUrl),
+            backgroundImage: NetworkImage(profileInfo.profilePictureUrl),
             radius: 40,
           ),
           const SizedBox(width: 10),
@@ -27,12 +23,12 @@ class UserInfoSection extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                nickname,
+                profileInfo.username,
                 style:
                     const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
               ),
               Text(
-                username,
+                profileInfo.id,
                 style: const TextStyle(fontSize: 16),
               ),
             ],
