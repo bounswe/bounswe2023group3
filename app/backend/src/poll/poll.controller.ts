@@ -8,10 +8,13 @@ import {
   ParseUUIDPipe,
   UseGuards,
   Req,
+  Query,
+  ParseIntPipe,
+  DefaultValuePipe,
 } from '@nestjs/common';
 import { PollService } from './poll.service';
 import { CreatePollDto } from './dto/create-poll.dto';
-import { ApiBearerAuth } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiQuery } from '@nestjs/swagger';
 import { AuthGuard } from '../auth/guards/auth.guard';
 import { VerificationGuard } from '../auth/guards/verification.guard';
 
@@ -29,11 +32,20 @@ export class PollController {
     });
   }
 
+  @ApiQuery({ name: 'minLikeCount', required: false })
+  @ApiQuery({ name: 'creatorId', required: false })
   @Get()
-  findAll() {
-    return this.pollService.findAll();
+  findAll(
+    @Query('creatorId', new ParseUUIDPipe({ optional: true }))
+    creatorId?: string,
+    @Query('minLikeCount', new ParseIntPipe({ optional: true }))
+    minLikeCount?: number,
+  ) {
+    return this.pollService.findAll({ creatorId, minLikeCount });
   }
 
+  @ApiQuery({ name: 'minLikeCount', required: false })
+  @ApiQuery({ name: 'userId', required: false })
   @Get(':id')
   findOne(@Param('id', ParseUUIDPipe) id: string) {
     return this.pollService.findPollById(id);

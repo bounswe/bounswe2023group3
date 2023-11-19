@@ -8,9 +8,10 @@ import { Option } from './entities/option.entity';
 @Injectable()
 export class OptionService {
   constructor(
-    @InjectRepository(Option) private readonly optionRepository: Repository<Option>,
+    @InjectRepository(Option)
+    private readonly optionRepository: Repository<Option>,
   ) {}
-  
+
   public async create(createOptionDto: CreateOptionDto): Promise<Option> {
     const createdOption = this.optionRepository.create(createOptionDto);
     return await this.optionRepository.save(createdOption);

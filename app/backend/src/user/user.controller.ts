@@ -1,4 +1,12 @@
-import { Controller, Get, Param, Delete, ParseUUIDPipe, Post, Body } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Param,
+  Delete,
+  ParseUUIDPipe,
+  Post,
+  Body,
+} from '@nestjs/common';
 import { UserService } from './user.service';
 
 import { ApiBearerAuth } from '@nestjs/swagger';
@@ -24,13 +32,13 @@ export class UserController {
     return this.userService.removeById(id);
   }
 
-  @Post("/follow")
-  followUser(@Body() followUserDto: FollowUserDto){
-    return this.userService.followUser(followUserDto)
+  @Post('/follow')
+  followUser(@Body() followUserDto: FollowUserDto) {
+    return this.userService.followUser(followUserDto);
   }
 
-  @Post("/unfollow")
-  unfollowUser(@Body() followUserDto: FollowUserDto){
-    return this.userService.unfollowUser(followUserDto)
+  @Post('/unfollow')
+  unfollowUser(@Body() followUserDto: FollowUserDto) {
+    return this.userService.unfollowUser(followUserDto);
   }
 }

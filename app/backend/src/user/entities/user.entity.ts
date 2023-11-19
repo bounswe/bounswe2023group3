@@ -37,16 +37,15 @@ export class User {
   @Column({ nullable: true })
   reset_password_token: number;
 
-  @OneToMany(() => Poll, poll => poll.creator)
+  @OneToMany(() => Poll, (poll) => poll.creator)
   polls: Relation<Poll[]>;
 
-  @ManyToMany(type => User, user => user.followings)
+  @ManyToMany((type) => User, (user) => user.followings)
   @JoinTable()
   followers: User[];
 
-  @ManyToMany(type => User, user => user.followers)
+  @ManyToMany((type) => User, (user) => user.followers)
   followings: User[];
-
 
   @BeforeInsert()
   async hashPasswordBeforeInsert() {
