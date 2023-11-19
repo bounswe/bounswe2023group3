@@ -1,12 +1,13 @@
-import { ApiBearerAuth } from '@nestjs/swagger';
 import { Body, Controller, Get, Post } from '@nestjs/common';
 import { ModeratorService } from './moderator.service';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { CreateModeratorDto } from './dto/create_moderator.dto';
 import { Verify } from 'crypto';
 import { VerifyModeratorDto } from './dto/verify_moderator.dto';
 
 @ApiBearerAuth()
 @Controller('moderator')
+@ApiTags('moderator')
 export class ModeratorController {
   constructor(private readonly moderatorService: ModeratorService) {}
 
