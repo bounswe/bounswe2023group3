@@ -11,7 +11,7 @@ import {
   OneToMany,
   ManyToMany,
   JoinTable,
-  Relation
+  Relation,
 } from 'typeorm';
 
 // @Todo Some entities are not ready, therefore this is not the finalized version.
@@ -23,7 +23,7 @@ export class Poll {
   @Column({ nullable: false })
   question: string;
 
-  @ManyToOne(() => User, user => user.polls) // Establishing the many-to-one relationship
+  @ManyToOne(() => User, (user) => user.polls) // Establishing the many-to-one relationship
   @JoinColumn() // Specifying the foreign key column
   creator: Relation<User>;
 
@@ -31,7 +31,7 @@ export class Poll {
   @JoinTable()
   tags: Relation<Tag[]>;
 
-  @OneToMany(() => Option, option => option.poll)
+  @OneToMany(() => Option, (option) => option.poll)
   options: Relation<Option[]>;
 
   @Column({ nullable: true })

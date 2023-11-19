@@ -18,8 +18,8 @@ export class UserService {
   }
 
   public async findUserById(id: string): Promise<User> {
-    return await this.userRepository.findOne({ 
-      where: {id: id},
+    return await this.userRepository.findOne({
+      where: { id: id },
       relations: ['polls'],
     });
   }
@@ -41,7 +41,7 @@ export class UserService {
 
   public async findAll(): Promise<User[]> {
     return await this.userRepository.find({
-      relations: ['polls','followings'],
+      relations: ['polls', 'followings'],
     });
   }
 
@@ -54,18 +54,16 @@ export class UserService {
     );
   }
 
-  public async followUser(followDto: FollowUserDto): Promise<void>{
-    
-    if(followDto.followerUserID === followDto.followerUserID){
+  public async followUser(followDto: FollowUserDto): Promise<void> {
+    if (followDto.followerUserID === followDto.followerUserID) {
       throw new ConflictException('Users cannot follow themselves');
     }
-    let followingUser : User= await this.userRepository.findOne({ 
-      where: {id: followDto.followingUserID},
-
+    const followingUser: User = await this.userRepository.findOne({
+      where: { id: followDto.followingUserID },
     });
-    let followerUser : User = await this.userRepository.findOne({ 
-      where: {id: followDto.followerUserID},
-      relations:['polls','followings']
+    const followerUser: User = await this.userRepository.findOne({
+      where: { id: followDto.followerUserID },
+      relations: ['polls', 'followings'],
     });
 
     followerUser.followings = followerUser.followings ?? [];
@@ -73,15 +71,16 @@ export class UserService {
     await this.userRepository.save(followerUser);
   }
 
-  public async unfollowUser(followDto: FollowUserDto): Promise<void>{
-    
-    let followerUser : User = await this.userRepository.findOne({ 
-      where: {id: followDto.followerUserID},
-      relations:['polls','followings']
+  public async unfollowUser(followDto: FollowUserDto): Promise<void> {
+    const followerUser: User = await this.userRepository.findOne({
+      where: { id: followDto.followerUserID },
+      relations: ['polls', 'followings'],
     });
     followerUser.followings = followerUser.followings ?? [];
-    const indexToRemove = followerUser.followings.findIndex((user) => user.id === followDto.followingUserID);
-    if(indexToRemove===-1){
+    const indexToRemove = followerUser.followings.findIndex(
+      (user) => user.id === followDto.followingUserID,
+    );
+    if (indexToRemove === -1) {
       throw new ConflictException('Currently not following');
     }
     followerUser.followings.splice(indexToRemove, 1);

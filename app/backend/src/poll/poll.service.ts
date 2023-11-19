@@ -4,12 +4,12 @@ import { Poll } from './entities/poll.entity';
 import { Repository } from 'typeorm';
 import { Option } from '../option/entities/option.entity';
 import { Tag } from '../tag/entities/tag.entity';
-import { CreatePollDto } from './dto/create-poll.dto';
+import { PollRepository } from './repository/poll.repository';
 
 @Injectable()
 export class PollService {
   constructor(
-    @InjectRepository(Poll) private readonly pollRepository: Repository<Poll>,
+    private readonly pollRepository: PollRepository,
     @InjectRepository(Option)
     private readonly optionRepository: Repository<Option>,
     @InjectRepository(Tag) private readonly tagRepository: Repository<Tag>,
@@ -50,13 +50,11 @@ export class PollService {
     return await this.pollRepository.save(savedPoll);
   }
 
-  public async findAll(): Promise<Poll[]> {
-    return await this.pollRepository.find({
-      relations: ['options', 'tags', 'creator'],
-    });
+  public async findAll({ creatorId, minLikeCount }): Promise<Poll[]> {
+    return await this.pollRepository.findAll({ creatorId, minLikeCount });
   }
 
-  public async findPollById(id: string): Promise<Poll> {
+  public async findPollById(id): Promise<Poll> {
     return await this.pollRepository.findOne({
       where: { id },
       relations: ['options', 'tags', 'creator'],

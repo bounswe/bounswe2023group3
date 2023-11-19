@@ -8,6 +8,9 @@ import {
   ParseUUIDPipe,
   UseGuards,
   Req,
+  Query,
+  ParseIntPipe,
+  DefaultValuePipe,
 } from '@nestjs/common';
 import { PollService } from './poll.service';
 import { CreatePollDto } from './dto/create-poll.dto';
@@ -36,15 +39,24 @@ export class PollController {
     });
   }
 
+
+  @ApiQuery({ name: 'minLikeCount', required: false })
+  @ApiQuery({ name: 'creatorId', required: false })
   @ApiResponse({ status: 200, description: 'Polls are fetched successfully.' })
   @ApiResponse({
     status: 500,
     description: 'Internal server error, contact with backend team.',
   })
   @Get()
-  findAll() {
-    return this.pollService.findAll();
+  findAll(
+    @Query('creatorId', new ParseUUIDPipe({ optional: true }))
+    creatorId?: string,
+    @Query('minLikeCount', new ParseIntPipe({ optional: true }))
+    minLikeCount?: number,
+  ) {
+    return this.pollService.findAll({ creatorId, minLikeCount });
   }
+
 
   @ApiResponse({ status: 200, description: 'Poll is fetched successfully.' })
   @ApiResponse({ status: 404, description: 'Poll not found.' })
