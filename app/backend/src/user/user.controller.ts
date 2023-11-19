@@ -60,6 +60,7 @@ export class UserController {
     return this.userService.followUser(followUserDto);
   }
 
+
   @ApiResponse({
     status: 201,
     description: 'User unfollow request successfull.',
