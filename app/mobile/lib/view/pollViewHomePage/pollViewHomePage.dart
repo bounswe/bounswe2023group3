@@ -37,55 +37,56 @@ class PollViewHomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            UserInformationWidget(
-              userName: userName,
-              userUsername: userUsername,
-              profilePictureUrl: profilePictureUrl,
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          UserInformationWidget(
+            userName: userName,
+            userUsername: userUsername,
+            profilePictureUrl: profilePictureUrl,
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            child: Text(postTitle,
+                overflow: TextOverflow.ellipsis,
+                maxLines: 3,
+                style: const TextStyle(
+                    fontSize: 18.0, fontWeight: FontWeight.bold)),
+          ),
+          TagListWidget(tags: tags, tagColors: tagColors),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            child: Text('Vote Count: $voteCount',
+                style: const TextStyle(fontSize: 16.0)),
+          ),
+          for (String option in postOptions)
+            PostOptionWidget(
+                optionText: option,
+                onPressed: () => handleOptionPress(option)),
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: ElevatedButton.icon(
+              onPressed: handleLikePress,
+              icon: const Icon(Icons.thumb_up),
+              label: const Text('Like'),
             ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              child: Text(postTitle,
-                  style: const TextStyle(
-                      fontSize: 18.0, fontWeight: FontWeight.bold)),
-            ),
-            TagListWidget(tags: tags, tagColors: tagColors),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              child: Text('Vote Count: $voteCount',
-                  style: const TextStyle(fontSize: 16.0)),
-            ),
-            for (String option in postOptions)
-              PostOptionWidget(
-                  optionText: option,
-                  onPressed: () => handleOptionPress(option)),
-            Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: ElevatedButton.icon(
-                onPressed: handleLikePress,
-                icon: const Icon(Icons.thumb_up),
-                label: const Text('Like'),
-              ),
-            ),
-            Row(
-              children: [
-                LikeCountWidget(likeCount: likeCount),
-                DateTimeWidget(dateTime: dateTime),
-              ],
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              child: Text('${comments.length} Comments',
-                  style: const TextStyle(fontSize: 16.0)),
-            ),
-          ],
-        ),
+          ),
+          Row(
+            children: [
+              LikeCountWidget(likeCount: likeCount),
+              DateTimeWidget(dateTime: dateTime),
+            ],
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 20),
+            child: Text('${comments.length} Comments',
+                style: const TextStyle(fontSize: 16.0)),
+          ),
+        ],
       ),
     );
   }
+
 
   void handleOptionPress(String option) {
     // Handle option press based on the selected option

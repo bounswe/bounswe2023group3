@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core'
 import { FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms'
-import { HttpClient } from '@angular/common/http'
+import { HttpClient, HttpHeaders } from '@angular/common/http'
 
 @Component({
   selector: 'app-poll-request',
@@ -15,11 +15,15 @@ export class PollRequestComponent implements OnInit {
     private http: HttpClient,
   ) {
     this.pollForm = this.fb.group({
-      creator: ['', Validators.required],
       question: ['', Validators.required],
       tags: this.fb.array([this.fb.control('')]),
       options: this.fb.array([this.fb.control('')]),
+      due_date: ['2023-05-19T15:23:46.789Z', Validators.required],
     })
+  }
+
+  getToken(): string | null {
+    return localStorage.getItem('authToken')
   }
 
   get tags() {
@@ -42,8 +46,14 @@ export class PollRequestComponent implements OnInit {
 
   onSubmit() {
     const formValue = this.pollForm.value
+    const token = this.getToken()
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+    })
+    const options = { headers }
+    console.log(formValue)
     this.http
-      .post('http://51.20.129.231:1923/poll', formValue)
+      .post('http://34.105.66.254:1923/poll', formValue, options)
       .subscribe((response) => {
         console.log('Poll created', response)
       })

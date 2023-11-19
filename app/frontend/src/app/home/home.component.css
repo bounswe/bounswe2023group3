@@ -2,3 +2,17 @@
   align-items: center;
   width: 100%;
 }
+
+#searchInput {
+  width: calc(100% - 20px);
+  border-radius: 15px;
+  text-align: center;
+  padding: 10px;
+  border: 1px solid #ccc;
+  transition: background-color 0.3s;
+}
+
+#searchInput:focus {
+  outline: none;
+  background-color: #fff; /* Change to your preferred focus color */
+}

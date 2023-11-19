@@ -15,7 +15,6 @@ import { HttpClientModule } from '@angular/common/http'
 import { WelcomeComponent } from './welcome/welcome.component'
 import { ForgetpasswordComponent } from './forgetpassword/forgetpassword.component'
 import { ResetPasswordComponent } from './resetpassword/resetpassword.component'
-import { ResetPasswordService } from './resetpassword.service'
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
 import { HomeComponent } from './home/home.component'
 import { TagsBarComponent } from './tags-bar/tags-bar.component'
@@ -23,6 +22,8 @@ import { LeaderboardBarComponent } from './leaderboard-bar/leaderboard-bar.compo
 import { PollRequestComponent } from './poll-request/poll-request.component'
 import { PollComponent } from './poll/poll.component'
 import { OthersProfileComponent } from './others-profile/others-profile.component'
+import { PollViewComponent } from './poll-view/poll-view.component'
+import { HeaderComponent } from './header/header.component'
 
 @NgModule({
   declarations: [
@@ -42,6 +43,8 @@ import { OthersProfileComponent } from './others-profile/others-profile.componen
     PollRequestComponent,
     PollComponent,
     OthersProfileComponent,
+    PollViewComponent,
+    HeaderComponent,
   ],
   imports: [
     BrowserModule,
@@ -51,7 +54,7 @@ import { OthersProfileComponent } from './others-profile/others-profile.componen
     HttpClientModule,
     BrowserAnimationsModule,
   ],
-  providers: [AuthService, ResetPasswordService],
+  providers: [AuthService],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

@@ -1,40 +1,33 @@
 <html lang="en">
   <body>
+    <app-header></app-header>
     <div class="page-layout">
       <app-side-bar></app-side-bar>
       <div class="container" style="position: relative">
         <div class="post-widget" style="display: flex; align-items: start">
-          <!-- Kullanıcı avatar ve bilgileri -->
+          <!-- User avatar and information -->
         </div>
 
-        <!-- Anket oluşturma kısmı -->
+        <!-- Poll creation section -->
         <div class="poll-create-section" style="text-align: center">
           <h2>Create a New Poll Request</h2>
-          <form [formGroup]="pollForm">
-            <input
-              class="poll-info"
-              type="text"
-              id="poll-name"
-              name="creator"
-              placeholder="Enter Poll Name"
-            /><br /><br />
+          <form [formGroup]="pollForm" (ngSubmit)="onSubmit()">
 
             <input
               class="poll-info"
               type="text"
-              id="question"
-              name="creator"
-              style="height: 80px"
-              placeholder="Enter Poll Description"
+              name="question"
+              formControlName="question"
+              placeholder="Enter Poll Question"
             /><br /><br />
-
+            
             <!-- Add Tags -->
             <div formArrayName="tags">
               <div *ngFor="let tag of tags.controls; let i = index">
                 <input
                   class="poll-info"
-                  [formControlName]="i"
                   type="text"
+                  [formControlName]="i"
                   placeholder="Enter a tag"
                 />
               </div>
@@ -50,8 +43,8 @@
               <div *ngFor="let option of options.controls; let i = index">
                 <input
                   class="poll-info"
-                  [formControlName]="i"
                   type="text"
+                  [formControlName]="i"
                   [placeholder]="'Option ' + (i + 1)"
                 />
               </div>
@@ -63,36 +56,30 @@
 
             <input
               class="poll-info"
-              type="text"
-              name="due-date"
+              type="date"
+              formControlName="due_date"
               placeholder="Enter due date"
             /><br /><br />
 
-            <br /><br />
-
             <div style="display: flex; justify-content: center">
-              <input
+              <button
                 class="button"
                 type="submit"
-                value="Send for approval"
-                style="width: 150px; height: 45px; background-color: #2d7665"
-                (click)="onSubmit()"
-              />
-              <input
+                style="width: 150px; height: 45px; background-color: #e57f84"
+              >
+                Send for approval
+              </button>
+              <button
                 class="button"
-                style="width: 150px; height: 45px; background-color: #2d7665"
-                type="submit"
-                value="Cancel"
+                type="button"
+                style="width: 150px; height: 45px; background-color: #30568f"
                 (click)="reload()"
-              />
+              >
+                Cancel
+              </button>
             </div>
           </form>
         </div>
-      </div>
-
-      <div style="display: flex; flex-direction: column">
-        <app-ranks-bar></app-ranks-bar>
-        <app-badges-bar></app-badges-bar>
       </div>
     </div>
   </body>

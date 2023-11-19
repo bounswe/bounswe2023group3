@@ -9,18 +9,41 @@ import { ResetPasswordComponent } from './resetpassword/resetpassword.component'
 import { HomeComponent } from './home/home.component'
 import { PollRequestComponent } from './poll-request/poll-request.component'
 import { OthersProfileComponent } from './others-profile/others-profile.component'
+import { PollViewComponent } from './poll-view/poll-view.component'
+import { AuthGuard } from './authorize.guard'
 
 const routes: Routes = [
   { path: '', component: WelcomeComponent },
-  { path: 'app-user-profile', component: UserProfileComponent },
+  {
+    path: 'app-user-profile',
+    component: UserProfileComponent,
+    canActivate: [AuthGuard],
+  },
   { path: 'app-login', component: LoginComponent },
   { path: 'app-welcome', component: WelcomeComponent },
   { path: 'app-register', component: RegisterComponent },
   { path: 'app-forget-password', component: ForgetpasswordComponent },
-  { path: 'app-reset-password', component: ResetPasswordComponent },
-  { path: 'app-home', component: HomeComponent },
-  { path: 'app-poll-request', component: PollRequestComponent },
-  { path: 'app-others-profile', component: OthersProfileComponent },
+  {
+    path: 'app-reset-password',
+    component: ResetPasswordComponent,
+    canActivate: [AuthGuard],
+  },
+  { path: 'app-home', component: HomeComponent, canActivate: [AuthGuard] },
+  {
+    path: 'app-poll-request',
+    component: PollRequestComponent,
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'app-profile/:username',
+    component: OthersProfileComponent,
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'app-poll-view/:pollId',
+    component: PollViewComponent,
+    canActivate: [AuthGuard],
+  },
 ]
 
 @NgModule({

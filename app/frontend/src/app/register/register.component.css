@@ -25,33 +25,19 @@ body {
   font-family: Arial, sans-serif;
 }
 
-/* Header Styles */
-header {
-  background-color: #232f44;
-  color: #fff;
-  text-align: center;
-  padding: 10px 0;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 20px 30px;
-}
-
-.logo {
-  font-size: 24px;
-}
-
 /* Style for the content on the left */
 .content {
+  max-width: 800px;
   background-color: #202a40;
   color: #fff;
   text-align: left;
   padding: 40px;
-  margin-top: 75px;
-  margin-left: 70px;
+  margin-top: 50px;
+  margin-left: auto;
   width: 50%;
   float: left;
   box-sizing: border-box;
+  min-width: 150px;
 }
 
 .content h2 {
@@ -152,4 +138,29 @@ button[type='submit']:hover {
   color: #202a40;
   font-size: 16px;
   margin: 10px 15px;
+}
+
+@media only screen and (max-width: 1070px) {
+  .register-container {
+    width: 80%;
+  }
+  .content {
+    width: 40%;
+  }
+  .content h2 {
+    font-size: 26px;
+  }
+  .content p {
+    font-size: 20px;
+  }
+}
+
+@media only screen and (max-width: 900px) {
+  .content {
+    display: none;
+  }
+  .register-container {
+    width: 100%;
+    margin: 50px auto;
+  }
 }

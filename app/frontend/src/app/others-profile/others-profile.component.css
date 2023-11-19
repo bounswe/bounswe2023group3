@@ -3,8 +3,37 @@
   width: 100%;
 }
 
+.user-avatar-style {
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  margin-right: 5px;
+}
+
+.post-widget-style {
+  display: flex;
+  align-items: start;
+}
+
+.name-style {
+  font-size: xx-large;
+}
+
+.follow-text-right {
+  margin-right: 100px;
+}
+
+.flex-column {
+  display: flex;
+  flex-direction: column;
+}
+
 .button {
   width: 120px;
   margin-top: 10px;
   margin-right: 10px;
+  position: absolute;
+  top: 0;
+  right: 0;
+  background-color: rgb(69, 69, 237);
 }

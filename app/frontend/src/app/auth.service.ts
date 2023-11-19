@@ -7,16 +7,21 @@ import { catchError, tap } from 'rxjs/operators'
   providedIn: 'root',
 })
 export class AuthService {
-  private apiUrl = 'http://51.20.129.231:1923/auth' // Replace with your API endpoint
+  loggedIn!: boolean
+  private apiUrl = 'http://34.105.66.254:1923/auth'
 
   constructor(private http: HttpClient) {}
 
   // User login
   login(email: string, password: string): Observable<any> {
     const credentials = { email, password }
-    return this.http
-      .post<any>(`${this.apiUrl}/login`, credentials)
-      .pipe(catchError(this.handleError('Login', {})))
+    return this.http.post<any>(`${this.apiUrl}/login`, credentials).pipe(
+      tap((response: any) => {
+        localStorage.setItem('authToken', response.access_token)
+        this.loggedIn = true
+      }),
+      catchError(this.handleError('Login', {})),
+    )
   }
 
   // User registration
@@ -27,6 +32,17 @@ export class AuthService {
       .pipe(catchError(this.handleError('Registration', {})))
   }
 
+  resetPassword(
+    resetPasswordToken: number,
+    email: string,
+    password: string,
+  ): Observable<any> {
+    const user = { resetPasswordToken, email, password }
+    return this.http
+      .post<any>(`${this.apiUrl}/reset-password`, user)
+      .pipe(catchError(this.handleError('Reset Password', {})))
+  }
+
   // Handle errors
   private handleError<T>(operation = 'operation', result?: T) {
     return (error: any): Observable<T> => {
@@ -34,5 +50,9 @@ export class AuthService {
       // Handle the error, e.g., display a user-friendly message
       return of(result as T)
     }
+  }
+
+  isLoggedIn() {
+    return this.loggedIn
   }
 }

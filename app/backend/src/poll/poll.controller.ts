@@ -6,17 +6,27 @@ import {
   Param,
   Delete,
   ParseUUIDPipe,
+  UseGuards,
+  Req,
 } from '@nestjs/common';
 import { PollService } from './poll.service';
 import { CreatePollDto } from './dto/create-poll.dto';
+import { ApiBearerAuth } from '@nestjs/swagger';
+import { AuthGuard } from '../auth/guards/auth.guard';
+import { VerificationGuard } from '../auth/guards/verification.guard';
 
+@ApiBearerAuth()
 @Controller('poll')
 export class PollController {
   constructor(private readonly pollService: PollService) {}
 
+  @UseGuards(AuthGuard, VerificationGuard)
   @Post()
-  create(@Body() createPollDto: CreatePollDto) {
-    return this.pollService.createPoll(createPollDto);
+  create(@Body() createPollDto: CreatePollDto, @Req() request: any) {
+    return this.pollService.createPoll({
+      ...createPollDto,
+      creator: request.user.id,
+    });
   }
 
   @Get()
