@@ -1,3 +1,3 @@
 class AppState {
-  static bool isModerator = true;
+  static bool isModerator = false;
 }
