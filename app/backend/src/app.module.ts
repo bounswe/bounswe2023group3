@@ -13,6 +13,7 @@ import { Option } from './option/entities/option.entity';
 import { TagModule } from './tag/tag.module';
 import { OptionModule } from './option/option.module';
 import { ModeratorModule } from './moderator/moderator.module';
+import { Moderator } from './moderator/entities/moderator.entity';
 
 @Module({
   imports: [
@@ -22,7 +23,7 @@ import { ModeratorModule } from './moderator/moderator.module';
       port: 5432,
       password: 'password',
       username: 'postgres',
-      entities: [User, Poll, Tag, Option],
+      entities: [User, Poll, Tag, Option,Moderator],
       database: 'postgres',
       synchronize: true,
       logging: true,

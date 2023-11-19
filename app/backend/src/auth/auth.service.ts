@@ -1,8 +1,8 @@
 import {
   Injectable,
-  UnauthorizedException,
   NotFoundException,
   BadRequestException,
+  ConflictException,
 } from '@nestjs/common';
 import { UserService } from '../user/user.service';
 import { JwtService } from '@nestjs/jwt';
@@ -39,7 +39,7 @@ export class AuthService {
       email: createUserDto.email,
     });
     if (users.length > 0) {
-      throw new UnauthorizedException('User already exists');
+      throw new ConflictException('User already exists');
     }
     await this.userService.createUser(createUserDto);
     const newUser = await this.userService.searchUser({
