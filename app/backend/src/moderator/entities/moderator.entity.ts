@@ -6,10 +6,6 @@ import {
   PrimaryGeneratedColumn,
   BeforeInsert,
   BeforeUpdate,
-  OneToMany,
-  Relation,
-  JoinTable,
-  ManyToMany,
 } from 'typeorm';
 
 const SALT_ROUNDS = 10;
