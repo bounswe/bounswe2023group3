@@ -18,7 +18,7 @@ import { ModeratorModule } from './moderator/moderator.module';
   imports: [
     TypeOrmModule.forRoot({
       type: 'postgres',
-      host: '172.17.0.2',
+      host: 'localhost',
       port: 5432,
       password: 'password',
       username: 'postgres',
