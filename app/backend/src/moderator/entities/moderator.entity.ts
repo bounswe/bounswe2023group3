@@ -6,16 +6,12 @@ import {
   PrimaryGeneratedColumn,
   BeforeInsert,
   BeforeUpdate,
-  OneToMany,
-  Relation,
-  JoinTable,
-  ManyToMany,
 } from 'typeorm';
 
 const SALT_ROUNDS = 10;
 
 @Entity('moderators')
-export class User {
+export class Moderator {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
