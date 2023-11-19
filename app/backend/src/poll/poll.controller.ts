@@ -10,11 +10,10 @@ import {
   Req,
   Query,
   ParseIntPipe,
-  DefaultValuePipe,
 } from '@nestjs/common';
 import { PollService } from './poll.service';
 import { CreatePollDto } from './dto/create-poll.dto';
-import { ApiBearerAuth, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { AuthGuard } from '../auth/guards/auth.guard';
 import { VerificationGuard } from '../auth/guards/verification.guard';
 
@@ -39,7 +38,6 @@ export class PollController {
     });
   }
 
-
   @ApiQuery({ name: 'minLikeCount', required: false })
   @ApiQuery({ name: 'creatorId', required: false })
   @ApiResponse({ status: 200, description: 'Polls are fetched successfully.' })
@@ -56,7 +54,6 @@ export class PollController {
   ) {
     return this.pollService.findAll({ creatorId, minLikeCount });
   }
-
 
   @ApiResponse({ status: 200, description: 'Poll is fetched successfully.' })
   @ApiResponse({ status: 404, description: 'Poll not found.' })
