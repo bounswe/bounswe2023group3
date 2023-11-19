@@ -1,22 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:mobile_app/view/pollView/pollView.dart';
-import 'package:mobile_app/view/pollViewHomePage/pollViewHomePage.dart';
+import 'package:mobile_app/models/comment.dart';
+import 'package:mobile_app/models/pollInfo.dart';
 
 class ProfilePagePollsService {
-  static List<PollViewHomePage> getCreatedPolls(String username) {
+  static Future<List<PollInfo>> getLikedPolls(String username) async {
     return mockList;
   }
 
-  static List<PollViewHomePage> getLikedPolls(String username) {
+  static Future<List<PollInfo>> getVotedPolls(String username) async {
     return mockList;
   }
 
-  static List<PollViewHomePage> getVotedPolls(String username) {
-    return mockList;
-  }
-
-  static List<PollViewHomePage> mockList = [
-    PollViewHomePage(
+  static List<PollInfo> mockList = [
+    PollInfo(
         userName: "berkecaliskan",
         userUsername: "@berke",
         profilePictureUrl:
@@ -27,12 +23,12 @@ class ProfilePagePollsService {
         voteCount: 34,
         postOptions: ["Fenerbahçe", "Galatasaray"],
         likeCount: 13,
-        dateTime: "12:01",
+        dateTime: DateTime.now().add(const Duration(days: 50)),
         comments: [
           CommentData(
               user: "real_elijah", commentText: "mazinde bir tarih yatar")
         ]),
-    const PollViewHomePage(
+    PollInfo(
         userName: "elijahwood",
         userUsername: "@real_elijah",
         profilePictureUrl:
@@ -43,9 +39,9 @@ class ProfilePagePollsService {
         voteCount: 1347,
         postOptions: ["Destroy it", "Wear it", "Give it to Selda Bağcan"],
         likeCount: 673,
-        dateTime: "9:45",
+        dateTime: DateTime.now().add(const Duration(days: 30)),
         comments: []),
-    const PollViewHomePage(
+    PollInfo(
         userName: "kabakhaber",
         userUsername: "@kbkhbr",
         profilePictureUrl:
@@ -56,7 +52,7 @@ class ProfilePagePollsService {
         voteCount: 534,
         postOptions: ["Donald Trump", "Joe Biden", "Ye"],
         likeCount: 297,
-        dateTime: "10:28",
+        dateTime: DateTime.now().add(const Duration(days: 90)),
         comments: []),
   ];
 }
