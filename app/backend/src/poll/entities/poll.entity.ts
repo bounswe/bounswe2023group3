@@ -73,7 +73,7 @@ export class Poll {
   //report_list: Array<any>;
 
   @Column({ default: false })
-  is_approved_by_moderator: boolean;
+  approveStatus: boolean;
 
   @Column({ default: false })
   is_settled: boolean;

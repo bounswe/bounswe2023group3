@@ -13,6 +13,7 @@ import { CreateModeratorDto } from './dto/create_moderator.dto';
 import { VerifyModeratorDto } from './dto/verify_moderator.dto';
 import { ModeratorGuard } from './guards/moderator.guard';
 import { VerificationGuard } from './guards/verification.guard';
+import { ApproveDTO } from './dto/approve.dto';
 
 @ApiBearerAuth()
 @Controller('moderator')
@@ -49,5 +50,11 @@ export class ModeratorController {
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.moderatorService.removeById(id);
+  }
+
+  @UseGuards(ModeratorGuard, VerificationGuard)
+  @Post('approve/:id')
+  approve(@Param('id') id : string, @Body() approveDto: ApproveDTO){
+    return this.moderatorService.approve_disapprove(id,approveDto);
   }
 }
