@@ -5,7 +5,7 @@ import 'package:get_it/get_it.dart';
 class ApiService {
   static final Dio _dio = Dio();
   static final GetIt getIt = GetIt.instance;
-  static String baseUrl = 'http://51.20.129.231:1923/';
+  static String baseUrl = 'http://34.105.66.254:1923/';
   static String jwtToken = '';
 
   static void setup() {
