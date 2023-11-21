@@ -8,6 +8,7 @@ import {
   Body,
   UseGuards,
   Req,
+  Put,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 
@@ -15,6 +16,7 @@ import { ApiBearerAuth, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { FollowUserDto } from './dto/create-user.dto';
 import { AuthGuard } from '../auth/guards/auth.guard';
 import { VerificationGuard } from '../auth/guards/verification.guard';
+import { AddBadgeDto } from './dto/add-badge.dto';
 
 @ApiBearerAuth()
 @Controller('user')
@@ -80,4 +82,10 @@ export class UserController {
   unfollowUser(@Body() followUserDto: FollowUserDto,@Req() request: any) {
     return this.userService.unfollowUser(followUserDto,request.user.id);
   }
+
+  @Put('badge/:id')
+  addBadge(@Param('id', ParseUUIDPipe) id: string, @Body() addBadgeDto: AddBadgeDto ) {
+    return this.userService.addBadge(id, addBadgeDto.name);
+  }
+
 }
