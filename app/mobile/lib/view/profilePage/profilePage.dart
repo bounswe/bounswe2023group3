@@ -9,6 +9,7 @@ import 'package:mobile_app/view/pollView/pollView.dart';
 import 'package:mobile_app/view/pollViewHomePage/pollViewHomePage.dart';
 import 'package:mobile_app/view/profilePage/userInfoSection.dart';
 import 'package:mobile_app/view/sidebar/sidebar.dart';
+import 'package:mobile_app/view/state.dart';
 
 enum ProfilePagePollType { Created, Liked, Voted }
 
@@ -31,13 +32,15 @@ class _ProfilePageState extends State<ProfilePage> {
 
   _fetchUserData() async {
     isLoadingProfile = true;
+    setState(() {});
 
     Response response = await ApiService.dio.get('/user/${widget.userId}');
     if (response.statusCode == 200) {
       var userData = response.data;
       profileInfo = ProfileInfo.fromJson(userData);
     }
-    _loadPolls(activeCategory); // to make sure viewed poll list is updated
+    isLoadingProfile = false;
+    setState(() {});
     // after user id is fetched.
   }
 
@@ -45,7 +48,7 @@ class _ProfilePageState extends State<ProfilePage> {
   void initState() {
     super.initState();
     _fetchUserData();
-    _loadPolls(ProfilePagePollType.Created); // Load 'Created' polls initially
+    _loadPolls(activeCategory); // to make sure viewed poll list is updated
   }
 
   Future<void> _loadPolls(ProfilePagePollType category) async {
@@ -79,6 +82,8 @@ class _ProfilePageState extends State<ProfilePage> {
 
   @override
   Widget build(BuildContext context) {
+    bool isOwnProfile =
+        profileInfo != null && AppState.loggedInUserId == profileInfo!.id;
     return Scaffold(
       appBar: AppBar(
         title: const Text('Profile'),
@@ -104,17 +109,41 @@ class _ProfilePageState extends State<ProfilePage> {
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: ProfilePagePollType.values.map((type) {
                         bool isActive = activeCategory == type;
+                        bool isCategoryLocked = profileInfo != null &&
+                            ((type == ProfilePagePollType.Created &&
+                                    !profileInfo!.isCreatedPollsVisible) ||
+                                (type == ProfilePagePollType.Liked &&
+                                    !profileInfo!.isLikedPollsVisible) ||
+                                (type == ProfilePagePollType.Voted &&
+                                    !profileInfo!.isVotedPollsVisible));
+
                         return InkWell(
-                          onTap: () => _loadPolls(type),
+                          onTap: () =>
+                              //  !isOwnProfile || isCategoryLocked
+                              //     ? () {
+                              //         activeCategory = type;
+                              //       }
+                              //     :
+                              _loadPolls(type),
                           child: Column(
                             mainAxisSize: MainAxisSize.min,
                             children: [
-                              Text(
-                                type.name,
-                                style: TextStyle(
-                                  color: isActive ? navy : gray,
-                                  fontSize: 18, // Bigger text
-                                ),
+                              Row(
+                                children: [
+                                  isCategoryLocked
+                                      ? Icon(
+                                          Icons.lock_outline,
+                                          color: isActive ? navy : gray,
+                                        )
+                                      : Container(),
+                                  Text(
+                                    type.name,
+                                    style: TextStyle(
+                                      color: isActive ? navy : gray,
+                                      fontSize: 18, // Bigger text
+                                    ),
+                                  ),
+                                ],
                               ),
                               const SizedBox(height: 8),
                               isActive
