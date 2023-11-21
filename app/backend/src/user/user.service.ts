@@ -3,11 +3,14 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './entities/user.entity';
 import { Repository } from 'typeorm';
 import { CreateUserDto, FollowUserDto } from './dto/create-user.dto';
+import { BadgeService } from '../badge/badge.service';
 
 @Injectable()
 export class UserService {
   constructor(
-    @InjectRepository(User) private readonly userRepository: Repository<User>,
+    @InjectRepository(User)
+    private readonly userRepository: Repository<User>,
+    private readonly badgeService: BadgeService,
   ) {}
   public async searchUser(params: { email: string }): Promise<User[]> {
     return await this.userRepository.findBy(params);
@@ -20,7 +23,7 @@ export class UserService {
   public async findUserById(id: string): Promise<User> {
     return await this.userRepository.findOne({
       where: { id: id },
-      relations: ['polls'],
+      relations: ['polls', 'badges', 'followings', 'followers'],
     });
   }
 
@@ -41,7 +44,7 @@ export class UserService {
 
   public async findAll(): Promise<User[]> {
     return await this.userRepository.find({
-      relations: ['polls', 'followings'],
+      relations: ['polls', 'badges', 'followings', 'followers'],
     });
   }
 
@@ -63,7 +66,7 @@ export class UserService {
     });
     const followerUser: User = await this.userRepository.findOne({
       where: { id: followDto.followerUserID },
-      relations: ['polls', 'followings'],
+      relations: ['polls', 'badges', 'followings', 'followers'],
     });
 
     followerUser.followings = followerUser.followings ?? [];
@@ -74,7 +77,7 @@ export class UserService {
   public async unfollowUser(followDto: FollowUserDto,id:string): Promise<void> {
     const followerUser: User = await this.userRepository.findOne({
       where: { id: followDto.followerUserID },
-      relations: ['polls', 'followings'],
+      relations: ['polls', 'badges', 'followings', 'followers'],
     });
     followerUser.followings = followerUser.followings ?? [];
     const indexToRemove = followerUser.followings.findIndex(
@@ -100,7 +103,27 @@ export class UserService {
     await this.userRepository.delete(id);
   }
 
+  public async addBadge(id: string, name: string): Promise<void> {
+    const user = await this.findUserById(id);
+    if (!user) {
+      throw new ConflictException('User not found');
+    }
+    const badge = await this.badgeService.findOneBy(name);
+    if (!badge) {
+      throw new ConflictException('Badge not found');
+    }
+    user.badges = user.badges ?? [];
+    if (user.badges.find((badge) => badge.name === name)) {
+      throw new ConflictException('User already has this badge');
+    }
+    user.badges.push(badge);
+    await this.userRepository.save(user);
+
+  }
+
   public generateCode(): number {
     return Math.floor(Math.random() * 9000 + 1000);
   }
+
+
 }

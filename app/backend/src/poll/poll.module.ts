@@ -8,11 +8,13 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserService } from '../user/user.service';
 import { User } from '../user/entities/user.entity';
 import { PollRepository } from './repository/poll.repository';
+import { Badge } from '../badge/entities/badge.entity';
+import { BadgeService } from '../badge/badge.service';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Poll, Option, Tag, User])],
+  imports: [TypeOrmModule.forFeature([Poll, Option, Tag, User, Badge])],
   controllers: [PollController],
-  providers: [PollService, UserService, PollRepository],
+  providers: [PollService, UserService, PollRepository, BadgeService],
   exports: [PollService],
 })
 export class PollModule {}
