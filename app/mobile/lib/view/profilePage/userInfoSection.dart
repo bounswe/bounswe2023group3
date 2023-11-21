@@ -120,12 +120,24 @@ class _UserInfoSectionState extends State<UserInfoSection> {
     if (widget.profileInfo.isLoggedInUser) {
       return ElevatedButton(
         onPressed: () => _editProfile(),
-        child: Text('Edit Profile'),
+        child: const Text('Edit Profile'),
       );
     } else {
-      return ElevatedButton(
-        onPressed: () => _toggleFollow(),
-        child: Text(isFollowing ? 'Unfollow' : 'Follow'),
+      return Row(
+        children: [
+          SizedBox(width: isFollowing ? 50 : 70),
+          ElevatedButton(
+            onPressed: () => _toggleFollow(),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: isFollowing ? whitish : navy,
+              elevation: 0,
+            ),
+            child: Text(
+              isFollowing ? 'Unfollow' : 'Follow',
+              style: TextStyle(color: isFollowing ? pink : Colors.white),
+            ),
+          ),
+        ],
       );
     }
   }
