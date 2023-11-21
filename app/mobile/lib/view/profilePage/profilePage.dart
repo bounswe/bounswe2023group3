@@ -29,7 +29,11 @@ class _ProfilePageState extends State<ProfilePage> {
   bool isLoadingPolls = false;
   bool isLoadingProfile = false;
   ProfilePagePollType activeCategory = ProfilePagePollType.Created;
-
+  Map<ProfilePagePollType, bool> categoryLocked = {
+    ProfilePagePollType.Created: true,
+    ProfilePagePollType.Liked: true,
+    ProfilePagePollType.Voted: true,
+  };
   _fetchUserData() async {
     isLoadingProfile = true;
     setState(() {});
@@ -40,24 +44,25 @@ class _ProfilePageState extends State<ProfilePage> {
       profileInfo = ProfileInfo.fromJson(userData);
     }
     isLoadingProfile = false;
+    categoryLocked = {
+      ProfilePagePollType.Created: !profileInfo!.isCreatedPollsVisible,
+      ProfilePagePollType.Liked: !profileInfo!.isLikedPollsVisible,
+      ProfilePagePollType.Voted: !profileInfo!.isVotedPollsVisible,
+    };
     setState(() {});
-    // after user id is fetched.
+    _loadPolls(activeCategory);
   }
 
   @override
   void initState() {
     super.initState();
     _fetchUserData();
-    _loadPolls(activeCategory); // to make sure viewed poll list is updated
   }
 
   Future<void> _loadPolls(ProfilePagePollType category) async {
-    setState(() {
-      isLoadingPolls = true;
-      activeCategory = category;
-    });
-
-    // Set the state to display the fetched polls
+    isLoadingPolls = true;
+    activeCategory = category;
+    setState(() {});
 
     switch (category) {
       case ProfilePagePollType.Created:
@@ -82,14 +87,12 @@ class _ProfilePageState extends State<ProfilePage> {
 
   @override
   Widget build(BuildContext context) {
-    bool isOwnProfile =
-        profileInfo != null && AppState.loggedInUserId == profileInfo!.id;
+    bool isOwnProfile = AppState.loggedInUserId == widget.userId;
     return Scaffold(
       appBar: AppBar(
         title: const Text('Profile'),
       ),
-      drawer: const Sidebar(), // Use the custom drawer widget
-
+      drawer: const Sidebar(),
       body: CustomScrollView(
         slivers: <Widget>[
           SliverToBoxAdapter(
@@ -109,14 +112,6 @@ class _ProfilePageState extends State<ProfilePage> {
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: ProfilePagePollType.values.map((type) {
                         bool isActive = activeCategory == type;
-                        bool isCategoryLocked = profileInfo != null &&
-                            ((type == ProfilePagePollType.Created &&
-                                    !profileInfo!.isCreatedPollsVisible) ||
-                                (type == ProfilePagePollType.Liked &&
-                                    !profileInfo!.isLikedPollsVisible) ||
-                                (type == ProfilePagePollType.Voted &&
-                                    !profileInfo!.isVotedPollsVisible));
-
                         return InkWell(
                           onTap: () =>
                               //  !isOwnProfile || isCategoryLocked
@@ -130,7 +125,7 @@ class _ProfilePageState extends State<ProfilePage> {
                             children: [
                               Row(
                                 children: [
-                                  isCategoryLocked
+                                  categoryLocked[type]!
                                       ? Icon(
                                           Icons.lock_outline,
                                           color: isActive ? navy : gray,
@@ -167,40 +162,69 @@ class _ProfilePageState extends State<ProfilePage> {
               ),
             ),
           ),
-          if (isLoadingPolls)
+          // show poll list if possible
+          if (isLoadingPolls || isLoadingProfile)
             const SliverFillRemaining(
-              child: Center(child: CircularProgressIndicator()),
+              child: Center(
+                child: CircularProgressIndicator(),
+              ),
+            )
+          else if (isOwnProfile && viewedPolls.isNotEmpty)
+            _viewPollList()
+          else if (isOwnProfile)
+            SliverToBoxAdapter(
+              child: Center(
+                child: Text("You don't have any ${activeCategory.name} poll"),
+              ),
+            )
+          else if (categoryLocked[activeCategory]!)
+            SliverToBoxAdapter(
+              child: Center(
+                child: Text("This user's ${activeCategory.name} polls are not"
+                    " visible to others"),
+              ),
+            )
+          else if (viewedPolls.isEmpty)
+            SliverToBoxAdapter(
+              child: Center(
+                child: Text("This user doesn't have any ${activeCategory.name}"
+                    " poll"),
+              ),
             )
           else
-            SliverList(
-              delegate: SliverChildBuilderDelegate(
-                (context, index) {
-                  final post = viewedPolls[index];
-                  return SizedBox(
-                    child: GestureDetector(
-                      onTap: () => tapOnPoll(context, post),
-                      child: SizedBox(
-                        height: calculatePostHeight(post),
-                        child: PollViewHomePage(
-                            userName: post.userName,
-                            userUsername: post.userUsername,
-                            profilePictureUrl: post.profilePictureUrl,
-                            postTitle: post.postTitle,
-                            tags: post.tags,
-                            tagColors: post.tagColors,
-                            voteCount: post.voteCount,
-                            postOptions: post.postOptions,
-                            likeCount: post.likeCount,
-                            dateTime: post.dateTime.toString(),
-                            comments: post.comments),
-                      ),
-                    ),
-                  );
-                },
-                childCount: viewedPolls.length,
+            _viewPollList()
+        ],
+      ),
+    );
+  }
+
+  Widget _viewPollList() {
+    return SliverList(
+      delegate: SliverChildBuilderDelegate(
+        (context, index) {
+          final post = viewedPolls[index];
+          return SizedBox(
+            child: GestureDetector(
+              onTap: () => tapOnPoll(context, post),
+              child: SizedBox(
+                height: calculatePostHeight(post),
+                child: PollViewHomePage(
+                    userName: post.userName,
+                    userUsername: post.userUsername,
+                    profilePictureUrl: post.profilePictureUrl,
+                    postTitle: post.postTitle,
+                    tags: post.tags,
+                    tagColors: post.tagColors,
+                    voteCount: post.voteCount,
+                    postOptions: post.postOptions,
+                    likeCount: post.likeCount,
+                    dateTime: post.dateTime.toString(),
+                    comments: post.comments),
               ),
             ),
-        ],
+          );
+        },
+        childCount: viewedPolls.length,
       ),
     );
   }
