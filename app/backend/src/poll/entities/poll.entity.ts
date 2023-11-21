@@ -23,7 +23,7 @@ export class Poll {
   @Column({ nullable: false })
   question: string;
 
-  @ManyToOne(() => User, (user) => user.polls) // Establishing the many-to-one relationship
+  @ManyToOne(() => User, (user) => user.polls, { onDelete: 'CASCADE' }) // Establishing the many-to-one relationship
   @JoinColumn() // Specifying the foreign key column
   creator: Relation<User>;
 
