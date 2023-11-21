@@ -44,6 +44,13 @@ export class UserController {
   findOne(@Param('id', ParseUUIDPipe) id: string) {
     return this.userService.findUserById(id);
   }
+
+  @Get('username/:username')
+  findOneByUsername(@Param('username') username: string) {
+    return this.userService.searchUserByUsername(username);
+  }
+
+  
   @ApiResponse({ status: 200, description: 'User is deleted successfully.' })
   @ApiResponse({ status: 404, description: 'User is not found.' })
   @ApiResponse({
@@ -87,5 +94,6 @@ export class UserController {
   addBadge(@Param('id', ParseUUIDPipe) id: string, @Body() addBadgeDto: AddBadgeDto ) {
     return this.userService.addBadge(id, addBadgeDto.name);
   }
+
 
 }
