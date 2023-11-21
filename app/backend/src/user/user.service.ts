@@ -54,12 +54,12 @@ export class UserService {
     );
   }
 
-  public async followUser(followDto: FollowUserDto): Promise<void> {
-    if (followDto.followerUserID === followDto.followerUserID) {
+  public async followUser(followDto: FollowUserDto, id:string): Promise<void> {
+    if (followDto.followerUserID === id) {
       throw new ConflictException('Users cannot follow themselves');
     }
     const followingUser: User = await this.userRepository.findOne({
-      where: { id: followDto.followingUserID },
+      where: { id: id },
     });
     const followerUser: User = await this.userRepository.findOne({
       where: { id: followDto.followerUserID },
@@ -71,14 +71,14 @@ export class UserService {
     await this.userRepository.save(followerUser);
   }
 
-  public async unfollowUser(followDto: FollowUserDto): Promise<void> {
+  public async unfollowUser(followDto: FollowUserDto,id:string): Promise<void> {
     const followerUser: User = await this.userRepository.findOne({
       where: { id: followDto.followerUserID },
       relations: ['polls', 'followings'],
     });
     followerUser.followings = followerUser.followings ?? [];
     const indexToRemove = followerUser.followings.findIndex(
-      (user) => user.id === followDto.followingUserID,
+      (user) => user.id === id,
     );
     if (indexToRemove === -1) {
       throw new ConflictException('Currently not following');

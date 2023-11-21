@@ -6,11 +6,15 @@ import {
   ParseUUIDPipe,
   Post,
   Body,
+  UseGuards,
+  Req,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 
 import { ApiBearerAuth, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { FollowUserDto } from './dto/create-user.dto';
+import { AuthGuard } from '../auth/guards/auth.guard';
+import { VerificationGuard } from '../auth/guards/verification.guard';
 
 @ApiBearerAuth()
 @Controller('user')
@@ -55,9 +59,10 @@ export class UserController {
     status: 500,
     description: 'Internal server error, contact with backend team.',
   })
+  @UseGuards(AuthGuard, VerificationGuard)
   @Post('/follow')
-  followUser(@Body() followUserDto: FollowUserDto) {
-    return this.userService.followUser(followUserDto);
+  followUser(@Body() followUserDto: FollowUserDto,@Req() request: any) {
+    return this.userService.followUser(followUserDto,request.user.id);
   }
 
 
@@ -70,8 +75,9 @@ export class UserController {
     status: 500,
     description: 'Internal server error, contact with backend team.',
   })
+  @UseGuards(AuthGuard, VerificationGuard)
   @Post('/unfollow')
-  unfollowUser(@Body() followUserDto: FollowUserDto) {
-    return this.userService.unfollowUser(followUserDto);
+  unfollowUser(@Body() followUserDto: FollowUserDto,@Req() request: any) {
+    return this.userService.unfollowUser(followUserDto,request.user.id);
   }
 }
