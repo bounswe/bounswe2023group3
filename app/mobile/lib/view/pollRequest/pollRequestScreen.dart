@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
+import 'package:mobile_app/services/PollRequestService.dart';
 import 'package:mobile_app/services/tagCompletionService.dart';
 import 'package:mobile_app/view/pollRequest/customTextField.dart';
 import 'package:mobile_app/view/pollRequest/pollCreationData.dart';
 import 'package:mobile_app/view/pollRequest/sectionHeader.dart';
+import 'package:mobile_app/view/state.dart';
 
 import '../constants.dart';
 
@@ -17,6 +19,8 @@ class PollRequestPage extends StatefulWidget {
 class _PollRequestPageState extends State<PollRequestPage> {
   PollCreationData pollData = PollCreationData();
 
+  final _listViewScrollController = ScrollController();
+
   final _pollTitleController = TextEditingController();
   final _pollDescriptionController = TextEditingController();
   final _pollTagController = TextEditingController();
@@ -25,7 +29,10 @@ class _PollRequestPageState extends State<PollRequestPage> {
     TextEditingController(),
   ];
   final _pollImageUrlController = TextEditingController();
+  final _pollCreationDateTimeController = TextEditingController();
+  bool dateTimeEdited = false;
 
+  final _dateTimeFocus = FocusNode();
   final _pollTitleFocus = FocusNode();
   final _pollDescriptionFocus = FocusNode();
   final _pollTagFocus = FocusNode();
@@ -44,6 +51,11 @@ class _PollRequestPageState extends State<PollRequestPage> {
         controller.clear();
       });
     }
+  }
+
+  String _formatDateTime(DateTime dateTime) {
+    return "${dateTime.year}-${dateTime.month}-${dateTime.day} ${dateTime.hour}"
+        ":${dateTime.minute}";
   }
 
   void _updateOptionFields() {
@@ -82,39 +94,61 @@ class _PollRequestPageState extends State<PollRequestPage> {
         .toList();
   }
 
-  void sendForApproval() {
+  void sendForApproval() async {
+    //pollData.creatorId = AppState.loggedInUserId;
+    if (!dateTimeEdited) {
+      int scrollUpDurationMillis = 300;
+      _showAlert('You didn\'t enter Date/Time', () {
+        _listViewScrollController.animateTo(
+          0, // Scroll to the top of the ListView
+          duration: Duration(milliseconds: scrollUpDurationMillis),
+          curve: Curves.easeInOut, // This is the animation curve
+        );
+        Future.delayed(Duration(milliseconds: scrollUpDurationMillis), () {
+          // FocusScope.of(context).requestFocus(_dateTimeFocus);
+          _selectDateTime();
+        });
+      });
+      return;
+    }
+
     if (pollData.pollTitle.isEmpty) {
-      _showAlert('Title field cannot be empty');
+      _showAlert('Title field cannot be empty', () {});
       FocusScope.of(context).requestFocus(_pollTitleFocus);
       return;
     }
 
     if (pollData.pollDescription.isEmpty) {
-      _showAlert('Description field cannot be empty');
+      _showAlert('Description field cannot be empty', () {});
       FocusScope.of(context).requestFocus(_pollDescriptionFocus);
       return;
     }
     if (pollData.tags.isEmpty) {
-      _showAlert('At least one tag is required');
+      _showAlert('At least one tag is required', () {});
       FocusScope.of(context).requestFocus(_pollTagFocus);
       return;
     }
     pollData.options = nonEmptyTexts(_pollOptionControllers);
     if (pollData.options.length < 2) {
-      _showAlert('At least two options are required');
+      _showAlert('At least two options are required', () {});
       int lastEmpty =
           _pollOptionControllers.lastIndexWhere((c) => c.text.isEmpty);
       FocusScope.of(context).requestFocus(_pollOptionFocuses[lastEmpty]);
       return;
     }
 
-    // All checks passed
-    print("Send pollData to approval");
-    _showAlert("Your poll creation request is succesfully sent");
-    // Implement the logic to send data
+    try {
+      await PollRequestService.createPoll(pollData);
+      _showAlert("Your poll creation request is succesfully sent", () {});
+    } catch (e) {
+      _showAlert(
+          "There was an error sending your poll creation "
+          "request ${e.toString()}",
+          () {});
+    }
   }
 
-  void _showAlert(String message) {
+  void _showAlert(String message, Function okeyPressed) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -125,12 +159,72 @@ class _PollRequestPageState extends State<PollRequestPage> {
               child: const Text('OK'),
               onPressed: () {
                 Navigator.of(context).pop();
+                okeyPressed();
               },
             ),
           ],
         );
       },
     );
+  }
+
+  Future<void> _selectDateTime() async {
+    var dateTimeTheme = ThemeData.light().copyWith(
+      colorScheme: const ColorScheme.light(
+        primary: blue, // header background color
+        onPrimary: whitish, // header text color
+        onSurface: deepDarkBlue, // body text color
+      ),
+      dialogBackgroundColor: whitish,
+    );
+    DateTime? pickedDate = await showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return Theme(
+          data: dateTimeTheme,
+          child: DatePickerDialog(
+            initialDate: pollData.dueDate,
+            firstDate: DateTime(2000),
+            lastDate: DateTime(2100),
+          ),
+        );
+      },
+    );
+
+    if (!mounted) return;
+    if (pickedDate != null) {
+      TimeOfDay? pickedTime = await showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return Theme(
+            data: dateTimeTheme,
+            child: TimePickerDialog(
+              initialTime: TimeOfDay.fromDateTime(pollData.dueDate),
+            ),
+          );
+        },
+      );
+      dateTimeEdited = true;
+
+      if (pickedTime != null) {
+        setState(() {
+          pollData.dueDate = DateTime(
+            pickedDate.year,
+            pickedDate.month,
+            pickedDate.day,
+            pickedTime.hour,
+            pickedTime.minute,
+          );
+          _pollCreationDateTimeController.text =
+              _formatDateTime(pollData.dueDate);
+        });
+      }
+    }
+
+    // Focus on the next field only if the context is still mounted after the dialogs.
+    if (mounted) {
+      FocusScope.of(context).requestFocus(_pollTitleFocus);
+    }
   }
 
   @override
@@ -144,7 +238,38 @@ class _PollRequestPageState extends State<PollRequestPage> {
         body: Padding(
           padding: const EdgeInsets.all(16),
           child: ListView(
+            controller: _listViewScrollController,
             children: <Widget>[
+              const SizedBox(height: 16),
+              Row(
+                children: <Widget>[
+                  Expanded(
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: whitish,
+                        borderRadius: BorderRadius.circular(10.0),
+                        border: Border.all(
+                          color: navy,
+                        ),
+                      ),
+                      child: TextField(
+                        onTap: _selectDateTime,
+                        controller: _pollCreationDateTimeController,
+                        focusNode: _dateTimeFocus,
+                        decoration: const InputDecoration(
+                          labelText: 'Select Date and Time',
+                          border: OutlineInputBorder(),
+                        ),
+                        readOnly: true, // Prevent manual editing
+                      ),
+                    ),
+                  ),
+                  IconButton(
+                    icon: const Icon(Icons.calendar_today),
+                    onPressed: _selectDateTime,
+                  ),
+                ],
+              ),
               // poll title
               const SizedBox(height: 4),
               CustomTextField(
@@ -249,7 +374,8 @@ class _PollRequestPageState extends State<PollRequestPage> {
                           FocusScope.of(context)
                               .requestFocus(_pollOptionFocuses[i + 1]);
                         } else {
-                          FocusScope.of(context).requestFocus(_pollImageUrlFocus);
+                          FocusScope.of(context)
+                              .requestFocus(_pollImageUrlFocus);
                         }
                       },
                       decoration: InputDecoration(
