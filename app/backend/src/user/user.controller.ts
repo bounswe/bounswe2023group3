@@ -62,7 +62,6 @@ export class UserController {
   @UseGuards(AuthGuard, VerificationGuard)
   @Post('/follow')
   followUser(@Body() followUserDto: FollowUserDto,@Req() request: any) {
-    console.log(request.user.id);
     return this.userService.followUser(followUserDto,request.user.id);
   }
 
@@ -79,7 +78,6 @@ export class UserController {
   @UseGuards(AuthGuard, VerificationGuard)
   @Post('/unfollow')
   unfollowUser(@Body() followUserDto: FollowUserDto,@Req() request: any) {
-    console.log(request.user.id);
     return this.userService.unfollowUser(followUserDto,request.user.id);
   }
 }
