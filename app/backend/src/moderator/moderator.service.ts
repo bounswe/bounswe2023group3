@@ -12,6 +12,7 @@ import { MailerService } from '@nestjs-modules/mailer';
 import { JwtService } from '@nestjs/jwt';
 import { VerifyModeratorDto } from './dto/verify_moderator.dto';
 import { Poll } from '../poll/entities/poll.entity';
+import { ApproveDTO } from './dto/approve.dto';
 
 @Injectable()
 export class ModeratorService {
@@ -113,7 +114,7 @@ export class ModeratorService {
   public async fetchUnapprovedPolls(): Promise<Poll[]> {
     return await this.pollRepository.find({
       where: {
-        is_approved_by_moderator: false,
+        approveStatus: false,
       },
       relations: ['options', 'tags', 'creator'],
     });
@@ -148,4 +149,11 @@ export class ModeratorService {
   public generateCode(): number {
     return Math.floor(Math.random() * 9000 + 1000);
   }
+
+
+  public async approve_disapprove(pollId: string, approveDto : ApproveDTO): Promise<void>{
+    await this.pollRepository.update(pollId, approveDto)
+  }
+
+
 }
