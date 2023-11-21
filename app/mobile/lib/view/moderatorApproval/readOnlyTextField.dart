@@ -9,19 +9,17 @@ class AlwaysDisabledFocusNode extends FocusNode {
 
 class ReadOnlyTextField extends StatelessWidget {
 
-  final String label;
+  final String text;
 
   const ReadOnlyTextField({
     Key? key,
-    required this.label,
+    required this.text,
 
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    double labelHeight= calculateTextHeight(label);
     return Container(
-      height: labelHeight + 20.0,
       decoration: BoxDecoration(
         color: whitish,
         borderRadius: BorderRadius.circular(10.0),
@@ -29,32 +27,25 @@ class ReadOnlyTextField extends StatelessWidget {
           color: navy,
         ),
       ),
-      child: TextField(
-        enableInteractiveSelection: true,
-        focusNode: AlwaysDisabledFocusNode(),
-        maxLines: null,
-        decoration: InputDecoration(
-          contentPadding: EdgeInsets.all(30.0),
-          border: InputBorder.none,
-          label: Text(
-            label,
-            style: TextStyle(
-              color: Colors.black,
-            ),
-          ),
+
+      child: Padding(
+        padding: EdgeInsets.all(13.0),
+        child: Text(
+          text,
+          maxLines: null,
+
+          style: const TextStyle(
+          backgroundColor: whitish,
+          color: Colors.black,
+
+          )
+
         ),
       ),
+
+
     );
   }
 
-  double calculateTextHeight(String text) {
-    final textStyle = TextStyle(fontSize: 16.0);
-    final textPainter = TextPainter(
-      text: TextSpan(text: text, style: textStyle),
-      maxLines: 1,
-      textDirection: TextDirection.ltr,
-    )..layout(maxWidth: double.infinity);
 
-    return textPainter.height;
-  }
 }

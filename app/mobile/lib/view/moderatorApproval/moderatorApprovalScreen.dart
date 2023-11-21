@@ -15,7 +15,7 @@ class ModeratorApprovalScreen extends StatefulWidget {
 
   final List<Color> tagColors;
   final PollData pollData;
-  const ModeratorApprovalScreen({
+  const ModeratorApprovalScreen({ 
     super.key,
     required this.tagColors,
     required this.pollData,
@@ -74,14 +74,14 @@ class _ModeratorApprovalScreenState extends State<ModeratorApprovalScreen> {
             const SizedBox(height: 4),
             const SectionHeader(headerText: "Title"),
             ReadOnlyTextField(
-              label: widget.pollData.pollTitle,
+              text: widget.pollData.pollTitle,
             ),
 
             // poll description
             const SizedBox(height: 16),
             const SectionHeader(headerText: "Description"),
             ReadOnlyTextField(
-              label: widget.pollData.pollDescription,
+              text: widget.pollData.pollDescription,
             ),
 
             // added tags
@@ -146,7 +146,7 @@ class _ModeratorApprovalScreenState extends State<ModeratorApprovalScreen> {
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 8),
                 child: ReadOnlyTextField(
-                  label: widget.pollData.options[i],
+                  text: widget.pollData.options[i],
                 ),
               ),
 
