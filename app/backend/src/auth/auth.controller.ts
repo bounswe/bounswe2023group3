@@ -16,7 +16,7 @@ export class AuthController {
   constructor(private authService: AuthService) {}
 
   @Post('login')
-  @ApiResponse({ status: 201, description: 'Login successfull.' })
+  @ApiResponse({ status: 201, description: 'Login successful.' })
   @ApiResponse({
     status: 400,
     description:
