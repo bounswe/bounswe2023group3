@@ -58,9 +58,12 @@ class ProfileInfo {
           .map((i) => PollInfo.fromJson(i))
           .toList(),
       */
-      isCreatedPollsVisible: json['isCreatedPollsVisible'] ?? false,
-      isLikedPollsVisible: json['isLikedPollsVisible'] ?? false,
-      isVotedPollsVisible: json['isVotedPollsVisible'] ?? false,
+      isCreatedPollsVisible:
+          json['isCreatedPollsVisible'] ?? AppState.random.nextBool(),
+      isLikedPollsVisible:
+          json['isLikedPollsVisible'] ?? AppState.random.nextBool(),
+      isVotedPollsVisible:
+          json['isVotedPollsVisible'] ?? AppState.random.nextBool(),
       ranks: List<String>.from(json['ranks'] ?? []),
       badges: List<String>.from(json['badges'] ?? []),
       isLoggedInUser: json['id'] == AppState.loggedInUserId,
