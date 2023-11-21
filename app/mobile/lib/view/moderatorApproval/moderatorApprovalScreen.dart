@@ -15,7 +15,7 @@ class ModeratorApprovalScreen extends StatefulWidget {
 
   final List<Color> tagColors;
   final PollData pollData;
-  const ModeratorApprovalScreen({ 
+  const ModeratorApprovalScreen({
     super.key,
     required this.tagColors,
     required this.pollData,
@@ -36,25 +36,29 @@ class _ModeratorApprovalScreenState extends State<ModeratorApprovalScreen> {
 
     try {
       Response response = await moderatorPollDecision.answerPoll(isApproved);
-
-      if (response.statusCode == 201) {
+      String message = response.statusMessage ?? "";
+      if (response.statusCode == 200) {
         if (!context.mounted) return;
+        if(message != ""){
+          showErrorMessage(context, message); //approve or reject
+        }
         Navigator.pop(context);
       }
 
-      else {
+
+      else{
         if (!context.mounted) return;
       }
     }
     catch (e) {
-      showErrorMessage(context);
+      showErrorMessage(context, "Catch block is executed.");
     }
   }
 
-  void showErrorMessage(BuildContext context) {
+  void showErrorMessage(BuildContext context, String message) {
     ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text('Email is incorrect'),
+      SnackBar(
+        content: Text(message),
       ),
     );
   }
@@ -73,6 +77,7 @@ class _ModeratorApprovalScreenState extends State<ModeratorApprovalScreen> {
             // poll title
             const SizedBox(height: 4),
             const SectionHeader(headerText: "Title"),
+            const SizedBox(height: 4),
             ReadOnlyTextField(
               text: widget.pollData.pollTitle,
             ),
@@ -80,6 +85,7 @@ class _ModeratorApprovalScreenState extends State<ModeratorApprovalScreen> {
             // poll description
             const SizedBox(height: 16),
             const SectionHeader(headerText: "Description"),
+            const SizedBox(height: 4),
             ReadOnlyTextField(
               text: widget.pollData.pollDescription,
             ),
