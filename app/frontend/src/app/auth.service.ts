@@ -24,6 +24,11 @@ export class AuthService {
     )
   }
 
+  //get authentication token
+  getToken(): string | null {
+    return localStorage.getItem('authToken');
+  }
+
   // User registration
   register(email: string, password: string, username: string): Observable<any> {
     const user = { email, password, username }
