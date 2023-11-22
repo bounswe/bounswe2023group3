@@ -23,7 +23,8 @@ export class ResetPasswordComponent {
       .resetPassword(this.resetPasswordToken, this.email, this.password)
       .subscribe(
         (response) => {
-          if (response.status == 400) {
+          console.log(response)
+          if (response.status === 400) {
             this.errorMessage =
               'Please provide a valid password with at least 6 characters.'
           } else {

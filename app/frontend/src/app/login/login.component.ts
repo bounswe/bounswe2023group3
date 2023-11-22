@@ -30,14 +30,14 @@ export class LoginComponent {
       .subscribe(
         (response) => {
           // Registration successful, handle the response as needed
-          console.log('Login success:', response)
-          this.errorMessage = 'Login success'
+          console.log('Login success:', response) 
+          //this.errorMessage = 'Login success'
           this.router.navigate(['/app-home'])
         },
         (error) => {
           // Registration failed, handle the error as needed
           console.error('Login error:', error)
-          this.errorMessage = 'Invalid email or password'
+          this.errorMessage = 'Error during login. Please try again later.'
         },
       )
   }

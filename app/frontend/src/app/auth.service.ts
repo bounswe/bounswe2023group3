@@ -37,10 +37,10 @@ export class AuthService {
     email: string,
     password: string,
   ): Observable<any> {
-    const user = { resetPasswordToken, email, password }
+    let user = { "resetPasswordToken": +resetPasswordToken,  "email": email, "password":password }
     return this.http
       .post<any>(`${this.apiUrl}/reset-password`, user)
-      .pipe(catchError(this.handleError('Reset Password', {})))
+      .pipe(catchError(this.handleError('Reset Password', {responseType: 'text'})))
   }
 
   // Handle errors
