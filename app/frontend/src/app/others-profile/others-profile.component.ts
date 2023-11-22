@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http'
 import { Component } from '@angular/core'
 import { User } from '../user-profile/user.model'
 import { UserService } from 'src/services/user-service/user.service'
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-others-profile',
@@ -12,35 +13,22 @@ export class OthersProfileComponent {
   polls!: any[]
   user: User | undefined;
 
-  constructor(private http: HttpClient, private _userService: UserService) {}
+  constructor(private http: HttpClient, private _userService: UserService, private route: ActivatedRoute) {}
 
   ngOnInit() {
     // Assuming you have the username you want to fetch from somewhere
-    const usernameToFetch = 'test33';
-
-    // Fetch polls
-    this.http.get('http://34.105.66.254:1923/poll/').subscribe(
-      (response: any) => {
-        this.polls = response;
-      },
-      (error) => {
-        console.error('Error fetching polls:', error);
-      }
-    );
+    this.route.params.subscribe((params) => {
+      const usernameToFetch = params['username']
 
       // Fetch user data when the component initializes
-      this._userService.getUser(usernameToFetch)
-      .then((user: any) => {
-
-        this.user = user;
-      })
-      .catch((error) => {
-        console.error('Error fetching user:', error);
-      });
- 
- 
-  }
-
-
-  
+      this._userService
+        .getUser(usernameToFetch)
+        .then((user: any) => {
+          this.user = user
+        })
+        .catch((error) => {
+          console.error('Error fetching user:', error)
+        })
+    })
+  } 
 }
