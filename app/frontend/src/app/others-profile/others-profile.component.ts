@@ -30,5 +30,15 @@ export class OthersProfileComponent {
           console.error('Error fetching user:', error)
         })
     })
-  } 
+
+    // Fetch polls
+    this.http.get('http://34.105.66.254:1923/poll/').subscribe(
+      (response: any) => {
+        this.polls = response;
+      },
+      (error) => {
+        console.error('Error fetching polls:', error);
+      }
+    );
+  }
 }
