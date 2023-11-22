@@ -1,0 +1,85 @@
+html, body {
+    background-color: #89B1B6;
+}
+/* Header Styles */
+header {
+    background-color: #63989f;
+    color: #232F44;
+    text-align: center;
+    padding: 10px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 30px;
+  }
+  
+  .logo {
+    font-size: 24px;
+  }
+
+.container {
+  background-color: #232F44;
+  width: calc(80% - 300px);
+  display: flex;
+  flex-direction: column;
+  align-items: left;
+  padding: 25px;
+
+}
+.page-layout {
+  display: flex;
+}
+
+.poll-notification {
+  background-color: #89B1B6;
+  margin-bottom: 15px;
+  padding: 20px;
+  width: calc(100% - 40px);
+  border-radius: 10px;
+  text-align: left;
+  position: relative;
+}
+
+.username {
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.question {
+  margin-bottom: 15px;
+}
+
+.details-button {
+  background-color: #232F44;
+  color: #fff;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-right: 10px;
+}
+
+.details-button:hover {
+  background-color: #E57F84;
+}
+
+.disapprove-button {
+  background-color: #63989f;
+  color: #fff;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.disapprove-button:hover {
+  background-color: #b74f6f;
+}
+
+.date {
+  color: #555;
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin: 10px;
+}

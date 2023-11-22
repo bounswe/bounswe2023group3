@@ -38,7 +38,7 @@
             </div>
 
             <!-- Add Options -->
-            <label for="options"><b>Options:</b></label>
+            <label for="options"><b>Poll Options:</b></label>
             <div formArrayName="options">
               <div *ngFor="let option of options.controls; let i = index">
                 <input
@@ -54,6 +54,7 @@
               ><br /><br />
             </div>
 
+            <label><b>Choose a deadline:</b></label>
             <input
               class="poll-info"
               type="date"
@@ -65,14 +66,14 @@
               <button
                 class="button"
                 type="submit"
-                style="width: 150px; height: 45px; background-color: #e57f84"
+                style="width: 150px; height: 40px; background-color: #e57f84"
               >
                 Send for approval
               </button>
               <button
                 class="button"
                 type="button"
-                style="width: 150px; height: 45px; background-color: #30568f"
+                style="width: 150px; height: 40px; background-color: #30568f"
                 (click)="reload()"
               >
                 Cancel
