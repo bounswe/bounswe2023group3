@@ -8,6 +8,7 @@ import { catchError, tap } from 'rxjs/operators'
 })
 export class AuthService {
   loggedIn!: boolean
+  private user: any;
   private apiUrl = 'http://34.105.66.254:1923/auth'
 
   constructor(private http: HttpClient) {}
@@ -22,6 +23,11 @@ export class AuthService {
       }),
       catchError(this.handleError('Login', {})),
     )
+  }
+
+  //get authentication token
+  getToken(): string | null {
+    return localStorage.getItem('authToken');
   }
 
   // User registration
@@ -52,6 +58,15 @@ export class AuthService {
     }
   }
 
+  setUser(user: any): void {
+    this.user = user;
+    localStorage.setItem('user', JSON.stringify(user));
+  }
+
+  getUser(): any {
+    return this.user || JSON.parse(localStorage.getItem('user') || '{}');
+  }
+  
   isLoggedIn() {
     return this.loggedIn
   }
