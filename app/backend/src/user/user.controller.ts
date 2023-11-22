@@ -9,6 +9,7 @@ import {
   UseGuards,
   Req,
   Put,
+  NotFoundException,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 
@@ -46,8 +47,12 @@ export class UserController {
   }
 
   @Get('username/:username')
-  findOneByUsername(@Param('username') username: string) {
-    return this.userService.searchUserByUsername(username);
+  async findOneByUsername(@Param('username') username: string) {
+    const user = await this.userService.searchUserByUsername(username);
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+    return user;
   }
 
   
