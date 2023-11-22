@@ -30,7 +30,7 @@ export class LoginComponent {
       .subscribe(
         (response) => {
           // Registration successful, handle the response as needed
-          console.log('Login success:', response) 
+          console.log('Login success:', response)
           //this.errorMessage = 'Login success'
           this.router.navigate(['/app-home'])
         },

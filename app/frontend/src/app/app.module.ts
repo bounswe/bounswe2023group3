@@ -23,8 +23,8 @@ import { PollRequestComponent } from './poll-request/poll-request.component'
 import { PollComponent } from './poll/poll.component'
 import { OthersProfileComponent } from './others-profile/others-profile.component'
 import { PollViewComponent } from './poll-view/poll-view.component'
-import { HeaderComponent } from './header/header.component';
-import { ModeratorRequestsComponent } from './moderator-requests/moderator-requests.component';
+import { HeaderComponent } from './header/header.component'
+import { ModeratorRequestsComponent } from './moderator-requests/moderator-requests.component'
 import { ModeratorSideBarComponent } from './moderator-side-bar/moderator-side-bar.component'
 
 @NgModule({

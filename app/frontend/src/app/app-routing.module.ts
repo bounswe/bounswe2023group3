@@ -25,7 +25,7 @@ const routes: Routes = [
   { path: 'app-welcome', component: WelcomeComponent },
   { path: 'app-register', component: RegisterComponent },
   { path: 'app-forget-password', component: ForgetpasswordComponent },
-  {path: 'app-reset-password', component: ResetPasswordComponent},
+  { path: 'app-reset-password', component: ResetPasswordComponent },
   { path: 'app-home', component: HomeComponent, canActivate: [AuthGuard] },
   {
     path: 'app-poll-request',

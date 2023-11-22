@@ -57,7 +57,7 @@ export class PollRequestComponent implements OnInit {
       .subscribe((response) => {
         console.log('Poll created', response)
       })
-      window.location.reload()
+    window.location.reload()
   }
 
   reload() {

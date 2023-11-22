@@ -7,13 +7,10 @@ import { Router } from '@angular/router'
   styleUrls: ['./side-bar.component.css'],
 })
 export class SideBarComponent {
+  constructor(private router: Router) {}
 
-  constructor(
-    private router: Router,
-  ) {}
-
-  logOut(){
+  logOut() {
     this.router.navigate(['/app-welcome'])
-    localStorage.setItem('loggedIn', 'false');
+    localStorage.setItem('loggedIn', 'false')
   }
 }
