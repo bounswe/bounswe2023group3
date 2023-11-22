@@ -11,7 +11,7 @@
         <!-- Poll creation section -->
         <div class="poll-create-section" style="text-align: center">
           <h2>Create a New Poll Request</h2>
-          <form [formGroup]="pollForm" (ngSubmit)="onSubmit()">
+          <form [formGroup]="pollForm">
 
             <input
               class="poll-info"
@@ -67,6 +67,7 @@
                 class="button"
                 type="submit"
                 style="width: 150px; height: 40px; background-color: #e57f84"
+                (click)="onSubmit()"
               >
                 Send for approval
               </button>

@@ -7,7 +7,6 @@ import { catchError, tap } from 'rxjs/operators'
   providedIn: 'root',
 })
 export class AuthService {
-  loggedIn!: boolean
   private user: any;
   private apiUrl = 'http://34.105.66.254:1923/auth'
 
@@ -19,7 +18,8 @@ export class AuthService {
     return this.http.post<any>(`${this.apiUrl}/login`, credentials).pipe(
       tap((response: any) => {
         localStorage.setItem('authToken', response.access_token)
-        this.loggedIn = true
+        localStorage.setItem('loggedIn', 'true');
+
       }),
       catchError(this.handleError('Login', {})),
     )
@@ -65,9 +65,5 @@ export class AuthService {
 
   getUser(): any {
     return this.user || JSON.parse(localStorage.getItem('user') || '{}');
-  }
-  
-  isLoggedIn() {
-    return this.loggedIn
   }
 }

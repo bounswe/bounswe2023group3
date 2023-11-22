@@ -44,13 +44,14 @@
           </p>
         </div>
       </div>
-      <h3 style="cursor: pointer" (click)="navigateToPoll()">
-        {{ question }} (details)
+      <h3 class= "question" style="cursor: pointer" (click)="navigateToPoll()">
+        {{ question }} 
       </h3>
       <div style="display: flex; justify-content: space-between">
         <div>
           <button
             *ngFor="let tag of tags"
+            [ngStyle]="{ 'background-color': randomColor() }"
             style="
               width: auto;
               height: 25px;
@@ -59,7 +60,6 @@
               font-size: smaller;
               margin-bottom: 10px;
               margin-right: 5px;
-              background-color: #da9f93;
             "
           >
             {{ tag.name }}

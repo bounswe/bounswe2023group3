@@ -20,3 +20,6 @@ body {
   border-radius: 15px;
   border: none;
 }
+.question:hover{
+  text-decoration: underline;
+}
