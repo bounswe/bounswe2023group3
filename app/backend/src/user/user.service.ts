@@ -17,13 +17,18 @@ export class UserService {
   }
 
   public async searchUserByUsername(username: string): Promise<User> {
-    return await this.userRepository.findOneBy({ username });    
+    return await this.userRepository.findOne({ 
+      where: { username: username },
+      relations: ['polls', 'badges', 'followings', 'followers'],
+      select: ['id', 'email', 'username', 'polls', 'badges', 'followers', 'followings'],
+     });    
   }
 
   public async findUserById(id: string): Promise<User> {
     return await this.userRepository.findOne({
       where: { id: id },
       relations: ['polls', 'badges', 'followings', 'followers'],
+      select: ['id', 'email', 'username', 'polls', 'badges', 'followers', 'followings'],
     });
   }
 
@@ -45,6 +50,7 @@ export class UserService {
   public async findAll(): Promise<User[]> {
     return await this.userRepository.find({
       relations: ['polls', 'badges', 'followings', 'followers'],
+      select: ['id', 'email', 'username', 'polls', 'badges', 'followers', 'followings'],
     });
   }
 

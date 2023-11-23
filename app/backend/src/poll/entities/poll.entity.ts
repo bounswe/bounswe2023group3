@@ -31,7 +31,7 @@ export class Poll {
   @JoinTable()
   tags: Relation<Tag[]>;
 
-  @OneToMany(() => Option, (option) => option.poll)
+  @OneToMany(() => Option, (option) => option.poll, { cascade: true })
   options: Relation<Option[]>;
 
   @Column({ nullable: true })

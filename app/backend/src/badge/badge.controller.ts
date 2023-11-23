@@ -1,7 +1,9 @@
 import { Controller, Get, Post, Body, Param, Delete } from '@nestjs/common';
 import { BadgeService } from './badge.service';
 import { CreateBadgeDto } from './dto/create-badge.dto';
-import { ApiBearerAuth, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOkResponse, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { CreateBadgeResponseDto } from './dto/responses/create-badge-response.dto';
+import { GetBadgeResponseDto } from './dto/responses/get-badge-response.dto';
 
 @ApiBearerAuth()
 @Controller('badge')
@@ -10,34 +12,34 @@ export class BadgeController {
   constructor(private readonly badgeService: BadgeService) {}
 
   @Post()
-  @ApiResponse({ status: 201, description: 'Badge is created successfully.' })
+  @ApiResponse({ status: 201, description: 'Badge is created successfully.', type: CreateBadgeResponseDto })
   @ApiResponse({
     status: 500,
     description: 'Internal server error, contact with backend team.',
   })
-  create(@Body() createBadgeDto: CreateBadgeDto) {
-    return this.badgeService.create(createBadgeDto);
+  public async create(@Body() createBadgeDto: CreateBadgeDto): Promise<CreateBadgeResponseDto> {
+    return await this.badgeService.create(createBadgeDto);
   }
 
-  @ApiResponse({ status: 200, description: 'Badges are fetched successfully.' })
-  @ApiResponse({
-    status: 500,
-    description: 'Internal server error, contact with backend team.',
-  })
   @Get()
-  findAll() {
-    return this.badgeService.findAll();
+  @ApiResponse({ status: 200, description: 'Badges are fetched successfully.', type: [GetBadgeResponseDto] })
+  @ApiResponse({
+    status: 500,
+    description: 'Internal server error, contact with backend team.',
+  })
+  public async findAll(): Promise<GetBadgeResponseDto[]> {
+    return await this.badgeService.findAll();
   }
 
-  @ApiResponse({ status: 200, description: 'Badge is fetched successfully.' })
+  @Get(':id')
+  @ApiResponse({ status: 200, description: 'Badge is fetched successfully.', type: GetBadgeResponseDto })
   @ApiResponse({ status: 404, description: 'Badge is not found.' })
   @ApiResponse({
     status: 500,
     description: 'Internal server error, contact with backend team.',
   })
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.badgeService.findOne(id);
+  public async findOne(@Param('id') id: string): Promise<GetBadgeResponseDto> {
+    return await this.badgeService.findOne(id);
   }
 
   @ApiResponse({ status: 200, description: 'Badge is deleted successfully.' })
@@ -47,7 +49,7 @@ export class BadgeController {
     description: 'Internal server error, contact with backend team.',
   })
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.badgeService.remove(id);
+  public async remove(@Param('id') id: string) {
+    return await this.badgeService.remove(id);
   }
 }
