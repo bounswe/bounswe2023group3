@@ -12,6 +12,7 @@ import { OthersProfileComponent } from './others-profile/others-profile.componen
 import { PollViewComponent } from './poll-view/poll-view.component'
 import { AuthGuard } from './authorize.guard'
 import { ModeratorRequestsComponent } from './moderator-requests/moderator-requests.component'
+import { TagPageComponent } from './tag-page/tag-page.component'
 
 const routes: Routes = [
   { path: '', component: WelcomeComponent },
@@ -40,6 +41,11 @@ const routes: Routes = [
   {
     path: 'app-poll-view/:pollId',
     component: PollViewComponent,
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'app-tag-page/:tagName',
+    component: TagPageComponent,
     canActivate: [AuthGuard],
   },
 ]

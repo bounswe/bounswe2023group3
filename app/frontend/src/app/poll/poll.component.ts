@@ -79,6 +79,10 @@ export class PollComponent {
     }
   }
 
+  goToTag(tagName: string){
+    this.router.navigate(['/app-tag-page', tagName])
+  }
+
   navigateToProfile(user: string) {
     this.router.navigate(['/app-profile', user])
   }

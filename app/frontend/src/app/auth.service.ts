@@ -19,6 +19,7 @@ export class AuthService {
       tap((response: any) => {
         localStorage.setItem('authToken', response.access_token)
         localStorage.setItem('loggedIn', 'true')
+        localStorage.setItem('user_id', response.user.id)
       }),
       catchError(this.handleError('Login', {})),
     )

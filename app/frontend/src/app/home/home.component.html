@@ -13,6 +13,7 @@
               margin-right: 5px;
               background-color: #63989f;
             "
+            (click)="settledPolls(false)"
           >
             Ongoing
           </button>
@@ -23,6 +24,7 @@
               display: inline-block;
               background-color: #374968;
             "
+            (click)="settledPolls(true)"
           >
             Settled
           </button>
@@ -41,8 +43,8 @@
         </form>
 
         <div class="user-polls">
-          <button class="user-polls-column">Following</button>
-          <button class="user-polls-column">Trending</button>
+          <button class="user-polls-column" (click)="followingPolls()">Following</button>
+          <button class="user-polls-column" (click)="trendingPolls()">Trending</button>
         </div>
 
         <div>
