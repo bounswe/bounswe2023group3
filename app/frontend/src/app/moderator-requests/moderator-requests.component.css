@@ -1,37 +1,37 @@
-html, body {
-    background-color: #89B1B6;
+html,
+body {
+  background-color: #89b1b6;
 }
 /* Header Styles */
 header {
-    background-color: #63989f;
-    color: #232F44;
-    text-align: center;
-    padding: 10px 0;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 20px 30px;
-  }
-  
-  .logo {
-    font-size: 24px;
-  }
+  background-color: #63989f;
+  color: #232f44;
+  text-align: center;
+  padding: 10px 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 30px;
+}
+
+.logo {
+  font-size: 24px;
+}
 
 .container {
-  background-color: #232F44;
+  background-color: #232f44;
   width: calc(80% - 300px);
   display: flex;
   flex-direction: column;
   align-items: left;
   padding: 25px;
-
 }
 .page-layout {
   display: flex;
 }
 
 .poll-notification {
-  background-color: #89B1B6;
+  background-color: #89b1b6;
   margin-bottom: 15px;
   padding: 20px;
   width: calc(100% - 40px);
@@ -50,7 +50,7 @@ header {
 }
 
 .details-button {
-  background-color: #232F44;
+  background-color: #232f44;
   color: #fff;
   padding: 8px 16px;
   border: none;
@@ -60,7 +60,7 @@ header {
 }
 
 .details-button:hover {
-  background-color: #E57F84;
+  background-color: #e57f84;
 }
 
 .disapprove-button {

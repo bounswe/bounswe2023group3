@@ -7,8 +7,7 @@ import { catchError, tap } from 'rxjs/operators'
   providedIn: 'root',
 })
 export class AuthService {
-  loggedIn!: boolean
-  private user: any;
+  private user: any
   private apiUrl = 'http://34.105.66.254:1923/auth'
 
   constructor(private http: HttpClient) {}
@@ -19,7 +18,8 @@ export class AuthService {
     return this.http.post<any>(`${this.apiUrl}/login`, credentials).pipe(
       tap((response: any) => {
         localStorage.setItem('authToken', response.access_token)
-        this.loggedIn = true
+        localStorage.setItem('loggedIn', 'true')
+        localStorage.setItem('user_id', response.user.id)
       }),
       catchError(this.handleError('Login', {})),
     )
@@ -27,7 +27,7 @@ export class AuthService {
 
   //get authentication token
   getToken(): string | null {
-    return localStorage.getItem('authToken');
+    return localStorage.getItem('authToken')
   }
 
   // User registration
@@ -43,10 +43,18 @@ export class AuthService {
     email: string,
     password: string,
   ): Observable<any> {
-    let user = { "resetPasswordToken": +resetPasswordToken,  "email": email, "password":password }
+    let user = {
+      resetPasswordToken: +resetPasswordToken,
+      email: email,
+      password: password,
+    }
     return this.http
       .post<any>(`${this.apiUrl}/reset-password`, user)
-      .pipe(catchError(this.handleError('Reset Password', {responseType: 'text'})))
+      .pipe(
+        catchError(
+          this.handleError('Reset Password', { responseType: 'text' }),
+        ),
+      )
   }
 
   // Handle errors
@@ -59,15 +67,11 @@ export class AuthService {
   }
 
   setUser(user: any): void {
-    this.user = user;
-    localStorage.setItem('user', JSON.stringify(user));
+    this.user = user
+    localStorage.setItem('user', JSON.stringify(user))
   }
 
   getUser(): any {
-    return this.user || JSON.parse(localStorage.getItem('user') || '{}');
-  }
-  
-  isLoggedIn() {
-    return this.loggedIn
+    return this.user || JSON.parse(localStorage.getItem('user') || '{}')
   }
 }

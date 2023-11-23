@@ -23,6 +23,7 @@ export class UserService {
 
   getUser(username: string): Promise<any> {
     return this.httpClient
-      .get<any>(this.makeUrl(`username/${username}`)).toPromise();
+      .get<any>(this.makeUrl(`username/${username}`))
+      .toPromise();
   }
 }
