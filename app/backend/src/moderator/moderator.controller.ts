@@ -8,13 +8,17 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { ModeratorService } from './moderator.service';
-import { ApiBearerAuth, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOkResponse, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { CreateModeratorDto } from './dto/create_moderator.dto';
 import { VerifyModeratorDto } from './dto/verify_moderator.dto';
 import { ModeratorGuard } from './guards/moderator.guard';
 import { VerificationGuard } from './guards/verification.guard';
 import { ApproveDTO } from './dto/approve.dto';
 import { LoginModeratorDto } from './dto/login-moderator.dto';
+import { RegisterResponseDto } from './dto/responses/register-response.dto';
+import { LoginResponseDto } from './dto/responses/login-response.dto';
+import { GetModeratorResponseDto } from './dto/responses/get-moderator-response.dto';
+import { GetPollResponseDto } from '../poll/dto/responses/get-poll-response.dto';
 
 @ApiBearerAuth()
 @Controller('moderator')
@@ -23,7 +27,7 @@ export class ModeratorController {
   constructor(private readonly moderatorService: ModeratorService) {}
 
   @Post('register')
-  @ApiResponse({ status: 201, description: 'Moderator is created successfully.' })
+  @ApiResponse({ status: 201, description: 'Moderator is created successfully.', type: RegisterResponseDto })
   @ApiResponse({
     status: 400,
     description: 'Request body lacks some required fields.',
@@ -33,12 +37,12 @@ export class ModeratorController {
     status: 500,
     description: 'Internal server error, contact with backend team.',
   })
-  createModerator(@Body() createModeratorDto: CreateModeratorDto) {
-    return this.moderatorService.createModerator(createModeratorDto);
+  public async createModerator(@Body() createModeratorDto: CreateModeratorDto): Promise<RegisterResponseDto> {
+    return await this.moderatorService.createModerator(createModeratorDto);
   }
 
   @Post('login')
-  @ApiResponse({ status: 201, description: 'Login successful.' })
+  @ApiResponse({ status: 201, description: 'Login successful.', type: LoginResponseDto })
   @ApiResponse({
     status: 400,
     description:
@@ -52,8 +56,8 @@ export class ModeratorController {
     status: 500,
     description: 'Internal server error, contact with backend team.',
   })
-  loginModerator(@Body() loginModeratorDto: LoginModeratorDto) {
-    return this.moderatorService.loginModerator(loginModeratorDto);
+  public async loginModerator(@Body() loginModeratorDto: LoginModeratorDto): Promise<LoginResponseDto> {
+    return await this.moderatorService.loginModerator(loginModeratorDto);
   }
 
   @Post('register/verify')
@@ -67,34 +71,62 @@ export class ModeratorController {
     status: 500,
     description: 'Internal server error, contact with backend team.',
   })
-  verifyModerator(@Body() verifyModeratorDto: VerifyModeratorDto) {
-    return this.moderatorService.verifyModerator(verifyModeratorDto);
+  public async verifyModerator(@Body() verifyModeratorDto: VerifyModeratorDto) {
+    return await this.moderatorService.verifyModerator(verifyModeratorDto);
   }
 
   @Get()
-  findAll() {
-    return this.moderatorService.findAll();
+  @ApiResponse({ status: 200, description: 'Moderators are fetched successfully.', type: [GetModeratorResponseDto] })
+  @ApiResponse({
+    status: 500,
+    description: 'Internal server error, contact with backend team.',
+  })
+
+  public async findAll(): Promise<GetModeratorResponseDto[]> {
+    return await this.moderatorService.findAll();
   }
 
   @UseGuards(ModeratorGuard, VerificationGuard)
   @Get('polls')
-  fetchUnapprovedPolls() {
-    return this.moderatorService.fetchUnapprovedPolls();
+  @ApiResponse({ status: 200, description: 'Polls are fetched successfully.', type: [GetPollResponseDto] })
+  @ApiResponse({
+    status: 500,
+    description: 'Internal server error, contact with backend team.',
+  })
+  public async fetchUnapprovedPolls(): Promise<GetPollResponseDto[]> {
+    return await this.moderatorService.fetchUnapprovedPolls();
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.moderatorService.findOneById(id);
+  @ApiResponse({ status: 200, description: 'Moderator is fetched successfully.', type: GetModeratorResponseDto })
+  @ApiResponse({
+    status: 500,
+    description: 'Internal server error, contact with backend team.',
+  })
+  public async findOne(@Param('id') id: string): Promise<GetModeratorResponseDto> {
+    return await this.moderatorService.findOneById(id);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.moderatorService.removeById(id);
+  @ApiResponse({ status: 200, description: 'Moderator is deleted successfully.' })
+  @ApiResponse({ status: 404, description: 'Moderator is not found.' })
+  @ApiResponse({
+    status: 500,
+    description: 'Internal server error, contact with backend team.',
+  })
+  public async remove(@Param('id') id: string) {
+    return await this.moderatorService.removeById(id);
   }
 
   @UseGuards(ModeratorGuard, VerificationGuard)
   @Post('approve/:id')
-  approve(@Param('id') id : string, @Body() approveDto: ApproveDTO){
-    return this.moderatorService.approve_disapprove(id,approveDto);
+  @ApiResponse({ status: 200, description: 'Poll is approved successfully.' })
+  @ApiResponse({ status: 404, description: 'Poll is not found.' })
+  @ApiResponse({
+    status: 500,
+    description: 'Internal server error, contact with backend team.',
+  })
+  public async approve(@Param('id') id : string, @Body() approveDto: ApproveDTO){
+    return await this.moderatorService.approve_disapprove(id,approveDto);
   }
 }

@@ -38,7 +38,7 @@ export class User {
   @Column({ nullable: true })
   reset_password_token: number;
 
-  @OneToMany(() => Poll, (poll) => poll.creator)
+  @OneToMany(() => Poll, (poll) => poll.creator, { cascade: true })
   polls: Relation<Poll[]>;
 
   @ManyToMany(() => User, (user) => user.followings)

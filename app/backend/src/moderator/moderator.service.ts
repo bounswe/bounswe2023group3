@@ -37,7 +37,7 @@ export class ModeratorService {
     }
   }
 
-  async createModerator(createModeratorDto: CreateModeratorDto): Promise<any> {
+  public async createModerator(createModeratorDto: CreateModeratorDto): Promise<any> {
     const moderator = await this.searchModerators(true, {
       where: {
         email: createModeratorDto.email,
@@ -85,7 +85,7 @@ export class ModeratorService {
       userType: 1,
     };
     return {
-      user: createdModerator,
+      moderator: createdModerator,
       access_token: await this.jwtService.signAsync(payload),
     };
   }
@@ -134,6 +134,7 @@ export class ModeratorService {
       userType: 1,
     };
     return {
+      moderator: moderator,
       access_token: await this.jwtService.signAsync(payload),
     };
   }
@@ -150,11 +151,14 @@ export class ModeratorService {
   public async findOneById(id: string): Promise<Moderator> {
     return await this.moderatorRepository.findOne({
       where: { id },
+      select: ['id', 'email', 'username'],
     });
   }
 
   public async findAll(): Promise<Moderator[]> {
-    return await this.moderatorRepository.find();
+    return await this.moderatorRepository.find({
+      select: ['id', 'email', 'username'],
+    });
   }
 
   public async updateById(id: string, updateUserDto: any): Promise<void> {
