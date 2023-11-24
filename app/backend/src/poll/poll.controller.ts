@@ -18,6 +18,9 @@ import { AuthGuard } from '../auth/guards/auth.guard';
 import { VerificationGuard } from '../auth/guards/verification.guard';
 import { CreatePollResponseDto } from './dto/responses/create-poll-response.dto';
 import { GetPollResponseDto } from './dto/responses/get-poll-response.dto';
+import { SettlePollDto, SettlePollRequestDto } from './dto/settle-poll-request.dto';
+import { ModeratorGuard } from '../moderator/guards/moderator.guard';
+import { VerificationModeratorGuard } from '../moderator/guards/verification-moderator.guard';
 
 @ApiBearerAuth()
 @Controller('poll')
@@ -38,6 +41,30 @@ export class PollController {
       ...createPollDto,
       creator: request.user,
     });
+  }
+
+  @UseGuards(AuthGuard, VerificationGuard)
+  @Post('settle-request/:id')
+  @ApiResponse({ status: 200, description: 'Poll settle request is created successfully.' })
+  @ApiResponse({ status: 404, description: 'Poll not found.' })
+  @ApiResponse({
+    status: 500,
+    description: 'Internal server error, contact with backend team.',
+  })
+  public async settleRequest(@Param('id', ParseUUIDPipe) id: string, @Req() request: any, @Body() settlePollDto: SettlePollRequestDto): Promise<void> {
+    return await this.pollService.settleRequest(request.user, id, settlePollDto);
+  }
+
+  @UseGuards(ModeratorGuard, VerificationModeratorGuard)
+  @Post('settle/:id')
+  @ApiResponse({ status: 200, description: 'Poll is settled successfully.' })
+  @ApiResponse({ status: 404, description: 'Poll not found.' })
+  @ApiResponse({
+    status: 500,
+    description: 'Internal server error, contact with backend team.',
+  })
+  public async settle(@Param('id', ParseUUIDPipe) id: string, @Body() settlePollDto: SettlePollDto): Promise<void> {
+    return await this.pollService.settlePoll(id, settlePollDto.decision);
   }
 
   @ApiQuery({ name: 'minLikeCount', required: false })

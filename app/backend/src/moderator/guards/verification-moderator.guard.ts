@@ -6,7 +6,7 @@ import {
 } from '@nestjs/common';
 
 @Injectable()
-export class VerificationGuard implements CanActivate {
+export class VerificationModeratorGuard implements CanActivate {
   constructor() {}
 
   public async canActivate(context: ExecutionContext): Promise<boolean> {

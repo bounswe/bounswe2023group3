@@ -25,6 +25,7 @@ export class PollRepository extends Repository<Poll> {
       .leftJoinAndSelect('poll.options', 'options')
       .leftJoinAndSelect('poll.tags', 'tags')
       .leftJoinAndSelect('poll.creator', 'creator')
+      .leftJoinAndSelect('poll.outcome', 'outcome')
       .getMany();
   }
 }

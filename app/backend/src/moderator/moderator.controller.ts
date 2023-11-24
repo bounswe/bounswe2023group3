@@ -12,7 +12,7 @@ import { ApiBearerAuth, ApiOkResponse, ApiResponse, ApiTags } from '@nestjs/swag
 import { CreateModeratorDto } from './dto/create_moderator.dto';
 import { VerifyModeratorDto } from './dto/verify_moderator.dto';
 import { ModeratorGuard } from './guards/moderator.guard';
-import { VerificationGuard } from './guards/verification.guard';
+import { VerificationModeratorGuard } from './guards/verification-moderator.guard';
 import { ApproveDTO } from './dto/approve.dto';
 import { LoginModeratorDto } from './dto/login-moderator.dto';
 import { RegisterResponseDto } from './dto/responses/register-response.dto';
@@ -86,7 +86,7 @@ export class ModeratorController {
     return await this.moderatorService.findAll();
   }
 
-  @UseGuards(ModeratorGuard, VerificationGuard)
+  @UseGuards(ModeratorGuard, VerificationModeratorGuard)
   @Get('polls')
   @ApiResponse({ status: 200, description: 'Polls are fetched successfully.', type: [GetPollResponseDto] })
   @ApiResponse({
@@ -118,7 +118,7 @@ export class ModeratorController {
     return await this.moderatorService.removeById(id);
   }
 
-  @UseGuards(ModeratorGuard, VerificationGuard)
+  @UseGuards(ModeratorGuard, VerificationModeratorGuard)
   @Post('approve/:id')
   @ApiResponse({ status: 200, description: 'Poll is approved successfully.' })
   @ApiResponse({ status: 404, description: 'Poll is not found.' })
