@@ -9,6 +9,7 @@ import { Component } from '@angular/core'
 export class UserProfileComponent {
   polls!: any[]
   user_id!: any
+  username: any
 
   constructor(private http: HttpClient) {
     this.http.get('http://34.105.66.254:1923/poll/').subscribe(
@@ -26,6 +27,7 @@ export class UserProfileComponent {
       },
     )
     this.user_id = localStorage.getItem('user_id')
+    this.username = localStorage.getItem('username')
   }
   createdPolls(){
     this.http.get('http://34.105.66.254:1923/poll/').subscribe(
