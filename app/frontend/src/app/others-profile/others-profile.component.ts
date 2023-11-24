@@ -3,6 +3,8 @@ import { Component, OnInit } from '@angular/core'
 import { ActivatedRoute } from '@angular/router'
 import { Observable } from 'rxjs'
 import { switchMap } from 'rxjs/operators'
+import { User } from '../user-profile/user.model'
+import { UserService } from 'src/services/user-service/user.service'
 
 @Component({
   selector: 'app-others-profile',
@@ -11,43 +13,34 @@ import { switchMap } from 'rxjs/operators'
 })
 export class OthersProfileComponent implements OnInit {
   polls: any[] = []
-  user: any
+  user: User | undefined;
 
-  constructor(
-    private http: HttpClient,
-    private route: ActivatedRoute,
-  ) {}
+  constructor(private http: HttpClient, private _userService: UserService, private route: ActivatedRoute) {}
 
   ngOnInit() {
-    this.route.params
-      .pipe(
-        switchMap((params) => {
-          const usernameToFetch = params['username']
-          return this.http.get(
-            'http://34.105.66.254:1923/user/username/' + usernameToFetch,
-          )
-        }),
-      )
-      .subscribe(
-        (response: any) => {
-          this.user = response
+      this.route.params.subscribe((params) => {
+        const usernameToFetch = params['username']
+  
+        // Fetch user data when the component initializes
+        this._userService
+          .getUser(usernameToFetch)
+          .then((user: any) => {
+            this.user = user
+              this.http.get('http://34.105.66.254:1923/poll/?creatorId='+ this.user?.id).subscribe(
+                (response: any) => {
+                  this.polls = response
+                },
+                (error) => {
+                  console.error('Error fetching polls:', error)
+                },
+        )
+          })
+          .catch((error) => {
+            console.error('Error fetching user:', error)
+          })
+      })
+  
+      
 
-          this.http
-            .get(
-              'http://34.105.66.254:1923/poll/' + '?creatorId=' + this.user.id,
-            )
-            .subscribe(
-              (pollsResponse: any) => {
-                this.polls = pollsResponse
-              },
-              (pollsError) => {
-                console.error('Error fetching polls:', pollsError)
-              },
-            )
-        },
-        (error) => {
-          console.error('Error fetching user:', error)
-        },
-      )
   }
 }

@@ -84,7 +84,10 @@ export class PollComponent {
   }
 
   navigateToProfile(user: string) {
-    this.router.navigate(['/app-profile', user])
+    if(user == localStorage.getItem('username')){
+      this.router.navigate(['/app-user-profile'])
+    }
+    else this.router.navigate(['/app-profile', user])
   }
 
   navigateToPoll() {

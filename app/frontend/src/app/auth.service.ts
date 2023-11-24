@@ -20,6 +20,8 @@ export class AuthService {
         localStorage.setItem('authToken', response.access_token)
         localStorage.setItem('loggedIn', 'true')
         localStorage.setItem('user_id', response.user.id)
+        localStorage.setItem('username', response.user.username)
+
       }),
       catchError(this.handleError('Login', {})),
     )
