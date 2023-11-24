@@ -15,9 +15,9 @@ export class GetPollResponseDto {
     })
     question: string;
     @ApiProperty({
-        example: 'Besiktas'
+        example: null
     })
-    outcome: string;
+    outcome: Option;
     @ApiProperty({
         example: 'https://www.google.com/search?q=besiktas'
     })
@@ -49,9 +49,9 @@ export class GetPollResponseDto {
     })
     approveStatus: boolean;
     @ApiProperty({
-        example: false
+        example: 0
     })
-    is_settled: boolean;
+    is_settled: number;
     @ApiProperty({
         example: [
             {
