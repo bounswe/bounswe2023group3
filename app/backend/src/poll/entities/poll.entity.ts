@@ -76,7 +76,7 @@ export class Poll {
   //@Column({ nullable: true })
   //report_list: Array<any>;
 
-  @Column({ default: false })
+  @Column({ nullable: true })
   approveStatus: boolean;
 
   @Column('int', { default: Settle.ACTIVE })
