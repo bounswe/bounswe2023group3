@@ -38,7 +38,7 @@ class _ProfilePageState extends State<ProfilePage> {
   _fetchUserData() async {
     isLoadingProfile = true;
     setState(() {});
-
+    print("fetch user data");
     Response response = await ApiService.dio.get('/user/${widget.userId}');
     if (response.statusCode == 200) {
       var userData = response.data;
@@ -57,6 +57,7 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   void initState() {
     super.initState();
+    print("init state");
     _fetchUserData();
   }
 

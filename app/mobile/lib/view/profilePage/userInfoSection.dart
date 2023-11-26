@@ -28,20 +28,52 @@ class _UserInfoSectionState extends State<UserInfoSection> {
   void _learnIsFollowing() async {
     isFollowing = await FollowService.isFollowing(
         AppState.loggedInUserId, widget.profileInfo.id);
-    setState(() {});
   }
 
   void _toggleFollow() async {
     if (isFollowing) {
       // follow/unfollow shoud be decided on the current knowledge of
       // the script, because button is shown according to the current knowledge.
-      await FollowService.unfollow(
-          AppState.loggedInUserId, widget.profileInfo.id);
+      // this is how it is done in tiktok.
+      try {
+        await FollowService.unfollow(
+            AppState.loggedInUserId, widget.profileInfo.id);
+      } catch (e) {
+        if (!context.mounted) return;
+        _showAllert("unfollow operation is unsuccessful $e");
+      }
     } else {
-      await FollowService.follow(
-          AppState.loggedInUserId, widget.profileInfo.id);
+      try {
+        await FollowService.follow(
+            AppState.loggedInUserId, widget.profileInfo.id);
+        print("after awaiting follow request");
+      } catch (e) {
+        if (!context.mounted) return;
+        _showAllert("follow operation is unsuccesful $e");
+      }
     }
     _learnIsFollowing();
+    setState(() {});
+    print("after set state call in the toggle follow");
+  }
+
+  void _showAllert(String message) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          content: Text(message),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('OK'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 
   void _editProfile() {}
