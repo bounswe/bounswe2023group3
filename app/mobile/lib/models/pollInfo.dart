@@ -71,12 +71,13 @@ class PollInfo {
         return Color(int.parse(colorStr.replaceFirst('#', '0xff')));
       }).toList();
     } else {
-      for (int ii = 0; ii < (json['comments'] as List).length; ii++) {
+      int length = (json['tags'] as List).length;
+      for (int ii = 0; ii < length; ii++) {
         tagColorList.add(Colors.blue);
       }
     }
-    List<Map<String, dynamic>> options = json['options'];
-    List<Map<String, dynamic>> tags = json['tags'];
+    List<dynamic> options = json['options'];
+    List<dynamic> tags = json['tags'];
 
     return PollInfo.withoutComments(
       pollId: json['id'],
@@ -84,22 +85,22 @@ class PollInfo {
       userUsername: json['creator']['username'],
       profilePictureUrl: json['creator']['profile_picture_url'] ?? '',
       postTitle: json['question'],
-      tags: tags.map((e) => e['name'] ?? '') as List<String>,
-      tagIds: tags.map((e) => e['id'] ?? '') as List<String>,
+      tags: tags.map((e) => e['name'] as String).toList(),
+      tagIds: tags.map((e) => e['id'] as String).toList(),
       tagColors: tagColorList,
       voteCount: json['vote_count'],
-      options: options.map((e) => e['answer'] ?? '') as List<String>,
-      optionIds: options.map((e) => e['id'] ?? '') as List<String>,
+      options: options.map((e) => e['answer'] as String).toList(),
+      optionIds: options.map((e) => e['id'] as String).toList(),
 
-      likeCount: json['like_count'],
+      likeCount: json['like_count'] ?? 0,
       dueDate: DateTime.parse(json['due_date']),
       creationDate: DateTime.parse(json['creation_date']),
       // comments: (json['comments'] as List)
       //     .map((i) => CommentData.fromJson(i))
       //     .toList(),
-      commentCount: json['comment_count'],
-      approvedStatus: json['approved_status'],
-      isSettled: json['is_settled'],
+      commentCount: json['comment_count'] ?? 0,
+      approvedStatus: json['approved_status'] ?? false,
+      isSettled: json['is_settled'] ?? 0,
     );
   }
 }
