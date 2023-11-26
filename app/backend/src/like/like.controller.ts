@@ -1,11 +1,13 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, Req, UseGuards } from '@nestjs/common';
 import { LikeService } from './like.service';
-import { ApiResponse } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { AuthGuard } from '../auth/guards/auth.guard';
 import { VerificationGuard } from '../auth/guards/verification.guard';
 import { FetchLikeResponseDto } from './dto/responses/fetchLike.dto';
 
 @Controller('like')
+@ApiTags("like")
+@ApiBearerAuth()
 export class LikeController {
   constructor(private readonly likeService: LikeService) {}
 
