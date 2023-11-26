@@ -95,6 +95,7 @@ class _PollRequestPageState extends State<PollRequestPage> {
   }
 
   void sendForApproval() async {
+    // TODO uncomment below line after Appstate.loggedInUserId field defined
     //pollData.creatorId = AppState.loggedInUserId;
     if (!dateTimeEdited) {
       int scrollUpDurationMillis = 300;
