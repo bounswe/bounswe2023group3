@@ -36,7 +36,6 @@ export class Poll {
   @OneToMany(() => Option, (option) => option.poll, { cascade: true })
   options: Relation<Option[]>;
 
-
   @OneToOne(() => Option, { nullable: true })
   @JoinColumn()
   outcome: Option;
@@ -62,6 +61,10 @@ export class Poll {
   // @Todo Replace with vote entity
   //@Column({ nullable: true })
   //vote_list: Array<any>;
+
+  @Column({ default: 0 })
+  like_count: number;
+
   @Column({ default: 0 })
   comment_count: number;
 

@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { DataSource, Repository } from 'typeorm';
 import { Poll } from '../entities/poll.entity';
 
@@ -6,6 +6,34 @@ import { Poll } from '../entities/poll.entity';
 export class PollRepository extends Repository<Poll> {
   constructor(private dataSource: DataSource) {
     super(Poll, dataSource.createEntityManager());
+  }
+
+  public async findPollById(id) {
+    const poll = await this.pollRepository.findOne({
+      where: { id },
+      relations: ['options', 'tags', 'creator', 'outcome'],
+    });
+  }
+
+  public async increaseLikeByOne(pollID) {
+    const poll = await this.findOne({
+      where: { id: pollID },
+    });
+
+    if (!poll) {
+      throw new NotFoundException('Poll not found');
+    }
+
+    // Update the like_count by adding 1
+    const updatedLikeCount = poll.like_count + 1;
+
+    // Save the updated like_count
+    await this.update(
+      { id: pollID },
+      {
+        like_count: updatedLikeCount,
+      },
+    );
   }
 
   public async findAll({
