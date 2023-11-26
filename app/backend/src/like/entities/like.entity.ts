@@ -1,8 +1,7 @@
 import { User } from '../../user/entities/user.entity';
 import { Poll } from '../../poll/entities/poll.entity';
 import {
-  Column,
-  Entity, JoinColumn, ManyToMany, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn, Relation, Unique,
+  Entity,ManyToOne, PrimaryGeneratedColumn, Relation
 } from 'typeorm';
 
 

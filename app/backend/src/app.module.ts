@@ -18,7 +18,9 @@ import { BadgeModule } from './badge/badge.module';
 import { Badge } from './badge/entities/badge.entity';
 import { LikeModule } from './like/like.module';
 import { Like } from './like/entities/like.entity';
+import { Comment } from './comment/entities/comment.entity';
 import { ConfigModule } from '@nestjs/config';
+import { CommentModule } from './comment/comment.module';
 
 
 @Module({
@@ -32,7 +34,7 @@ import { ConfigModule } from '@nestjs/config';
       port: 5432,
       password: process.env.DB_PASSWORD,
       username: 'postgres',
-      entities: [User, Poll, Tag, Option, Moderator, Badge,Like],
+      entities: [User, Poll, Tag, Option, Moderator, Badge, Like, Comment],
       database: 'postgres',
       synchronize: true,
       logging: true,
@@ -62,6 +64,7 @@ import { ConfigModule } from '@nestjs/config';
     ModeratorModule,
     BadgeModule,
     LikeModule,
+    CommentModule,
   ],
   controllers: [AppController],
   providers: [AppService],

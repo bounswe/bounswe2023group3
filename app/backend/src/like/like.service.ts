@@ -55,8 +55,8 @@ export class LikeService {
       where: { poll: { id: pollID }, user: { id: userID } },
     });
 
-    if (!likeToBeDeleted) {
-      throw new ConflictException('User has not liked this post');
+    if (!likeToBeDeleted){
+      throw new ConflictException('User has not liked this poll');
     }
 
     return await this.likeRepository.remove(likeToBeDeleted);

@@ -13,12 +13,12 @@ import { Option } from '../option/entities/option.entity';
 import { JwtModule } from '@nestjs/jwt';
 import { UserService } from '../user/user.service';
 import { BadgeService } from '../badge/badge.service';
+import { Comment } from '../comment/entities/comment.entity';
 import { PollModule } from '../poll/poll.module';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([Like, Poll, Tag, User, Badge, Option]),
-    PollModule,
   ],
   controllers: [LikeController],
   providers: [

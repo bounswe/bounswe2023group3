@@ -13,6 +13,7 @@ import {
 } from 'typeorm';
 import { Badge } from '../../badge/entities/badge.entity';
 import { Like } from '../../like/entities/like.entity';
+import { Comment } from '../../comment/entities/comment.entity';
 
 const SALT_ROUNDS = 10;
 
@@ -60,7 +61,10 @@ export class User {
   badges: Relation<Badge[]>;
 
   @OneToMany(() => Like, (like) => like.user)
-  likes: Relation<Like>[];
+  likes : Relation<Like[]>;
+
+  @OneToMany(() => Comment, (comment) => comment.user)
+  comments : Relation<Comment[]>;
 
   @BeforeInsert()
   async hashPasswordBeforeInsert() {
