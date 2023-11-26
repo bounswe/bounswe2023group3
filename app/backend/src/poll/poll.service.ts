@@ -159,6 +159,6 @@ export class PollService {
   }
 
   public async increaseLikeByOne(pollID: string): Promise<void> {
-    return await this.likeRepository.increaseLikeByOne(pollID);
+    return await this.pollRepository.increaseLikeByOne(pollID);
   }
 }

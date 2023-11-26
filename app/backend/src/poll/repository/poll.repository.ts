@@ -9,7 +9,7 @@ export class PollRepository extends Repository<Poll> {
   }
 
   public async findPollById(id) {
-    const poll = await this.pollRepository.findOne({
+    const poll = await this.findOne({
       where: { id },
       relations: ['options', 'tags', 'creator', 'outcome'],
     });
