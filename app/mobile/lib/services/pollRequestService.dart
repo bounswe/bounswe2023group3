@@ -12,7 +12,6 @@ class PollRequestService {
 
     // Prepare the data to send to the API
     final Map<String, dynamic> data = {
-      'creator_id': pollData.creatorId,
       'pol_title': pollData.pollTitle,
       'question': pollData.pollTitle,
       'poll_description': pollData.pollDescription,

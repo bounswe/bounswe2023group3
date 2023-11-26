@@ -95,11 +95,13 @@ class _PollRequestPageState extends State<PollRequestPage> {
   }
 
   void sendForApproval() async {
-    // TODO uncomment below line after Appstate.loggedInUserId field defined
-    //pollData.creatorId = AppState.loggedInUserId;
-    if (!dateTimeEdited) {
+    bool isDueDateBeforeToday = pollData.dueDate.isBefore(DateTime.now());
+    if (!dateTimeEdited || isDueDateBeforeToday) {
       int scrollUpDurationMillis = 300;
-      _showAlert('You didn\'t enter Date/Time', () {
+      var allertMessage = dateTimeEdited
+          ? "Due date cannot be before than today"
+          : "You didn't enter Date/Time";
+      _showAlert(allertMessage, () {
         _listViewScrollController.animateTo(
           0, // Scroll to the top of the ListView
           duration: Duration(milliseconds: scrollUpDurationMillis),
@@ -137,7 +139,7 @@ class _PollRequestPageState extends State<PollRequestPage> {
       FocusScope.of(context).requestFocus(_pollOptionFocuses[lastEmpty]);
       return;
     }
-
+    pollData.creationDate = DateTime.now();
     try {
       await PollRequestService.createPoll(pollData);
       _showAlert("Your poll creation request is succesfully sent", () {});
