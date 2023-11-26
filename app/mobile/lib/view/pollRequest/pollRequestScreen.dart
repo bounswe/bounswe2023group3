@@ -143,6 +143,8 @@ class _PollRequestPageState extends State<PollRequestPage> {
     try {
       await PollRequestService.createPoll(pollData);
       _showAlert("Your poll creation request is succesfully sent", () {});
+      pollData = PollCreationData();
+      setState(() {});
     } catch (e) {
       _showAlert(
           "There was an error sending your poll creation "
