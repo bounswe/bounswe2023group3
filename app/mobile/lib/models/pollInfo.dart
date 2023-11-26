@@ -42,31 +42,6 @@ class PollInfo {
     return _comments;
   }
 
-  /**
-   * only for creating mock poll data
-   */
-  PollInfo.withComments({
-    required this.userName,
-    required this.userUsername,
-    required this.profilePictureUrl,
-    required this.postTitle,
-    required this.tags,
-    required this.tagColors,
-    required this.voteCount,
-    required this.options,
-    required this.likeCount,
-    required this.dueDate,
-    required this.creationDate,
-    required comments,
-    required this.approvedStatus,
-    required this.isSettled,
-    required this.pollId,
-    required this.optionIds,
-    required this.tagIds,
-  })  : _comments = comments,
-        commentCount = comments.length,
-        _commentsAreFetched = true;
-
   PollInfo.withoutComments({
     required this.userName,
     required this.userUsername,
