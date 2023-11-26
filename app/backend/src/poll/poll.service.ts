@@ -1,4 +1,8 @@
-import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Poll } from './entities/poll.entity';
 import { Repository } from 'typeorm';
@@ -53,9 +57,13 @@ export class PollService {
     return await this.pollRepository.save(savedPoll);
   }
 
-  public async settleRequest(user: User, id: string, settlePollDto: SettlePollRequestDto): Promise<void> {
+  public async settleRequest(
+    user: User,
+    id: string,
+    settlePollDto: SettlePollRequestDto,
+  ): Promise<void> {
     const poll = await this.pollRepository.findOne({
-      where: { id, creator: {id: user.id} },
+      where: { id, creator: { id: user.id } },
       relations: ['options', 'outcome'],
     });
 
@@ -97,7 +105,6 @@ export class PollService {
     if (poll.is_settled !== Settle.PENDING) {
       throw new BadRequestException('Poll is not eligible to be settled.');
     }
-    
 
     const option = poll.options.find((option) => option.id === poll.outcome.id);
 
@@ -114,8 +121,16 @@ export class PollService {
     await this.pollRepository.save(poll);
   }
 
-  public async findAll({ creatorId, minLikeCount }): Promise<Poll[]> {
-    return await this.pollRepository.findAll({ creatorId, minLikeCount });
+  public async findAll({
+    creatorId,
+    minLikeCount,
+    minCommentCount,
+  }): Promise<Poll[]> {
+    return await this.pollRepository.findAll({
+      creatorId,
+      minLikeCount,
+      minCommentCount,
+    });
   }
 
   public async findPollById(id): Promise<Poll> {

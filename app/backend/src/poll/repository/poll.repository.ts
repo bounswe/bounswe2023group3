@@ -8,7 +8,11 @@ export class PollRepository extends Repository<Poll> {
     super(Poll, dataSource.createEntityManager());
   }
 
-  public async findAll({ creatorId, minLikeCount }): Promise<Poll[]> {
+  public async findAll({
+    creatorId,
+    minLikeCount,
+    minCommentCount,
+  }): Promise<Poll[]> {
     const queryBuilder = this.createQueryBuilder('poll');
 
     if (creatorId) {
@@ -18,6 +22,12 @@ export class PollRepository extends Repository<Poll> {
     if (minLikeCount) {
       queryBuilder.andWhere('poll.like_count >= :minLikeCount', {
         minLikeCount,
+      });
+    }
+
+    if (minCommentCount) {
+      queryBuilder.andWhere('poll.comment_count >= :minCommentCount', {
+        minCommentCount,
       });
     }
 
