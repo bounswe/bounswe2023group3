@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:mobile_app/services/homePageService.dart';
 import 'package:mobile_app/view/sidebar/sidebar.dart'; // Import your custom drawer widget
-import 'package:mobile_app/view/pollViewHomePage//pollViewHomePage.dart';
+import 'package:mobile_app/view/pollViewHomePage/pollViewHomePage.dart';
 import 'package:mobile_app/view/pollView/pollView.dart';
 
 class HomePage extends StatelessWidget {
@@ -70,59 +71,79 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Home'),
-      ),
-      drawer: const Sidebar(), // Use the custom drawer widget
-      body: Column(
-        children: [
-          Expanded(
-            child: ListView.separated(
-              separatorBuilder: (context, index) => const SizedBox(height: 20), // Add spacing between posts
-              shrinkWrap: true,
-              itemCount: posts.length,
-              itemBuilder: (context, index) {
-                final post = posts[index];
-                double postHeight = calculatePostHeight(post);
-                return SizedBox(
-                  child: GestureDetector(
-                    onTap: (){tapOnPoll(context, post.userName,
-                        post.userUsername,
-                        post.profilePictureUrl,
-                        post.postTitle,
-                        post.tags,
-                        post.tagColors,
-                        post.voteCount,
-                        post.postOptions,
-                        post.likeCount,
-                        post.dateTime,
-                        post.comments);},
-                    child: SizedBox(
-                      height: postHeight,
-                      child: PollViewHomePage(userName: post.userName,
-                        userUsername: post.userUsername,
-                        profilePictureUrl: post.profilePictureUrl,
-                        postTitle: post.postTitle,
-                        tags: post.tags,
-                        tagColors: post.tagColors,
-                        voteCount: post.voteCount,
-                        postOptions: post.postOptions,
-                        likeCount: post.likeCount,
-                        dateTime: post.dateTime,
-                        comments: post.comments,
-                      ),
+    return FutureBuilder<List<PollViewHomePage>>(
+        future: HomePageService.getPollRequests(),
+        builder: (BuildContext context,
+            AsyncSnapshot<List<PollViewHomePage>> snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+        // Show a loading indicator while the data is being fetched
+            return const CircularProgressIndicator();
+          } else if (snapshot.hasError) {
+        // Show an error message if there is an error
+            print(snapshot);
+            print("ccc");
+            return Text('Error: ${snapshot.error}');
+          } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+        // Handle the case where no data is available
+            print("ddd");
+            return const Text('No data available');
+          } else {
+        // Build your UI using the fetched data
+            List<PollViewHomePage> posts = snapshot.data!;
+            return Scaffold(
+              appBar: AppBar(
+                title: const Text('Home'),
+              ),
+              drawer: const Sidebar(), // Use the custom drawer widget
+              body: Column(
+                children: [
+                  Expanded(
+                    child: ListView.separated(
+                      separatorBuilder: (context, index) => const SizedBox(height: 20), // Add spacing between posts
+                      shrinkWrap: true,
+                      itemCount: posts.length,
+                      itemBuilder: (context, index) {
+                        final post = posts[index];
+                        double postHeight = calculatePostHeight(post);
+                        return SizedBox(
+                          child: GestureDetector(
+                            onTap: (){tapOnPoll(context, post.userName,
+                                post.userUsername,
+                                post.profilePictureUrl,
+                                post.postTitle,
+                                post.tags,
+                                post.tagColors,
+                                post.voteCount,
+                                post.postOptions,
+                                post.likeCount,
+                                post.dateTime,
+                                post.comments);},
+                            child: SizedBox(
+                              height: postHeight,
+                              child: PollViewHomePage(userName: post.userName,
+                                userUsername: post.userUsername,
+                                profilePictureUrl: post.profilePictureUrl,
+                                postTitle: post.postTitle,
+                                tags: post.tags,
+                                tagColors: post.tagColors,
+                                voteCount: post.voteCount,
+                                postOptions: post.postOptions,
+                                likeCount: post.likeCount,
+                                dateTime: post.dateTime,
+                                comments: post.comments,
+                              ),
+                            ),
+                          ),
+                        );
+                      },
                     ),
                   ),
-                );
-              },
-            ),
-          ),
-        ],
-      ),
-    );
+                ],
+              ),
+            );
+          }
+        });
   }
-
   double calculatePostHeight(PollViewHomePage post) {
     if (post == null) {
       // Handle null case
