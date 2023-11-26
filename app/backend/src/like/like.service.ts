@@ -39,8 +39,6 @@ export class LikeService {
       user: { id: userID },
     });
 
-    this.pollService.increaseLikeByOne(pollID);
-
     return await this.likeRepository.save(newLike);
   }
 

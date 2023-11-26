@@ -10,7 +10,6 @@ import { Tag } from '../tag/entities/tag.entity';
 import { User } from '../user/entities/user.entity';
 import { Badge } from '../badge/entities/badge.entity';
 import { Option } from '../option/entities/option.entity';
-import { JwtModule } from '@nestjs/jwt';
 import { UserService } from '../user/user.service';
 import { BadgeService } from '../badge/badge.service';
 import { PollModule } from '../poll/poll.module';

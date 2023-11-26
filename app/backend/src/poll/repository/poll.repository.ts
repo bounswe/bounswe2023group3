@@ -1,6 +1,7 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { DataSource, Repository } from 'typeorm';
 import { Poll } from '../entities/poll.entity';
+import { Like } from '../../like/entities/like.entity';
 
 @Injectable()
 export class PollRepository extends Repository<Poll> {
@@ -9,31 +10,10 @@ export class PollRepository extends Repository<Poll> {
   }
 
   public async findPollById(id) {
-    const poll = await this.findOne({
+    return await this.findOne({
       where: { id },
       relations: ['options', 'tags', 'creator', 'outcome'],
     });
-  }
-
-  public async increaseLikeByOne(pollID) {
-    const poll = await this.findOne({
-      where: { id: pollID },
-    });
-
-    if (!poll) {
-      throw new NotFoundException('Poll not found');
-    }
-
-    // Update the like_count by adding 1
-    const updatedLikeCount = poll.like_count + 1;
-
-    // Save the updated like_count
-    await this.update(
-      { id: pollID },
-      {
-        like_count: updatedLikeCount,
-      },
-    );
   }
 
   public async findAll({
@@ -79,11 +59,33 @@ export class PollRepository extends Repository<Poll> {
         });
     }
 
-    return await queryBuilder
+    // Subquery to count likes
+    const likesSubQuery = queryBuilder
+      .subQuery()
+      .select('COUNT(likeSub.id)', 'likeCount')
+      .from(Like, 'likeSub')
+      .where('likeSub.pollId = poll.id')
+      .getQuery();
+
+    // Add the subquery to the main query
+    queryBuilder.addSelect(`(${likesSubQuery})`, 'pollLikeCount');
+
+    const { entities, raw } = await queryBuilder
       .leftJoinAndSelect('poll.options', 'options')
       .leftJoinAndSelect('poll.tags', 'tags')
       .leftJoinAndSelect('poll.creator', 'creator')
       .leftJoinAndSelect('poll.outcome', 'outcome')
-      .getMany();
+      .getRawAndEntities();
+
+    const combinedResults = entities.map((entity) => {
+      return {
+        ...entity,
+        likeCount:
+          raw[raw.findIndex((item) => item.poll_id === entity.id)]
+            .pollLikeCount,
+      };
+    });
+
+    return combinedResults;
   }
 }
