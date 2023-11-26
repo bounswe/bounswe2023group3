@@ -33,12 +33,9 @@ class ProfileInfo {
   });
 
   factory ProfileInfo.fromJson(Map<String, dynamic> json) {
-    var testPPicture =
-        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRXLfPCb2ltrAdwEV"
-        "LhU048H3s_pJuN27Ts8A";
     return ProfileInfo(
       id: json['id'],
-      profilePictureUrl: json['profilePictureUrl'] ?? testPPicture,
+      profilePictureUrl: json['profilePictureUrl'] ?? '',
       username: json['username'],
       followingCount: json['followingCount'] ?? 0,
       followersCount: json['followersCount'] ?? 0,
