@@ -142,8 +142,10 @@ class _PollRequestPageState extends State<PollRequestPage> {
     pollData.creationDate = DateTime.now();
     try {
       await PollRequestService.createPoll(pollData);
-      _showAlert("Your poll creation request is succesfully sent", () {});
-      pollData = PollCreationData();
+      _showAlert("Your poll creation request is succesfully sent", () {
+        Navigator.pop(context);
+      });
+
       setState(() {});
     } catch (e) {
       _showAlert(
