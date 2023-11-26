@@ -2,8 +2,6 @@ import {
   Controller,
   Get,
   Post,
-  Body,
-  Patch,
   Param,
   Delete,
   Req,
@@ -16,13 +14,17 @@ import { VerificationGuard } from '../auth/guards/verification.guard';
 import { FetchLikeResponseDto } from './dto/responses/fetchLike.dto';
 
 @Controller('like')
-@ApiTags("like")
+@ApiTags('like')
 @ApiBearerAuth()
 export class LikeController {
   constructor(private readonly likeService: LikeService) {}
 
   @Get(':pollID')
-  @ApiResponse({ status: 201, description: 'Fetched succesfully', type: FetchLikeResponseDto})
+  @ApiResponse({
+    status: 201,
+    description: 'Fetched succesfully',
+    type: FetchLikeResponseDto,
+  })
   @ApiResponse({
     status: 400,
     description: 'Request body lacks some required fields.',
@@ -65,7 +67,7 @@ export class LikeController {
     status: 500,
     description: 'Internal server error, contact with backend team.',
   })
-  remove(@Param('pollID') id: string , @Req() request : any) {
-    return this.likeService.remove(id,request.user.id);
+  remove(@Param('pollID') id: string, @Req() request: any) {
+    return this.likeService.remove(id, request.user.id);
   }
 }

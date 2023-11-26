@@ -66,9 +66,6 @@ export class Poll {
   //vote_list: Array<any>;
 
   @Column({ default: 0 })
-  like_count: number;
-
-  @Column({ default: 0 })
   comment_count: number;
 
   @Column({ default: 0 })
