@@ -13,17 +13,20 @@ import { Option } from '../option/entities/option.entity';
 import { JwtModule } from '@nestjs/jwt';
 import { UserService } from '../user/user.service';
 import { BadgeService } from '../badge/badge.service';
+import { PollModule } from '../poll/poll.module';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([Like,Poll, Tag, User, Badge, Option]),
-    JwtModule.register({
-      global: true,
-      secret: 'very-secret-key',
-      signOptions: { expiresIn: '10m' },
-    }),
+    TypeOrmModule.forFeature([Like, Poll, Tag, User, Badge, Option]),
+    PollModule,
   ],
   controllers: [LikeController],
-  providers: [LikeService, PollService, PollRepository,UserService,BadgeService],
+  providers: [
+    LikeService,
+    PollService,
+    PollRepository,
+    UserService,
+    BadgeService,
+  ],
 })
 export class LikeModule {}

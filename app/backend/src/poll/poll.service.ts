@@ -125,21 +125,27 @@ export class PollService {
     await this.pollRepository.save(poll);
   }
 
-  public async findAll({ creatorId, minLikeCount }): Promise<Poll[]> {
-    return await this.pollRepository.findAll({ creatorId, minLikeCount });
+  public async findAll({
+    creatorId,
+    minLikeCount,
+    minCommentCount,
+    likedById,
+    followedById,
+  }): Promise<Poll[]> {
+    return await this.pollRepository.findAll({
+      creatorId,
+      minLikeCount,
+      minCommentCount,
+      likedById,
+      followedById,
+    });
   }
 
   public async findPollById(id) {
-    const poll = await this.pollRepository.findOne({
+    return await this.pollRepository.findOne({
       where: { id },
       relations: ['options', 'tags', 'creator', 'outcome'],
     });
-
-    const like_count = await this.findLikeCount(id);
-    return {
-      ...poll,
-      like_count: like_count,
-    };
   }
 
   async findLikeCount(pollID: string): Promise<number> {
@@ -151,5 +157,9 @@ export class PollService {
 
   public async removeById(id: string): Promise<void> {
     await this.pollRepository.delete(id);
+  }
+
+  public async increaseLikeByOne(pollID: string): Promise<void> {
+    return await this.pollRepository.increaseLikeByOne(pollID);
   }
 }
