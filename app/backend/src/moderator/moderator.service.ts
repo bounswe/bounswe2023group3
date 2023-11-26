@@ -6,7 +6,7 @@ import {
 } from '@nestjs/common';
 import { CreateModeratorDto } from './dto/create_moderator.dto';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { IsNull, Repository } from 'typeorm';
 import { Moderator } from './entities/moderator.entity';
 import { MailerService } from '@nestjs-modules/mailer';
 import { JwtService } from '@nestjs/jwt';
@@ -142,7 +142,7 @@ export class ModeratorService {
   public async fetchUnapprovedPolls(): Promise<Poll[]> {
     return await this.pollRepository.find({
       where: {
-        approveStatus: false,
+        approveStatus: IsNull(),
       },
       relations: ['options', 'tags', 'creator'],
     });

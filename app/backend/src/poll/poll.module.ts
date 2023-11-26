@@ -12,9 +12,10 @@ import { Badge } from '../badge/entities/badge.entity';
 import { BadgeService } from '../badge/badge.service';
 import { Moderator } from '../moderator/entities/moderator.entity';
 import { ModeratorService } from '../moderator/moderator.service';
+import { Like } from '../like/entities/like.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Poll, Option, Tag, User, Badge, Moderator])],
+  imports: [TypeOrmModule.forFeature([Poll, Option, Tag, User, Badge, Moderator,Like])],
   controllers: [PollController],
   providers: [PollService, UserService, PollRepository, BadgeService, ModeratorService],
   exports: [PollService],

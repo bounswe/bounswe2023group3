@@ -8,6 +8,7 @@ import { PollRepository } from './repository/poll.repository';
 import { User } from '../user/entities/user.entity';
 import { Settle } from './enums/settle.enum';
 import { SettlePollRequestDto } from './dto/settle-poll-request.dto';
+import { Like } from '../like/entities/like.entity';
 
 @Injectable()
 export class PollService {
@@ -16,6 +17,8 @@ export class PollService {
     @InjectRepository(Option)
     private readonly optionRepository: Repository<Option>,
     @InjectRepository(Tag) private readonly tagRepository: Repository<Tag>,
+    @InjectRepository(Like) 
+    private readonly likeRepository: Repository<Like>,
   ) {}
 
   public async createPoll(createPollDto: any): Promise<Poll> {
@@ -118,11 +121,21 @@ export class PollService {
     return await this.pollRepository.findAll({ creatorId, minLikeCount });
   }
 
-  public async findPollById(id): Promise<Poll> {
-    return await this.pollRepository.findOne({
+  public async findPollById(id) {
+      const poll = await this.pollRepository.findOne({
       where: { id },
       relations: ['options', 'tags', 'creator', 'outcome'],
     });
+
+    const like_count = await this.findLikeCount(id);
+    return {
+      ...poll,
+      like_count : like_count
+    }
+  }
+
+  async findLikeCount(pollID: string): Promise<number>{
+    return await this.likeRepository.count({where : {poll:{id:pollID}}, relations:['user'] })
   }
 
   public async removeById(id: string): Promise<void> {
