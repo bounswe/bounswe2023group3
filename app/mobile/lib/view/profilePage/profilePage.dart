@@ -26,6 +26,7 @@ class _ProfilePageState extends State<ProfilePage> {
   ProfileInfo? profileInfo;
   List<PollInfo> likedPolls = [];
   List<PollInfo> votedPolls = [];
+  List<PollInfo> createdPolls = [];
   bool isLoadingPolls = false;
   bool isLoadingProfile = false;
   ProfilePagePollType activeCategory = ProfilePagePollType.Created;
@@ -66,7 +67,9 @@ class _ProfilePageState extends State<ProfilePage> {
 
     switch (category) {
       case ProfilePagePollType.Created:
-        viewedPolls = profileInfo == null ? [] : profileInfo!.createdPolls;
+        createdPolls = viewedPolls = createdPolls.isEmpty
+            ? await ProfilePagePollsService.getCreatedPolls(widget.userId)
+            : createdPolls;
         break;
       case ProfilePagePollType.Liked:
         likedPolls = viewedPolls = likedPolls.isEmpty
@@ -216,10 +219,11 @@ class _ProfilePageState extends State<ProfilePage> {
                     tags: post.tags,
                     tagColors: post.tagColors,
                     voteCount: post.voteCount,
-                    postOptions: post.postOptions,
+                    postOptions: post.options,
                     likeCount: post.likeCount,
-                    dateTime: post.dateTime.toString(),
-                    comments: post.comments),
+                    dateTime: post.dueDate.toString(),
+                    // TODO buraya commentCount verilecek
+                    comments: []),
               ),
             ),
           );
@@ -229,7 +233,12 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
-  void tapOnPoll(BuildContext context, PollInfo poll) {
+  void tapOnPoll(BuildContext context, PollInfo poll) async {
+    // TODO burada comments Future<CommentData> olarak verilip, detailed poll
+    // view sayfasisin gelmesini geciktirmeyecek. await dondugu zaman o sayfada
+    // commentler render'lanacak
+    var comments = await poll.comments;
+    if (!mounted) return;
     Navigator.push(
       context,
       MaterialPageRoute(
@@ -241,10 +250,10 @@ class _ProfilePageState extends State<ProfilePage> {
             tags: poll.tags,
             tagColors: poll.tagColors,
             voteCount: poll.voteCount,
-            postOptions: poll.postOptions,
+            postOptions: poll.options,
             likeCount: poll.likeCount,
-            dateTime: poll.dateTime.toString(),
-            comments: poll.comments),
+            dateTime: poll.dueDate.toString(),
+            comments: comments),
       ),
     );
   }
@@ -255,7 +264,7 @@ class _ProfilePageState extends State<ProfilePage> {
     // Add the heights of various components within PollViewHomePage
     height += 150;
     height +=
-        post.postOptions.length * 65; // Assuming a fixed height for each option
+        post.options.length * 65; // Assuming a fixed height for each option
     height += 100; // Adjust as needed for padding or spacing
     height += 50; // Adjust as needed for the Like button
     height += 50; // Adjust as needed for the Row with LikeCount and DateTime
