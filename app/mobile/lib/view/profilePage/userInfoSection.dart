@@ -23,9 +23,10 @@ class _UserInfoSectionState extends State<UserInfoSection> {
   void initState() {
     super.initState();
     profilePhoto = NetworkImage(widget.profileInfo.profilePictureUrl);
+    _updateFollowButton();
   }
 
-  void _learnIsFollowing() async {
+  Future<void> _learnIsFollowing() async {
     isFollowing = await FollowService.isFollowing(
         AppState.loggedInUserId, widget.profileInfo.id);
   }
@@ -52,7 +53,7 @@ class _UserInfoSectionState extends State<UserInfoSection> {
         _showAllert("follow operation is unsuccesful $e");
       }
     }
-    _learnIsFollowing();
+    await _learnIsFollowing();
     setState(() {});
     print("after set state call in the toggle follow");
   }
@@ -78,9 +79,14 @@ class _UserInfoSectionState extends State<UserInfoSection> {
 
   void _editProfile() {}
 
+  _updateFollowButton() async {
+    await _learnIsFollowing();
+    if (!mounted) return;
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
-    _learnIsFollowing();
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: Row(
