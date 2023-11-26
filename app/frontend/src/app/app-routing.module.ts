@@ -9,18 +9,45 @@ import { ResetPasswordComponent } from './resetpassword/resetpassword.component'
 import { HomeComponent } from './home/home.component'
 import { PollRequestComponent } from './poll-request/poll-request.component'
 import { OthersProfileComponent } from './others-profile/others-profile.component'
+import { PollViewComponent } from './poll-view/poll-view.component'
+import { AuthGuard } from './authorize.guard'
+import { ModeratorRequestsComponent } from './moderator-requests/moderator-requests.component'
+import { TagPageComponent } from './tag-page/tag-page.component'
 
 const routes: Routes = [
   { path: '', component: WelcomeComponent },
-  { path: 'app-user-profile', component: UserProfileComponent },
+  { path: 'app-moderator-requests', component: ModeratorRequestsComponent },
+  {
+    path: 'app-user-profile',
+    component: UserProfileComponent,
+    canActivate: [AuthGuard],
+  },
   { path: 'app-login', component: LoginComponent },
   { path: 'app-welcome', component: WelcomeComponent },
   { path: 'app-register', component: RegisterComponent },
   { path: 'app-forget-password', component: ForgetpasswordComponent },
   { path: 'app-reset-password', component: ResetPasswordComponent },
-  { path: 'app-home', component: HomeComponent },
-  { path: 'app-poll-request', component: PollRequestComponent },
-  { path: 'app-others-profile', component: OthersProfileComponent },
+  { path: 'app-home', component: HomeComponent, canActivate: [AuthGuard] },
+  {
+    path: 'app-poll-request',
+    component: PollRequestComponent,
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'app-profile/:username',
+    component: OthersProfileComponent,
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'app-poll-view/:pollId',
+    component: PollViewComponent,
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'app-tag-page/:tagName',
+    component: TagPageComponent,
+    canActivate: [AuthGuard],
+  },
 ]
 
 @NgModule({

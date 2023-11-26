@@ -1,26 +1,54 @@
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-</head>
-<body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  </head>
+  <body>
     <div class="container">
-        <div class="post-widget" style="display: flex; align-items: start;">
-            <img class="user-avatar" src="assets/unknown.jpg"
-             alt="User Avatar" style="width:60px; height:60px;border-radius: 50%; margin-right: 5px;">
-            <div class="post-content" style="display: flex; flex-direction: column; align-items: start;
-            margin-left: 5px;">
-                <b class="name" style=" font-size:medium;">Jane</b>
-                <p class="user-name" style="margin-top:2px;">@janesmith</p>
-            </div>
+      <div class="post-widget" style="display: flex; align-items: start">
+        <img
+          class="user-avatar"
+          src="assets/unknown.jpg"
+          alt="User Avatar"
+          style="
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            margin-right: 5px;
+            margin-top: 5px;
+          "
+        />
+        <div
+          class="post-content"
+          style="
+            display: flex;
+            flex-direction: column;
+            align-items: start;
+            margin-left: 5px;
+          "
+        >
+          <b class="name" style="font-size: medium; margin-top: 15px">^-^</b>
+          <p class="user-name" style="margin-top: 2px">&#64;{{this.username}}</p>
         </div>
-        <div class="buttons">
-            <button class="button" routerLink="/app-user-profile">My Profile</button>
-            <button class="button" routerLink="/app-home">Homepage</button>
-            <button class="button">Notifications</button>
-            <button class="button" style="margin-bottom:40px;">Settings</button>
-            <button class="button" routerLink="/app-poll-request" style="background-color: #54798a;">Create a poll request</button>
-        </div>
+      </div>
+      <div class="buttons">
+        <button class="button" routerLink="/app-user-profile">
+          My Profile
+        </button>
+        <button class="button" routerLink="/app-home">Homepage</button>
+        <button class="button">Notifications</button>
+        <button class="button">Settings</button>
+        <button class="button" (click)="logOut()" style="margin-bottom: 40px">
+          Log out
+        </button>
+        <button
+          class="button"
+          routerLink="/app-poll-request"
+          style="background-color: #e57f84; color: #fff"
+        >
+          Create a poll request
+        </button>
+      </div>
     </div>
-</body>
+  </body>
 </html>

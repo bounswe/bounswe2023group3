@@ -1,5 +1,6 @@
 import { Component } from '@angular/core'
-import { ResetPasswordService } from '../resetpassword.service'
+import { AuthService } from '../auth.service'
+import { Router } from '@angular/router'
 
 @Component({
   selector: 'app-resetpassword',
@@ -8,28 +9,38 @@ import { ResetPasswordService } from '../resetpassword.service'
 })
 export class ResetPasswordComponent {
   resetPasswordToken!: number
-  id: string
+  email: string
   password: string
   errorMessage: string
 
-  constructor(private resetPasswordService: ResetPasswordService) {
-    this.id = ''
+  constructor(
+    private authService: AuthService,
+    private router: Router,
+  ) {
+    this.email = ''
     this.password = ''
     this.errorMessage = ''
   }
 
   resetPassword() {
-    this.resetPasswordService
-      .resetPassword(this.resetPasswordToken, this.id, this.password)
+    this.authService
+      .resetPassword(Number(this.resetPasswordToken), this.email, this.password)
       .subscribe(
         (response) => {
-          // Password reset successful, handle the response as needed
-          console.log('Password reset successful', response)
+          console.log(response)
+          if (response.status === 400) {
+            this.errorMessage =
+              'Please provide a valid password with at least 6 characters.'
+          } else {
+            console.log('Password reset successful', response)
+            this.errorMessage = 'Password reset successful.'
+            this.router.navigate(['/app-login'])
+          }
         },
         (error) => {
           // Handle any errors, display an error message, etc.
           this.errorMessage = 'Password reset failed. Please try again.'
         },
-      )
+      ).unsubscribe
   }
 }

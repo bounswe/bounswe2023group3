@@ -11,8 +11,10 @@ import {
   OneToMany,
   ManyToMany,
   JoinTable,
-  Relation
+  Relation,
+  OneToOne,
 } from 'typeorm';
+import { Settle } from '../enums/settle.enum';
 
 // @Todo Some entities are not ready, therefore this is not the finalized version.
 @Entity('polls')
@@ -23,24 +25,21 @@ export class Poll {
   @Column({ nullable: false })
   question: string;
 
-  @ManyToOne(() => User, user => user.polls) // Establishing the many-to-one relationship
+  @ManyToOne(() => User, (user) => user.polls, { onDelete: 'SET NULL' }) // Establishing the many-to-one relationship
   @JoinColumn() // Specifying the foreign key column
   creator: Relation<User>;
-
-  //@ManyToOne(() => User) // Establishing the many-to-one relationship
-  //@JoinColumn({ name: 'id' })
-  @Column({ nullable: true })
-  moderator: string;
 
   @ManyToMany(() => Tag)
   @JoinTable()
   tags: Relation<Tag[]>;
 
-  @OneToMany(() => Option, option => option.poll)
+  @OneToMany(() => Option, (option) => option.poll, { cascade: true })
   options: Relation<Option[]>;
 
-  @Column({ nullable: true })
-  outcome: string;
+
+  @OneToOne(() => Option, { nullable: true })
+  @JoinColumn()
+  outcome: Option;
 
   @Column({ nullable: true })
   outcome_source: string;
@@ -78,8 +77,8 @@ export class Poll {
   //report_list: Array<any>;
 
   @Column({ default: false })
-  is_approved_by_moderator: boolean;
+  approveStatus: boolean;
 
-  @Column({ default: false })
-  is_settled: boolean;
+  @Column('int', { default: Settle.ACTIVE })
+  is_settled: Settle;
 }

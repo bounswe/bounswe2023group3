@@ -1,16 +1,33 @@
 <html lang="en">
   <body>
+    <app-header></app-header>
     <div class="page-layout">
       <app-side-bar></app-side-bar>
       <div class="container" style="position: relative">
         <div style="text-align: right">
           <button
             class="button"
-            style="display: inline-block; margin-right: 5px"
+            style="
+              width: 100px;
+              display: inline-block;
+              margin-right: 5px;
+              background-color: #63989f;
+            "
+            (click)="settledPolls(false)"
           >
             Ongoing
           </button>
-          <button class="button" style="display: inline-block">Settled</button>
+          <button
+            class="button"
+            style="
+              width: 100px;
+              display: inline-block;
+              background-color: #374968;
+            "
+            (click)="settledPolls(true)"
+          >
+            Settled
+          </button>
         </div>
 
         <form
@@ -19,18 +36,19 @@
           style="margin-bottom: 15px; margin-top: 20px"
         >
           <input
-            style="width: 100%; border-radius: 15px; text-align: center"
+            id="searchInput"
+            style="border-radius: 15px; text-align: center"
             placeholder="What are you looking for?"
           />
         </form>
 
         <div class="user-polls">
-          <button class="user-polls-column">Following</button>
-          <button class="user-polls-column">Trending</button>
+          <button class="user-polls-column" (click)="followingPolls()">Following</button>
+          <button class="user-polls-column" (click)="trendingPolls()">Trending</button>
         </div>
 
         <div>
-          <app-poll></app-poll>
+          <app-poll *ngFor="let poll of polls" [pollId]="poll.id"></app-poll>
         </div>
       </div>
       <div style="display: flex; flex-direction: column">

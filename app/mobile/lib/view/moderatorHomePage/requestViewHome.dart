@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mobile_app/view/constants.dart';
 import 'package:mobile_app/view/pollView/tagWidget.dart';
 import 'package:mobile_app/view/pollView/userInformationWidget.dart';
+import 'package:intl/intl.dart';
 
 class RequestViewHome extends StatelessWidget {
   final String userName;
@@ -44,7 +45,7 @@ class RequestViewHome extends StatelessWidget {
             TagListWidget(tags: tags, tagColors: tagColors),
             Row(
               children: [
-                DateTimeWidget(dateTime: dateTime),
+                DateTimeWidget(dateTime: DateTime.parse(dateTime)),
               ],
             ),
         ]
@@ -79,12 +80,14 @@ class TagListWidget extends StatelessWidget {
 }
 
 class DateTimeWidget extends StatelessWidget {
-  final String dateTime;
+  final DateTime dateTime;
 
-  const DateTimeWidget({super.key, required this.dateTime});
+  const DateTimeWidget({Key? key, required this.dateTime}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    String formattedDateTime = DateFormat.yMMMMd('en_US').add_jm().format(dateTime);
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 25.0),
       child: Row(
@@ -92,13 +95,15 @@ class DateTimeWidget extends StatelessWidget {
           Container(
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(20.0),
-              border: Border.all(color: pink),
-              color: pink,
+              border: Border.all(color: Colors.pink),
+              color: Colors.pink,
             ),
             child: Padding(
               padding: const EdgeInsets.all(8.0),
-              child: Text(dateTime,
-                  style: const TextStyle(fontSize: 16.0, color: whitish)),
+              child: Text(
+                formattedDateTime,
+                style: const TextStyle(fontSize: 16.0, color: Colors.white),
+              ),
             ),
           ),
         ],

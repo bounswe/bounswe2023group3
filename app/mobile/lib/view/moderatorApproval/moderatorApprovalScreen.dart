@@ -36,25 +36,29 @@ class _ModeratorApprovalScreenState extends State<ModeratorApprovalScreen> {
 
     try {
       Response response = await moderatorPollDecision.answerPoll(isApproved);
-
-      if (response.statusCode == 201) {
+      String message = response.statusMessage ?? "";
+      if (response.statusCode == 200) {
         if (!context.mounted) return;
+        if(message != ""){
+          showErrorMessage(context, message); //approve or reject
+        }
         Navigator.pop(context);
       }
 
-      else {
+
+      else{
         if (!context.mounted) return;
       }
     }
     catch (e) {
-      showErrorMessage(context);
+      showErrorMessage(context, "Catch block is executed.");
     }
   }
 
-  void showErrorMessage(BuildContext context) {
+  void showErrorMessage(BuildContext context, String message) {
     ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text('Email is incorrect'),
+      SnackBar(
+        content: Text(message),
       ),
     );
   }
@@ -73,15 +77,17 @@ class _ModeratorApprovalScreenState extends State<ModeratorApprovalScreen> {
             // poll title
             const SizedBox(height: 4),
             const SectionHeader(headerText: "Title"),
+            const SizedBox(height: 4),
             ReadOnlyTextField(
-              label: widget.pollData.pollTitle,
+              text: widget.pollData.pollTitle,
             ),
 
             // poll description
             const SizedBox(height: 16),
             const SectionHeader(headerText: "Description"),
+            const SizedBox(height: 4),
             ReadOnlyTextField(
-              label: widget.pollData.pollDescription,
+              text: widget.pollData.pollDescription,
             ),
 
             // added tags
@@ -146,7 +152,7 @@ class _ModeratorApprovalScreenState extends State<ModeratorApprovalScreen> {
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 8),
                 child: ReadOnlyTextField(
-                  label: widget.pollData.options[i],
+                  text: widget.pollData.options[i],
                 ),
               ),
 

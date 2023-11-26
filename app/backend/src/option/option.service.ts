@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common';
 import { CreateOptionDto } from './dto/create-option.dto';
-import { UpdateOptionDto } from './dto/update-option.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Option } from './entities/option.entity';
@@ -8,9 +7,10 @@ import { Option } from './entities/option.entity';
 @Injectable()
 export class OptionService {
   constructor(
-    @InjectRepository(Option) private readonly optionRepository: Repository<Option>,
+    @InjectRepository(Option)
+    private readonly optionRepository: Repository<Option>,
   ) {}
-  
+
   public async create(createOptionDto: CreateOptionDto): Promise<Option> {
     const createdOption = this.optionRepository.create(createOptionDto);
     return await this.optionRepository.save(createdOption);

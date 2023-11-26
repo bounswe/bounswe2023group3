@@ -1,30 +1,30 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Poll } from './entities/poll.entity';
 import { Repository } from 'typeorm';
 import { Option } from '../option/entities/option.entity';
 import { Tag } from '../tag/entities/tag.entity';
-import { CreatePollDto } from './dto/create-poll.dto';
+import { PollRepository } from './repository/poll.repository';
+import { User } from '../user/entities/user.entity';
+import { Settle } from './enums/settle.enum';
+import { SettlePollRequestDto } from './dto/settle-poll-request.dto';
 
 @Injectable()
 export class PollService {
   constructor(
-    @InjectRepository(Poll) private readonly pollRepository: Repository<Poll>,
+    private readonly pollRepository: PollRepository,
     @InjectRepository(Option)
     private readonly optionRepository: Repository<Option>,
     @InjectRepository(Tag) private readonly tagRepository: Repository<Tag>,
   ) {}
 
-  public async createPoll(createPollDto: CreatePollDto): Promise<Poll> {
+  public async createPoll(createPollDto: any): Promise<Poll> {
     const poll = new Poll();
     poll.question = createPollDto.question;
     poll.creator = createPollDto.creator;
-    poll.moderator = 'moderator';
-
-    // Save the poll first to generate the ID
+    poll.due_date = createPollDto.due_date;
     const savedPoll = await this.pollRepository.save(poll);
 
-    // Create and associate options with the saved poll
     const options = createPollDto.options.map((option) => {
       const newOption = new Option();
       newOption.answer = option;
@@ -32,11 +32,8 @@ export class PollService {
       return newOption;
     });
 
-    // Save the options
     await this.optionRepository.save(options);
 
-    // If you want to associate tags with the poll, you can do it here
-    // Assuming createPollDto.tags is an array of tag names
     const tags = await Promise.all(
       createPollDto.tags.map(async (tagName) => {
         let tag = await this.tagRepository.findOneBy({ name: tagName });
@@ -51,23 +48,80 @@ export class PollService {
       }),
     );
 
-    // Associate tags with the poll
     savedPoll.tags = tags;
 
-    // Save the poll again to update the associations
     return await this.pollRepository.save(savedPoll);
   }
 
-  public async findAll(): Promise<Poll[]> {
-    return await this.pollRepository.find({
-      relations: ['options', 'tags', 'creator'],
+  public async settleRequest(user: User, id: string, settlePollDto: SettlePollRequestDto): Promise<void> {
+    const poll = await this.pollRepository.findOne({
+      where: { id, creator: {id: user.id} },
+      relations: ['options', 'outcome'],
     });
+
+    if (!poll) {
+      throw new NotFoundException('Poll not found.');
+    }
+
+    if (poll.is_settled !== Settle.ACTIVE) {
+      throw new BadRequestException('Poll is not eligible to be settled.');
+    }
+
+    if (poll.due_date < new Date()) {
+      throw new BadRequestException('Due date is passed.');
+    }
+    const option = await this.optionRepository.findOne({
+      where: { answer: settlePollDto.outcome },
+    });
+
+    if (!option) {
+      throw new BadRequestException('Outcome option not found.');
+    }
+
+    poll.outcome = option;
+    poll.outcome_source = settlePollDto.outcome_source;
+    poll.is_settled = Settle.PENDING;
+    await this.pollRepository.save(poll);
   }
 
-  public async findPollById(id: string): Promise<Poll> {
+  public async settlePoll(id: string, decision: boolean): Promise<void> {
+    const poll = await this.pollRepository.findOne({
+      where: { id },
+      relations: ['options', 'outcome'],
+    });
+
+    if (!poll) {
+      throw new NotFoundException('Poll not found.');
+    }
+
+    if (poll.is_settled !== Settle.PENDING) {
+      throw new BadRequestException('Poll is not eligible to be settled.');
+    }
+    
+
+    const option = poll.options.find((option) => option.id === poll.outcome.id);
+
+    if (!option) {
+      throw new BadRequestException('Outcome option not found.');
+    }
+
+    if (decision) {
+      poll.is_settled = Settle.SETTLED;
+    } else {
+      poll.is_settled = Settle.CANCELLED;
+    }
+
+    await this.pollRepository.save(poll);
+  }
+
+  public async findAll({ creatorId, minLikeCount }): Promise<Poll[]> {
+    return await this.pollRepository.findAll({ creatorId, minLikeCount });
+  }
+
+  public async findPollById(id): Promise<Poll> {
     return await this.pollRepository.findOne({
       where: { id },
-      relations: ['options', 'tags', 'creator'],
+      relations: ['options', 'tags', 'creator', 'outcome'],
     });
   }
 

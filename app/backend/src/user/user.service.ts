@@ -1,26 +1,34 @@
-import { ConflictException, Injectable } from '@nestjs/common';
+import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './entities/user.entity';
 import { Repository } from 'typeorm';
 import { CreateUserDto, FollowUserDto } from './dto/create-user.dto';
+import { BadgeService } from '../badge/badge.service';
 
 @Injectable()
 export class UserService {
   constructor(
-    @InjectRepository(User) private readonly userRepository: Repository<User>,
+    @InjectRepository(User)
+    private readonly userRepository: Repository<User>,
+    private readonly badgeService: BadgeService,
   ) {}
   public async searchUser(params: { email: string }): Promise<User[]> {
     return await this.userRepository.findBy(params);
   }
 
   public async searchUserByUsername(username: string): Promise<User> {
-    return await this.userRepository.findOneBy({ username });
+    return await this.userRepository.findOne({ 
+      where: { username: username },
+      relations: ['polls', 'badges', 'followings', 'followers'],
+      select: ['id', 'email', 'username', 'polls', 'badges', 'followers', 'followings'],
+     });    
   }
 
   public async findUserById(id: string): Promise<User> {
-    return await this.userRepository.findOne({ 
-      where: {id: id},
-      relations: ['polls'],
+    return await this.userRepository.findOne({
+      where: { id: id },
+      relations: ['polls', 'badges', 'followings', 'followers'],
+      select: ['id', 'email', 'username', 'polls', 'badges', 'followers', 'followings'],
     });
   }
 
@@ -41,7 +49,8 @@ export class UserService {
 
   public async findAll(): Promise<User[]> {
     return await this.userRepository.find({
-      relations: ['polls','followings'],
+      relations: ['polls', 'badges', 'followings', 'followers'],
+      select: ['id', 'email', 'username', 'polls', 'badges', 'followers', 'followings'],
     });
   }
 
@@ -54,18 +63,16 @@ export class UserService {
     );
   }
 
-  public async followUser(followDto: FollowUserDto): Promise<void>{
-    
-    if(followDto.followerUserID === followDto.followerUserID){
+  public async followUser(followDto: FollowUserDto, id:string): Promise<void> {
+    if (followDto.followerUserID === id) {
       throw new ConflictException('Users cannot follow themselves');
     }
-    let followingUser : User= await this.userRepository.findOne({ 
-      where: {id: followDto.followingUserID},
-
+    const followingUser: User = await this.userRepository.findOne({
+      where: { id: id },
     });
-    let followerUser : User = await this.userRepository.findOne({ 
-      where: {id: followDto.followerUserID},
-      relations:['polls','followings']
+    const followerUser: User = await this.userRepository.findOne({
+      where: { id: followDto.followerUserID },
+      relations: ['polls', 'badges', 'followings', 'followers'],
     });
 
     followerUser.followings = followerUser.followings ?? [];
@@ -73,15 +80,16 @@ export class UserService {
     await this.userRepository.save(followerUser);
   }
 
-  public async unfollowUser(followDto: FollowUserDto): Promise<void>{
-    
-    let followerUser : User = await this.userRepository.findOne({ 
-      where: {id: followDto.followerUserID},
-      relations:['polls','followings']
+  public async unfollowUser(followDto: FollowUserDto,id:string): Promise<void> {
+    const followerUser: User = await this.userRepository.findOne({
+      where: { id: followDto.followerUserID },
+      relations: ['polls', 'badges', 'followings', 'followers'],
     });
     followerUser.followings = followerUser.followings ?? [];
-    const indexToRemove = followerUser.followings.findIndex((user) => user.id === followDto.followingUserID);
-    if(indexToRemove===-1){
+    const indexToRemove = followerUser.followings.findIndex(
+      (user) => user.id === id,
+    );
+    if (indexToRemove === -1) {
       throw new ConflictException('Currently not following');
     }
     followerUser.followings.splice(indexToRemove, 1);
@@ -101,7 +109,27 @@ export class UserService {
     await this.userRepository.delete(id);
   }
 
+  public async addBadge(id: string, name: string): Promise<void> {
+    const user = await this.findUserById(id);
+    if (!user) {
+      throw new ConflictException('User not found');
+    }
+    const badge = await this.badgeService.findOneBy(name);
+    if (!badge) {
+      throw new ConflictException('Badge not found');
+    }
+    user.badges = user.badges ?? [];
+    if (user.badges.find((badge) => badge.name === name)) {
+      throw new ConflictException('User already has this badge');
+    }
+    user.badges.push(badge);
+    await this.userRepository.save(user);
+
+  }
+
   public generateCode(): number {
     return Math.floor(Math.random() * 9000 + 1000);
   }
+
+
 }

@@ -12,6 +12,10 @@ import { Tag } from './tag/entities/tag.entity';
 import { Option } from './option/entities/option.entity';
 import { TagModule } from './tag/tag.module';
 import { OptionModule } from './option/option.module';
+import { ModeratorModule } from './moderator/moderator.module';
+import { Moderator } from './moderator/entities/moderator.entity';
+import { BadgeModule } from './badge/badge.module';
+import { Badge } from './badge/entities/badge.entity';
 
 @Module({
   imports: [
@@ -21,7 +25,7 @@ import { OptionModule } from './option/option.module';
       port: 5432,
       password: 'password',
       username: 'postgres',
-      entities: [User, Poll, Tag, Option],
+      entities: [User, Poll, Tag, Option, Moderator, Badge],
       database: 'postgres',
       synchronize: true,
       logging: true,
@@ -48,6 +52,8 @@ import { OptionModule } from './option/option.module';
     PollModule,
     TagModule,
     OptionModule,
+    ModeratorModule,
+    BadgeModule,
   ],
   controllers: [AppController],
   providers: [AppService],
