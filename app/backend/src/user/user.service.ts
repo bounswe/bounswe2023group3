@@ -67,33 +67,42 @@ export class UserService {
     if (followDto.followerUserID === id) {
       throw new ConflictException('Users cannot follow themselves');
     }
-    const followingUser: User = await this.userRepository.findOne({
+    const authUser: User = await this.userRepository.findOne({
       where: { id: id },
+      relations: ['followings'],
     });
-    const followerUser: User = await this.userRepository.findOne({
+    const userToBeFollowed: User = await this.userRepository.findOne({
       where: { id: followDto.followerUserID },
-      relations: ['polls', 'badges', 'followings', 'followers'],
     });
+    if (!userToBeFollowed) {
+      throw new ConflictException('There is no such user');
+    }
+    authUser.followings = authUser.followings ?? [];
+    const exist = authUser.followings.findIndex(
+      (user) => user.id === followDto.followerUserID,
+    );
 
-    followerUser.followings = followerUser.followings ?? [];
-    followerUser.followings.push(followingUser);
-    await this.userRepository.save(followerUser);
+    if (exist !== -1) {
+      throw new ConflictException('Already following');
+    }
+    authUser.followings.push(userToBeFollowed);
+    await this.userRepository.save(authUser);
   }
 
   public async unfollowUser(followDto: FollowUserDto,id:string): Promise<void> {
-    const followerUser: User = await this.userRepository.findOne({
-      where: { id: followDto.followerUserID },
-      relations: ['polls', 'badges', 'followings', 'followers'],
+    const authUser : User = await this.userRepository.findOne({
+      where: { id: id },
+      relations: [ 'followings'],
     });
-    followerUser.followings = followerUser.followings ?? [];
-    const indexToRemove = followerUser.followings.findIndex(
-      (user) => user.id === id,
+    authUser.followings = authUser.followings ?? [];
+    const indexToRemove = authUser.followings.findIndex(
+      (user) => user.id === followDto.followerUserID,
     );
     if (indexToRemove === -1) {
       throw new ConflictException('Currently not following');
     }
-    followerUser.followings.splice(indexToRemove, 1);
-    await this.userRepository.save(followerUser);
+    authUser.followings.splice(indexToRemove, 1);
+    await this.userRepository.save(authUser);
   }
 
   public async updateById(id: string, updateUserDto: any): Promise<void> {

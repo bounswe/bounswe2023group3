@@ -1,7 +1,8 @@
 import { User } from '../../user/entities/user.entity';
 import { Poll } from '../../poll/entities/poll.entity';
 import {
-  Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn,
+  Column,
+  Entity, JoinColumn, ManyToMany, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn, Relation, Unique,
 } from 'typeorm';
 
 
@@ -10,12 +11,10 @@ export class Like {
     @PrimaryGeneratedColumn('uuid')
     id: string;
 
-    @OneToOne(type => User, { nullable: false, onDelete: "SET NULL" })
-    @JoinColumn()
-    user: User;
+    @ManyToOne(type => User, (user)=>user.likes,{ nullable: false, onDelete: "CASCADE"})
+    user: Relation<User>;
 
-    @OneToOne(type => Poll, { nullable: false, onDelete: "CASCADE"})
-    @JoinColumn()
-    poll: Poll;
+    @ManyToOne(type => Poll, (poll)=>poll.likes, { nullable: false, onDelete: "CASCADE"} )
+    poll: Relation<Poll>;
 
 }
