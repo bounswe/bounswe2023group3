@@ -30,12 +30,12 @@ class _ModeratorApprovalScreenState extends State<ModeratorApprovalScreen> {
 
 
 
-  void answerPoll(bool isApproved) async{
+  void answerPoll(bool isApproved, String id) async{
     // Perform email verification and navigate to the next screen if successful
     ModeratorPollDecision moderatorPollDecision = ModeratorPollDecision();
 
     try {
-      Response response = await moderatorPollDecision.answerPoll(isApproved);
+      Response response = await moderatorPollDecision.answerPoll(isApproved, id);
       String message = response.statusMessage ?? "";
       if (response.statusCode == 200) {
         if (!context.mounted) return;
@@ -197,11 +197,11 @@ class _ModeratorApprovalScreenState extends State<ModeratorApprovalScreen> {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: <Widget>[
                 ElevatedButton(
-                  onPressed: ()=>answerPoll(true),
+                  onPressed: ()=>answerPoll(true, widget.pollData.pollId),
                   child: const Text('Approve!'),
                 ),
                 ElevatedButton(
-                  onPressed: ()=>answerPoll(false),
+                  onPressed: ()=>answerPoll(false, widget.pollData.pollId),
                   child: const Text('Reject!'),
                 ),
               ],

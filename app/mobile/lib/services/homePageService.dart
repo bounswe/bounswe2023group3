@@ -4,54 +4,57 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile_app/services/apiService.dart';
 
-import '../view/moderatorHomePage/requestViewHome.dart';
+import '../view/pollViewHomePage/pollViewHomePage.dart';
 
-
-class ModeratorService {
-
-
-  static Future<List<RequestViewHome>> getPollRequests() async {
+class HomePageService {
+  static Future<List<PollViewHomePage>> getPollRequests() async {
     const String getPollsEndpoint = '/poll';
+    print("bbb");
     try {
       final Response response = await ApiService.dio.get(
         getPollsEndpoint,
       );
+      print(response.data);
       final List<dynamic> postsJson = response.data;
-      List<RequestViewHome> posts = [];
+      List<PollViewHomePage> posts = [];
       for (var post in postsJson) {
         final creator = post['creator'];
         final List<dynamic> tagsJson = post['tags'];
+        final List<dynamic> optionsJson = post['options'];
 
         List<String> tagsList = [];
         List<Color> tagColorsList = [];
 
         for (var tag in tagsJson) {
           tagsList.add(tag['name']);
-          tagColorsList.add(Colors.blue); // You might want to generate colors dynamically
+          tagColorsList.add(
+              Colors.blue); // You might want to generate colors dynamically
         }
 
         List<String> optionsList = [];
-        for (var option in post['options']) {
+
+        for (var option in optionsJson) {
           optionsList.add(option['answer']);
         }
-
-        posts.add(RequestViewHome(
+        print(post);
+        posts.add(PollViewHomePage(
           userName: creator['username'],
           userUsername: creator['username'],
           profilePictureUrl: "", // Replace with the actual key
           postTitle: post['question'],
           tags: tagsList,
           tagColors: tagColorsList,
-          dateTime: post['creation_date'],
-          pollId: post['id'], // You might want to format the date
-          options: optionsList,
-          dueDate: post['due_date'],
+          voteCount: post['vote_count'],
+          postOptions: optionsList,
+          likeCount: post['like_count'] ?? 0,
+          comments: const [],
+          dateTime: post['creation_date'], // You might want to format the date
         ));
       }
+      print(posts);
       return posts;
     } catch (e) {
       rethrow;
     }
-
   }
 }

@@ -15,6 +15,7 @@ import {
   OneToOne,
 } from 'typeorm';
 import { Settle } from '../enums/settle.enum';
+import { Like } from '../../like/entities/like.entity';
 
 // @Todo Some entities are not ready, therefore this is not the finalized version.
 @Entity('polls')
@@ -50,9 +51,8 @@ export class Poll {
   @Column({ nullable: true })
   due_date: Date;
 
-  // @Todo Replace with like entity
-  //@Column({ nullable: true })
-  //like_list: Array<any>;
+  @OneToMany(() => Like, (like) => like.user)
+  likes : Relation<Like>[];
 
   // @Todo Replace with comment entity
   //@Column({ nullable: true })

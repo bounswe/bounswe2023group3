@@ -12,6 +12,7 @@ import {
   ManyToMany,
 } from 'typeorm';
 import { Badge } from '../../badge/entities/badge.entity';
+import { Like } from '../../like/entities/like.entity';
 
 const SALT_ROUNDS = 10;
 
@@ -51,6 +52,9 @@ export class User {
   @ManyToMany(() => Badge)
   @JoinTable()
   badges: Relation<Badge[]>;
+
+  @OneToMany(() => Like, (like) => like.user)
+  likes : Relation<Like>[];
 
   @BeforeInsert()
   async hashPasswordBeforeInsert() {

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mobile_app/models/comment.dart';
 import 'package:mobile_app/view/pollView/commentWidget.dart';
 import 'package:mobile_app/view/pollView/tagWidget.dart';
 import 'package:mobile_app/view/pollView/postOptionWidget.dart';
@@ -102,13 +103,6 @@ class PollPage extends StatelessWidget {
   void handleLikePress() {
     print("pressed like");
   }
-}
-
-class CommentData {
-  final String user;
-  final String commentText;
-
-  CommentData({required this.user, required this.commentText});
 }
 
 class CommentEntryFieldWidget extends StatelessWidget {
