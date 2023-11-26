@@ -317,38 +317,25 @@ class _PollRequestPageState extends State<PollRequestPage> {
                   border: Border.all(color: navy),
                   borderRadius: BorderRadius.circular(4),
                 ),
-                child: TypeAheadField(
-                  textFieldConfiguration: TextFieldConfiguration(
-                    controller: _pollTagController,
-                    focusNode: _pollTagFocus,
-                    decoration: const InputDecoration(
-                      border: OutlineInputBorder(),
-                      labelText: 'Enter tag',
-                    ),
-                    onSubmitted: (_) {
-                      if (_pollTagController.text.isEmpty) {
-                        FocusScope.of(context)
-                            .requestFocus(_pollOptionFocuses[0]);
-                      } else {
-                        FocusScope.of(context).unfocus();
-                      }
-                    },
+                child: TextField(
+                  controller: _pollTagController,
+                  focusNode: _pollTagFocus,
+                  decoration: const InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: 'Enter tag',
                   ),
-                  suggestionsCallback: (pattern) async {
-                    return await TagCompletionService.getPossibleCompletions(
-                        pattern);
-                  },
-                  itemBuilder: (context, suggestion) {
-                    return ListTile(
-                      title: Text(suggestion),
-                    );
-                  },
-                  onSuggestionSelected: (suggestion) {
-                    setState(() {
-                      pollData.tags.add(suggestion);
-                      _pollTagController.clear();
-                    });
-                    FocusScope.of(context).requestFocus(_pollOptionFocuses[0]);
+                  onSubmitted: (value) {
+                    if (value.isNotEmpty) {
+                      setState(() {
+                        pollData.tags.add(value);
+                        _pollTagController.clear();
+                      });
+                      FocusScope.of(context)
+                          .requestFocus(_pollOptionFocuses[0]);
+                    } else {
+                      FocusScope.of(context)
+                          .requestFocus(_pollOptionFocuses[0]);
+                    }
                   },
                 ),
               ),
