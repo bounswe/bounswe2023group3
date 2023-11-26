@@ -16,6 +16,8 @@ import { ModeratorModule } from './moderator/moderator.module';
 import { Moderator } from './moderator/entities/moderator.entity';
 import { BadgeModule } from './badge/badge.module';
 import { Badge } from './badge/entities/badge.entity';
+import { LikeModule } from './like/like.module';
+import { Like } from './like/entities/like.entity';
 
 @Module({
   imports: [
@@ -25,7 +27,7 @@ import { Badge } from './badge/entities/badge.entity';
       port: 5432,
       password: 'password',
       username: 'postgres',
-      entities: [User, Poll, Tag, Option, Moderator, Badge],
+      entities: [User, Poll, Tag, Option, Moderator, Badge,Like],
       database: 'postgres',
       synchronize: true,
       logging: true,
@@ -54,6 +56,7 @@ import { Badge } from './badge/entities/badge.entity';
     OptionModule,
     ModeratorModule,
     BadgeModule,
+    LikeModule,
   ],
   controllers: [AppController],
   providers: [AppService],
