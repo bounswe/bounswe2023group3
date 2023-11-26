@@ -12,6 +12,7 @@ export class PollRepository extends Repository<Poll> {
     creatorId,
     minLikeCount,
     minCommentCount,
+    likedById,
   }): Promise<Poll[]> {
     const queryBuilder = this.createQueryBuilder('poll');
 
@@ -29,6 +30,12 @@ export class PollRepository extends Repository<Poll> {
       queryBuilder.andWhere('poll.comment_count >= :minCommentCount', {
         minCommentCount,
       });
+    }
+
+    if (likedById) {
+      queryBuilder
+        .innerJoin('likes', 'like', 'like.pollId = poll.id')
+        .andWhere('like.userId = :likedById', { likedById });
     }
 
     return await queryBuilder

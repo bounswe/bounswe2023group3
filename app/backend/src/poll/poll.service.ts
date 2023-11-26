@@ -21,7 +21,7 @@ export class PollService {
     @InjectRepository(Option)
     private readonly optionRepository: Repository<Option>,
     @InjectRepository(Tag) private readonly tagRepository: Repository<Tag>,
-    @InjectRepository(Like) 
+    @InjectRepository(Like)
     private readonly likeRepository: Repository<Like>,
   ) {}
 
@@ -128,16 +128,18 @@ export class PollService {
     creatorId,
     minLikeCount,
     minCommentCount,
+    likedById,
   }): Promise<Poll[]> {
     return await this.pollRepository.findAll({
       creatorId,
       minLikeCount,
       minCommentCount,
+      likedById,
     });
   }
 
   public async findPollById(id) {
-      const poll = await this.pollRepository.findOne({
+    const poll = await this.pollRepository.findOne({
       where: { id },
       relations: ['options', 'tags', 'creator', 'outcome'],
     });
@@ -145,12 +147,15 @@ export class PollService {
     const like_count = await this.findLikeCount(id);
     return {
       ...poll,
-      like_count : like_count
-    }
+      like_count: like_count,
+    };
   }
 
-  async findLikeCount(pollID: string): Promise<number>{
-    return await this.likeRepository.count({where : {poll:{id:pollID}}, relations:['user'] })
+  async findLikeCount(pollID: string): Promise<number> {
+    return await this.likeRepository.count({
+      where: { poll: { id: pollID } },
+      relations: ['user'],
+    });
   }
 
   public async removeById(id: string): Promise<void> {

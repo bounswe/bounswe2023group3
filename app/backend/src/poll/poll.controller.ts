@@ -100,6 +100,7 @@ export class PollController {
   @ApiQuery({ name: 'creatorId', required: false })
   @ApiQuery({ name: 'minLikeCount', required: false })
   @ApiQuery({ name: 'minCommentCount', required: false })
+  @ApiQuery({ name: 'likedById', required: false })
   @ApiResponse({
     status: 200,
     description: 'Polls are fetched successfully.',
@@ -117,11 +118,14 @@ export class PollController {
     minLikeCount?: number,
     @Query('minCommentCount', new ParseIntPipe({ optional: true }))
     minCommentCount?: number,
+    @Query('likedById', new ParseUUIDPipe({ optional: true }))
+    likedById?: string,
   ): Promise<GetPollResponseDto[]> {
     return await this.pollService.findAll({
       creatorId,
       minLikeCount,
       minCommentCount,
+      likedById,
     });
   }
 
