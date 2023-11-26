@@ -173,12 +173,18 @@ class _UserInfoSectionState extends State<UserInfoSection> {
         Color lastSelectedColor = Colors.black;
         int ii;
         for (ii = 0; ii < badges.length; ii++) {
-          if (lastSelectedColor != Colors.black) {
+          if (ii != 0) {
+            // eger az once bir sey secmissek, onu kaldiralim
             colors.remove(lastSelectedColor);
+            var tempColor = lastSelectedColor;
+            // onun haricinde bir sey secelim
+            lastSelectedColor = colors[AppState.random.nextInt(colors.length)];
+            colorSeq.add(lastSelectedColor);
+            colors.add(tempColor);
+          } else {
+            lastSelectedColor = colors[AppState.random.nextInt(colors.length)];
+            colorSeq.add(lastSelectedColor);
           }
-          lastSelectedColor = colors[AppState.random.nextInt(colors.length)];
-          colorSeq.add(lastSelectedColor);
-          colors.add(lastSelectedColor);
         }
         ii = 0;
         nextColor() {
