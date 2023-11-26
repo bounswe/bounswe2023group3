@@ -1,16 +1,16 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing'
 
-import { ResetpasswordComponent } from './resetpassword.component'
+import { ResetPasswordComponent } from './resetpassword.component'
 
-describe('ResetpasswordComponent', () => {
-  let component: ResetpasswordComponent
-  let fixture: ComponentFixture<ResetpasswordComponent>
+describe('ResetPasswordComponent', () => {
+  let component: ResetPasswordComponent
+  let fixture: ComponentFixture<ResetPasswordComponent>
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [ResetpasswordComponent],
+      declarations: [ResetPasswordComponent],
     })
-    fixture = TestBed.createComponent(ResetpasswordComponent)
+    fixture = TestBed.createComponent(ResetPasswordComponent)
     component = fixture.componentInstance
     fixture.detectChanges()
   })
