@@ -98,8 +98,6 @@ export class PollController {
   }
 
   @ApiQuery({ name: 'creatorId', required: false })
-  @ApiQuery({ name: 'minLikeCount', required: false })
-  @ApiQuery({ name: 'minCommentCount', required: false })
   @ApiQuery({ name: 'likedById', required: false })
   @ApiQuery({ name: 'followedById', required: false })
   @ApiResponse({
@@ -115,10 +113,6 @@ export class PollController {
   public async findAll(
     @Query('creatorId', new ParseUUIDPipe({ optional: true }))
     creatorId?: string,
-    @Query('minLikeCount', new ParseIntPipe({ optional: true }))
-    minLikeCount?: number,
-    @Query('minCommentCount', new ParseIntPipe({ optional: true }))
-    minCommentCount?: number,
     @Query('likedById', new ParseUUIDPipe({ optional: true }))
     likedById?: string,
     @Query('followedById', new ParseUUIDPipe({ optional: true }))
@@ -126,16 +120,12 @@ export class PollController {
   ): Promise<GetPollResponseDto[]> {
     return await this.pollService.findAll({
       creatorId,
-      minLikeCount,
-      minCommentCount,
       likedById,
       followedById,
     });
   }
 
   @UseGuards(AuthGuard, VerificationGuard)
-  @ApiQuery({ name: 'minLikeCount', required: false })
-  @ApiQuery({ name: 'minCommentCount', required: false })
   @ApiQuery({ name: 'likedById', required: false })
   @ApiResponse({
     status: 200,
@@ -147,26 +137,16 @@ export class PollController {
     description: 'Internal server error, contact with backend team.',
   })
   @Get('my-polls')
-  public async findMyPolls(
-    @Req() req: any,
-    @Query('minLikeCount', new ParseIntPipe({ optional: true }))
-    minLikeCount?: number,
-    @Query('minCommentCount', new ParseIntPipe({ optional: true }))
-    minCommentCount?: number,
-  ): Promise<GetPollResponseDto[]> {
+  public async findMyPolls(@Req() req: any): Promise<GetPollResponseDto[]> {
     const creatorId = req.user.id;
     return await this.pollService.findAll({
       creatorId,
-      minLikeCount,
-      minCommentCount,
       likedById: null,
       followedById: null,
     });
   }
 
   @UseGuards(AuthGuard, VerificationGuard)
-  @ApiQuery({ name: 'minLikeCount', required: false })
-  @ApiQuery({ name: 'minCommentCount', required: false })
   @ApiResponse({
     status: 200,
     description: 'Polls are fetched successfully.',
@@ -177,26 +157,16 @@ export class PollController {
     description: 'Internal server error, contact with backend team.',
   })
   @Get('liked-by-me')
-  public async findPollsILiked(
-    @Req() req: any,
-    @Query('minLikeCount', new ParseIntPipe({ optional: true }))
-    minLikeCount?: number,
-    @Query('minCommentCount', new ParseIntPipe({ optional: true }))
-    minCommentCount?: number,
-  ): Promise<GetPollResponseDto[]> {
+  public async findPollsILiked(@Req() req: any): Promise<GetPollResponseDto[]> {
     const userId = req.user.id;
     return await this.pollService.findAll({
       creatorId: null,
-      minLikeCount,
-      minCommentCount,
       likedById: userId,
       followedById: null,
     });
   }
 
   @UseGuards(AuthGuard, VerificationGuard)
-  @ApiQuery({ name: 'minLikeCount', required: false })
-  @ApiQuery({ name: 'minCommentCount', required: false })
   @ApiResponse({
     status: 200,
     description: 'Polls are fetched successfully.',
@@ -209,16 +179,10 @@ export class PollController {
   @Get('my-followings')
   public async findPollsOfUsersIFollow(
     @Req() req: any,
-    @Query('minLikeCount', new ParseIntPipe({ optional: true }))
-    minLikeCount?: number,
-    @Query('minCommentCount', new ParseIntPipe({ optional: true }))
-    minCommentCount?: number,
   ): Promise<GetPollResponseDto[]> {
     const userId = req.user.id;
     return await this.pollService.findAll({
       creatorId: null,
-      minLikeCount,
-      minCommentCount,
       likedById: null,
       followedById: userId,
     });
