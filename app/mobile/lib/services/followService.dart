@@ -9,9 +9,9 @@ class FollowService {
     try {
       print("follow service is following");
       Response followerUser = await ApiService.dio.get('/user/$followerId');
-      List<String> followingIds =
-          List<String>.from(followerUser.data['followings']);
-      return followingIds.contains(followedId);
+      List<dynamic> followingIds =
+          List<dynamic>.from(followerUser.data['followings']);
+      return followingIds.map((e) => e['id'] ?? '').contains(followedId);
     } catch (e) {
       // faruk (kodu yazan): false dondurmek yeterli olacaktir.
       return false;
