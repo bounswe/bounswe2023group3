@@ -9,7 +9,6 @@ class ProfileInfo {
   int followersCount;
   bool isFollowingVisible;
   bool isFollowersVisible;
-  List<PollInfo> createdPolls = [];
   bool isCreatedPollsVisible;
   bool isLikedPollsVisible;
   bool isVotedPollsVisible;
@@ -25,7 +24,6 @@ class ProfileInfo {
     required this.followersCount,
     this.isFollowingVisible = false,
     this.isFollowersVisible = false,
-    this.createdPolls = const [],
     this.isCreatedPollsVisible = false,
     this.isLikedPollsVisible = false,
     this.isVotedPollsVisible = false,
@@ -46,18 +44,6 @@ class ProfileInfo {
       followersCount: json['followersCount'] ?? 0,
       isFollowingVisible: json['isFollowingVisible'] ?? false,
       isFollowersVisible: json['isFollowersVisible'] ?? false,
-      // Assuming these are lists of PollInfo JSON objects
-      createdPolls: ((json['polls'] ?? []) as List)
-          .map((i) => PollInfo.fromJson(i))
-          .toList(),
-      /*
-      likedPolls: (json['likedPolls'] as List)
-          .map((i) => PollInfo.fromJson(i))
-          .toList(),
-      votedPolls: (json['votedPolls'] as List)
-          .map((i) => PollInfo.fromJson(i))
-          .toList(),
-      */
       isCreatedPollsVisible:
           json['isCreatedPollsVisible'] ?? AppState.random.nextBool(),
       isLikedPollsVisible:
