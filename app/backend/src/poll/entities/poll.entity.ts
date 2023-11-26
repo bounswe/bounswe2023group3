@@ -26,6 +26,9 @@ export class Poll {
   @Column({ nullable: false })
   question: string;
 
+  @Column({ nullable: true })
+  description: string;
+
   @ManyToOne(() => User, (user) => user.polls, { onDelete: 'SET NULL' }) // Establishing the many-to-one relationship
   @JoinColumn() // Specifying the foreign key column
   creator: Relation<User>;
@@ -36,7 +39,6 @@ export class Poll {
 
   @OneToMany(() => Option, (option) => option.poll, { cascade: true })
   options: Relation<Option[]>;
-
 
   @OneToOne(() => Option, { nullable: true })
   @JoinColumn()
@@ -53,7 +55,7 @@ export class Poll {
   due_date: Date;
 
   @OneToMany(() => Like, (like) => like.user)
-  likes : Relation<Like>[];
+  likes: Relation<Like>[];
 
   // @Todo Replace with comment entity
   //@Column({ nullable: true })
