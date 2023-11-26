@@ -1,7 +1,7 @@
 class PollData {
 
 
-
+  final String pollId;
   final String pollTitle;
   final String pollDescription;
   final List<String> options;
@@ -10,6 +10,7 @@ class PollData {
   final String dueDate;
 
   const PollData({
+    required this.pollId,
     required this.pollTitle,
     required this.pollDescription,
     required this.options,

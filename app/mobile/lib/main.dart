@@ -72,7 +72,7 @@ void main() async{
         '/fpassverify': (context) => const ForgetPassVerifyScreen(),
         '/pollreq': (context) => const PollRequestPage(),
         '/signverify': (context) => const SignVerifyScreen(),
-        '/moderatorHome': (context) => ModeratorHomePage(),
+        '/moderatorHome': (context) => const ModeratorHomePage(),
       },
   ));
 }

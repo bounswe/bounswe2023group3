@@ -5,6 +5,7 @@ import 'package:mobile_app/view/pollView/userInformationWidget.dart';
 import 'package:intl/intl.dart';
 
 class RequestViewHome extends StatelessWidget {
+  final String pollId;
   final String userName;
   final String userUsername;
   final String profilePictureUrl;
@@ -12,9 +13,12 @@ class RequestViewHome extends StatelessWidget {
   final List<String> tags;
   final List<Color> tagColors;
   final String dateTime;
+  final List<String> options;
+  final String dueDate;
 
   const RequestViewHome({
     super.key,
+    required this.pollId,
     required this.userName,
     required this.userUsername,
     required this.profilePictureUrl,
@@ -22,6 +26,8 @@ class RequestViewHome extends StatelessWidget {
     required this.tags,
     required this.tagColors,
     required this.dateTime,
+    required this.options,
+    required this.dueDate,
   });
 
   @override

@@ -63,6 +63,7 @@ class MyApp extends StatelessWidget {
       home: const ModeratorApprovalScreen(
         tagColors: [Colors.pink, Colors.blue],
         pollData: const PollData(
+          pollId: "1",
           pollTitle: "Kim kazanir?",
           pollDescription: "Kimin kazanacagini secebilir misiniz  helimin kazanacagini secebilir misiniz  heimin kazanacagini secebilir misiniz  heimin kazanacagini secebilir misiniz  heppp?",
           dueDate: "18/11/2023",
