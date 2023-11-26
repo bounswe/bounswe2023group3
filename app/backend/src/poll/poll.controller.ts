@@ -136,6 +136,7 @@ export class PollController {
   @UseGuards(AuthGuard, VerificationGuard)
   @ApiQuery({ name: 'minLikeCount', required: false })
   @ApiQuery({ name: 'minCommentCount', required: false })
+  @ApiQuery({ name: 'likedById', required: false })
   @ApiResponse({
     status: 200,
     description: 'Polls are fetched successfully.',
@@ -145,7 +146,7 @@ export class PollController {
     status: 500,
     description: 'Internal server error, contact with backend team.',
   })
-  @Get('me')
+  @Get('my-polls')
   public async findMyPolls(
     @Req() req: any,
     @Query('minLikeCount', new ParseIntPipe({ optional: true }))
@@ -158,6 +159,68 @@ export class PollController {
       creatorId,
       minLikeCount,
       minCommentCount,
+      likedById: null,
+      followedById: null,
+    });
+  }
+
+  @UseGuards(AuthGuard, VerificationGuard)
+  @ApiQuery({ name: 'minLikeCount', required: false })
+  @ApiQuery({ name: 'minCommentCount', required: false })
+  @ApiResponse({
+    status: 200,
+    description: 'Polls are fetched successfully.',
+    type: [GetPollResponseDto],
+  })
+  @ApiResponse({
+    status: 500,
+    description: 'Internal server error, contact with backend team.',
+  })
+  @Get('liked-by-me')
+  public async findPollsILiked(
+    @Req() req: any,
+    @Query('minLikeCount', new ParseIntPipe({ optional: true }))
+    minLikeCount?: number,
+    @Query('minCommentCount', new ParseIntPipe({ optional: true }))
+    minCommentCount?: number,
+  ): Promise<GetPollResponseDto[]> {
+    const userId = req.user.id;
+    return await this.pollService.findAll({
+      creatorId: null,
+      minLikeCount,
+      minCommentCount,
+      likedById: userId,
+      followedById: null,
+    });
+  }
+
+  @UseGuards(AuthGuard, VerificationGuard)
+  @ApiQuery({ name: 'minLikeCount', required: false })
+  @ApiQuery({ name: 'minCommentCount', required: false })
+  @ApiResponse({
+    status: 200,
+    description: 'Polls are fetched successfully.',
+    type: [GetPollResponseDto],
+  })
+  @ApiResponse({
+    status: 500,
+    description: 'Internal server error, contact with backend team.',
+  })
+  @Get('my-followings')
+  public async findPollsOfUsersIFollow(
+    @Req() req: any,
+    @Query('minLikeCount', new ParseIntPipe({ optional: true }))
+    minLikeCount?: number,
+    @Query('minCommentCount', new ParseIntPipe({ optional: true }))
+    minCommentCount?: number,
+  ): Promise<GetPollResponseDto[]> {
+    const userId = req.user.id;
+    return await this.pollService.findAll({
+      creatorId: null,
+      minLikeCount,
+      minCommentCount,
+      likedById: null,
+      followedById: userId,
     });
   }
 
