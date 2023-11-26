@@ -20,4 +20,10 @@ export class UserService {
       .post<any>(this.makeUrl('login'), payload)
       .toPromise();
   }
+
+  getUser(username: string): Promise<any> {
+    return this.httpClient
+      .get<any>(this.makeUrl(`username/${username}`))
+      .toPromise();
+  }
 }

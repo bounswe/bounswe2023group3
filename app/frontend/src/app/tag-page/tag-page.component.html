@@ -1,0 +1,13 @@
+<html lang="en">
+  <body>
+    <app-header></app-header>
+    <div class="page-layout">
+      <app-side-bar></app-side-bar>
+      <div class="container" style="position: relative">
+        <div>
+          <app-poll *ngFor="let poll of polls" [pollId]="poll.id"></app-poll>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

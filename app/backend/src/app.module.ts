@@ -13,16 +13,26 @@ import { Option } from './option/entities/option.entity';
 import { TagModule } from './tag/tag.module';
 import { OptionModule } from './option/option.module';
 import { ModeratorModule } from './moderator/moderator.module';
+import { Moderator } from './moderator/entities/moderator.entity';
+import { BadgeModule } from './badge/badge.module';
+import { Badge } from './badge/entities/badge.entity';
+import { LikeModule } from './like/like.module';
+import { Like } from './like/entities/like.entity';
+import { ConfigModule } from '@nestjs/config';
+
 
 @Module({
   imports: [
+    ConfigModule.forRoot({
+      isGlobal: true,
+    }),
     TypeOrmModule.forRoot({
       type: 'postgres',
-      host: '172.17.0.2',
+      host: process.env.DB_HOST,
       port: 5432,
-      password: 'password',
+      password: process.env.DB_PASSWORD,
       username: 'postgres',
-      entities: [User, Poll, Tag, Option],
+      entities: [User, Poll, Tag, Option, Moderator, Badge,Like],
       database: 'postgres',
       synchronize: true,
       logging: true,
@@ -32,7 +42,7 @@ import { ModeratorModule } from './moderator/moderator.module';
         host: 'smtp.gmail.com',
         auth: {
           user: 'esbatuhanes@gmail.com',
-          pass: 'eigo ngbm jwnw liyh',
+          pass: process.env.MAILER_SERVICE_PASSWORD,
         },
         port: 465,
         secure: true,
@@ -50,8 +60,11 @@ import { ModeratorModule } from './moderator/moderator.module';
     TagModule,
     OptionModule,
     ModeratorModule,
+    BadgeModule,
+    LikeModule,
   ],
   controllers: [AppController],
   providers: [AppService],
 })
+
 export class AppModule {}

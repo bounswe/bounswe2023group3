@@ -5,15 +5,15 @@ import 'package:mobile_app/services/apiService.dart';
 class ModeratorPollDecision {
 
   Future<Response> answerPoll(bool isApproved) async {
-    const String resetPasswordEndpoint =
-        '/poll';
+    const String pollAnswerEndpoint =
+        '/moderator/pollApprove';
 
 
 
 
     try {
       final Response response = await ApiService.dio.post(
-        resetPasswordEndpoint,
+        pollAnswerEndpoint,
         data: {'approve': isApproved,
           },
       );

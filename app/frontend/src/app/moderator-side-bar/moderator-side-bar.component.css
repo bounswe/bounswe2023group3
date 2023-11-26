@@ -1,0 +1,19 @@
+body {
+  background-color: #89b1b6;
+}
+.container {
+  background-color: #232f44;
+  color: #f4eae6;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  float: left;
+  text-align: left;
+  margin-left: 20px;
+  width: 200px;
+}
+
+.button {
+  background-color: #63989f;
+  border: none;
+}

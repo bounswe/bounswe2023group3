@@ -7,7 +7,7 @@ import { catchError, tap } from 'rxjs/operators'
   providedIn: 'root',
 })
 export class AuthService {
-  loggedIn!: boolean
+  private user: any
   private apiUrl = 'http://34.105.66.254:1923/auth'
 
   constructor(private http: HttpClient) {}
@@ -18,10 +18,18 @@ export class AuthService {
     return this.http.post<any>(`${this.apiUrl}/login`, credentials).pipe(
       tap((response: any) => {
         localStorage.setItem('authToken', response.access_token)
-        this.loggedIn = true
+        localStorage.setItem('loggedIn', 'true')
+        localStorage.setItem('user_id', response.user.id)
+        localStorage.setItem('username', response.user.username)
+
       }),
       catchError(this.handleError('Login', {})),
     )
+  }
+
+  //get authentication token
+  getToken(): string | null {
+    return localStorage.getItem('authToken')
   }
 
   // User registration
@@ -37,10 +45,18 @@ export class AuthService {
     email: string,
     password: string,
   ): Observable<any> {
-    const user = { resetPasswordToken, email, password }
+    let user = {
+      resetPasswordToken: +resetPasswordToken,
+      email: email,
+      password: password,
+    }
     return this.http
       .post<any>(`${this.apiUrl}/reset-password`, user)
-      .pipe(catchError(this.handleError('Reset Password', {})))
+      .pipe(
+        catchError(
+          this.handleError('Reset Password', { responseType: 'text' }),
+        ),
+      )
   }
 
   // Handle errors
@@ -52,7 +68,12 @@ export class AuthService {
     }
   }
 
-  isLoggedIn() {
-    return this.loggedIn
+  setUser(user: any): void {
+    this.user = user
+    localStorage.setItem('user', JSON.stringify(user))
+  }
+
+  getUser(): any {
+    return this.user || JSON.parse(localStorage.getItem('user') || '{}')
   }
 }

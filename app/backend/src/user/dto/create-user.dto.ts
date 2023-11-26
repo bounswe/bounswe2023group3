@@ -1,5 +1,11 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsEmail, IsNotEmpty, IsString, IsUUID, MinLength } from 'class-validator';
+import {
+  IsEmail,
+  IsNotEmpty,
+  IsString,
+  IsUUID,
+  MinLength,
+} from 'class-validator';
 
 export class CreateUserDto {
   @ApiProperty({
@@ -34,11 +40,4 @@ export class FollowUserDto {
   @IsNotEmpty()
   @IsUUID()
   followerUserID: string;
-
-  @ApiProperty({
-    example: '3dac5059-03bf-45a2-b0ed-273c75aafedc',
-  })
-  @IsNotEmpty()
-  @IsUUID()
-  followingUserID: string;
 }

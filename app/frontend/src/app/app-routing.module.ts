@@ -11,9 +11,12 @@ import { PollRequestComponent } from './poll-request/poll-request.component'
 import { OthersProfileComponent } from './others-profile/others-profile.component'
 import { PollViewComponent } from './poll-view/poll-view.component'
 import { AuthGuard } from './authorize.guard'
+import { ModeratorRequestsComponent } from './moderator-requests/moderator-requests.component'
+import { TagPageComponent } from './tag-page/tag-page.component'
 
 const routes: Routes = [
   { path: '', component: WelcomeComponent },
+  { path: 'app-moderator-requests', component: ModeratorRequestsComponent },
   {
     path: 'app-user-profile',
     component: UserProfileComponent,
@@ -23,11 +26,7 @@ const routes: Routes = [
   { path: 'app-welcome', component: WelcomeComponent },
   { path: 'app-register', component: RegisterComponent },
   { path: 'app-forget-password', component: ForgetpasswordComponent },
-  {
-    path: 'app-reset-password',
-    component: ResetPasswordComponent,
-    canActivate: [AuthGuard],
-  },
+  { path: 'app-reset-password', component: ResetPasswordComponent },
   { path: 'app-home', component: HomeComponent, canActivate: [AuthGuard] },
   {
     path: 'app-poll-request',
@@ -42,6 +41,11 @@ const routes: Routes = [
   {
     path: 'app-poll-view/:pollId',
     component: PollViewComponent,
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'app-tag-page/:tagName',
+    component: TagPageComponent,
     canActivate: [AuthGuard],
   },
 ]

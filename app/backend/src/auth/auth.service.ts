@@ -1,8 +1,8 @@
 import {
   Injectable,
-  UnauthorizedException,
   NotFoundException,
   BadRequestException,
+  ConflictException,
 } from '@nestjs/common';
 import { UserService } from '../user/user.service';
 import { JwtService } from '@nestjs/jwt';
@@ -25,11 +25,12 @@ export class AuthService {
     if (users.length === 0) {
       throw new NotFoundException('User not found');
     }
-    if (!await users[0].compareEncryptedPassword(pass)) {
+    if (!(await users[0].compareEncryptedPassword(pass))) {
       throw new BadRequestException('Wrong password');
     }
     const payload = { sub: users[0].id, email: users[0].email };
     return {
+      user: users[0],
       access_token: await this.jwtService.signAsync(payload),
     };
   }
@@ -39,7 +40,7 @@ export class AuthService {
       email: createUserDto.email,
     });
     if (users.length > 0) {
-      throw new UnauthorizedException('User already exists');
+      throw new ConflictException('User already exists');
     }
     await this.userService.createUser(createUserDto);
     const newUser = await this.userService.searchUser({
@@ -50,8 +51,10 @@ export class AuthService {
         to: createUserDto.email, // list of receivers
         from: 'esbatuhanes@gmail.com', // sender address
         subject: 'Verification Code', // Subject line
-        text: 'Here is your verification code: ' + newUser[0].verification_code.toString(), // plaintext body
-        html: `<b>Here is your verification code: ${newUser[0].verification_code.toString()}</b>`, // HTML body content      
+        text:
+          'Here is your verification code: ' +
+          newUser[0].verification_code.toString(), // plaintext body
+        html: `<b>Here is your verification code: ${newUser[0].verification_code.toString()}</b>`, // HTML body content
       })
       .then(() => console.log('Verification code is sent'))
       .catch((err) => console.log(err));
@@ -78,9 +81,8 @@ export class AuthService {
     return 'User is verified';
   }
 
-
   async forgotPassword(forgotPasswordDto: ForgotPasswordDto): Promise<any> {
-    const user = await this.userService.searchUser({ 
+    const user = await this.userService.searchUser({
       email: forgotPasswordDto.email,
     });
     if (!user[0]) {
@@ -93,17 +95,18 @@ export class AuthService {
         to: forgotPasswordDto.email, // list of receivers
         from: 'esbatuhanes@gmail.com', // sender address
         subject: 'Reset Password', // Subject line
-        text: 'Reset password token is here: ' + reset_password_token.toString(), // plaintext body
+        text:
+          'Reset password token is here: ' + reset_password_token.toString(), // plaintext body
         html: `<b>Reset password token is here: ${reset_password_token.toString()}</b>`, // HTML body content
       })
       .then(() => console.log('Reset password token is sent'))
       .catch((err) => console.log(err));
   }
 
-  async resetPassword(
-    resetPasswordDto: ResetPasswordDto,
-  ): Promise<any> {
-    const user = await this.userService.searchUser({email : resetPasswordDto.email});
+  async resetPassword(resetPasswordDto: ResetPasswordDto): Promise<any> {
+    const user = await this.userService.searchUser({
+      email: resetPasswordDto.email,
+    });
     if (!user.length) {
       throw new NotFoundException('User not found');
     }
@@ -111,7 +114,9 @@ export class AuthService {
       throw new BadRequestException('Wrong reset password token');
     }
     await this.userService.updatePassword(user[0], resetPasswordDto.password);
-    await this.userService.updateById(user[0].id, { reset_password_token: null });
+    await this.userService.updateById(user[0].id, {
+      reset_password_token: null,
+    });
     return 'Password is reset';
   }
 
@@ -122,6 +127,4 @@ export class AuthService {
     }
     return user;
   }
-
-
 }

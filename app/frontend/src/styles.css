@@ -13,7 +13,7 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-  background-color: #2f3e5e;
+  background-color: rgb(23, 35, 62);
 }
 
 .container {
@@ -120,4 +120,29 @@ body {
   width: 70%;
   margin-top: 10px;
   margin-bottom: 10px;
+}
+
+.moderator-requests {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  margin-bottom: 30px;
+  height: 40px;
+  align-items: center;
+  text-align: center;
+}
+
+.moderator-requests-column {
+  font-size: 18px;
+  height: 50px;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  flex: 1;
+  background-color: #9dc0c4;
+  cursor: pointer;
+}
+
+.moderator-requests-column:hover {
+  background-color: #779295;
 }

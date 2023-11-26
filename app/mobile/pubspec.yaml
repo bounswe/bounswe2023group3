@@ -34,6 +34,7 @@ dependencies:
   dio: ^5.3.3
   get_it: ^7.6.4
   curl_logger_dio_interceptor: ^1.0.0
+  intl: ^0.18.1
 
 
   flutter:

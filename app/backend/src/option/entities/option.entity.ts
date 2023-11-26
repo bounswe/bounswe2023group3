@@ -16,7 +16,7 @@ export class Option {
   @Column({ nullable: false })
   answer: string;
 
-  @ManyToOne(() => Poll, poll => poll.options) // Establishing the many-to-one relationship
+  @ManyToOne(() => Poll, (poll) => poll.options, { onDelete: 'CASCADE' }) // Establishing the many-to-one relationship
   @JoinColumn() // Specifying the foreign key column
   poll: Relation<Poll>;
 }
