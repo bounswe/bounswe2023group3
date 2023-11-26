@@ -28,6 +28,7 @@ export class PollService {
   public async createPoll(createPollDto: any): Promise<Poll> {
     const poll = new Poll();
     poll.question = createPollDto.question;
+    poll.description = createPollDto.description;
     poll.creator = createPollDto.creator;
     poll.due_date = createPollDto.due_date;
     const savedPoll = await this.pollRepository.save(poll);

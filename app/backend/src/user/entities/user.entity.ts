@@ -27,6 +27,12 @@ export class User {
   @Column({ unique: true, nullable: true, default: null })
   username: string;
 
+  @Column({ nullable: true, default: null })
+  firstname: string;
+
+  @Column({ nullable: true, default: null })
+  lastname: string;
+
   @Column({ nullable: false, default: false })
   isVerified: boolean;
 
@@ -54,7 +60,7 @@ export class User {
   badges: Relation<Badge[]>;
 
   @OneToMany(() => Like, (like) => like.user)
-  likes : Relation<Like>[];
+  likes: Relation<Like>[];
 
   @BeforeInsert()
   async hashPasswordBeforeInsert() {
