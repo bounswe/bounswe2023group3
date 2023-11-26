@@ -14,6 +14,8 @@ class ProfileInfo {
   bool isVotedPollsVisible;
   List<String> ranks = [];
   List<String> badges = [];
+  List<String> followingIds = [];
+  List<String> followerIds = [];
   bool isLoggedInUser = false;
 
   ProfileInfo({
@@ -30,12 +32,18 @@ class ProfileInfo {
     this.ranks = const [],
     this.badges = const [],
     this.isLoggedInUser = false,
+    this.followerIds = const [],
+    this.followingIds = const [],
   });
 
   factory ProfileInfo.fromJson(Map<String, dynamic> json) {
+    List<dynamic> followers = json['followers'];
+    List<dynamic> followings = json['followings'];
+    List<dynamic> badges = json['badges'];
+
     return ProfileInfo(
       id: json['id'],
-      profilePictureUrl: json['profilePictureUrl'] ?? '',
+      profilePictureUrl: json['profile_picture_url'] ?? '',
       username: json['username'],
       followingCount: json['followingCount'] ?? 0,
       followersCount: json['followersCount'] ?? 0,
@@ -45,8 +53,10 @@ class ProfileInfo {
       isLikedPollsVisible: json['isLikedPollsVisible'] ?? true,
       isVotedPollsVisible: json['isVotedPollsVisible'] ?? true,
       ranks: List<String>.from(json['ranks'] ?? []),
-      badges: List<String>.from(json['badges'] ?? []),
+      badges: badges.map((e) => e['name'] as String).toList(),
       isLoggedInUser: json['id'] == AppState.loggedInUserId,
+      followerIds: followers.map((e) => e['id'] as String).toList(),
+      followingIds: followings.map((e) => e['id'] as String).toList(),
     );
   }
 }
