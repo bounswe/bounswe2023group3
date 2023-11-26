@@ -7,22 +7,13 @@
     <div class="container">
       <h2 style="border-bottom: 2px solid #000; margin-bottom: 5px">Badges</h2>
       <div class="buttons" style="overflow: auto; max-height: 250px">
-        <button class="button" style="background-color: #da9f93">
-          Poll Destroyer
-        </button>
-        <button class="button" style="background-color: #f2545b">
-          Beginner Philosopher
-        </button>
-        <button class="button" style="background-color: #276fbf">
-          Comment Monster
-        </button>
-        <button class="button" style="background-color: #585191">Master</button>
-        <button class="button" style="background-color: #c5d86d">
-          New Fellow
-        </button>
-        <button class="button" style="background-color: #e57f84">
-          Ancient
-        </button>
+        <button
+        class = "button"
+        *ngFor="let badge of badges; let i=index"
+        [ngStyle]="{ 'background-color': getColor(i)}" 
+      >
+        {{ badge.name }}
+      </button>
       </div>
     </div>
   </body>

@@ -68,9 +68,6 @@ export class UserProfileComponent {
       (response: any) => {
 
         this.polls = []
-        for (const r of response) { 
-              this.polls.push(r); 
-            }
           
       },
       (error) => {
