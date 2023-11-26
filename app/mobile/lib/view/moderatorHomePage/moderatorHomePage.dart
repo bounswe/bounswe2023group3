@@ -9,16 +9,20 @@ import 'package:mobile_app/view/constants.dart';
 class ModeratorHomePage extends StatelessWidget {
   const ModeratorHomePage({super.key});
 
-  void tapOnPoll(
+  Future<void> tapOnPoll(
       BuildContext context,
       String pollId,
       String pollTitle,
-      String pollDescription,
+      String username,
+      String userUsername,
+      String profilePictureUrl,
       List<String> options,
       List<String> tags,
       List<String> imageURLs,
-      String dueDate) {
-    Navigator.push(
+      List<Color> tagColors,
+      String dueDate,
+      String creationDate) async {
+    final resultMessage = await Navigator.push(
       context,
       MaterialPageRoute(
           builder: (context) => ModeratorApprovalScreen(
@@ -26,13 +30,21 @@ class ModeratorHomePage extends StatelessWidget {
                 pollData: PollData(
                     pollId: pollId,
                     pollTitle: pollTitle,
-                    pollDescription: pollDescription,
                     options: options,
                     tags: tags,
                     imageURLs: imageURLs,
-                    dueDate: dueDate),
+                    dueDate: dueDate,
+                    userName: username,
+                    userUsername: userUsername,
+                    profilePictureUrl: profilePictureUrl,
+                    tagColors: tagColors,
+                    creationDate: creationDate),
               )),
     );
+
+    ScaffoldMessenger.of(context)
+      ..removeCurrentSnackBar()
+      ..showSnackBar(SnackBar(content: Text(resultMessage)));
   }
 
   @override
@@ -107,11 +119,15 @@ class ModeratorHomePage extends StatelessWidget {
                                           context,
                                           request.pollId,
                                           request.postTitle,
-                                          '',
+                                          request.userName,
+                                          request.userUsername,
+                                          request.profilePictureUrl,
                                           request.options,
                                           request.tags,
                                           [],
+                                          request.tagColors,
                                           request.dueDate,
+                                          request.dateTime
                                         );
                                       },
                                       child: Container(

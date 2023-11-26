@@ -23,32 +23,70 @@ class _UserInfoSectionState extends State<UserInfoSection> {
   void initState() {
     super.initState();
     profilePhoto = NetworkImage(widget.profileInfo.profilePictureUrl);
+    _updateFollowButton();
   }
 
-  void _learnIsFollowing() async {
+  Future<void> _learnIsFollowing() async {
     isFollowing = await FollowService.isFollowing(
         AppState.loggedInUserId, widget.profileInfo.id);
-    setState(() {});
   }
 
   void _toggleFollow() async {
     if (isFollowing) {
       // follow/unfollow shoud be decided on the current knowledge of
       // the script, because button is shown according to the current knowledge.
-      await FollowService.unfollow(
-          AppState.loggedInUserId, widget.profileInfo.id);
+      // this is how it is done in tiktok.
+      try {
+        await FollowService.unfollow(
+            AppState.loggedInUserId, widget.profileInfo.id);
+      } catch (e) {
+        if (!context.mounted) return;
+        _showAllert("unfollow operation is unsuccessful $e");
+      }
     } else {
-      await FollowService.follow(
-          AppState.loggedInUserId, widget.profileInfo.id);
+      try {
+        await FollowService.follow(
+            AppState.loggedInUserId, widget.profileInfo.id);
+        print("after awaiting follow request");
+      } catch (e) {
+        if (!context.mounted) return;
+        _showAllert("follow operation is unsuccesful $e");
+      }
     }
-    _learnIsFollowing();
+    await _learnIsFollowing();
+    setState(() {});
+    print("after set state call in the toggle follow");
+  }
+
+  void _showAllert(String message) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          content: Text(message),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('OK'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 
   void _editProfile() {}
 
+  _updateFollowButton() async {
+    await _learnIsFollowing();
+    if (!mounted) return;
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
-    _learnIsFollowing();
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: Row(
@@ -88,7 +126,7 @@ class _UserInfoSectionState extends State<UserInfoSection> {
             children: [
               OutlinedButton(
                 onPressed: () {
-                  // Define what happens when the button is pressed
+                  _showMoreOptions(context);
                 },
                 style: OutlinedButton.styleFrom(
                   shape: const CircleBorder(),
@@ -106,15 +144,141 @@ class _UserInfoSectionState extends State<UserInfoSection> {
     );
   }
 
-/*
   void _showMoreOptions(BuildContext context) {
+// Define your custom colors here
+
+// Now add them to your list
+    final colors = [
+      const Color(0xFF87CEEB),
+      Colors.lightBlue.shade300,
+      Colors.amber,
+      pink,
+    ];
+
+    ListTile badges = ListTile(
+      title: const Text('Badges'),
+      onTap: () {
+        // Select a random color using AppState.random
+        var badges = widget.profileInfo.badges;
+        [
+          "freshman",
+          "ss",
+          "bear",
+          "bear",
+          "bear",
+          "bear",
+          "ss",
+        ];
+        var colorSeq = <Color>[];
+        Color lastSelectedColor = Colors.black;
+        int ii;
+        for (ii = 0; ii < badges.length; ii++) {
+          if (ii != 0) {
+            // eger az once bir sey secmissek, onu kaldiralim
+            colors.remove(lastSelectedColor);
+            var tempColor = lastSelectedColor;
+            // onun haricinde bir sey secelim
+            lastSelectedColor = colors[AppState.random.nextInt(colors.length)];
+            colorSeq.add(lastSelectedColor);
+            colors.add(tempColor);
+          } else {
+            lastSelectedColor = colors[AppState.random.nextInt(colors.length)];
+            colorSeq.add(lastSelectedColor);
+          }
+        }
+        ii = 0;
+        nextColor() {
+          return colorSeq[ii++];
+        }
+
+        // Create a new route for displaying badges
+        Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+          return Scaffold(
+            appBar: AppBar(
+              title: const Text('Badges'),
+            ),
+            body: ListView(
+              // Adding padding to the ListView for spacing around the buttons
+              padding: const EdgeInsets.all(8.0),
+              children: badges
+                  .map((badge) => Padding(
+                        // Adding some space around each button
+                        padding: const EdgeInsets.symmetric(
+                          vertical: 8.0,
+                          horizontal: 15,
+                        ),
+                        child: SizedBox(
+                          height:
+                              80, // Increasing the height for a thicker button in the Y dimension
+                          child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              disabledBackgroundColor: nextColor(),
+                              disabledForegroundColor: whitish,
+                              padding:
+                                  const EdgeInsets.symmetric(vertical: 20.0),
+                            ),
+                            onPressed: null,
+                            child: Text(badge,
+                                style: const TextStyle(fontSize: 24)),
+                          ),
+                        ),
+                      ))
+                  .toList(),
+            ),
+          );
+        }));
+      },
+    );
+    ListTile ranks = ListTile(
+      title: const Text('Ranks'),
+      onTap: () {
+        // Insert ranks functionality here
+        Navigator.of(context).pop();
+      },
+    );
     showModalBottomSheet(
       context: context,
       builder: (BuildContext context) {
-        // Your options based on whether it's the user's own profile or not...
+        // Determine the list of options based on whether the user is viewing their own profile or not
+        List<Widget> options = widget.profileInfo.isLoggedInUser
+            ? [
+                badges,
+                ranks,
+                // ListTile(
+                //   title: Text('Pending Polls'),
+                //   onTap: () {
+                //     // Insert pending polls functionality here
+                //     Navigator.of(context).pop();
+                //   },
+                // ),
+              ]
+            : [
+                ListTile(
+                  title: const Text('Block'),
+                  onTap: () {
+                    // Insert block functionality here
+                    Navigator.of(context).pop();
+                  },
+                ),
+                ListTile(
+                  title: const Text('Report'),
+                  onTap: () {
+                    // Insert report functionality here
+                    Navigator.of(context).pop();
+                  },
+                ),
+                badges,
+                ranks,
+              ];
+        print("button list");
+        // Return a column containing all the options as ListTiles
+        return Column(
+          mainAxisSize: MainAxisSize.min,
+          children: options,
+        );
       },
     );
-  }*/
+  }
 
   Widget _buildProfileActionButton() {
     if (widget.profileInfo.isLoggedInUser) {

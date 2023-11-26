@@ -1,4 +1,8 @@
-import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
+import {
+  ConflictException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './entities/user.entity';
 import { Repository } from 'typeorm';
@@ -17,18 +21,38 @@ export class UserService {
   }
 
   public async searchUserByUsername(username: string): Promise<User> {
-    return await this.userRepository.findOne({ 
+    return await this.userRepository.findOne({
       where: { username: username },
       relations: ['polls', 'badges', 'followings', 'followers'],
-      select: ['id', 'email', 'username', 'polls', 'badges', 'followers', 'followings'],
-     });    
+      select: [
+        'id',
+        'email',
+        'username',
+        'firstname',
+        'lastname',
+        'polls',
+        'badges',
+        'followers',
+        'followings',
+      ],
+    });
   }
 
   public async findUserById(id: string): Promise<User> {
     return await this.userRepository.findOne({
       where: { id: id },
       relations: ['polls', 'badges', 'followings', 'followers'],
-      select: ['id', 'email', 'username', 'polls', 'badges', 'followers', 'followings'],
+      select: [
+        'id',
+        'email',
+        'username',
+        'firstname',
+        'lastname',
+        'polls',
+        'badges',
+        'followers',
+        'followings',
+      ],
     });
   }
 
@@ -50,7 +74,17 @@ export class UserService {
   public async findAll(): Promise<User[]> {
     return await this.userRepository.find({
       relations: ['polls', 'badges', 'followings', 'followers'],
-      select: ['id', 'email', 'username', 'polls', 'badges', 'followers', 'followings'],
+      select: [
+        'id',
+        'email',
+        'username',
+        'polls',
+        'badges',
+        'followers',
+        'followings',
+        'firstname',
+        'lastname',
+      ],
     });
   }
 
@@ -63,7 +97,7 @@ export class UserService {
     );
   }
 
-  public async followUser(followDto: FollowUserDto, id:string): Promise<void> {
+  public async followUser(followDto: FollowUserDto, id: string): Promise<void> {
     if (followDto.followerUserID === id) {
       throw new ConflictException('Users cannot follow themselves');
     }
@@ -89,10 +123,13 @@ export class UserService {
     await this.userRepository.save(authUser);
   }
 
-  public async unfollowUser(followDto: FollowUserDto,id:string): Promise<void> {
-    const authUser : User = await this.userRepository.findOne({
+  public async unfollowUser(
+    followDto: FollowUserDto,
+    id: string,
+  ): Promise<void> {
+    const authUser: User = await this.userRepository.findOne({
       where: { id: id },
-      relations: [ 'followings'],
+      relations: ['followings'],
     });
     authUser.followings = authUser.followings ?? [];
     const indexToRemove = authUser.followings.findIndex(
@@ -133,12 +170,9 @@ export class UserService {
     }
     user.badges.push(badge);
     await this.userRepository.save(user);
-
   }
 
   public generateCode(): number {
     return Math.floor(Math.random() * 9000 + 1000);
   }
-
-
 }

@@ -1,4 +1,8 @@
-import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Poll } from './entities/poll.entity';
 import { Repository } from 'typeorm';
@@ -17,13 +21,14 @@ export class PollService {
     @InjectRepository(Option)
     private readonly optionRepository: Repository<Option>,
     @InjectRepository(Tag) private readonly tagRepository: Repository<Tag>,
-    @InjectRepository(Like) 
+    @InjectRepository(Like)
     private readonly likeRepository: Repository<Like>,
   ) {}
 
   public async createPoll(createPollDto: any): Promise<Poll> {
     const poll = new Poll();
     poll.question = createPollDto.question;
+    poll.description = createPollDto.description;
     poll.creator = createPollDto.creator;
     poll.due_date = createPollDto.due_date;
     const savedPoll = await this.pollRepository.save(poll);
@@ -56,9 +61,13 @@ export class PollService {
     return await this.pollRepository.save(savedPoll);
   }
 
-  public async settleRequest(user: User, id: string, settlePollDto: SettlePollRequestDto): Promise<void> {
+  public async settleRequest(
+    user: User,
+    id: string,
+    settlePollDto: SettlePollRequestDto,
+  ): Promise<void> {
     const poll = await this.pollRepository.findOne({
-      where: { id, creator: {id: user.id} },
+      where: { id, creator: { id: user.id } },
       relations: ['options', 'outcome'],
     });
 
@@ -100,7 +109,6 @@ export class PollService {
     if (poll.is_settled !== Settle.PENDING) {
       throw new BadRequestException('Poll is not eligible to be settled.');
     }
-    
 
     const option = poll.options.find((option) => option.id === poll.outcome.id);
 
@@ -117,28 +125,41 @@ export class PollService {
     await this.pollRepository.save(poll);
   }
 
-  public async findAll({ creatorId, minLikeCount }): Promise<Poll[]> {
-    return await this.pollRepository.findAll({ creatorId, minLikeCount });
+  public async findAll({
+    creatorId,
+    minLikeCount,
+    minCommentCount,
+    likedById,
+    followedById,
+  }): Promise<Poll[]> {
+    return await this.pollRepository.findAll({
+      creatorId,
+      minLikeCount,
+      minCommentCount,
+      likedById,
+      followedById,
+    });
   }
 
   public async findPollById(id) {
-      const poll = await this.pollRepository.findOne({
+    return await this.pollRepository.findOne({
       where: { id },
       relations: ['options', 'tags', 'creator', 'outcome'],
     });
-
-    const like_count = await this.findLikeCount(id);
-    return {
-      ...poll,
-      like_count : like_count
-    }
   }
 
-  async findLikeCount(pollID: string): Promise<number>{
-    return await this.likeRepository.count({where : {poll:{id:pollID}}, relations:['user'] })
+  async findLikeCount(pollID: string): Promise<number> {
+    return await this.likeRepository.count({
+      where: { poll: { id: pollID } },
+      relations: ['user'],
+    });
   }
 
   public async removeById(id: string): Promise<void> {
     await this.pollRepository.delete(id);
+  }
+
+  public async increaseLikeByOne(pollID: string): Promise<void> {
+    return await this.pollRepository.increaseLikeByOne(pollID);
   }
 }

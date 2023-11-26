@@ -6,7 +6,7 @@ class ModeratorPollDecision {
 
   Future<Response> answerPoll(bool isApproved, String id) async {
     String pollAnswerEndpoint =
-        '/moderator/pollApprove/$id';
+        '/moderator/approve/$id';
 
 
 

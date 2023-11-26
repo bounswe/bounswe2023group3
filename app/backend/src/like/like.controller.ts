@@ -1,4 +1,14 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Req, UseGuards } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  Req,
+  UseGuards,
+} from '@nestjs/common';
 import { LikeService } from './like.service';
 import { ApiBearerAuth, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { AuthGuard } from '../auth/guards/auth.guard';
@@ -10,7 +20,6 @@ import { FetchLikeResponseDto } from './dto/responses/fetchLike.dto';
 @ApiBearerAuth()
 export class LikeController {
   constructor(private readonly likeService: LikeService) {}
-
 
   @Get(':pollID')
   @ApiResponse({ status: 201, description: 'Fetched succesfully', type: FetchLikeResponseDto})
@@ -25,7 +34,7 @@ export class LikeController {
   fetchLikes(@Param('pollID') id: string) {
     return this.likeService.fetchLikes(id);
   }
-  
+
   @Post(':pollID')
   @UseGuards(AuthGuard, VerificationGuard)
   @ApiResponse({ status: 201, description: 'Posted liked successfully.' })
@@ -39,8 +48,8 @@ export class LikeController {
     status: 500,
     description: 'Internal server error, contact with backend team.',
   })
-  create(@Param('pollID') id: string , @Req() request : any) {
-    return this.likeService.create(id,request.user.id);
+  create(@Param('pollID') id: string, @Req() request: any) {
+    return this.likeService.create(id, request.user.id);
   }
 
   @Delete(':pollID')

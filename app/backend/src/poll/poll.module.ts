@@ -18,7 +18,13 @@ import { Comment } from '../comment/entities/comment.entity';
 @Module({
   imports: [TypeOrmModule.forFeature([Poll, Option, Tag, User, Badge, Moderator,Like,Comment])],
   controllers: [PollController],
-  providers: [PollService, UserService, PollRepository, BadgeService, ModeratorService],
+  providers: [
+    PollService,
+    UserService,
+    PollRepository,
+    BadgeService,
+    ModeratorService,
+  ],
   exports: [PollService],
 })
 export class PollModule {}

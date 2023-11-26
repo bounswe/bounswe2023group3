@@ -28,6 +28,12 @@ export class User {
   @Column({ unique: true, nullable: true, default: null })
   username: string;
 
+  @Column({ nullable: true, default: null })
+  firstname: string;
+
+  @Column({ nullable: true, default: null })
+  lastname: string;
+
   @Column({ nullable: false, default: false })
   isVerified: boolean;
 

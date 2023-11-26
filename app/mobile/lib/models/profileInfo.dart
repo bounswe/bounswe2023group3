@@ -14,6 +14,8 @@ class ProfileInfo {
   bool isVotedPollsVisible;
   List<String> ranks = [];
   List<String> badges = [];
+  List<String> followingIds = [];
+  List<String> followerIds = [];
   bool isLoggedInUser = false;
 
   ProfileInfo({
@@ -22,37 +24,39 @@ class ProfileInfo {
     required this.username,
     required this.followingCount,
     required this.followersCount,
-    this.isFollowingVisible = false,
-    this.isFollowersVisible = false,
-    this.isCreatedPollsVisible = false,
-    this.isLikedPollsVisible = false,
-    this.isVotedPollsVisible = false,
+    this.isFollowingVisible = true,
+    this.isFollowersVisible = true,
+    this.isCreatedPollsVisible = true,
+    this.isLikedPollsVisible = true,
+    this.isVotedPollsVisible = true,
     this.ranks = const [],
     this.badges = const [],
     this.isLoggedInUser = false,
+    this.followerIds = const [],
+    this.followingIds = const [],
   });
 
   factory ProfileInfo.fromJson(Map<String, dynamic> json) {
-    var testPPicture =
-        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRXLfPCb2ltrAdwEV"
-        "LhU048H3s_pJuN27Ts8A";
+    List<dynamic> followers = json['followers'];
+    List<dynamic> followings = json['followings'];
+    List<dynamic> badges = json['badges'];
+
     return ProfileInfo(
       id: json['id'],
-      profilePictureUrl: json['profilePictureUrl'] ?? testPPicture,
+      profilePictureUrl: json['profile_picture_url'] ?? '',
       username: json['username'],
       followingCount: json['followingCount'] ?? 0,
       followersCount: json['followersCount'] ?? 0,
-      isFollowingVisible: json['isFollowingVisible'] ?? false,
-      isFollowersVisible: json['isFollowersVisible'] ?? false,
-      isCreatedPollsVisible:
-          json['isCreatedPollsVisible'] ?? AppState.random.nextBool(),
-      isLikedPollsVisible:
-          json['isLikedPollsVisible'] ?? AppState.random.nextBool(),
-      isVotedPollsVisible:
-          json['isVotedPollsVisible'] ?? AppState.random.nextBool(),
+      isFollowingVisible: json['isFollowingVisible'] ?? true,
+      isFollowersVisible: json['isFollowersVisible'] ?? true,
+      isCreatedPollsVisible: json['isCreatedPollsVisible'] ?? true,
+      isLikedPollsVisible: json['isLikedPollsVisible'] ?? true,
+      isVotedPollsVisible: json['isVotedPollsVisible'] ?? true,
       ranks: List<String>.from(json['ranks'] ?? []),
-      badges: List<String>.from(json['badges'] ?? []),
+      badges: badges.map((e) => e['name'] as String).toList(),
       isLoggedInUser: json['id'] == AppState.loggedInUserId,
+      followerIds: followers.map((e) => e['id'] as String).toList(),
+      followingIds: followings.map((e) => e['id'] as String).toList(),
     );
   }
 }
