@@ -6,19 +6,22 @@ import {
 } from '@nestjs/common';
 import { CreateModeratorDto } from './dto/create_moderator.dto';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { IsNull, Repository } from 'typeorm';
 import { Moderator } from './entities/moderator.entity';
 import { MailerService } from '@nestjs-modules/mailer';
 import { JwtService } from '@nestjs/jwt';
 import { VerifyModeratorDto } from './dto/verify_moderator.dto';
 import { Poll } from '../poll/entities/poll.entity';
+import { ApproveDTO } from './dto/approve.dto';
+import { LoginModeratorDto } from './dto/login-moderator.dto';
 
 @Injectable()
 export class ModeratorService {
   constructor(
     @InjectRepository(Moderator)
     private readonly moderatorRepository: Repository<Moderator>,
-    @InjectRepository(Poll) private readonly pollRepository: Repository<Poll>,
+    @InjectRepository(Poll)
+    private readonly pollRepository: Repository<Poll>,
     private mailerService: MailerService,
     private jwtService: JwtService,
   ) {}
@@ -34,7 +37,7 @@ export class ModeratorService {
     }
   }
 
-  async createModerator(createModeratorDto: CreateModeratorDto): Promise<any> {
+  public async createModerator(createModeratorDto: CreateModeratorDto): Promise<any> {
     const moderator = await this.searchModerators(true, {
       where: {
         email: createModeratorDto.email,
@@ -82,7 +85,7 @@ export class ModeratorService {
       userType: 1,
     };
     return {
-      user: createdModerator,
+      moderator: createdModerator,
       access_token: await this.jwtService.signAsync(payload),
     };
   }
@@ -110,10 +113,36 @@ export class ModeratorService {
     );
   }
 
+  public async loginModerator(
+    loginModeratorDto: LoginModeratorDto,
+  ): Promise<any> {
+    const moderator: Moderator = (await this.searchModerators(true, {
+      where: {
+        email: loginModeratorDto.email,
+      },
+    })) as Moderator;
+
+    if (!moderator) {
+      throw new NotFoundException('Moderator not found');
+    }
+    if (!(await moderator.compareEncryptedPassword(loginModeratorDto.password))) {
+      throw new BadRequestException('Wrong password');
+    }
+    const payload = {
+      sub: moderator.id,
+      email: moderator.email,
+      userType: 1,
+    };
+    return {
+      moderator: moderator,
+      access_token: await this.jwtService.signAsync(payload),
+    };
+  }
+
   public async fetchUnapprovedPolls(): Promise<Poll[]> {
     return await this.pollRepository.find({
       where: {
-        is_approved_by_moderator: false,
+        approveStatus: IsNull(),
       },
       relations: ['options', 'tags', 'creator'],
     });
@@ -122,11 +151,14 @@ export class ModeratorService {
   public async findOneById(id: string): Promise<Moderator> {
     return await this.moderatorRepository.findOne({
       where: { id },
+      select: ['id', 'email', 'username'],
     });
   }
 
   public async findAll(): Promise<Moderator[]> {
-    return await this.moderatorRepository.find();
+    return await this.moderatorRepository.find({
+      select: ['id', 'email', 'username'],
+    });
   }
 
   public async updateById(id: string, updateUserDto: any): Promise<void> {
@@ -148,4 +180,11 @@ export class ModeratorService {
   public generateCode(): number {
     return Math.floor(Math.random() * 9000 + 1000);
   }
+
+
+  public async approve_disapprove(pollId: string, approveDto : ApproveDTO): Promise<void>{
+    await this.pollRepository.update(pollId, approveDto)
+  }
+
+
 }

@@ -11,6 +11,7 @@ import {
   JoinTable,
   ManyToMany,
 } from 'typeorm';
+import { Badge } from '../../badge/entities/badge.entity';
 
 const SALT_ROUNDS = 10;
 
@@ -37,7 +38,7 @@ export class User {
   @Column({ nullable: true })
   reset_password_token: number;
 
-  @OneToMany(() => Poll, (poll) => poll.creator)
+  @OneToMany(() => Poll, (poll) => poll.creator, { cascade: true })
   polls: Relation<Poll[]>;
 
   @ManyToMany(() => User, (user) => user.followings)
@@ -46,6 +47,10 @@ export class User {
 
   @ManyToMany(() => User, (user) => user.followers)
   followings: User[];
+
+  @ManyToMany(() => Badge)
+  @JoinTable()
+  badges: Relation<Badge[]>;
 
   @BeforeInsert()
   async hashPasswordBeforeInsert() {

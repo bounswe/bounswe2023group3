@@ -91,10 +91,13 @@ header {
   background-color: #fff;
   display: flex;
   justify-content: space-around;
-  padding: 20px;
+  padding-top: 50px;
+  padding-bottom: 50px;
 }
 
 .feature {
+  background-color: #fff;
+  padding: 20px;
   text-align: center;
   max-width: 300px;
 }
@@ -111,7 +114,7 @@ header {
 }
 
 .feature p {
-  font-size: 16px;
+  font-size: 18px;
   color: #4e4e4e;
 }
 
@@ -152,7 +155,7 @@ header {
 .login,
 .sign-up {
   text-align: center;
-  margin-top: 20px;
+  margin: 20px;
 }
 
 .cta-section {
@@ -196,7 +199,6 @@ header {
 
 /* About the App Styles */
 .about-app {
-  margin-top: 20px;
   background-color: #fff;
   color: #202a40;
   text-align: left;
@@ -206,12 +208,14 @@ header {
 }
 
 .about-app h2 {
-  padding: 20px;
+  font-size: 40px;
+  padding: 40px;
   margin-bottom: 20px;
 }
 
 .about-app p {
-  font-size: 16px;
+  padding: 40px;
+  font-size: 25px;
   line-height: 1.5;
 }
 

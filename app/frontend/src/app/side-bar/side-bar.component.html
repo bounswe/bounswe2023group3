@@ -27,8 +27,8 @@
             margin-left: 5px;
           "
         >
-          <b class="name" style="font-size: medium; margin-top: 15px">Jane</b>
-          <p class="user-name" style="margin-top: 2px">&#64;janesmith</p>
+          <b class="name" style="font-size: medium; margin-top: 15px">^-^</b>
+          <p class="user-name" style="margin-top: 2px">&#64;{{this.username}}</p>
         </div>
       </div>
       <div class="buttons">
@@ -38,17 +38,13 @@
         <button class="button" routerLink="/app-home">Homepage</button>
         <button class="button">Notifications</button>
         <button class="button">Settings</button>
-        <button
-          class="button"
-          routerLink="/app-welcome"
-          style="margin-bottom: 40px"
-        >
+        <button class="button" (click)="logOut()" style="margin-bottom: 40px">
           Log out
         </button>
         <button
           class="button"
           routerLink="/app-poll-request"
-          style="background-color: #54798a; color: #fff"
+          style="background-color: #e57f84; color: #fff"
         >
           Create a poll request
         </button>

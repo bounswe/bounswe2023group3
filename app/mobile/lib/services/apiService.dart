@@ -5,7 +5,7 @@ import 'package:get_it/get_it.dart';
 class ApiService {
   static final Dio _dio = Dio();
   static final GetIt getIt = GetIt.instance;
-  static String baseUrl = 'http://51.20.129.231:1923/';
+  static String baseUrl = 'http://34.105.66.254:1923/';
   static String jwtToken = '';
 
   static void setup() {
@@ -18,7 +18,8 @@ class ApiService {
     // Set up your Dio instance with interceptors, base URL, etc.
     dio.options.baseUrl = baseUrl;
     dio.interceptors.add(InterceptorsWrapper(
-      onRequest: (RequestOptions options, RequestInterceptorHandler handler) async{
+      onRequest:
+          (RequestOptions options, RequestInterceptorHandler handler) async {
         if (!shouldIgnoreInterceptor(options.uri)) {
           options.headers['Authorization'] = 'Bearer ${await getToken()}';
         }
@@ -33,19 +34,30 @@ class ApiService {
     ));
     dio.interceptors.add(CurlLoggerDioInterceptor(printOnSuccess: true));
   }
+
   static void setJwtToken(String token) {
     jwtToken = token;
   }
+
   static Future<String> getToken() async {
     return jwtToken;
   }
+
   static void logout() {
     setJwtToken('');
   }
+
   static bool shouldIgnoreInterceptor(Uri uri) {
-    List<String> ignoredEndpoints = ['/auth/login', '/auth/register', '/auth/verify', '/auth/forgot-password', '/auth/reset-password'];
+    List<String> ignoredEndpoints = [
+      '/auth/login',
+      '/auth/register',
+      '/auth/verify',
+      '/auth/forgot-password',
+      '/auth/reset-password'
+    ];
     // Check if the current URL should be ignored
-    bool shouldIgnore = ignoredEndpoints.any((endpoint) => uri.path.startsWith(endpoint));
+    bool shouldIgnore =
+        ignoredEndpoints.any((endpoint) => uri.path.startsWith(endpoint));
     return shouldIgnore;
   }
 }

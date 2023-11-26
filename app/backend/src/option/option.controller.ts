@@ -16,8 +16,8 @@ export class OptionController {
     status: 500,
     description: 'Internal server error, contact with backend team.',
   })
-  create(@Body() createOptionDto: CreateOptionDto) {
-    return this.optionService.create(createOptionDto);
+  public async create(@Body() createOptionDto: CreateOptionDto) {
+    return await this.optionService.create(createOptionDto);
   }
 
   @ApiResponse({
@@ -29,8 +29,8 @@ export class OptionController {
     description: 'Internal server error, contact with backend team.',
   })
   @Get()
-  findAll() {
-    return this.optionService.findAll();
+  public async findAll() {
+    return await this.optionService.findAll();
   }
 
   @ApiResponse({ status: 200, description: 'Option is fetched successfully.' })
@@ -40,8 +40,8 @@ export class OptionController {
     description: 'Internal server error, contact with backend team.',
   })
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.optionService.findOne(id);
+  public async findOne(@Param('id') id: string) {
+    return await this.optionService.findOne(id);
   }
 
   @ApiResponse({ status: 200, description: 'Options is deleted successfully.' })
@@ -51,8 +51,8 @@ export class OptionController {
     description: 'Internal server error, contact with backend team.',
   })
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.optionService.remove(id);
+  public async remove(@Param('id') id: string) {
+    return await this.optionService.remove(id);
   }
 
   @ApiResponse({ status: 200, description: 'All options are deleted.' })
@@ -62,7 +62,7 @@ export class OptionController {
     description: 'Internal server error, contact with backend team.',
   })
   @Delete()
-  removeAll() {
-    return this.optionService.removeAll();
+  public async removeAll() {
+    return await this.optionService.removeAll();
   }
 }

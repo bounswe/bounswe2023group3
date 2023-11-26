@@ -44,20 +44,27 @@ export class PollRequestComponent implements OnInit {
 
   ngOnInit(): void {}
 
-  onSubmit() {
-    const formValue = this.pollForm.value
-    const token = this.getToken()
+onSubmit() {
+    const formValue = this.pollForm.value;
+    const token = this.getToken();
     const headers = new HttpHeaders({
       Authorization: `Bearer ${token}`,
-    })
-    const options = { headers }
-    console.log(formValue)
+    });
+    const options = { headers };
+    console.log(formValue);
+  
     this.http
       .post('http://34.105.66.254:1923/poll', formValue, options)
-      .subscribe((response) => {
-        console.log('Poll created', response)
-      })
-  }
+      .subscribe(
+        (response) => {
+          console.log('Poll created', response);
+          window.location.reload();
+        },
+        (error) => {
+          console.error('Error creating poll', error);
+        }
+      );
+  }
 
   reload() {
     window.location.reload()

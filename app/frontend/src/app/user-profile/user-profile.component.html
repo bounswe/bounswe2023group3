@@ -27,9 +27,9 @@
           />
           <div class="post-content">
             <b class="name" style="font-size: xx-large; padding-top: 10px"
-              >Jane</b
+              >^-^</b
             >
-            <p class="user-name" style="margin-top: 2px">&#64;janesmith</p>
+            <p class="user-name" style="margin-top: 2px">&#64;{{ this.username }}</p>
           </div>
         </div>
         <button
@@ -52,9 +52,9 @@
           <p class="follow-text"><b>10</b> followers</p>
         </div>
         <div class="user-polls">
-          <button class="user-polls-column">Created</button>
-          <button class="user-polls-column">Liked</button>
-          <button class="user-polls-column">Voted</button>
+          <button class="user-polls-column" (click)="createdPolls()">Created</button>
+          <button class="user-polls-column" (click)="likedPolls()">Liked</button>
+          <button class="user-polls-column" (click)="votedPolls()">Voted</button>
         </div>
         <div>
           <app-poll *ngFor="let poll of polls" [pollId]="poll.id"></app-poll>
