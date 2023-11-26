@@ -126,7 +126,7 @@ class _UserInfoSectionState extends State<UserInfoSection> {
             children: [
               OutlinedButton(
                 onPressed: () {
-                  // Define what happens when the button is pressed
+                  _showMoreOptions(context);
                 },
                 style: OutlinedButton.styleFrom(
                   shape: const CircleBorder(),
@@ -144,15 +144,135 @@ class _UserInfoSectionState extends State<UserInfoSection> {
     );
   }
 
-/*
   void _showMoreOptions(BuildContext context) {
+// Define your custom colors here
+
+// Now add them to your list
+    final colors = [
+      const Color(0xFF87CEEB),
+      Colors.lightBlue.shade300,
+      Colors.amber,
+      pink,
+    ];
+
+    ListTile badges = ListTile(
+      title: const Text('Badges'),
+      onTap: () {
+        // Select a random color using AppState.random
+        var badges = widget.profileInfo.badges;
+        [
+          "freshman",
+          "ss",
+          "bear",
+          "bear",
+          "bear",
+          "bear",
+          "ss",
+        ];
+        var colorSeq = <Color>[];
+        Color lastSelectedColor = Colors.black;
+        int ii;
+        for (ii = 0; ii < badges.length; ii++) {
+          if (lastSelectedColor != Colors.black) {
+            colors.remove(lastSelectedColor);
+          }
+          lastSelectedColor = colors[AppState.random.nextInt(colors.length)];
+          colorSeq.add(lastSelectedColor);
+          colors.add(lastSelectedColor);
+        }
+        ii = 0;
+        nextColor() {
+          return colorSeq[ii++];
+        }
+
+        // Create a new route for displaying badges
+        Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+          return Scaffold(
+            appBar: AppBar(
+              title: const Text('Badges'),
+            ),
+            body: ListView(
+              // Adding padding to the ListView for spacing around the buttons
+              padding: const EdgeInsets.all(8.0),
+              children: badges
+                  .map((badge) => Padding(
+                        // Adding some space around each button
+                        padding: const EdgeInsets.symmetric(
+                          vertical: 8.0,
+                          horizontal: 15,
+                        ),
+                        child: SizedBox(
+                          height:
+                              80, // Increasing the height for a thicker button in the Y dimension
+                          child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              disabledBackgroundColor: nextColor(),
+                              disabledForegroundColor: whitish,
+                              padding:
+                                  const EdgeInsets.symmetric(vertical: 20.0),
+                            ),
+                            onPressed: null,
+                            child: Text(badge,
+                                style: const TextStyle(fontSize: 24)),
+                          ),
+                        ),
+                      ))
+                  .toList(),
+            ),
+          );
+        }));
+      },
+    );
+    ListTile ranks = ListTile(
+      title: const Text('Ranks'),
+      onTap: () {
+        // Insert ranks functionality here
+        Navigator.of(context).pop();
+      },
+    );
     showModalBottomSheet(
       context: context,
       builder: (BuildContext context) {
-        // Your options based on whether it's the user's own profile or not...
+        // Determine the list of options based on whether the user is viewing their own profile or not
+        List<Widget> options = widget.profileInfo.isLoggedInUser
+            ? [
+                badges,
+                ranks,
+                // ListTile(
+                //   title: Text('Pending Polls'),
+                //   onTap: () {
+                //     // Insert pending polls functionality here
+                //     Navigator.of(context).pop();
+                //   },
+                // ),
+              ]
+            : [
+                ListTile(
+                  title: const Text('Block'),
+                  onTap: () {
+                    // Insert block functionality here
+                    Navigator.of(context).pop();
+                  },
+                ),
+                ListTile(
+                  title: const Text('Report'),
+                  onTap: () {
+                    // Insert report functionality here
+                    Navigator.of(context).pop();
+                  },
+                ),
+                badges,
+                ranks,
+              ];
+        print("button list");
+        // Return a column containing all the options as ListTiles
+        return Column(
+          mainAxisSize: MainAxisSize.min,
+          children: options,
+        );
       },
     );
-  }*/
+  }
 
   Widget _buildProfileActionButton() {
     if (widget.profileInfo.isLoggedInUser) {
