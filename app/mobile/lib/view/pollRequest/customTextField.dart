@@ -34,7 +34,7 @@ class CustomTextField extends StatelessWidget {
         focusNode: focusNode,
         onChanged: onChanged,
         minLines: lines ?? 1,
-        maxLines: 7,
+        maxLines: lines == null ? 1 : 7,
         onSubmitted: (_) {
           if (nextFocusNode != null && controller.text.isNotEmpty) {
             FocusScope.of(context).requestFocus(nextFocusNode);

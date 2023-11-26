@@ -249,7 +249,8 @@ class _PollRequestPageState extends State<PollRequestPage> {
                           FocusScope.of(context)
                               .requestFocus(_pollOptionFocuses[i + 1]);
                         } else {
-                          FocusScope.of(context).requestFocus(_pollImageUrlFocus);
+                          FocusScope.of(context)
+                              .requestFocus(_pollImageUrlFocus);
                         }
                       },
                       decoration: InputDecoration(
@@ -297,7 +298,7 @@ class _PollRequestPageState extends State<PollRequestPage> {
                         Container(
                           width: 50,
                           decoration: BoxDecoration(
-                            border: Border.all(color: Colors.grey.shade300),
+                            border: Border.all(color: gray),
                             borderRadius: BorderRadius.circular(8),
                           ),
                           clipBehavior: Clip.antiAlias,
