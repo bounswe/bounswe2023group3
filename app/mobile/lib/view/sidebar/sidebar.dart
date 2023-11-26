@@ -122,7 +122,13 @@ class Sidebar extends StatelessWidget {
                 context,
                 MaterialPageRoute(
                   builder: (context) =>
-                      ProfilePage(userId: AppState.loggedInUserId),
+                      // TODO alttaki commentlenmis kismi degistir.
+                      // burasi kendi profili.
+                      // denemek icin baskasininkini gostertcem.
+                      // ~faruk
+                      const ProfilePage(
+                          userId: '06aa8e23-8349-4352-ac54-2637b9c13a3f'),
+                  // ProfilePage(userId: AppState.loggedInUserId),
                 ),
               );
             },
