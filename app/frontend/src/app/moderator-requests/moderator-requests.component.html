@@ -1,8 +1,6 @@
 <html lang="en">
   <body>
-    <header class="moderator-header">
-      <div class="logo">Poll'up</div>
-    </header>
+    <app-moderator-header></app-moderator-header>
 
     <div class="page-layout">
       <app-moderator-side-bar></app-moderator-side-bar>
@@ -15,6 +13,14 @@
             Outcome Verification Requests
           </button>
         </div>
+        <div *ngFor="let poll of polls" class="poll-notification">
+          <div class="username">{{ poll.creator.username }}</div>
+          <div class="question">{{ poll.question }}</div>
+          <div class="date">{{ poll.creation_date }}</div>
+          <button class="details-button">See Details</button>
+          <button class="disapprove-button">Disapprove</button>
+        </div>
+        
         <div class="poll-notification">
           <div class="username">johndoe</div>
           <div class="question">Who will be the next James Bond?</div>

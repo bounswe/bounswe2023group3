@@ -2,13 +2,14 @@ body {
   background-color: #89b1b6;
 }
 .container {
-  background-color: #232f44;
+  background-color: #202A40;
   color: #f4eae6;
   display: flex;
   flex-direction: column;
   align-items: center;
   float: left;
   text-align: left;
+  padding-top: 20px;
   margin-left: 20px;
   width: 200px;
 }

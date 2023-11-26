@@ -2,24 +2,9 @@ html,
 body {
   background-color: #89b1b6;
 }
-/* Header Styles */
-header {
-  background-color: #63989f;
-  color: #232f44;
-  text-align: center;
-  padding: 10px 0;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 20px 30px;
-}
-
-.logo {
-  font-size: 24px;
-}
 
 .container {
-  background-color: #232f44;
+  background-color: #202A40;
   width: calc(80% - 300px);
   display: flex;
   flex-direction: column;
