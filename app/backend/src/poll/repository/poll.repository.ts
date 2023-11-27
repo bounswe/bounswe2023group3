@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { DataSource, Repository } from 'typeorm';
 import { Poll } from '../entities/poll.entity';
 import { Like } from '../../like/entities/like.entity';
+import { Comment } from '../../comment/entities/comment.entity';
 
 @Injectable()
 export class PollRepository extends Repository<Poll> {
@@ -18,8 +19,6 @@ export class PollRepository extends Repository<Poll> {
 
   public async findAll({
     creatorId,
-    minLikeCount,
-    minCommentCount,
     likedById,
     followedById,
   }): Promise<Poll[]> {
@@ -27,18 +26,6 @@ export class PollRepository extends Repository<Poll> {
 
     if (creatorId) {
       queryBuilder.andWhere('poll.creatorId = :creatorId', { creatorId });
-    }
-
-    if (minLikeCount) {
-      queryBuilder.andWhere('poll.like_count >= :minLikeCount', {
-        minLikeCount,
-      });
-    }
-
-    if (minCommentCount) {
-      queryBuilder.andWhere('poll.comment_count >= :minCommentCount', {
-        minCommentCount,
-      });
     }
 
     if (likedById) {
@@ -67,8 +54,17 @@ export class PollRepository extends Repository<Poll> {
       .where('likeSub.pollId = poll.id')
       .getQuery();
 
+    // Subquery to count comments
+    const commentsSubQuery = queryBuilder
+      .subQuery()
+      .select('COUNT(commentSub.id)', 'commentCount')
+      .from(Comment, 'commentSub')
+      .where('commentSub.pollId = poll.id')
+      .getQuery();
+
     // Add the subquery to the main query
     queryBuilder.addSelect(`(${likesSubQuery})`, 'pollLikeCount');
+    queryBuilder.addSelect(`(${commentsSubQuery})`, 'pollCommentCount');
 
     const { entities, raw } = await queryBuilder
       .leftJoinAndSelect('poll.options', 'options')
@@ -82,8 +78,12 @@ export class PollRepository extends Repository<Poll> {
         ...entity,
         likeCount: parseInt(
           raw[raw.findIndex((item) => item.poll_id === entity.id)]
-            .pollLikeCount,
-        ),
+            .pollLikeCount
+          ),
+        commentCount: parseInt(
+          raw[raw.findIndex((item) => item.poll_id === entity.id)]
+            .pollCommentCount
+          ),
       };
     });
 
