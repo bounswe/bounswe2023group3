@@ -26,10 +26,25 @@ class Sidebar extends StatelessWidget {
                 ),
                 child: Row(
                   children: [
-                    Image.asset(
-                      "assets/app-logo-white.png",
-                      scale: 3.5,
+                    Column(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(0,13,0,0),
+                          child: Image.asset(
+                            "assets/app-logo-white.png",
+                            scale: 8,
+                          ),
+                        ),
+                        Text(
+                          "'Poll'Up",
+                          style: TextStyle(
+                            color: whitish,
+                            fontSize: 12,
+                          ),
+                        ),
+                      ],
                     ),
+                    const SizedBox(width: 25.0,),
                     Center(
                       child: Text(
                         'Side Menu',
