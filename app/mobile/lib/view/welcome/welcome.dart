@@ -1,18 +1,48 @@
 import 'package:flutter/material.dart';
+import 'package:mobile_app/ScreenArguments.dart';
 
-class WelcomeScreen extends StatelessWidget {
+class WelcomeScreen extends StatefulWidget {
 
 
   const WelcomeScreen({super.key});
 
+  @override
+  State<WelcomeScreen> createState() => _WelcomeScreenState();
+}
 
+class _WelcomeScreenState extends State<WelcomeScreen> {
 
-
+  final GlobalKey<ScaffoldState> scaffoldKey = new GlobalKey<ScaffoldState>();
 
 
   @override
+  void initState() {
+    super.initState();
+
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
+      showSnackBarIfNeeded();
+    });
+  }
+
+  void showSnackBarIfNeeded(){
+    final argsTemp = ModalRoute.of(context)?.settings.arguments;
+
+    if(argsTemp!=null){
+      final args = argsTemp as ScreenArguments;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(args.message),
+          duration: Duration(seconds: 3),
+          backgroundColor: Color(0xFF61EE64),
+        ),
+      );
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final GlobalKey<ScaffoldState> scaffoldKey = new GlobalKey<ScaffoldState>();
+
+
 
     return Scaffold(
       key: scaffoldKey,
