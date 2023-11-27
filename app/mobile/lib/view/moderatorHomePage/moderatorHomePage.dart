@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile_app/services/moderatorService.dart';
 import 'package:mobile_app/view/moderatorApproval/moderatorApprovalScreen.dart';
@@ -5,6 +6,8 @@ import 'package:mobile_app/view/moderatorApproval/pollData.dart';
 import 'package:mobile_app/view/sidebar/sidebar.dart';
 import 'package:mobile_app/view/moderatorHomePage/requestViewHome.dart';
 import 'package:mobile_app/view/constants.dart';
+
+import '../errorWidget/errorWidget.dart';
 
 class ModeratorHomePage extends StatefulWidget {
   const ModeratorHomePage({Key? key}) : super(key: key);
@@ -65,7 +68,7 @@ class _ModeratorHomePageState extends State<ModeratorHomePage>
 
     ScaffoldMessenger.of(context)
       ..removeCurrentSnackBar()
-      ..showSnackBar(SnackBar(content: Text(resultMessage)));
+      ..showSnackBar(SnackBar(content: Text(resultMessage), duration: const Duration(seconds: 3),));
   }
 
   @override
@@ -120,10 +123,17 @@ class _ModeratorHomePageState extends State<ModeratorHomePage>
       return const Center(child: CircularProgressIndicator());
     } else if (snapshot.hasError) {
       // Show an error message if there is an error
-      return Text('Error: ${snapshot.error}');
+      if (snapshot.error is DioException) {
+        DioException e = snapshot.error as DioException;
+        if (e.response?.statusMessage != null) {
+          String r = e.response!.statusMessage!;
+          return CustomErrorWidget(errorMessage: r);
+        }
+      }
+      return const CustomErrorWidget(errorMessage: 'Something went wrong');
     } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
       // Handle the case where no data is available
-      return const Text('No data available');
+      return const CustomErrorWidget(errorMessage: 'No data available');
     } else {
       // Build your UI using the fetched data
       List<RequestViewHome> requests = snapshot.data!;
