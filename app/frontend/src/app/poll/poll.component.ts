@@ -19,8 +19,8 @@ export class PollComponent {
   vote_count!: number
   creator!: string
   isLikedBy!: boolean
-  nofLikes: number = 0;
-  userId= localStorage.getItem("userId");
+  nofLikes: number = 0
+  userId!: string | null
 
   colors: string[] = [
     '#AEEEEE',
@@ -40,10 +40,9 @@ export class PollComponent {
   ) {}
 
   ngOnInit() {
-    console.log(this.pollId);
+    this.userId = localStorage.getItem("user_id");
     this.http.get('http://34.105.66.254:1923/poll/' + this.pollId).subscribe(
       (response: any) => {
-        console.log(response);
         this.question = response.question
         this.tags = response.tags
         this.options = response.options
@@ -66,9 +65,8 @@ export class PollComponent {
           this.nofLikes = likedUsersList.length;  
         }
       }
-      console.log("Is liked by", this.isLikedBy);
-      console.log("Noflikes", this.nofLikes);
-    })     
+    })
+         
   
     const selectedButtonId = localStorage.getItem('selectedButtonId')
     if (selectedButtonId) {
@@ -99,8 +97,6 @@ export class PollComponent {
   }
   
   toggleLike(): void {
-
-      // If user is currently following, unfollow; otherwise, follow
       if (this.isLikedBy) {
         this.userService.unlike(this.pollId);
         this.nofLikes -= 1;
@@ -108,12 +104,10 @@ export class PollComponent {
         this.userService.like(this.pollId);
         this.nofLikes += 1;
       }
-      this.isLikedBy = !this.isLikedBy; //change the follow status
+      this.isLikedBy = !this.isLikedBy; //change the like status
   }
   
-  
-  
-
+ 
   goToTag(tagName: string){
     this.router.navigate(['/app-tag-page', tagName])
   }
