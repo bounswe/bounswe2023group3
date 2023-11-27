@@ -22,6 +22,7 @@ class PollViewHomePage extends StatefulWidget {
   final String dateTime;
   final List<CommentData> comments;
   final int isSettled;
+  final bool? approvedStatus;
 
   const PollViewHomePage({
     super.key,
@@ -38,6 +39,7 @@ class PollViewHomePage extends StatefulWidget {
     required this.dateTime,
     required this.comments,
     required this.isSettled,
+    required this.approvedStatus,
   });
   _PollViewHomePageState createState() => _PollViewHomePageState();
 }

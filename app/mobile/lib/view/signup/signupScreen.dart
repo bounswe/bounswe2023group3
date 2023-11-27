@@ -129,24 +129,27 @@ class _SignupScreenState extends State<SignupScreen> {
           if (!context.mounted) return;
           Navigator.pushNamed(context, '/signverify');
         }
+        else if(response.statusCode == 409){
+          showErrorMessage(context, "User already exists!");
+        }
+
         else {
 
 
           if (!context.mounted) return;
-          showErrorMessage(context);
+          showErrorMessage(context,"Error occurred.");
         }
       }
       catch (e) {
-        showErrorMessage(context);
-
+        showErrorMessage(context, "Catch Block!");
       }
     }
   }
 
-  void showErrorMessage(BuildContext context) {
+  void showErrorMessage(BuildContext context, String message) {
     ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text('Email or username is already found!'),
+      SnackBar(
+        content: Text(message),
       ),
     );
   }
@@ -251,7 +254,7 @@ class _SignupScreenState extends State<SignupScreen> {
                 // End of password criteria display
                 const SizedBox(height: 16),
                 ElevatedButton(
-                  onPressed: isEmailValid && isPasswordValid ? signup : null,
+                  onPressed: isEmailValid && isPasswordValid && isUsernameValid ? signup : null,
                   child: const Text('Sign Up'),
                 ),
                 Padding(

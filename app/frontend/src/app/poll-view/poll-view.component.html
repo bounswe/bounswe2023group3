@@ -12,27 +12,20 @@
         <app-poll [pollId]="pollId"></app-poll>
         <div class="poll-comments">
           <div class="comment-input-container">
-            <input type="comment" placeholder="Add a comment..." />
-            <button type="submit">Comment</button>
+            <input type="comment" id="description" name="description"  
+            [(ngModel)]="description"
+            placeholder="Add a comment..." />
+            <button type="submit" (click)="makeComment()">Comment</button>
           </div>
           <div class="all-comments-container">
-            <div class="comment-wrapper">
+            <div class="comment-wrapper" *ngFor="let comment of comments; let i=index">
               <div class="comment-user">
                 <img src="user-avatar.png" alt="User Avatar" />
                 <span class="user-info">
-                  <p>&#64;himily • Date</p>
+                  <p>&#64;{{ comment.user.username }} • Date</p>
                 </span>
               </div>
-              <p>Theo James for sure bro</p>
-            </div>
-            <div class="comment-wrapper">
-              <div class="comment-user">
-                <img src="user-avatar.png" alt="User Avatar" />
-                <span class="user-info">
-                  <p>&#64;bradium • Date</p>
-                </span>
-              </div>
-              <p>Fun poll!</p>
+              <p>{{ comment.description }}</p>
             </div>
           </div>
         </div>

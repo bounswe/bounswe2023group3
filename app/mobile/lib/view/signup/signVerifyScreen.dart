@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:email_validator/email_validator.dart';
+import 'package:mobile_app/ScreenArguments.dart';
 import 'package:mobile_app/services/signUpVerification.dart';
 import 'package:dio/dio.dart';
 import 'package:mobile_app/view/forgetPassword/customTextField.dart';
@@ -92,19 +93,25 @@ class _SignVerifyScreen extends State<SignVerifyScreen> {
 
       if (response.statusCode == 201) {
         if (!context.mounted) return;
-        Navigator.pushNamed(context, '/welcome');
+        Navigator.pushNamedAndRemoveUntil(
+          context,
+          '/welcome',
+              (Route<dynamic> route) => false, // This condition ensures removing all previous routes
+          arguments: ScreenArguments("Verification is completed successfully!"),
+        );
       } else {
         if (!context.mounted) return;
+        showErrorMessage(context,'Email or OTP are incorrect');
       }
     } catch (e) {
-      showErrorMessage(context);
+      showErrorMessage(context,"Catch block!");
     }
   }
 
-  void showErrorMessage(BuildContext context) {
+  void showErrorMessage(BuildContext context, String message) {
     ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text('Email or OTP or both are incorrect'),
+      SnackBar(
+        content: Text(message),
       ),
     );
   }
@@ -177,3 +184,5 @@ class _SignVerifyScreen extends State<SignVerifyScreen> {
     );
   }
 }
+
+
