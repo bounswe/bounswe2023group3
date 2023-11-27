@@ -245,6 +245,7 @@ class _ProfilePageState extends State<ProfilePage> {
       context,
       MaterialPageRoute(
         builder: (context) => PollPage(
+            pollId: poll.pollId,
             userName: poll.userName,
             userUsername: poll.userUsername,
             profilePictureUrl: poll.profilePictureUrl,

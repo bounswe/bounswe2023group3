@@ -25,13 +25,14 @@ class _HomePageState extends State<HomePage>
     _tabController.dispose();
     super.dispose();
   }
-  void tapOnPoll(BuildContext context, userName, userUsername,
+  void tapOnPoll(BuildContext context, pollId, userName, userUsername,
       profilePictureUrl, postTitle, tags, tagColors, voteCount, postOptions,
       likeCount, dateTime, comments) {
     Navigator.push(
       context,
       MaterialPageRoute(
         builder: (context) => PollPage(
+            pollId: pollId,
             userName: userName,
             userUsername: userUsername,
             profilePictureUrl: profilePictureUrl,
@@ -98,6 +99,7 @@ class _HomePageState extends State<HomePage>
                             child: GestureDetector(
 
                               onTap: (){tapOnPoll(context,
+                                  post.pollId,
                                   post.userName,
                                   post.userUsername,
                                   post.profilePictureUrl,
