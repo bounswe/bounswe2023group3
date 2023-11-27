@@ -3,7 +3,7 @@
     <app-header></app-header>
     <div class="page-layout">
       <app-side-bar></app-side-bar>
-      <div class="container" style="position: relative; padding: 40px;">
+      <div class="container" style="position: relative; padding: 40px">
         <div style="text-align: right">
           <button
             class="button"
@@ -34,20 +34,39 @@
           </button>
         </div>
 
-        <form action="/search" method="GET" style="margin-bottom: 15px; margin-top: 20px">
-          <div style="position: relative;">
-            <img src="assets/search-icon.png" alt="Search Icon" style="position: absolute; left: 10px; top: 50%; transform: translateY(-50%); width: 18px; height: 18px;">
+        <form
+          action="/search"
+          method="GET"
+          style="margin-bottom: 15px; margin-top: 20px"
+        >
+          <div style="position: relative">
+            <img
+              src="assets/search-icon.png"
+              alt="Search Icon"
+              style="
+                position: absolute;
+                left: 10px;
+                top: 50%;
+                transform: translateY(-50%);
+                width: 18px;
+                height: 18px;
+              "
+            />
             <input
               id="searchInput"
-              style="border-radius: 15px; text-align: left; padding-left: 30px;"
+              style="border-radius: 15px; text-align: left; padding-left: 30px"
               placeholder="What are you looking for?"
             />
           </div>
         </form>
 
         <div class="user-polls">
-          <button class="user-polls-column" (click)="followingPolls()">Following</button>
-          <button class="user-polls-column" (click)="trendingPolls()">Trending</button>
+          <button class="user-polls-column" (click)="followingPolls()">
+            Following
+          </button>
+          <button class="user-polls-column" (click)="trendingPolls()">
+            Trending
+          </button>
         </div>
 
         <div>

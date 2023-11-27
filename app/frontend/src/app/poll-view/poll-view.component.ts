@@ -29,39 +29,36 @@ export class PollViewComponent {
         console.error('Error fetching poll:', error)
       },
     )
-
   }
-  
+
   getToken(): string | null {
     return localStorage.getItem('authToken')
   }
-  
-  makeComment(){
+
+  makeComment() {
     const body = {
-      'description': this.description,
+      description: this.description,
     }
 
-
-    const token = this.getToken();
+    const token = this.getToken()
     const headers = new HttpHeaders({
       Authorization: `Bearer ${token}`,
-    });
+    })
 
-    const options = { headers };
+    const options = { headers }
 
     console.log(body)
 
     this.http
-      .post('http://34.105.66.254:1923/comment/'+ this.pollId , body, options)
+      .post('http://34.105.66.254:1923/comment/' + this.pollId, body, options)
       .subscribe(
         (response) => {
-          
-          console.log('Comment created', response);
-          window.location.reload();
+          console.log('Comment created', response)
+          window.location.reload()
         },
         (error) => {
-          console.error('Error creating comment', error);
-        }
-      );
+          console.error('Error creating comment', error)
+        },
+      )
   }
 }

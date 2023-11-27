@@ -1,16 +1,73 @@
-<div class="container" style="max-width: 600px; margin: auto; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5); padding: 20px; border-radius: 10px;">
-    <h2 style="color: hsl(0, 0%, 10%); text-align: center; font-size: 24px; margin-bottom: 20px;">Account Verification</h2>
-    <p style="color: rgb(18, 17, 17)131; font-size: 16px; line-height: 1.5; margin-bottom: 30px;">
-        To create a poll, your account needs to be verified. Please enter the verification code sent to your email.
-    </p>
-    <form (submit)="verifyAccount()" style="display: flex; flex-direction: column; gap: 15px;">
-        <div class="form-group" style="display: flex; flex-direction: column;">
-            <label for="verificationCode" style="color: #181717; font-size: 14px; margin-bottom: 5px;">Verification Code</label>
-            <input type="text" class="form-control" id="verificationCode" [(ngModel)]="verificationCode" name="verificationCode" required
-                   style="padding: 12px; border-radius: 5px; border: 1px solid #ccc; font-size: 16px;">
-        </div>
-        <button type="submit" class="button" style="background-color: #4caf50; color: white; padding: 12px; font-size: 16px; border: none; cursor: pointer; transition: background-color 0.3s ease;">
-            Verify
-        </button>
-    </form>
+<div
+  class="container"
+  style="
+    max-width: 600px;
+    margin: auto;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+    padding: 20px;
+    border-radius: 10px;
+  "
+>
+  <h2
+    style="
+      color: hsl(0, 0%, 10%);
+      text-align: center;
+      font-size: 24px;
+      margin-bottom: 20px;
+    "
+  >
+    Account Verification
+  </h2>
+  <p
+    style="
+      color: rgb(18, 17, 17) 131;
+      font-size: 16px;
+      line-height: 1.5;
+      margin-bottom: 30px;
+    "
+  >
+    To create a poll, your account needs to be verified. Please enter the
+    verification code sent to your email.
+  </p>
+  <form
+    (submit)="verifyAccount()"
+    style="display: flex; flex-direction: column; gap: 15px"
+  >
+    <div class="form-group" style="display: flex; flex-direction: column">
+      <label
+        for="verificationCode"
+        style="color: #181717; font-size: 14px; margin-bottom: 5px"
+        >Verification Code</label
+      >
+      <input
+        type="text"
+        class="form-control"
+        id="verificationCode"
+        [(ngModel)]="verificationCode"
+        name="verificationCode"
+        required
+        style="
+          padding: 12px;
+          border-radius: 5px;
+          border: 1px solid #ccc;
+          font-size: 16px;
+        "
+      />
+    </div>
+    <button
+      type="submit"
+      class="button"
+      style="
+        background-color: #4caf50;
+        color: white;
+        padding: 12px;
+        font-size: 16px;
+        border: none;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+      "
+    >
+      Verify
+    </button>
+  </form>
 </div>

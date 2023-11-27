@@ -11,7 +11,7 @@ export class PollRequestComponent implements OnInit {
   pollForm: FormGroup
 
   constructor(
-    public fb: FormBuilder,  //for testing, should be fixed later
+    public fb: FormBuilder, //for testing, should be fixed later
     private http: HttpClient,
   ) {
     this.pollForm = this.fb.group({
@@ -44,38 +44,42 @@ export class PollRequestComponent implements OnInit {
 
   ngOnInit(): void {}
 
-onSubmit() {
-    const formValue = this.pollForm.value;
-    const token = this.getToken();
+  onSubmit() {
+    const formValue = this.pollForm.value
+    const token = this.getToken()
     const headers = new HttpHeaders({
       Authorization: `Bearer ${token}`,
-    });
-    const options = { headers };
-    console.log(formValue);
+    })
+    const options = { headers }
+    console.log(formValue)
 
-    if (formValue.tags.length === 0 || formValue.options.length === 0 ||
-      formValue.question === '' || formValue.due_date === '') {
-      window.alert('Error creating poll: Some fields are empty');
-      console.error('Error creating poll: Some fields empty');
-      return;
+    if (
+      formValue.tags.length === 0 ||
+      formValue.options.length === 0 ||
+      formValue.question === '' ||
+      formValue.due_date === ''
+    ) {
+      window.alert('Error creating poll: Some fields are empty')
+      console.error('Error creating poll: Some fields empty')
+      return
     }
 
     this.http
       .post('http://34.105.66.254:1923/poll', formValue, options)
       .subscribe(
         (response) => {
-          console.log('Poll created', response);
-          window.location.reload();
+          console.log('Poll created', response)
+          window.location.reload()
         },
         (error) => {
           if (error.status === 401) {
-            window.alert('Error: Unauthorized access. Please verify account.');
-            window.location.reload();
+            window.alert('Error: Unauthorized access. Please verify account.')
+            window.location.reload()
           }
-          console.error('Error creating poll', error);
-        }
-      );
-  }
+          console.error('Error creating poll', error)
+        },
+      )
+  }
 
   reload() {
     window.location.reload()

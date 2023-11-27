@@ -5,7 +5,7 @@ import { Router } from '@angular/router'
 @Component({
   selector: 'app-verify',
   templateUrl: './verify.component.html',
-  styleUrls: ['./verify.component.css']
+  styleUrls: ['./verify.component.css'],
 })
 export class VerifyComponent {
   verificationCode!: number
@@ -27,7 +27,7 @@ export class VerifyComponent {
       .subscribe(
         (response: any) => {
           // Authentication successful, you can handle the response here
-          
+
           this.router.navigate(['/app-home'])
         },
         (error) => {
@@ -37,5 +37,4 @@ export class VerifyComponent {
         },
       )
   }
-
 }
