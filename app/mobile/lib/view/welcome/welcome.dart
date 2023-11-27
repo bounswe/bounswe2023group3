@@ -53,10 +53,17 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
+
           children: [
-            const SizedBox(height: 80),
+            const SizedBox(height: 30),
+            Image.asset(
+              "assets/app-logo-white.png",
+              scale: 3.5,
+              color: Colors.black,
+
+            ),
             Padding(
-              padding: const EdgeInsets.all(30.0),
+              padding: const EdgeInsets.fromLTRB(30.0,40.0,30.0,0),
               child: const Text(
                 "Poll'up",
                 style: TextStyle(fontSize: 50),
