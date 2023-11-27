@@ -20,11 +20,11 @@
   margin-top: 15px;
 }
 .faq-question-title.underline {
-    text-decoration: underline; /* Add underline when the question is clicked */
-  }
+  text-decoration: underline; /* Add underline when the question is clicked */
+}
 
 .faq-answer {
-    font-size: 18px;
+  font-size: 18px;
   display: none;
   padding: 20px;
   line-height: 2;
@@ -34,26 +34,28 @@
 }
 
 .faq-question.active .faq-question-title {
-    color: #232f44;
-  }
-  
-  .faq-question.active .faq-answer {
-    display: block;
-  }
-  
-  .faq-question.clicked .faq-question-title {
-    color: #232f44;
-    text-decoration: underline;
-  }
-  
-  .arrow-logo {
-    float: right;
-    width: 25px;
-    height: 25px;
-    margin-right: 10px;
-    transition: transform 0.3s ease; /* Add a transition to the transform property */
+  color: #232f44;
+}
+
+.faq-question.active .faq-answer {
+  display: block;
+}
+
+.faq-question.clicked .faq-question-title {
+  color: #232f44;
+  text-decoration: underline;
+}
+
+.arrow-logo {
+  float: right;
+  width: 25px;
+  height: 25px;
+  margin-right: 10px;
+  transition: transform 0.3s ease; /* Add a transition to the transform property */
 }
 
 .faq-question.active .arrow-logo {
-  transform: rotate(90deg); /* Rotate the arrow logo 180 degrees when the question is clicked */
+  transform: rotate(
+    90deg
+  ); /* Rotate the arrow logo 180 degrees when the question is clicked */
 }

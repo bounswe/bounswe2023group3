@@ -24,23 +24,23 @@ export class PollComponent {
 
   colors: string[] = [
     '#AEEEEE',
-    '#FFDAB9', 
-    '#E6E6FA', 
-    '#98FB98', 
-    '#FADADD', 
-    '#F08080', 
-    '#B0C4DE', 
-    '#FFB6C1'  
-];
+    '#FFDAB9',
+    '#E6E6FA',
+    '#98FB98',
+    '#FADADD',
+    '#F08080',
+    '#B0C4DE',
+    '#FFB6C1',
+  ]
 
   constructor(
     private http: HttpClient,
     private router: Router,
-    private userService: UserService
+    private userService: UserService,
   ) {}
 
   ngOnInit() {
-    this.userId = localStorage.getItem("user_id");
+    this.userId = localStorage.getItem('user_id')
     this.http.get('http://34.105.66.254:1923/poll/' + this.pollId).subscribe(
       (response: any) => {
         this.question = response.question
@@ -55,19 +55,19 @@ export class PollComponent {
         console.error('Error fetching poll:', error)
       },
     )
-    this.userService.getLikedUserIds(this.pollId).then((likedUsersList: string[]) => {
-      if(!likedUsersList){
-        this.isLikedBy = false;
-      }
-      else{
-        if(this.userId){
-          this.isLikedBy = likedUsersList.includes(this.userId);
-          this.nofLikes = likedUsersList.length;  
+    this.userService
+      .getLikedUserIds(this.pollId)
+      .then((likedUsersList: string[]) => {
+        if (!likedUsersList) {
+          this.isLikedBy = false
+        } else {
+          if (this.userId) {
+            this.isLikedBy = likedUsersList.includes(this.userId)
+            this.nofLikes = likedUsersList.length
+          }
         }
-      }
-    })
-         
-  
+      })
+
     const selectedButtonId = localStorage.getItem('selectedButtonId')
     if (selectedButtonId) {
       this.selectedButton = document.getElementById(
@@ -95,35 +95,33 @@ export class PollComponent {
       localStorage.setItem('selectedButtonId', button.id)
     }
   }
-  
+
   toggleLike(): void {
-      if (this.isLikedBy) {
-        this.userService.unlike(this.pollId);
-        this.nofLikes -= 1;
-      } else {
-        this.userService.like(this.pollId);
-        this.nofLikes += 1;
-      }
-      this.isLikedBy = !this.isLikedBy; //change the like status
+    if (this.isLikedBy) {
+      this.userService.unlike(this.pollId)
+      this.nofLikes -= 1
+    } else {
+      this.userService.like(this.pollId)
+      this.nofLikes += 1
+    }
+    this.isLikedBy = !this.isLikedBy //change the like status
   }
-  
- 
-  goToTag(tagName: string){
+
+  goToTag(tagName: string) {
     this.router.navigate(['/app-tag-page', tagName])
   }
 
   navigateToProfile(user: string) {
-    if(user == localStorage.getItem('username')){
+    if (user == localStorage.getItem('username')) {
       this.router.navigate(['/app-user-profile'])
-    }
-    else this.router.navigate(['/app-profile', user])
+    } else this.router.navigate(['/app-profile', user])
   }
 
   navigateToPoll() {
     this.router.navigate(['/app-poll-view', this.pollId])
   }
-  
-  getColor(i: number):string{
-  return this.colors[i % this.colors.length] 
+
+  getColor(i: number): string {
+    return this.colors[i % this.colors.length]
   }
 }

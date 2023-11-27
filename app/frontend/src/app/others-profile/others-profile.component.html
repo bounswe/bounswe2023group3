@@ -5,11 +5,7 @@
       <app-side-bar></app-side-bar>
       <div
         class="container"
-        style="
-          position: relative;
-          margin-bottom: 80px;
-          padding: 40px
-        "
+        style="position: relative; margin-bottom: 80px; padding: 40px"
       >
         <div class="post-widget" style="display: flex; align-items: start">
           <img
@@ -26,25 +22,30 @@
               &#64;{{ this.user.username }}
             </p>
           </div>
-          <input type="hidden" [(ngModel)]="isFollowing" name="isFollowing">
+          <input type="hidden" [(ngModel)]="isFollowing" name="isFollowing" />
           <button
-          class="follow-button"
-          style="background-color: #e57f84; border: none; color: #fff;"
-          (click)="toggleFollow()"
-          [textContent]="isFollowing ? 'Unfollow' : 'Follow'"
-        >
-        </button>
+            class="follow-button"
+            style="background-color: #e57f84; border: none; color: #fff"
+            (click)="toggleFollow()"
+            [textContent]="isFollowing ? 'Unfollow' : 'Follow'"
+          ></button>
         </div>
-        
+
         <div style="margin-bottom: 15px; margin-top: 10px; text-align: center">
           <p class="follow-text" style="margin-right: 100px">
-            <b>{{this.nofFollowees}}</b> followings
+            <b>{{ this.nofFollowees }}</b> followings
           </p>
-          <p class="follow-text"><b>{{this.nofFollowers}}</b> followers</p>
+          <p class="follow-text">
+            <b>{{ this.nofFollowers }}</b> followers
+          </p>
         </div>
         <div class="user-polls">
-          <button class="user-polls-column" (click)="createdPolls()">Created</button>
-          <button class="user-polls-column" (click)="likedPolls()">Liked</button>
+          <button class="user-polls-column" (click)="createdPolls()">
+            Created
+          </button>
+          <button class="user-polls-column" (click)="likedPolls()">
+            Liked
+          </button>
           <button class="user-polls-column">Voted</button>
         </div>
         <div>
