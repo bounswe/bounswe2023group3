@@ -43,8 +43,8 @@
           <p class="follow-text"><b>{{this.nofFollowers}}</b> followers</p>
         </div>
         <div class="user-polls">
-          <button class="user-polls-column">Created</button>
-          <button class="user-polls-column">Liked</button>
+          <button class="user-polls-column" (click)="createdPolls()">Created</button>
+          <button class="user-polls-column" (click)="likedPolls()">Liked</button>
           <button class="user-polls-column">Voted</button>
         </div>
         <div>
