@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:email_validator/email_validator.dart';
+import 'package:mobile_app/ScreenArguments.dart';
 import 'package:mobile_app/services/passwordResetVerification.dart';
 import 'package:mobile_app/services/emailVerification.dart';
 import 'package:mobile_app/view/forgetPassword/customTextField.dart';
@@ -143,20 +144,23 @@ class _ForgetPassVerifyScreenState extends State<ForgetPassVerifyScreen> {
       if(response.statusCode == 201) {
 
         if(!context.mounted) return;
-        Navigator.pushReplacementNamed(context, '/welcome',arguments:{
-          'message':'Password is changed successfully!'});
+        Navigator.pushNamedAndRemoveUntil(
+          context,
+          '/welcome',
+              (Route<dynamic> route) => false, // This condition ensures removing all previous routes
+          arguments: ScreenArguments("Password is updated successfully!")
+        );
       }
 
       else {
-        Navigator.pushReplacementNamed(context, '/welcome',arguments:{
-          'message':'Password is changed successfully!'});
-
         if(!context.mounted) return;
+        showErrorMessage(context,"There is no such user.");
+
       }
     }
     catch (e) {
       print(e);
-      showErrorMessage(context);
+
 
     }
   }
@@ -165,10 +169,10 @@ class _ForgetPassVerifyScreenState extends State<ForgetPassVerifyScreen> {
 
 
 
-  void showErrorMessage(BuildContext context) {
+  void showErrorMessage(BuildContext context, String message) {
     ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text(''),
+      SnackBar(
+        content: Text(message),
       ),
     );
   }
