@@ -6,8 +6,8 @@ class CommentData {
 
   factory CommentData.fromJson(Map<String, dynamic> json) {
     return CommentData(
-      user: json['user'],
-      commentText: json['commentText'],
+      user: json['creator']['username'],
+      commentText: json['description'],
     );
   }
 }
