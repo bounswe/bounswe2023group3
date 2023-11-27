@@ -1,10 +1,10 @@
 .container {
+  flex: 1;
   align-items: center;
   background-color: #9dc0c4;
   padding: 50px;
-  border: 1px solid #1b1818;
   border-radius: 20px;
-  width: 700px;
+  width: 100%;
 }
 
 .button {
@@ -43,14 +43,37 @@ body {
 }
 
 .poll-info {
-  width: calc(100% - 40px);
-  padding: 10px;
+  width: calc(100% - 30px);
+  padding: 7px;
   margin-bottom: 10px;
   border: 1px solid #ccc;
   border-radius: 5px;
+  text-align: left;
 }
 
 label {
   display: block;
   margin-bottom: 10px;
+}
+
+.info-container {
+  background-color: #9dc0c4;
+  padding: 10px;
+  border-radius: 20px;
+  text-align: left;
+  margin-top: 20px;
+  margin-bottom: 15px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 300px;
+  min-height: 200px;
+  max-height: 560px;
+}
+
+.info-container p {
+  margin-left: 20px;
+  margin-right: 20px;
+  color:#202a40;
+  font-size: 16px;
 }
