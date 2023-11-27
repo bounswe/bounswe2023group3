@@ -212,7 +212,7 @@ class _ProfilePageState extends State<ProfilePage> {
               onTap: () => tapOnPoll(context, post),
               child: SizedBox(
                 height: calculatePostHeight(post),
-                child: PollViewHomePage(
+                child: PollViewHomePage(pollId: post.pollId,
                     userName: post.userName,
                     userUsername: post.userUsername,
                     profilePictureUrl: post.profilePictureUrl,
@@ -224,7 +224,9 @@ class _ProfilePageState extends State<ProfilePage> {
                     likeCount: post.likeCount,
                     dateTime: post.dueDate.toString(),
                     // TODO buraya commentCount verilecek
-                    comments: []),
+                    comments: [],
+                isSettled: post.isSettled,
+                approvedStatus: post.approvedStatus,),
               ),
             ),
           );
@@ -244,6 +246,7 @@ class _ProfilePageState extends State<ProfilePage> {
       context,
       MaterialPageRoute(
         builder: (context) => PollPage(
+            pollId: poll.pollId,
             userName: poll.userName,
             userUsername: poll.userUsername,
             profilePictureUrl: poll.profilePictureUrl,
@@ -254,7 +257,9 @@ class _ProfilePageState extends State<ProfilePage> {
             postOptions: poll.options,
             likeCount: poll.likeCount,
             dateTime: poll.dueDate.toString(),
-            comments: comments),
+            comments: comments,
+          isSettled: poll.isSettled
+        ),
       ),
     );
   }

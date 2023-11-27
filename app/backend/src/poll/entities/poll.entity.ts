@@ -56,17 +56,14 @@ export class Poll {
   due_date: Date;
 
   @OneToMany(() => Like, (like) => like.poll)
-  likes : Relation<Like[]>;
+  likes: Relation<Like[]>;
 
   @OneToMany(() => Comment, (comment) => comment.poll)
-  comments : Relation<Comment[]>;
-  
+  comments: Relation<Comment[]>;
+
   // @Todo Replace with vote entity
   //@Column({ nullable: true })
   //vote_list: Array<any>;
-
-  @Column({ default: 0 })
-  comment_count: number;
 
   @Column({ default: 0 })
   vote_count: number;

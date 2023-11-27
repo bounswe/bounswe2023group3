@@ -127,15 +127,11 @@ export class PollService {
 
   public async findAll({
     creatorId,
-    minLikeCount,
-    minCommentCount,
     likedById,
     followedById,
   }): Promise<Poll[]> {
     return await this.pollRepository.findAll({
       creatorId,
-      minLikeCount,
-      minCommentCount,
       likedById,
       followedById,
     });

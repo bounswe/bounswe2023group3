@@ -1,18 +1,48 @@
 import 'package:flutter/material.dart';
+import 'package:mobile_app/ScreenArguments.dart';
 
-class WelcomeScreen extends StatelessWidget {
+class WelcomeScreen extends StatefulWidget {
 
 
   const WelcomeScreen({super.key});
 
+  @override
+  State<WelcomeScreen> createState() => _WelcomeScreenState();
+}
 
+class _WelcomeScreenState extends State<WelcomeScreen> {
 
-
+  final GlobalKey<ScaffoldState> scaffoldKey = new GlobalKey<ScaffoldState>();
 
 
   @override
+  void initState() {
+    super.initState();
+
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
+      showSnackBarIfNeeded();
+    });
+  }
+
+  void showSnackBarIfNeeded(){
+    final argsTemp = ModalRoute.of(context)?.settings.arguments;
+
+    if(argsTemp!=null){
+      final args = argsTemp as ScreenArguments;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(args.message),
+          duration: Duration(seconds: 3),
+          backgroundColor: Color(0xFF61EE64),
+        ),
+      );
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final GlobalKey<ScaffoldState> scaffoldKey = new GlobalKey<ScaffoldState>();
+
+
 
     return Scaffold(
       key: scaffoldKey,
@@ -45,7 +75,7 @@ class WelcomeScreen extends StatelessWidget {
                 minimumSize: const Size(150, 50),
               ),
               child: const Text(
-                'Log in',
+                'Login',
                 style: TextStyle(fontSize: 20),
               ),
             ),
@@ -71,9 +101,20 @@ class WelcomeScreen extends StatelessWidget {
               onPressed: () {
                 // Continue as Guest
                 print("welcome.WelcomeScreen.build.Scaffold.Center.Column."
-                    "TextButton: Continue as Guest");
+                    "TextButton: Continue as guest");
               },
               child: const Text('Continue as Guest',
+                style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),),
+            ),
+
+            const SizedBox(height: 5),
+            TextButton(
+              onPressed: () {
+                // Navigate to the Moderator Login page
+                Navigator.pushNamed(context, '/moderatorLogin');
+
+              },
+              child: const Text('Login as Moderator',
                 style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),),
             ),
           ],

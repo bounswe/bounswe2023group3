@@ -8,6 +8,7 @@ import 'package:mobile_app/view/pollView/userInformationWidget.dart';
 import '../constants.dart';
 
 class PollPage extends StatelessWidget {
+  final String pollId;
   final String userName;
   final String userUsername;
   final String profilePictureUrl;
@@ -19,9 +20,12 @@ class PollPage extends StatelessWidget {
   final int likeCount;
   final String dateTime;
   final List<CommentData> comments;
+  final int isSettled;
+
 
   const PollPage({
     super.key,
+    required this.pollId,
     required this.userName,
     required this.userUsername,
     required this.profilePictureUrl,
@@ -33,6 +37,7 @@ class PollPage extends StatelessWidget {
     required this.likeCount,
     required this.dateTime,
     required this.comments,
+    required this.isSettled,
   });
 
   @override
@@ -49,6 +54,7 @@ class PollPage extends StatelessWidget {
               userName: userName,
               userUsername: userUsername,
               profilePictureUrl: profilePictureUrl,
+              pollId: isSettled == 0 ? pollId : "",
             ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16.0),

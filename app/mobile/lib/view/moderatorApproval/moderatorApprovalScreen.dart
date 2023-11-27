@@ -26,7 +26,9 @@ class ModeratorApprovalScreen extends StatelessWidget {
 
     try {
       Response response = await moderatorPollDecision.answerPoll(isApproved, id);
-      if (response.statusCode == 200) {
+
+      if (response.statusCode == 201) {
+
         if (!context.mounted) return;
         Navigator.pop(context, isApproved ? "Poll is approved successfully" :"Poll is rejected successfully.");
       }
@@ -86,7 +88,7 @@ class ModeratorApprovalScreen extends StatelessWidget {
 
             const SizedBox(height: 16),
             const SectionHeader(headerText: "Options"),
-            for (var i = 0; i < pollData.options.length; i++)
+            for (var i = pollData.options.length-1; i >=0 ; i--)
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 8),
                 child: ReadOnlyTextField(
