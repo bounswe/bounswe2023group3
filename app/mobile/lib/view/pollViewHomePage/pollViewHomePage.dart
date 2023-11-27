@@ -5,8 +5,10 @@ import 'package:mobile_app/view/pollView/tagWidget.dart';
 import 'package:mobile_app/view/pollView/postOptionWidget.dart';
 import 'package:mobile_app/view/pollView/userInformationWidget.dart';
 import 'package:mobile_app/view/pollView/pollView.dart';
+import 'package:mobile_app/services/pollViewHomePageLike.dart';
 
-class PollViewHomePage extends StatelessWidget {
+class PollViewHomePage extends StatefulWidget {
+  final String pollId;
   final String userName;
   final String userUsername;
   final String profilePictureUrl;
@@ -21,6 +23,7 @@ class PollViewHomePage extends StatelessWidget {
 
   const PollViewHomePage({
     super.key,
+    required this.pollId,
     required this.userName,
     required this.userUsername,
     required this.profilePictureUrl,
@@ -33,7 +36,25 @@ class PollViewHomePage extends StatelessWidget {
     required this.dateTime,
     required this.comments,
   });
+  _PollViewHomePageState createState() => _PollViewHomePageState();
+}
 
+class _PollViewHomePageState extends State<PollViewHomePage> {
+  late int likeCount;
+
+  @override
+  void initState() {
+    super.initState();
+    likeCount = widget.likeCount;
+  }
+
+  void handleLikePress(String pollId) {
+    PollViewHomePageLike pollLike = PollViewHomePageLike();
+    pollLike.like(pollId);
+    setState(() {
+      likeCount++;
+    });
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -41,45 +62,45 @@ class PollViewHomePage extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           UserInformationWidget(
-            userName: userName,
-            userUsername: userUsername,
-            profilePictureUrl: profilePictureUrl,
+            userName: widget.userName,
+            userUsername: widget.userUsername,
+            profilePictureUrl: widget.profilePictureUrl,
           ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16.0),
-            child: Text(postTitle,
+            child: Text(widget.postTitle,
                 overflow: TextOverflow.ellipsis,
                 maxLines: 3,
                 style: const TextStyle(
                     fontSize: 18.0, fontWeight: FontWeight.bold)),
           ),
-          TagListWidget(tags: tags, tagColors: tagColors),
+          TagListWidget(tags: widget.tags, tagColors: widget.tagColors),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16.0),
-            child: Text('Vote Count: $voteCount',
+            child: Text('Vote Count: $widget.voteCount',
                 style: const TextStyle(fontSize: 16.0)),
           ),
-          for (String option in postOptions)
+          for (String option in widget.postOptions)
             PostOptionWidget(
                 optionText: option,
                 onPressed: () => handleOptionPress(option)),
           Padding(
             padding: const EdgeInsets.all(16.0),
             child: ElevatedButton.icon(
-              onPressed: handleLikePress,
+              onPressed: () => handleLikePress(widget.pollId),
               icon: const Icon(Icons.thumb_up),
               label: const Text('Like'),
             ),
           ),
           Row(
             children: [
-              LikeCountWidget(likeCount: likeCount),
-              DateTimeWidget(dateTime: dateTime),
+              LikeCountWidget(likeCount: widget.likeCount),
+              DateTimeWidget(dateTime: widget.dateTime),
             ],
           ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 20),
-            child: Text('${comments.length} Comments',
+            child: Text('${widget.comments.length} Comments',
                 style: const TextStyle(fontSize: 16.0)),
           ),
         ],
@@ -93,9 +114,11 @@ class PollViewHomePage extends StatelessWidget {
     print("pressed $option");
   }
 
-  void handleLikePress() {
-    print("pressed like");
-  }
+  //void handleLikePress(String pollId) {
+   // PollViewHomePageLike pollLike = PollViewHomePageLike();
+   // pollLike.like(pollId);
+    //print("pressed like");
+  //}
 }
 
 
