@@ -18,7 +18,8 @@ class ProfilePagePollsService {
     String pollsEndpoint = "/poll";
     Response response = await ApiService.dio.get(pollsEndpoint);
     var polls = List.from(response.data).map((e) => PollInfo.fromJson(e));
-    return polls.toList();
+    // return polls.toList();
+    return [];
   }
 
   static Future<List<PollInfo>> getCreatedPolls(String userId) async {
