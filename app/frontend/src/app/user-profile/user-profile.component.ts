@@ -1,5 +1,7 @@
 import { HttpClient } from '@angular/common/http'
 import { Component } from '@angular/core'
+import { UserService } from 'src/services/user-service/user.service'
+import { User } from './user.model'
 
 @Component({
   selector: 'app-user-profile',
@@ -10,12 +12,13 @@ export class UserProfileComponent {
   polls!: any[]
   user_id!: any
   username: any
+  nofFollowers: number = 0;
+  nofFollowees: number = 0;
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private _userService: UserService) {
     this.http.get('http://34.105.66.254:1923/poll/').subscribe(
       (response: any) => {
         this.polls = []
-        console.log(this.user_id)
         for (const r of response) { 
               if(r.creator.id == this.user_id){
                 this.polls.push(r); 
@@ -28,7 +31,14 @@ export class UserProfileComponent {
     )
     this.user_id = localStorage.getItem('user_id')
     this.username = localStorage.getItem('username')
+    
+    this._userService.getUser(this.username).then((user: User) => {
+      this.nofFollowees = user.followings.map((followee: User) => followee.id).length;
+      this.nofFollowers = user.followers.map((follower: User) => follower.id).length;
+    });
   }
+
+
   createdPolls(){
     this.http.get('http://34.105.66.254:1923/poll/').subscribe(
       (response: any) => {

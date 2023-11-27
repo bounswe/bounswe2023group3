@@ -38,7 +38,6 @@ export class UserService {
   async getFolloweeIds(username: string): Promise<string[]>{
     try {
       const user = await this.getUser(username);
-      console.log(user);
       const followeeIds = user.followings?.map((followee: User) => followee.id);
       return followeeIds;
     }

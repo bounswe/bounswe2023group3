@@ -13,7 +13,7 @@ import { UserService } from 'src/services/user-service/user.service'
 })
 export class OthersProfileComponent implements OnInit {
   polls: any[] = []
-  user!: User; //user: User | undefined;
+  user!: User;
   userId = "";
   self_username= localStorage.getItem("username");
   self_userId = localStorage.getItem("user_id");
@@ -44,7 +44,6 @@ export class OthersProfileComponent implements OnInit {
         //get follow status
         // check if the other_user's id is in the followee list
         if(this.self_username){
-          console.log(this.userId);
           this._userService.getFolloweeIds(this.self_username).then((followeeList: string[]) => {
 
             if(!followeeList){
@@ -53,9 +52,6 @@ export class OthersProfileComponent implements OnInit {
             else{
               this.isFollowing = followeeList.includes(this.userId);
             }
-            console.log(followeeList);
-            console.log(this.userId);
-            console.log("Is following after Followee list check", this.isFollowing);
           })     
         }
       })
