@@ -8,13 +8,14 @@ import 'package:mobile_app/view/pollView/pollView.dart';
 class HomePage extends StatelessWidget {
   HomePage({super.key});
 
-  void tapOnPoll(BuildContext context, userName, userUsername,
+  void tapOnPoll(BuildContext context, pollId, userName, userUsername,
       profilePictureUrl, postTitle, tags, tagColors, voteCount, postOptions,
       likeCount, dateTime, comments) {
     Navigator.push(
       context,
       MaterialPageRoute(
         builder: (context) => PollPage(
+            pollId: pollId,
             userName: userName,
             userUsername: userUsername,
             profilePictureUrl: profilePictureUrl,
@@ -72,6 +73,7 @@ class HomePage extends StatelessWidget {
                           child: GestureDetector(
 
                             onTap: (){tapOnPoll(context,
+                                post.pollId,
                                 post.userName,
                                 post.userUsername,
                                 post.profilePictureUrl,

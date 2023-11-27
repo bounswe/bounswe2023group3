@@ -213,6 +213,7 @@ class _ProfilePageState extends State<ProfilePage> {
               child: SizedBox(
                 height: calculatePostHeight(post),
                 child: PollViewHomePage(
+                    pollId: post.pollId,
                     userName: post.userName,
                     userUsername: post.userUsername,
                     profilePictureUrl: post.profilePictureUrl,
@@ -244,6 +245,7 @@ class _ProfilePageState extends State<ProfilePage> {
       context,
       MaterialPageRoute(
         builder: (context) => PollPage(
+            pollId: poll.pollId,
             userName: poll.userName,
             userUsername: poll.userUsername,
             profilePictureUrl: poll.profilePictureUrl,
