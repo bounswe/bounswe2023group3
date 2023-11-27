@@ -35,11 +35,11 @@ export class CreateUserDto {
 
   @IsString()
   @IsOptional()
-  firstname: string;
+  firstname?: string;
 
   @IsString()
   @IsOptional()
-  lastname: string;
+  lastname?: string;
 }
 
 export class FollowUserDto {

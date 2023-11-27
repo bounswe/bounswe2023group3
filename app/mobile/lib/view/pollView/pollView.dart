@@ -1,13 +1,16 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile_app/models/comment.dart';
+import 'package:mobile_app/services/createCommentService.dart';
 import 'package:mobile_app/view/pollView/commentWidget.dart';
 import 'package:mobile_app/view/pollView/tagWidget.dart';
 import 'package:mobile_app/view/pollView/postOptionWidget.dart';
 import 'package:mobile_app/view/pollView/userInformationWidget.dart';
+import 'package:mobile_app/services/pollViewHomePageLike.dart';
 
 import '../constants.dart';
 
-class PollPage extends StatelessWidget {
+class PollPage extends StatefulWidget {
   final String pollId;
   final String userName;
   final String userUsername;
@@ -21,7 +24,6 @@ class PollPage extends StatelessWidget {
   final String dateTime;
   final List<CommentData> comments;
   final int isSettled;
-
 
   const PollPage({
     super.key,
@@ -41,6 +43,11 @@ class PollPage extends StatelessWidget {
   });
 
   @override
+  State<PollPage> createState() => _PollPageState();
+}
+
+class _PollPageState extends State<PollPage> {
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -51,24 +58,24 @@ class PollPage extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             UserInformationWidget(
-              userName: userName,
-              userUsername: userUsername,
-              profilePictureUrl: profilePictureUrl,
-              pollId: isSettled == 0 ? pollId : "",
+              userName: widget.userName,
+              userUsername: widget.userUsername,
+              profilePictureUrl: widget.profilePictureUrl,
+              pollId: widget.isSettled == 0 ? widget.pollId : "",
             ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              child: Text(postTitle,
+              child: Text(widget.postTitle,
                   style: const TextStyle(
                       fontSize: 18.0, fontWeight: FontWeight.bold)),
             ),
-            TagListWidget(tags: tags, tagColors: tagColors),
+            TagListWidget(tags: widget.tags, tagColors: widget.tagColors),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              child: Text('Vote Count: $voteCount',
+              child: Text('Vote Count: ${widget.voteCount}',
                   style: const TextStyle(fontSize: 16.0)),
             ),
-            for (String option in postOptions)
+            for (String option in widget.postOptions)
               PostOptionWidget(
                   optionText: option,
                   onPressed: () => handleOptionPress(option)),
@@ -82,17 +89,21 @@ class PollPage extends StatelessWidget {
             ),
             Row(
               children: [
-                LikeCountWidget(likeCount: likeCount),
-                DateTimeWidget(dateTime: dateTime),
+                LikeCountWidget(likeCount: widget.likeCount),
+                DateTimeWidget(dateTime: widget.dateTime),
               ],
             ),
-            const CommentEntryFieldWidget(),
+            CommentEntryFieldWidget(
+                pollId: widget.pollId,
+                parentSetState: () {
+                  setState(() {});
+                }),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              child: Text('${comments.length} Comments',
+              child: Text('${widget.comments.length} Comments',
                   style: const TextStyle(fontSize: 16.0)),
             ),
-            for (CommentData comment in comments)
+            for (CommentData comment in widget.comments)
               CommentWidget(
                   user: comment.user, commentText: comment.commentText),
           ],
@@ -107,31 +118,64 @@ class PollPage extends StatelessWidget {
   }
 
   void handleLikePress() {
+    PollViewHomePageLike pollLike = PollViewHomePageLike();
+    pollLike.like(widget.pollId);
     print("pressed like");
   }
 }
 
 class CommentEntryFieldWidget extends StatelessWidget {
-  const CommentEntryFieldWidget({super.key});
+  CommentEntryFieldWidget(
+      {Key? key, required this.pollId, required this.parentSetState})
+      : super(key: key);
+  final String pollId;
+  final VoidCallback parentSetState;
+  final TextEditingController commentController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(16.0),
-      child: Container(
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(20.0),
-          border: Border.all(color: navy),
-          color: whitish,
-        ),
-        child: TextFormField(
-          decoration: const InputDecoration(
-            labelText: 'Add a comment...',
-            border: InputBorder.none,
+      child: Column(
+        children: [
+          Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(20.0),
+              border: Border.all(color: Colors.blue),
+              color: Colors.white,
+            ),
+            child: TextFormField(
+              controller: commentController,
+              decoration: const InputDecoration(
+                labelText: 'Add a comment...',
+                border: InputBorder.none,
+              ),
+            ),
           ),
-        ),
+          const SizedBox(height: 8.0),
+          // Add some space between the text field and the button
+          ElevatedButton(
+            onPressed: () {
+              // Handle button press here
+              addComment();
+            },
+            child: const Text('Post Comment'),
+          ),
+        ],
       ),
     );
+  }
+
+  Future<void> addComment() async {
+    PostCommentService postCommentService = PostCommentService();
+    Response response =
+        await postCommentService.postComment(pollId, commentController.text);
+    if (response.statusCode == 201) {
+      print("Comment added successfully");
+      parentSetState();
+    } else {
+      print("Comment could not be added");
+    }
   }
 }
 

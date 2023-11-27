@@ -18,20 +18,43 @@ class Sidebar extends StatelessWidget {
         child: ListView(
           padding: EdgeInsets.zero,
           children: <Widget>[
-            const SizedBox(
+            SizedBox(
               height: 150.0,
               child: DrawerHeader(
                 decoration: BoxDecoration(
                   color: navy,
                 ),
-                child: Center(
-                  child: Text(
-                    'Side Menu',
-                    style: TextStyle(
-                      color: whitish,
-                      fontSize: 24,
+                child: Row(
+                  children: [
+                    Column(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(0,13,0,0),
+                          child: Image.asset(
+                            "assets/app-logo-white.png",
+                            scale: 8,
+                          ),
+                        ),
+                        Text(
+                          "'Poll'Up",
+                          style: TextStyle(
+                            color: whitish,
+                            fontSize: 12,
+                          ),
+                        ),
+                      ],
                     ),
-                  ),
+                    const SizedBox(width: 25.0,),
+                    Center(
+                      child: Text(
+                        'Side Menu',
+                        style: TextStyle(
+                          color: whitish,
+                          fontSize: 24,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ),
@@ -97,20 +120,43 @@ class Sidebar extends StatelessWidget {
       child: ListView(
         padding: EdgeInsets.zero,
         children: <Widget>[
-          const SizedBox(
+          SizedBox(
             height: 150.0,
             child: DrawerHeader(
               decoration: BoxDecoration(
                 color: navy,
               ),
-              child: Center(
-                child: Text(
-                  'Side Menu',
-                  style: TextStyle(
-                    color: whitish,
-                    fontSize: 24,
+              child: Row(
+                children: [
+                  Column(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(0,13,0,0),
+                        child: Image.asset(
+                          "assets/app-logo-white.png",
+                          scale: 8,
+                        ),
+                      ),
+                      Text(
+                        "'Poll'Up",
+                        style: TextStyle(
+                          color: whitish,
+                          fontSize: 12,
+                        ),
+                      ),
+                    ],
                   ),
-                ),
+                  const SizedBox(width: 25.0,),
+                  Center(
+                    child: Text(
+                      'Side Menu',
+                      style: TextStyle(
+                        color: whitish,
+                        fontSize: 24,
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
           ),

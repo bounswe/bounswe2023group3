@@ -21,15 +21,20 @@
     </header>
 
     <section class="about-app">
-      <h2>
-        Make predictions by participating in polls to earn points and badges
-      </h2>
-      <p>
-        Create and participate in prediction polls about various events and get
-        evaluated for the accuracy of your answers!
-      </p>
+      <div class="about-app-content">
+        <h2>
+          Make predictions by participating in polls to earn points and badges
+        </h2>
+        <p>
+          Create and participate in prediction polls about various events and get
+          evaluated for the accuracy of your answers!
+        </p>
+      </div>
+      <!-- Add the new div for the image -->
+      <div class="about-app-image">
+        <img src="assets/app-promote.png" alt="About App Image" />
+      </div>
     </section>
-    <br />
 
     <section class="features-container">
     <h2 class="features-heading">Why Poll'up?</h2>
@@ -75,87 +80,7 @@
     <section class="faq-section">
       <h2>Frequently Asked Questions</h2>
       <br />
-      <div class="faq-item">
-        <h3>1. What is a prediction poll?</h3>
-        <p>
-          Polls are the main element of our platform. A poll consists of a
-          question whose answer is not known at the moment but is most likely to
-          be known in the future.
-        </p>
-      </div>
-      <div class="faq-item">
-        <h3>2. How do I create a prediction poll?</h3>
-        <p>Creating a prediction poll is easy. Just follow these steps:</p>
-        <p>- Login with your email and password</p>
-        <p>- Navigate to 'Create a New Poll Request' page</p>
-        <p>
-          - Enter the details of your poll, including the question, options, and
-          at least one tag
-        </p>
-        <p>
-          - Send the request and wait until the request is accepted by one of
-          our Moderators
-        </p>
-        <p>
-          - Now, you can see your newly created poll under your profile page,
-          and start polling!
-        </p>
-      </div>
-      <div class="faq-item">
-        <h3>3. How are predictions evaluated?</h3>
-        <p>
-          Predictions are evaluated based on the accuracy of the outcome.
-          Poll'up uses a scoring system to calculate users' prediction power
-          scores, which are influenced by correct predictions and participation
-          in polls.
-        </p>
-      </div>
-      <div class="faq-item">
-        <h3>4. What is the prediction power score?</h3>
-        <p>
-          The prediction power score measures your accuracy in making
-          predictions. It's calculated based on .
-        </p>
-      </div>
-      <div class="faq-item">
-        <h3>5. What are tags in this application?</h3>
-        <p>
-          The tags are used to enhance the competitive experience in our
-          platform. Poll'up offers a wide range of categories for polls. You can
-          explore and participate in polls related to sports, entertainment,
-          current events, and more.
-        </p>
-      </div>
-
-      <div class="faq-item">
-        <h3>6. How do I connect with other users on Poll'up?</h3>
-        <p>
-          You can connect with other users by sending or accepting friend
-          requests. Once connected, you can view their polls and predictions,
-          making the experience more interactive and social.
-        </p>
-      </div>
-
-      <div class="faq-item">
-        <h3>7. Who are moderator users?</h3>
-        <p>
-          Moderator users have the authority to review and moderate
-          user-generated content, manage reports, and enforce platform rules.
-          They play a crucial role in ensuring a smooth and respectful community
-          experience.
-        </p>
-      </div>
-      <div class="faq-item">
-        <h3>
-          8. What guidelines and rules do moderator users enforce on Poll'up?
-        </h3>
-        <p>
-          Moderator users enforce Poll'up's community guidelines and rules,
-          which include guidelines related to respectful communication, content
-          appropriateness, and community behavior. These guidelines help
-          maintain a positive and respectful atmosphere.
-        </p>
-      </div>
+      <app-faq-section></app-faq-section>
     </section>
 
     <section class="cta-section">
@@ -184,5 +109,7 @@
         <li><a href="#">Contact</a></li>
       </ul>
     </footer>
+
+    
   </body>
 </html>

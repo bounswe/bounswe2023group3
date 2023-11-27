@@ -17,10 +17,13 @@ import { ModeratorLoginComponent } from './moderator-login/moderator-login.compo
 import { ModeratorAuthGuard } from './moderator-authorize.guard'
 import { VerificationComponent } from './verification/verification.component'
 import { ModeratorPollReviewComponent } from './moderator-poll-review/moderator-poll-review.component'
+import { VerifyComponent } from './verify/verify.component'
 
 const routes: Routes = [
   { path: '', component: WelcomeComponent },
   { path: 'app-moderator-login', component: ModeratorLoginComponent},
+  { path: 'app-verify', component: VerifyComponent},
+  
   { path: 'app-moderator-requests', component: ModeratorRequestsComponent, canActivate: [ModeratorAuthGuard] },
   {
     path: 'app-user-profile',
