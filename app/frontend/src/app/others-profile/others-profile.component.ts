@@ -63,13 +63,6 @@ export class OthersProfileComponent implements OnInit {
         console.error('Error fetching user:', error)
       })   
     })      
-    if(this.self_username) {
-      this._userService.getUser(this.self_username).then((self_user: any) => {
-        if(self_user) {
-          
-        }
-      });
-    }
   }
 
   toggleFollow(): void {
