@@ -145,6 +145,7 @@ class _HomePageState extends State<HomePage>
                               child: GestureDetector(
 
                                 onTap: (){tapOnPoll(context,
+                                    post.pollId,
                                     post.userName,
                                     post.userUsername,
                                     post.profilePictureUrl,

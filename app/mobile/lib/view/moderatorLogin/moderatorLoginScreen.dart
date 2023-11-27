@@ -71,6 +71,7 @@ class _ModeratorLoginScreenState extends State<ModeratorLoginScreen> {
       print(response);
       if (response.statusCode == 201) {
         moderatorAuthService.saveToken(response.data['access_token']);
+        AppState.isModerator=true;
         /*try {
           Response loggedInUserData = await ModeratorApiService.dio.get('/auth/me');
           if (loggedInUserData.statusCode == 200) {
