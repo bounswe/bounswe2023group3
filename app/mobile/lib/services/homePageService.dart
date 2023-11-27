@@ -49,7 +49,8 @@ class HomePageService {
           postOptions: optionsList,
           likeCount: post['likeCount'],
           comments: const [],
-          dateTime: post['creation_date'], // You might want to format the date
+          dateTime: post['creation_date'],
+          isSettled: post['is_settled'],// You might want to format the date
         ));
       }
       print(posts);
