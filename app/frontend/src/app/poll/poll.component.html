@@ -70,6 +70,9 @@
         </div>
 
         <p style="text-align: right; font-size: smaller">
+          {{ nofLikes }} Likes
+        </p>       
+        <p style="text-align: right; font-size: smaller">
           {{ vote_count }} Votes
         </p>
       </div>
@@ -87,6 +90,8 @@
         </button>
       </div>
 
+      <input type="hidden" [(ngModel)]="isLikedBy" name="isLiked">
+
       <div style="display: flex; justify-content: space-between">
         <button
           style="
@@ -101,9 +106,14 @@
             margin-top: 20px;
             border: none;
           "
+          (click)="toggleLike()"
+          [style.background-color]="isLikedBy ? '#e57f84' : '#187795'"
         >
-          Like
+          {{ isLikedBy ? 'Unlike' : 'Like' }}
         </button>
+
+
+      
         <p style="text-align: center; margin-right: 170px; margin-left: 100px">
           {{ comment_count }} Comments
         </p>

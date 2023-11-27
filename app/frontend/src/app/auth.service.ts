@@ -105,4 +105,7 @@ export class AuthService {
   getUser(): any {
     return this.user || JSON.parse(localStorage.getItem('user') || '{}')
   }
+  getUserId(): any{
+    return localStorage.getItem("user_id");
+  }
 }

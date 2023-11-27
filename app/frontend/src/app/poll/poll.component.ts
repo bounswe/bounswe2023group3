@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http'
 import { Component, Input } from '@angular/core'
 import { Router } from '@angular/router'
+import { UserService } from 'src/services/user-service/user.service'
 
 @Component({
   selector: 'app-poll',
@@ -17,6 +18,9 @@ export class PollComponent {
   comment_count!: number
   vote_count!: number
   creator!: string
+  isLikedBy!: boolean
+  nofLikes: number = 0;
+  userId= localStorage.getItem("userId");
 
   colors: string[] = [
     '#AEEEEE',
@@ -32,14 +36,16 @@ export class PollComponent {
   constructor(
     private http: HttpClient,
     private router: Router,
+    private userService: UserService
   ) {}
 
   ngOnInit() {
+    console.log(this.pollId);
     this.http.get('http://34.105.66.254:1923/poll/' + this.pollId).subscribe(
       (response: any) => {
+        console.log(response);
         this.question = response.question
         this.tags = response.tags
-
         this.options = response.options
         this.due_date = response.due_date
         this.comment_count = response.comment_count
@@ -50,6 +56,20 @@ export class PollComponent {
         console.error('Error fetching poll:', error)
       },
     )
+    this.userService.getLikedUserIds(this.pollId).then((likedUsersList: string[]) => {
+      if(!likedUsersList){
+        this.isLikedBy = false;
+      }
+      else{
+        if(this.userId){
+          this.isLikedBy = likedUsersList.includes(this.userId);
+          this.nofLikes = likedUsersList.length;  
+        }
+      }
+      console.log("Is liked by", this.isLikedBy);
+      console.log("Noflikes", this.nofLikes);
+    })     
+  
     const selectedButtonId = localStorage.getItem('selectedButtonId')
     if (selectedButtonId) {
       this.selectedButton = document.getElementById(
@@ -77,6 +97,22 @@ export class PollComponent {
       localStorage.setItem('selectedButtonId', button.id)
     }
   }
+  
+  toggleLike(): void {
+
+      // If user is currently following, unfollow; otherwise, follow
+      if (this.isLikedBy) {
+        this.userService.unlike(this.pollId);
+        this.nofLikes -= 1;
+      } else {
+        this.userService.like(this.pollId);
+        this.nofLikes += 1;
+      }
+      this.isLikedBy = !this.isLikedBy; //change the follow status
+  }
+  
+  
+  
 
   goToTag(tagName: string){
     this.router.navigate(['/app-tag-page', tagName])

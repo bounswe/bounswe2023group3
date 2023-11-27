@@ -58,4 +58,35 @@ export class UserService {
       .post<any>(this.makeUrl("unfollow"),payload, this.options)
       .toPromise();
   }
+
+  like(pollId: string): Promise<any>{
+    return this.httpClient
+      .post<any>(`${environment.apiBaseUrl}/like/${pollId}`, null, this.options).toPromise();
+  }
+  unlike(pollId: string): Promise<any>{
+    try{
+      return this.httpClient
+      .delete<any>(`${environment.apiBaseUrl}/like/${pollId}`, this.options).toPromise();
+    }
+    catch(error){
+      console.log('Error unliking the poll:', error);
+      throw error;
+    }
+  }
+  
+  async getLikedUserIds(pollId: string): Promise<string[]> {
+    try {
+      console.log(`${environment.apiBaseUrl}/like/${pollId}`);
+      const likedUsers = await this.httpClient
+        .get<any>(`${environment.apiBaseUrl}/like/${pollId}`)
+        .toPromise();
+        const likedUserIds = likedUsers?.map((u: User) => u.id);
+        console.log(likedUsers);
+        return likedUserIds;
+    } catch (error) {
+      console.log('Error fetching likes:', error);
+      throw error;
+    }
+  }
 }
+  
