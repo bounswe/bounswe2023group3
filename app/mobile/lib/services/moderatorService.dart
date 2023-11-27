@@ -11,7 +11,7 @@ class ModeratorService {
 
 
   static Future<List<RequestViewHome>> getPollRequests() async {
-    const String getPollsEndpoint = '/poll';
+    const String getPollsEndpoint = '/moderator/polls';
     try {
       final Response response = await ApiService.dio.get(
         getPollsEndpoint,

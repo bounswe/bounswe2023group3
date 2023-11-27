@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
-import 'package:mobile_app/services/PollRequestService.dart';
+import 'package:mobile_app/services/pollRequestService.dart';
 import 'package:mobile_app/services/tagCompletionService.dart';
 import 'package:mobile_app/view/pollRequest/customTextField.dart';
 import 'package:mobile_app/view/pollRequest/pollCreationData.dart';

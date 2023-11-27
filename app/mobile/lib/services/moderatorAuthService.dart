@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'package:dio/dio.dart';
-import 'package:mobile_app/services/moderatorApiService.dart';
+import 'package:mobile_app/services/apiService.dart';
 
 class ModeratorAuthService {
 
@@ -15,7 +15,7 @@ class ModeratorAuthService {
     };
 
     try {
-      final Response response = await ModeratorApiService.dio.post(
+      final Response response = await ApiService.dio.post(
         loginEndpoint,
         data: data,
       );
@@ -27,6 +27,6 @@ class ModeratorAuthService {
   }
 
   void saveToken(String token) {
-    ModeratorApiService.setJwtToken(token);
+    ApiService.setJwtToken(token);
   }
 }
