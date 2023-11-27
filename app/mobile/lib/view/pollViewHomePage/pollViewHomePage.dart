@@ -70,7 +70,7 @@ class _PollViewHomePageState extends State<PollViewHomePage> {
             userName: widget.userName,
             userUsername: widget.userUsername,
             profilePictureUrl: widget.profilePictureUrl,
-            pollId: widget.pollId,
+            pollId: widget.isSettled == 0 ? widget.pollId : "",
           ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16.0),

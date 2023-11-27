@@ -20,6 +20,8 @@ class PollPage extends StatelessWidget {
   final int likeCount;
   final String dateTime;
   final List<CommentData> comments;
+  final int isSettled;
+
 
   const PollPage({
     super.key,
@@ -35,6 +37,7 @@ class PollPage extends StatelessWidget {
     required this.likeCount,
     required this.dateTime,
     required this.comments,
+    required this.isSettled,
   });
 
   @override
@@ -51,7 +54,7 @@ class PollPage extends StatelessWidget {
               userName: userName,
               userUsername: userUsername,
               profilePictureUrl: profilePictureUrl,
-              pollId: pollId,
+              pollId: isSettled == 0 ? pollId : "",
             ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
