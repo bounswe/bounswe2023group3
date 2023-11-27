@@ -15,10 +15,13 @@ import { ModeratorRequestsComponent } from './moderator-requests/moderator-reque
 import { TagPageComponent } from './tag-page/tag-page.component'
 import { ModeratorLoginComponent } from './moderator-login/moderator-login.component'
 import { ModeratorAuthGuard } from './moderator-authorize.guard'
+import { VerifyComponent } from './verify/verify.component'
 
 const routes: Routes = [
   { path: '', component: WelcomeComponent },
   { path: 'app-moderator-login', component: ModeratorLoginComponent},
+  { path: 'app-verify', component: VerifyComponent},
+  
   { path: 'app-moderator-requests', component: ModeratorRequestsComponent, canActivate: [ModeratorAuthGuard] },
   {
     path: 'app-user-profile',

@@ -25,24 +25,8 @@ body {
   font-family: Arial, sans-serif;
 }
 
-/* Header Styles */
-header {
-  background-color: #232f44;
-  color: #fff;
-  text-align: center;
-  padding: 10px 0;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 20px 30px;
-}
-
-.logo {
-  font-size: 24px;
-}
-
 /* Style for the login container */
-.forget-password-container {
+.verify-container {
   background-color: #9dc0c4;
   color: #fff;
   text-align: center;
@@ -55,7 +39,7 @@ header {
 }
 
 /* Style for the form title */
-.forget-password-container h2 {
+.verify-container h2 {
   font-size: 28px;
   margin: 0 0 40px;
   color: #232f44;
@@ -111,15 +95,27 @@ button[type='submit']:hover {
   background-color: #232f44;
 }
 
-.forget-password-container a {
+.verify-container a {
   color: #202a40;
   font-size: 16px;
   margin: 10px 30px;
 }
 
 /* Error Message Styles */
-.forget-password-container p {
+.verify-container p {
   color: #202a40;
   font-size: 14px;
   margin: 10px 15px;
 }
+
+.alert-container {
+    background-color: #30568f;
+    color: white;
+    padding: 15px;
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  .alert-message {
+    margin: 0;
+  }
