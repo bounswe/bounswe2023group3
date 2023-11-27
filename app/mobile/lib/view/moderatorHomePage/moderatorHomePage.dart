@@ -65,7 +65,9 @@ class _ModeratorHomePageState extends State<ModeratorHomePage>
                     creationDate: creationDate),
               )),
     );
-
+    setState(() {
+      // Refresh the page
+    });
     ScaffoldMessenger.of(context)
       ..removeCurrentSnackBar()
       ..showSnackBar(SnackBar(content: Text(resultMessage), duration: const Duration(seconds: 3),));
