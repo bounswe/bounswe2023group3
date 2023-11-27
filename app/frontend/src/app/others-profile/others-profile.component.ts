@@ -13,7 +13,7 @@ import { UserService } from 'src/services/user-service/user.service'
 })
 export class OthersProfileComponent implements OnInit {
   polls: any[] = []
-  user: User | undefined;
+  user!: User; //user: User | undefined;
   userId = "";
   self_username= localStorage.getItem("username");
   self_userId = localStorage.getItem("user_id");

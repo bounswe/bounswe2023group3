@@ -1,6 +1,7 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { Tag } from "../../../tag/entities/tag.entity";
 import { User } from "../../../user/entities/user.entity";
+import { Option } from "../../../option/entities/option.entity";
 
 export class CreatePollResponseDto {
     @ApiProperty({
@@ -25,9 +26,9 @@ export class CreatePollResponseDto {
     })
     due_date: Date;
     @ApiProperty({
-        example: 'Besiktas'
+        example: null
     })
-    outcome: string;
+    outcome: Option;
     @ApiProperty({
         example: 'https://www.google.com/search?q=besiktas'
     })
@@ -59,9 +60,9 @@ export class CreatePollResponseDto {
     })
     approveStatus: boolean;
     @ApiProperty({
-        example: false
+        example: 0
     })
-    is_settled: boolean;
+    is_settled: number;
     @ApiProperty({
         example: [
             {

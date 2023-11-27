@@ -45,7 +45,7 @@ class WelcomeScreen extends StatelessWidget {
                 minimumSize: const Size(150, 50),
               ),
               child: const Text(
-                'Log in',
+                'Login',
                 style: TextStyle(fontSize: 20),
               ),
             ),
@@ -71,9 +71,20 @@ class WelcomeScreen extends StatelessWidget {
               onPressed: () {
                 // Continue as Guest
                 print("welcome.WelcomeScreen.build.Scaffold.Center.Column."
-                    "TextButton: Continue as Guest");
+                    "TextButton: Continue as guest");
               },
               child: const Text('Continue as Guest',
+                style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),),
+            ),
+
+            const SizedBox(height: 5),
+            TextButton(
+              onPressed: () {
+                // Navigate to the Moderator Login page
+                Navigator.pushNamed(context, '/moderatorLogin');
+
+              },
+              child: const Text('Login as Moderator',
                 style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),),
             ),
           ],

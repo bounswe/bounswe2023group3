@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mobile_app/view/constants.dart';
+import 'package:mobile_app/view/moderatorLogin/moderatorLoginScreen.dart';
 import 'package:mobile_app/view/signup/signVerifyScreen.dart';
 import 'package:mobile_app/view/welcome/welcome.dart';
 import 'view/login/loginScreen.dart';
@@ -72,7 +73,8 @@ void main() async{
         '/fpassverify': (context) => const ForgetPassVerifyScreen(),
         '/pollreq': (context) => const PollRequestPage(),
         '/signverify': (context) => const SignVerifyScreen(),
-        '/moderatorHome': (context) => ModeratorHomePage(),
+        '/moderatorHome': (context) => const ModeratorHomePage(),
+        '/moderatorLogin': (context) => const ModeratorLoginScreen(),
       },
   ));
 }

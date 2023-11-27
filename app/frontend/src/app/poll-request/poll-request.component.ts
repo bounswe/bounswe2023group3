@@ -11,7 +11,7 @@ export class PollRequestComponent implements OnInit {
   pollForm: FormGroup
 
   constructor(
-    private fb: FormBuilder,
+    public fb: FormBuilder,  //for testing, should be fixed later
     private http: HttpClient,
   ) {
     this.pollForm = this.fb.group({
@@ -51,8 +51,13 @@ onSubmit() {
       Authorization: `Bearer ${token}`,
     });
     const options = { headers };
-    console.log(options);
-  
+    console.log(formValue);
+
+    if (formValue.tags.length === 0 || formValue.options.length === 0) {
+      console.error('Error creating poll: Tags or options are empty');
+      return;
+    }
+
     this.http
       .post('http://34.105.66.254:1923/poll', formValue, options)
       .subscribe(

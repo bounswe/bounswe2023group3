@@ -12,6 +12,8 @@ import {
   ManyToMany,
 } from 'typeorm';
 import { Badge } from '../../badge/entities/badge.entity';
+import { Like } from '../../like/entities/like.entity';
+import { Comment } from '../../comment/entities/comment.entity';
 
 const SALT_ROUNDS = 10;
 
@@ -25,6 +27,12 @@ export class User {
 
   @Column({ unique: true, nullable: true, default: null })
   username: string;
+
+  @Column({ nullable: true, default: null })
+  firstname: string;
+
+  @Column({ nullable: true, default: null })
+  lastname: string;
 
   @Column({ nullable: false, default: false })
   isVerified: boolean;
@@ -51,6 +59,12 @@ export class User {
   @ManyToMany(() => Badge)
   @JoinTable()
   badges: Relation<Badge[]>;
+
+  @OneToMany(() => Like, (like) => like.user)
+  likes : Relation<Like[]>;
+
+  @OneToMany(() => Comment, (comment) => comment.user)
+  comments : Relation<Comment[]>;
 
   @BeforeInsert()
   async hashPasswordBeforeInsert() {

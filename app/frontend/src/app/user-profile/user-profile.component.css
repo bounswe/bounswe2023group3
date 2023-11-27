@@ -1,10 +1,13 @@
 .container {
   width: 100%;
 }
-.button {
-  padding: 10px;
+
+.edit-button {
+  width: 100px;
+  padding: 8px;
   margin-top: 10px;
-  margin-bottom: 10px;
   margin-right: 10px;
-  border: none;
+  cursor: pointer;
+  border-radius: 15px;
+  margin-left: auto;
 }

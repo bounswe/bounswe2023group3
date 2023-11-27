@@ -2,12 +2,13 @@ import 'package:dio/dio.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:mobile_app/services/apiService.dart';
 import 'package:mobile_app/services/authService.dart';
+import 'package:mobile_app/view/state.dart';
 import '../constants.dart';
 import 'customTextField.dart';
 import 'package:mobile_app/view/signup/signupScreen.dart';
 import 'package:mobile_app/view/homePage/homePage.dart';
-
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -74,17 +75,28 @@ class _LoginScreenState extends State<LoginScreen> {
       print(response);
       if (response.statusCode == 201) {
         authService.saveToken(response.data['access_token']);
+        try {
+          Response loggedInUserData = await ApiService.dio.get('/auth/me');
+          if (loggedInUserData.statusCode == 200) {
+            AppState.loggedInUserId = loggedInUserData.data['id'];
+            print("loginScreen.login: ${AppState.loggedInUserId}");
+          } else {
+            if (!context.mounted) return;
+            showErrorMessage(context);
+          }
+        } catch (e) {
+          print("!!! loginScreen.dart::_LoginScreenState.login $e");
+          // showErrorMessage(context);
+        }
         if (!context.mounted) return;
         Navigator.pushNamed(context, '/home');
       } else {
         if (!context.mounted) return;
         showErrorMessage(context);
       }
-    }
-    catch (e) {
+    } catch (e) {
       showErrorMessage(context);
     }
-
   }
 
   void showErrorMessage(BuildContext context) {
@@ -163,7 +175,9 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                       const SizedBox(height: 16),
                       GestureDetector(
-                        onTap: () {Navigator.pushNamed(context, "/sign");},
+                        onTap: () {
+                          Navigator.pushNamed(context, "/sign");
+                        },
                         child: const Text(
                           'Don\'t have an account? Sign up here',
                           style: TextStyle(

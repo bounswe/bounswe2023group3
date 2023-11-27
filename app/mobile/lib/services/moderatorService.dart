@@ -12,7 +12,6 @@ class ModeratorService {
 
   static Future<List<RequestViewHome>> getPollRequests() async {
     const String getPollsEndpoint = '/poll';
-    print("bbb");
     try {
       final Response response = await ApiService.dio.get(
         getPollsEndpoint,
@@ -31,6 +30,11 @@ class ModeratorService {
           tagColorsList.add(Colors.blue); // You might want to generate colors dynamically
         }
 
+        List<String> optionsList = [];
+        for (var option in post['options']) {
+          optionsList.add(option['answer']);
+        }
+
         posts.add(RequestViewHome(
           userName: creator['username'],
           userUsername: creator['username'],
@@ -38,7 +42,10 @@ class ModeratorService {
           postTitle: post['question'],
           tags: tagsList,
           tagColors: tagColorsList,
-          dateTime: post['creation_date'], // You might want to format the date
+          dateTime: post['creation_date'],
+          pollId: post['id'], // You might want to format the date
+          options: optionsList,
+          dueDate: post['due_date'],
         ));
       }
       return posts;

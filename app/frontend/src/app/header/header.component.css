@@ -5,11 +5,19 @@ header {
   text-align: center;
   padding: 10px 0;
   display: flex;
-  justify-content: space-between;
+  justify-content: left;
   align-items: center;
   padding: 20px 30px;
 }
 
 .logo {
   font-size: 24px;
+  cursor: pointer; 
+}
+
+.logo img {
+  width: 10px;
+  height:10px;
+  margin-right: 5px; 
+  cursor: pointer;
 }
