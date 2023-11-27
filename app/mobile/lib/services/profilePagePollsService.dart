@@ -6,7 +6,7 @@ class ProfilePagePollsService {
   static Future<List<PollInfo>> getLikedPolls(String userId) async {
     // TODO make filtering
     // TODO handle errors
-    String pollsEndpoint = "/poll";
+    String pollsEndpoint = "/poll?likedById=$userId";
     Response response = await ApiService.dio.get(pollsEndpoint);
     var polls = List.from(response.data).map((e) => PollInfo.fromJson(e));
     return polls.toList();
