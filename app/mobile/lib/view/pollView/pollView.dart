@@ -119,7 +119,7 @@ class _PollPageState extends State<PollPage> {
 
   void handleLikePress() {
     PollViewHomePageLike pollLike = PollViewHomePageLike();
-    pollLike.like(pollId);
+    pollLike.like(widget.pollId);
     print("pressed like");
   }
 }
