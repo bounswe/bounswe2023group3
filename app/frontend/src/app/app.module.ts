@@ -29,6 +29,7 @@ import { ModeratorSideBarComponent } from './moderator-side-bar/moderator-side-b
 import { TagPageComponent } from './tag-page/tag-page.component';
 import { ModeratorLoginComponent } from './moderator-login/moderator-login.component';
 import { ModeratorHeaderComponent } from './moderator-header/moderator-header.component';
+import { VerificationComponent } from './verification/verification.component';
 import { FaqSectionComponent } from './faq-section/faq-section.component';
 import { VerifyComponent } from './verify/verify.component'
 
@@ -57,6 +58,7 @@ import { VerifyComponent } from './verify/verify.component'
     TagPageComponent,
     ModeratorLoginComponent,
     ModeratorHeaderComponent,
+    VerificationComponent
     FaqSectionComponent,
     VerifyComponent,
   ],
@@ -67,6 +69,7 @@ import { VerifyComponent } from './verify/verify.component'
     ReactiveFormsModule,
     HttpClientModule,
     BrowserAnimationsModule,
+
   ],
   providers: [AuthService],
   bootstrap: [AppComponent],
