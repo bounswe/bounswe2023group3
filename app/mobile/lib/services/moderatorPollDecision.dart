@@ -10,12 +10,16 @@ class ModeratorPollDecision {
 
 
 
+    final Map<String, bool> data = {
+      'approveStatus': isApproved,
+    };
+
+
 
     try {
       final Response response = await ApiService.dio.post(
         pollAnswerEndpoint,
-        data: {'approveStatus': isApproved,
-          },
+        data: data
       );
 
       return response;

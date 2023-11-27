@@ -23,22 +23,24 @@
             >
             <!-- add the Actual Name of the user after it is implemented in the backend -->
             <p class="user-name" style="margin-top: 2px">
-              &#64;{{ this.user?.username }}
+              &#64;{{ this.user.username }}
             </p>
           </div>
+          <input type="hidden" [(ngModel)]="isFollowing" name="isFollowing">
           <button
           class="follow-button"
           style="background-color: #e57f84; border: none; color: #fff;"
+          (click)="toggleFollow()"
+          [textContent]="isFollowing ? 'Unfollow' : 'Follow'"
         >
-          Follow
         </button>
         </div>
         
         <div style="margin-bottom: 15px; margin-top: 10px; text-align: center">
           <p class="follow-text" style="margin-right: 100px">
-            <b>256</b> followings
+            <b>{{this.nofFollowees}}</b> followings
           </p>
-          <p class="follow-text"><b>10k</b> followers</p>
+          <p class="follow-text"><b>{{this.nofFollowers}}</b> followers</p>
         </div>
         <div class="user-polls">
           <button class="user-polls-column" (click)="createdPolls()">Created</button>
