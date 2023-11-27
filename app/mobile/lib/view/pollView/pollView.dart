@@ -6,6 +6,7 @@ import 'package:mobile_app/view/pollView/commentWidget.dart';
 import 'package:mobile_app/view/pollView/tagWidget.dart';
 import 'package:mobile_app/view/pollView/postOptionWidget.dart';
 import 'package:mobile_app/view/pollView/userInformationWidget.dart';
+import 'package:mobile_app/services/pollViewHomePageLike.dart';
 
 import '../constants.dart';
 
@@ -117,6 +118,8 @@ class _PollPageState extends State<PollPage> {
   }
 
   void handleLikePress() {
+    PollViewHomePageLike pollLike = PollViewHomePageLike();
+    pollLike.like(pollId);
     print("pressed like");
   }
 }
