@@ -48,14 +48,9 @@ export class UserProfileComponent {
     
   }
   likedPolls(){
-    this.http.get('http://34.105.66.254:1923/poll/').subscribe(
+    this.http.get('http://34.105.66.254:1923/poll/?likedById=' + this.user_id).subscribe(
       (response: any) => {
-
-        this.polls = []
-        for (const r of response) { 
-              this.polls.push(r); 
-            }
-          
+        this.polls = response
       },
       (error) => {
         console.error('Error fetching polls:', error)

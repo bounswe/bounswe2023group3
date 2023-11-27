@@ -45,7 +45,7 @@
             <div formArrayName="options">
               <div *ngFor="let option of options.controls; let i = index">
                 <input
-                  class="poll-info"
+                  class="poll-info"   
                   type="text"
                   [formControlName]="i"
                   [placeholder]="'Option ' + (i + 1)"
