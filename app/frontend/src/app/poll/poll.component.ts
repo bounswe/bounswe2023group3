@@ -62,7 +62,7 @@ export class PollComponent {
           this.isLikedBy = false
         } else {
           if (this.userId) {
-            console.log(likedUsersList);
+            console.log(likedUsersList)
             this.isLikedBy = likedUsersList.includes(this.userId)
             this.nofLikes = likedUsersList.length
           }

@@ -35,7 +35,6 @@ describe('PollRequestComponent', () => {
 
     component.tags.clear()
     component.options.clear()
-
     ;['Option 1', 'Option 2'].forEach((option) =>
       component.options.push(component.fb.control(option)),
     )
