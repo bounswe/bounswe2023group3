@@ -1,0 +1,78 @@
+/* Container for the entire component */
+.moderator-review-container {
+  background-color: #9dc0c4;
+  padding: 20px;
+  border-radius: 20px;
+  margin: 20px auto;
+  max-width: 800px;
+  color: #202a40;
+}
+
+/* Style for headings */
+.moderator-review-heading {
+  text-align: center;
+  font-size: 24px;
+  margin-bottom: 20px;
+  color: #202a40;
+}
+
+/* Style for review sections */
+.review-section {
+  background-color: #7fb7be;
+  padding: 15px;
+  border-radius: 10px;
+  margin-bottom: 15px;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Style for individual poll items */
+.poll-item {
+  background-color: #fff;
+  padding: 10px;
+  border-radius: 5px;
+  margin-bottom: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Buttons for actions like approve or reject */
+.action-button {
+  padding: 10px 15px;
+  margin-right: 10px;
+  border-radius: 5px;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.approve-button {
+  background-color: #4caf50;
+  color: white;
+}
+
+.reject-button {
+  background-color: #f44336;
+  color: white;
+}
+
+/* Style for informational text */
+.info-text {
+  font-size: 16px;
+  margin-bottom: 10px;
+}
+
+/* Style for labels */
+.label {
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 600px) {
+  .moderator-review-container {
+    padding: 10px;
+  }
+  .review-section {
+    flex-direction: column;
+  }
+}
