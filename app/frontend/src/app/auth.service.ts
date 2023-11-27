@@ -48,6 +48,19 @@ export class AuthService {
     return localStorage.getItem('authToken')
   }
 
+  getHeaders(): any {
+    if(this.getToken()){
+      const headers = new HttpHeaders({
+        Authorization: `Bearer ${this.getToken()}`
+      });
+      const options = { headers };
+      return options;
+    }
+  }
+
+// Assuming `getToken()` is a method in your class that returns the authentication token.
+
+
   // User registration
   register(email: string, password: string, username: string): Observable<any> {
     const user = { email, password, username }
