@@ -257,7 +257,9 @@ class _ProfilePageState extends State<ProfilePage> {
             postOptions: poll.options,
             likeCount: poll.likeCount,
             dateTime: poll.dueDate.toString(),
-            comments: comments),
+            comments: comments,
+          isSettled: poll.isSettled
+        ),
       ),
     );
   }
