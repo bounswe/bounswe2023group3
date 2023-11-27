@@ -225,7 +225,8 @@ class _ProfilePageState extends State<ProfilePage> {
                     dateTime: post.dueDate.toString(),
                     // TODO buraya commentCount verilecek
                     comments: [],
-                isSettled: post.isSettled,),
+                isSettled: post.isSettled,
+                approvedStatus: post.approvedStatus,),
               ),
             ),
           );

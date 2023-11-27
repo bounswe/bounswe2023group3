@@ -89,9 +89,9 @@ class _HomePageState extends State<HomePage>
                         separatorBuilder: (context, index) => const SizedBox(
                             height: 20), // Add spacing between posts
                         shrinkWrap: true,
-                        itemCount: posts.where((post) => post.isSettled == 0).length,
+                        itemCount: posts.where((post) => post.isSettled == 0 && post.approvedStatus == true).length,
                         itemBuilder: (context, index) {
-                          final filteredPosts = posts.where((post) => post.isSettled == 0).toList();
+                          final filteredPosts = posts.where((post) => post.isSettled == 0 && post.approvedStatus == true).toList();
                           final post = filteredPosts[index];
                           double postHeight = calculatePostHeight(post);
                           return SizedBox(
@@ -124,6 +124,7 @@ class _HomePageState extends State<HomePage>
                                   dateTime: post.dateTime,
                                   comments: post.comments,
                                   isSettled: post.isSettled,
+                                  approvedStatus: post.approvedStatus,
                                 ),
                               ),
                             ),
@@ -134,9 +135,9 @@ class _HomePageState extends State<HomePage>
                           separatorBuilder: (context, index) => const SizedBox(
                               height: 20), // Add spacing between posts
                           shrinkWrap: true,
-                          itemCount: posts.where((post) => post.isSettled == 1).length,
+                          itemCount: posts.where((post) => post.isSettled == 1 && post.approvedStatus == true).length,
                           itemBuilder: (context, index) {
-                            final filteredPosts = posts.where((post) => post.isSettled == 1).toList();
+                            final filteredPosts = posts.where((post) => post.isSettled == 1 && post.approvedStatus == true).toList();
                             final post = filteredPosts[index];
                             double postHeight = calculatePostHeight(post);
                             return SizedBox(
@@ -169,6 +170,7 @@ class _HomePageState extends State<HomePage>
                                     dateTime: post.dateTime,
                                     comments: post.comments,
                                     isSettled: post.isSettled,
+                                    approvedStatus: post.approvedStatus,
                                   ),
                                 ),
                               ),
