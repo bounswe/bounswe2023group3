@@ -53,7 +53,8 @@ class ApiService {
       '/auth/register',
       '/auth/verify',
       '/auth/forgot-password',
-      '/auth/reset-password'
+      '/auth/reset-password',
+      '/moderator/login',
     ];
     // Check if the current URL should be ignored
     bool shouldIgnore =
