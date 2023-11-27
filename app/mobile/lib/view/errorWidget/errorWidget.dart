@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 
 class CustomErrorWidget extends StatelessWidget {
   final String errorMessage;
-
-  const CustomErrorWidget({super.key, required this.errorMessage});
+  final VoidCallback onRetryPressed;
+  const CustomErrorWidget({super.key, required this.errorMessage, required this.onRetryPressed});
 
   @override
   Widget build(BuildContext context) {
@@ -34,8 +34,7 @@ class CustomErrorWidget extends StatelessWidget {
           ),
           const SizedBox(height: 20),
           ElevatedButton(
-            onPressed: () {
-            },
+            onPressed: onRetryPressed,
             child: const Text('Retry'),
           ),
         ],
