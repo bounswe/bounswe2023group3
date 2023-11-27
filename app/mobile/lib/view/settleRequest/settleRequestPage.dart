@@ -88,7 +88,7 @@ class _SettleRequestPageState extends State<SettleRequestPage> {
     return Scaffold(
       resizeToAvoidBottomInset: true,
       appBar: AppBar(
-        title: const Text('Login'),
+        title: const Text('Request to Settle'),
       ),
       body: Center(
         child: SingleChildScrollView(
@@ -101,13 +101,13 @@ class _SettleRequestPageState extends State<SettleRequestPage> {
                 CustomTextField(
                   labelText: 'Outcome',
                   controller: outcomeController,
-                  errorText: "This field can't be empty",
+                  errorText: emptyOutcome?"This field can't be empty":"",
                 ),
                 const SizedBox(height: 16),
                 CustomTextField(
                   labelText: 'Outcome Source',
                   controller: sourceController,
-                  errorText: "This field can't be empty",
+                  errorText: emptySource?"This field can't be empty":"",
                 ),
                 const SizedBox(height: 16),
                 ElevatedButton(
@@ -115,13 +115,7 @@ class _SettleRequestPageState extends State<SettleRequestPage> {
                   onPressed: settleRequest,
                   child: const Text('Request!'),
                 ),
-                TextButton(
-                  onPressed: () {
-                    // Continue as Guest
-                    Navigator.pushNamed(context, "/fpassinit");
-                  },
-                  child: const Text('Forget Password?'),
-                ),
+
               ],
             ),
           ),
