@@ -37,7 +37,9 @@ export class ModeratorService {
     }
   }
 
-  public async createModerator(createModeratorDto: CreateModeratorDto): Promise<any> {
+  public async createModerator(
+    createModeratorDto: CreateModeratorDto,
+  ): Promise<any> {
     const moderator = await this.searchModerators(true, {
       where: {
         email: createModeratorDto.email,
@@ -125,7 +127,9 @@ export class ModeratorService {
     if (!moderator) {
       throw new NotFoundException('Moderator not found');
     }
-    if (!(await moderator.compareEncryptedPassword(loginModeratorDto.password))) {
+    if (
+      !(await moderator.compareEncryptedPassword(loginModeratorDto.password))
+    ) {
       throw new BadRequestException('Wrong password');
     }
     const payload = {
@@ -139,7 +143,7 @@ export class ModeratorService {
     };
   }
 
-  public async fetchUnapprovedPolls(): Promise<Poll[]> {
+  public async fetchUnapprovedPolls(): Promise<any> {
     return await this.pollRepository.find({
       where: {
         approveStatus: IsNull(),
@@ -181,10 +185,10 @@ export class ModeratorService {
     return Math.floor(Math.random() * 9000 + 1000);
   }
 
-
-  public async approve_disapprove(pollId: string, approveDto : ApproveDTO): Promise<void>{
-    await this.pollRepository.update(pollId, approveDto)
+  public async approve_disapprove(
+    pollId: string,
+    approveDto: ApproveDTO,
+  ): Promise<void> {
+    await this.pollRepository.update(pollId, approveDto);
   }
-
-
 }

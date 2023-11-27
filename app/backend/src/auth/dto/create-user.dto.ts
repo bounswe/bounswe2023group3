@@ -36,7 +36,7 @@ export class CreateUserDto {
   })
   @IsString()
   @IsOptional()
-  firstname: string;
+  firstname?: string;
 
   @ApiProperty({
     example: 'Doe',

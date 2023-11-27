@@ -52,7 +52,7 @@ export class PollController {
   public async create(
     @Body() createPollDto: CreatePollDto,
     @Req() request: any,
-  ): Promise<CreatePollResponseDto> {
+  ): Promise<any> {
     return await this.pollService.createPoll({
       ...createPollDto,
       creator: request.user,
@@ -117,7 +117,7 @@ export class PollController {
     likedById?: string,
     @Query('followedById', new ParseUUIDPipe({ optional: true }))
     followedById?: string,
-  ): Promise<GetPollResponseDto[]> {
+  ): Promise<any> {
     return await this.pollService.findAll({
       creatorId,
       likedById,
@@ -137,7 +137,7 @@ export class PollController {
     description: 'Internal server error, contact with backend team.',
   })
   @Get('my-polls')
-  public async findMyPolls(@Req() req: any): Promise<GetPollResponseDto[]> {
+  public async findMyPolls(@Req() req: any): Promise<any> {
     const creatorId = req.user.id;
     return await this.pollService.findAll({
       creatorId,
@@ -157,7 +157,7 @@ export class PollController {
     description: 'Internal server error, contact with backend team.',
   })
   @Get('liked-by-me')
-  public async findPollsILiked(@Req() req: any): Promise<GetPollResponseDto[]> {
+  public async findPollsILiked(@Req() req: any): Promise<any> {
     const userId = req.user.id;
     return await this.pollService.findAll({
       creatorId: null,
@@ -177,9 +177,7 @@ export class PollController {
     description: 'Internal server error, contact with backend team.',
   })
   @Get('my-followings')
-  public async findPollsOfUsersIFollow(
-    @Req() req: any,
-  ): Promise<GetPollResponseDto[]> {
+  public async findPollsOfUsersIFollow(@Req() req: any): Promise<any> {
     const userId = req.user.id;
     return await this.pollService.findAll({
       creatorId: null,
@@ -199,9 +197,7 @@ export class PollController {
     status: 500,
     description: 'Internal server error, contact with backend team.',
   })
-  public async findOne(
-    @Param('id', ParseUUIDPipe) id: string,
-  ): Promise<GetPollResponseDto> {
+  public async findOne(@Param('id', ParseUUIDPipe) id: string): Promise<any> {
     return await this.pollService.findPollById(id);
   }
 
