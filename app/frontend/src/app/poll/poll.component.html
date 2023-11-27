@@ -49,9 +49,10 @@
       </h3>
       <div style="display: flex; justify-content: space-between">
         <div>
+          <!-- The algorithm written below will be changed later  -->
           <button
-            *ngFor="let tag of tags"
-            [ngStyle]="{ 'background-color': randomColor() }"
+            *ngFor="let tag of tags; let i=index"
+            [ngStyle]="{ 'background-color': getColor(tag.name.length+tags.length)}" 
             style="
               width: auto;
               height: 25px;
@@ -60,6 +61,7 @@
               font-size: smaller;
               margin-bottom: 10px;
               margin-right: 5px;
+              border: none;
             "
             (click)="goToTag(tag.name)"
           >

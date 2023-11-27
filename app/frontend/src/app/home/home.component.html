@@ -3,7 +3,7 @@
     <app-header></app-header>
     <div class="page-layout">
       <app-side-bar></app-side-bar>
-      <div class="container" style="position: relative">
+      <div class="container" style="position: relative; padding: 40px;">
         <div style="text-align: right">
           <button
             class="button"
@@ -11,7 +11,9 @@
               width: 100px;
               display: inline-block;
               margin-right: 5px;
+              border: none;
               background-color: #63989f;
+              color: #fff;
             "
             (click)="settledPolls(false)"
           >
@@ -23,6 +25,8 @@
               width: 100px;
               display: inline-block;
               background-color: #374968;
+              border: none;
+              color: #fff;
             "
             (click)="settledPolls(true)"
           >
@@ -30,16 +34,15 @@
           </button>
         </div>
 
-        <form
-          action="/search"
-          method="GET"
-          style="margin-bottom: 15px; margin-top: 20px"
-        >
-          <input
-            id="searchInput"
-            style="border-radius: 15px; text-align: center"
-            placeholder="What are you looking for?"
-          />
+        <form action="/search" method="GET" style="margin-bottom: 15px; margin-top: 20px">
+          <div style="position: relative;">
+            <img src="assets/search-icon.png" alt="Search Icon" style="position: absolute; left: 10px; top: 50%; transform: translateY(-50%); width: 18px; height: 18px;">
+            <input
+              id="searchInput"
+              style="border-radius: 15px; text-align: left; padding-left: 30px;"
+              placeholder="What are you looking for?"
+            />
+          </div>
         </form>
 
         <div class="user-polls">

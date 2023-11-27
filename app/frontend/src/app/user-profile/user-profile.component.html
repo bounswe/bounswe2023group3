@@ -7,10 +7,7 @@
         class="container"
         style="
           position: relative;
-          padding-right: 20px;
-          padding-left: 20px;
-          padding-bottom: 30px;
-          padding-top: 20px;
+          padding: 40px;
         "
       >
         <div class="post-widget" style="display: flex; align-items: start">
@@ -31,20 +28,19 @@
             >
             <p class="user-name" style="margin-top: 2px">&#64;{{ this.username }}</p>
           </div>
-        </div>
-        <button
-          class="button"
+          <button
+          class="edit-button"
           style="
             background-color: #63989f;
-            color: #fff;
+            border: none;
             width: 100px;
-            position: absolute;
-            top: 0;
-            right: 0;
+            color: #fff;
           "
         >
           Edit Profile
         </button>
+        </div>
+        
         <div style="margin-bottom: 15px; margin-top: 10px; text-align: center">
           <p class="follow-text" style="margin-right: 100px">
             <b>52</b> followings
@@ -62,7 +58,7 @@
       </div>
       <div style="display: flex; flex-direction: column">
         <app-ranks-bar></app-ranks-bar>
-        <app-badges-bar></app-badges-bar>
+        <app-badges-bar [userId]="user_id"></app-badges-bar>
       </div>
     </div>
   </body>

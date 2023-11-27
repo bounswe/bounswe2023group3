@@ -1,21 +1,25 @@
 import 'dart:convert';
 import 'package:dio/dio.dart';
-import 'package:mobile_app/services/apiService.dart';
+import 'package:mobile_app/services/moderatorApiService.dart';
 
 class ModeratorPollDecision {
 
-  Future<Response> answerPoll(bool isApproved) async {
-    const String pollAnswerEndpoint =
-        '/moderator/pollApprove';
+  Future<Response> answerPoll(bool isApproved, String id) async {
+    String pollAnswerEndpoint =
+        '/moderator/approve/$id';
 
+
+
+    final Map<String, bool> data = {
+      'approveStatus': isApproved,
+    };
 
 
 
     try {
-      final Response response = await ApiService.dio.post(
+      final Response response = await ModeratorApiService.dio.post(
         pollAnswerEndpoint,
-        data: {'approve': isApproved,
-          },
+        data: data
       );
 
       return response;

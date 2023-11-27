@@ -15,6 +15,8 @@ import {
   OneToOne,
 } from 'typeorm';
 import { Settle } from '../enums/settle.enum';
+import { Like } from '../../like/entities/like.entity';
+import { Comment } from '../../comment/entities/comment.entity';
 
 // @Todo Some entities are not ready, therefore this is not the finalized version.
 @Entity('polls')
@@ -24,6 +26,9 @@ export class Poll {
 
   @Column({ nullable: false })
   question: string;
+
+  @Column({ nullable: true })
+  description: string;
 
   @ManyToOne(() => User, (user) => user.polls, { onDelete: 'SET NULL' }) // Establishing the many-to-one relationship
   @JoinColumn() // Specifying the foreign key column
@@ -35,7 +40,6 @@ export class Poll {
 
   @OneToMany(() => Option, (option) => option.poll, { cascade: true })
   options: Relation<Option[]>;
-
 
   @OneToOne(() => Option, { nullable: true })
   @JoinColumn()
@@ -51,20 +55,15 @@ export class Poll {
   @Column({ nullable: true })
   due_date: Date;
 
-  // @Todo Replace with like entity
-  //@Column({ nullable: true })
-  //like_list: Array<any>;
+  @OneToMany(() => Like, (like) => like.poll)
+  likes : Relation<Like[]>;
 
-  // @Todo Replace with comment entity
-  //@Column({ nullable: true })
-  //comment_list: Array<string>;
-
+  @OneToMany(() => Comment, (comment) => comment.poll)
+  comments : Relation<Comment[]>;
+  
   // @Todo Replace with vote entity
   //@Column({ nullable: true })
   //vote_list: Array<any>;
-
-  @Column({ default: 0 })
-  like_count: number;
 
   @Column({ default: 0 })
   comment_count: number;
@@ -76,7 +75,7 @@ export class Poll {
   //@Column({ nullable: true })
   //report_list: Array<any>;
 
-  @Column({ default: false })
+  @Column({ nullable: true })
   approveStatus: boolean;
 
   @Column('int', { default: Settle.ACTIVE })

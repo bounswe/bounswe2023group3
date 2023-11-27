@@ -4,7 +4,7 @@
 }
 
 #searchInput {
-  width: calc(100% - 20px);
+  width: calc(100% - 40px);
   border-radius: 15px;
   text-align: center;
   padding: 10px;

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mobile_app/services/moderatorService.dart';
+import 'package:mobile_app/view/moderatorApproval/moderatorApprovalScreen.dart';
+import 'package:mobile_app/view/moderatorApproval/pollData.dart';
 import 'package:mobile_app/view/sidebar/sidebar.dart';
 import 'package:mobile_app/view/moderatorHomePage/requestViewHome.dart';
 import 'package:mobile_app/view/constants.dart';
@@ -7,15 +9,42 @@ import 'package:mobile_app/view/constants.dart';
 class ModeratorHomePage extends StatelessWidget {
   const ModeratorHomePage({super.key});
 
-  void tapOnPoll(BuildContext context, userName, userUsername,
-      profilePictureUrl, postTitle, tags, tagColors) {
-    // Navigator.push(
-    //   context,
-    //   MaterialPageRoute(
-    //     //TODO change it to requestView
-    //     // builder: (context) => PollPage(userName: userName, userUsername: userUsername, profilePictureUrl: profilePictureUrl, postTitle: postTitle, tags: tags, tagColors: tagColors),
-    //   ),
-    // );
+  Future<void> tapOnPoll(
+      BuildContext context,
+      String pollId,
+      String pollTitle,
+      String username,
+      String userUsername,
+      String profilePictureUrl,
+      List<String> options,
+      List<String> tags,
+      List<String> imageURLs,
+      List<Color> tagColors,
+      String dueDate,
+      String creationDate) async {
+    final resultMessage = await Navigator.push(
+      context,
+      MaterialPageRoute(
+          builder: (context) => ModeratorApprovalScreen(
+                tagColors: const [Colors.pink, Colors.blue],
+                pollData: PollData(
+                    pollId: pollId,
+                    pollTitle: pollTitle,
+                    options: options,
+                    tags: tags,
+                    imageURLs: imageURLs,
+                    dueDate: dueDate,
+                    userName: username,
+                    userUsername: userUsername,
+                    profilePictureUrl: profilePictureUrl,
+                    tagColors: tagColors,
+                    creationDate: creationDate),
+              )),
+    );
+
+    ScaffoldMessenger.of(context)
+      ..removeCurrentSnackBar()
+      ..showSnackBar(SnackBar(content: Text(resultMessage)));
   }
 
   @override
@@ -26,15 +55,12 @@ class ModeratorHomePage extends StatelessWidget {
             AsyncSnapshot<List<RequestViewHome>> snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             // Show a loading indicator while the data is being fetched
-            return const CircularProgressIndicator();
+            return const Center(child: CircularProgressIndicator());
           } else if (snapshot.hasError) {
             // Show an error message if there is an error
-            print(snapshot);
-            print("ccc");
             return Text('Error: ${snapshot.error}');
           } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
             // Handle the case where no data is available
-            print("ddd");
             return const Text('No data available');
           } else {
             // Build your UI using the fetched data
@@ -70,6 +96,9 @@ class ModeratorHomePage extends StatelessWidget {
                                   tags: request.tags,
                                   tagColors: request.tagColors,
                                   dateTime: request.dateTime,
+                                  pollId: request.pollId,
+                                  options: request.options,
+                                  dueDate: request.dueDate,
                                 ),
                               ),
                               // Align the button to the right and bottom of the container
@@ -88,12 +117,17 @@ class ModeratorHomePage extends StatelessWidget {
                                       onTap: () {
                                         tapOnPoll(
                                           context,
+                                          request.pollId,
+                                          request.postTitle,
                                           request.userName,
                                           request.userUsername,
                                           request.profilePictureUrl,
-                                          request.postTitle,
+                                          request.options,
                                           request.tags,
+                                          [],
                                           request.tagColors,
+                                          request.dueDate,
+                                          request.dateTime
                                         );
                                       },
                                       child: Container(

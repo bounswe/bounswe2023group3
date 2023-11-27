@@ -19,17 +19,15 @@ export class PollComponent {
   creator!: string
 
   colors: string[] = [
-    '#da9f93',
     '#AEEEEE',
-    '#98FB98',
-    '#FFDAB9',
-    '#F08080',
-    '#E6E6FA',
-    '#FFFFE0',
-    '#98FF98',
-    '#E6E6FA',
-    '#B0E0E6',
-  ]
+    '#FFDAB9', 
+    '#E6E6FA', 
+    '#98FB98', 
+    '#FADADD', 
+    '#F08080', 
+    '#B0C4DE', 
+    '#FFB6C1'  
+];
 
   constructor(
     private http: HttpClient,
@@ -41,6 +39,7 @@ export class PollComponent {
       (response: any) => {
         this.question = response.question
         this.tags = response.tags
+
         this.options = response.options
         this.due_date = response.due_date
         this.comment_count = response.comment_count
@@ -93,8 +92,8 @@ export class PollComponent {
   navigateToPoll() {
     this.router.navigate(['/app-poll-view', this.pollId])
   }
-  randomColor(): string {
-    const index = Math.floor(Math.random() * this.colors.length)
-    return this.colors[index]
+  
+  getColor(i: number):string{
+  return this.colors[i % this.colors.length] 
   }
 }

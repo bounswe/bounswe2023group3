@@ -8,7 +8,7 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { ModeratorService } from './moderator.service';
-import { ApiBearerAuth, ApiOkResponse, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { CreateModeratorDto } from './dto/create_moderator.dto';
 import { VerifyModeratorDto } from './dto/verify_moderator.dto';
 import { ModeratorGuard } from './guards/moderator.guard';
