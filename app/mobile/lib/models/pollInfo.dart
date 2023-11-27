@@ -98,8 +98,8 @@ class PollInfo {
       // comments: (json['comments'] as List)
       //     .map((i) => CommentData.fromJson(i))
       //     .toList(),
-      commentCount: json['comment_count'] ?? 0,
-      approvedStatus: json['approved_status'] ?? false,
+      commentCount: json['commentCount'] ?? 0,
+      approvedStatus: json['approveStatus'] ?? false,
       isSettled: json['is_settled'] ?? 0,
     );
   }
