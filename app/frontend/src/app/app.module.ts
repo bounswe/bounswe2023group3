@@ -28,7 +28,8 @@ import { ModeratorRequestsComponent } from './moderator-requests/moderator-reque
 import { ModeratorSideBarComponent } from './moderator-side-bar/moderator-side-bar.component';
 import { TagPageComponent } from './tag-page/tag-page.component';
 import { ModeratorLoginComponent } from './moderator-login/moderator-login.component';
-import { ModeratorHeaderComponent } from './moderator-header/moderator-header.component'
+import { ModeratorHeaderComponent } from './moderator-header/moderator-header.component';
+import { VerificationComponent } from './verification/verification.component';
 
 @NgModule({
   declarations: [
@@ -55,6 +56,8 @@ import { ModeratorHeaderComponent } from './moderator-header/moderator-header.co
     TagPageComponent,
     ModeratorLoginComponent,
     ModeratorHeaderComponent,
+    VerificationComponent
+    
   ],
   imports: [
     BrowserModule,
@@ -63,6 +66,7 @@ import { ModeratorHeaderComponent } from './moderator-header/moderator-header.co
     ReactiveFormsModule,
     HttpClientModule,
     BrowserAnimationsModule,
+
   ],
   providers: [AuthService],
   bootstrap: [AppComponent],

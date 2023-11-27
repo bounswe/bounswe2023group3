@@ -15,6 +15,8 @@ import { ModeratorRequestsComponent } from './moderator-requests/moderator-reque
 import { TagPageComponent } from './tag-page/tag-page.component'
 import { ModeratorLoginComponent } from './moderator-login/moderator-login.component'
 import { ModeratorAuthGuard } from './moderator-authorize.guard'
+import { VerificationComponent } from './verification/verification.component'
+import { ModeratorPollReviewComponent } from './moderator-poll-review/moderator-poll-review.component'
 
 const routes: Routes = [
   { path: '', component: WelcomeComponent },
@@ -50,6 +52,16 @@ const routes: Routes = [
     path: 'app-tag-page/:tagName',
     component: TagPageComponent,
     canActivate: [AuthGuard],
+  },
+  {
+    path: 'app-verification',
+    component: VerificationComponent,
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'app-moderator-poll-review',
+    component: ModeratorPollReviewComponent,
+    canActivate: [ModeratorAuthGuard],
   },
 ]
 
