@@ -81,7 +81,7 @@ export class UserService {
       const likedUsers = await this.httpClient
         .get<any>(`${environment.apiBaseUrl}/like/${pollId}`)
         .toPromise();
-      const likedUserIds = likedUsers.map((u: User) => u.id);
+      const likedUserIds = likedUsers.map((r: any) => r.user.id);
       return likedUserIds;
     } catch (error) {
       console.log('Error fetching likes:', error);
