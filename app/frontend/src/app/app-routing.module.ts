@@ -13,10 +13,13 @@ import { PollViewComponent } from './poll-view/poll-view.component'
 import { AuthGuard } from './authorize.guard'
 import { ModeratorRequestsComponent } from './moderator-requests/moderator-requests.component'
 import { TagPageComponent } from './tag-page/tag-page.component'
+import { ModeratorLoginComponent } from './moderator-login/moderator-login.component'
+import { ModeratorAuthGuard } from './moderator-authorize.guard'
 
 const routes: Routes = [
   { path: '', component: WelcomeComponent },
-  { path: 'app-moderator-requests', component: ModeratorRequestsComponent },
+  { path: 'app-moderator-login', component: ModeratorLoginComponent},
+  { path: 'app-moderator-requests', component: ModeratorRequestsComponent, canActivate: [ModeratorAuthGuard] },
   {
     path: 'app-user-profile',
     component: UserProfileComponent,

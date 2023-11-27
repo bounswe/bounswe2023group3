@@ -31,7 +31,7 @@ body {
 }
 
 .poll-container {
-  width: 600px;
+  width: 750px;
   height: 90%;
   background-color: #9dc0c4;
   text-align: center;
@@ -40,7 +40,7 @@ body {
   padding-left: 40px;
   padding-bottom: 40px;
   border-radius: 20px;
-  margin: 0 auto;
+  
   margin-top: 20px;
 }
 

@@ -4,10 +4,12 @@
     <div class="page-layout">
       <app-side-bar></app-side-bar>
       <div class="container" style="position: relative">
+        <h2>{{ tagName }}</h2>
         <div>
           <app-poll *ngFor="let poll of polls" [pollId]="poll.id"></app-poll>
         </div>
       </div>
+      <app-tags-bar></app-tags-bar>
     </div>
   </body>
 </html>

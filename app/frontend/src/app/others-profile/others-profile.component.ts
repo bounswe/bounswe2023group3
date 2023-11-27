@@ -13,7 +13,7 @@ import { UserService } from 'src/services/user-service/user.service'
 })
 export class OthersProfileComponent implements OnInit {
   polls: any[] = []
-  user: User | undefined;
+  user!: User; //user: User | undefined;
 
   constructor(private http: HttpClient, private _userService: UserService, private route: ActivatedRoute) {}
 
