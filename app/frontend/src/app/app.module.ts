@@ -58,7 +58,7 @@ import { VerifyComponent } from './verify/verify.component'
     TagPageComponent,
     ModeratorLoginComponent,
     ModeratorHeaderComponent,
-    VerificationComponent
+    VerificationComponent,
     FaqSectionComponent,
     VerifyComponent,
   ],
