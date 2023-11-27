@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mobile_app/view/homePage/homePage.dart';
 import 'package:mobile_app/services/apiService.dart';
+import 'package:mobile_app/view/moderatorHomePage/moderatorHomePage.dart';
 import 'package:mobile_app/view/profilePage/profilePage.dart';
 import 'package:mobile_app/view/state.dart';
 
@@ -41,7 +42,7 @@ class Sidebar extends StatelessWidget {
                 Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => HomePage(),
+                    builder: (context) => ModeratorHomePage(),
                   ),
                 );
               },
