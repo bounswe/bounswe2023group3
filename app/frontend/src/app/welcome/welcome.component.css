@@ -107,13 +107,13 @@ header {
 .features-container {
   background-color: #fff;
   text-align: center;
-  margin-bottom: 20px;
+  margin-bottom: 40px;
 }
 
 .features-heading {
   color: #232f44;;
   font-size: 32px;
-  padding-top: 50px;
+  padding-top: 40px;
   padding-bottom: 30px;
 }
 
@@ -151,7 +151,7 @@ header {
 /* FAQ Styles */
 .faq-section {
   margin-top: 30px;
-  margin-bottom: 30px;
+  margin-bottom: 40px;
   padding: 40px;
   background-color: #9dc0c4;
   border-radius: 30px;
@@ -160,25 +160,10 @@ header {
 }
 
 .faq-section h2 {
-  font-size: 40;
+  text-align:center;
+  margin-bottom: 40px;
+  font-size: 22pt;
   color: #fff;
-}
-
-.faq-item {
-  margin-top: 20px;
-}
-
-.faq-item h3 {
-  font-size: 22px;
-  color: #232f44;
-  margin-bottom: 10px;
-}
-
-.faq-item p {
-  font-size: 18px;
-  color: #2e2e2e;
-
-  line-height: 1.5;
 }
 
 /* Login and Sign-Up Styles */
@@ -229,25 +214,44 @@ header {
 
 /* About the App Styles */
 .about-app {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 40px;
+}
+
+.about-app-content {
+  height: 595px;
   background-color: #fff;
   color: #202a40;
   text-align: left;
   padding: 20px;
-  width: 40%;
-  box-sizing: border-box;
+  flex: 1;
+  overflow: hidden;
 }
 
-.about-app h2 {
+.about-app-content h2 {
   font-size: 40px;
   padding: 40px;
   margin-bottom: 20px;
+  margin-top: 30px;
+  width: 400px;
 }
 
-.about-app p {
+.about-app-content p {
+  width: 400px;
   color:#4e4e4e;
   padding: 40px;
   font-size: 25px;
   line-height: 1.5;
+}
+
+.about-app-image  {
+  flex: 1;
+}
+
+.about-app-image img {
+  width: 900px;
+  height: auto;
 }
 
 /* Footer Styles */
@@ -279,6 +283,8 @@ ul li a {
   color: #fff;
 }
 
+
+
 /* Responsive Layout */
 @media (max-width: 768px) {
   header,
@@ -291,4 +297,24 @@ ul li a {
     flex-direction: column;
     align-items: center;
   }
+}
+
+
+@media screen and (max-width: 700px) {
+  .about-app {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .about-app-content,
+  .about-app-image {
+    width: 100%;
+    
+  }
+
+  .features {
+    align-items: center;
+    flex-direction: column;
+  }
+
 }

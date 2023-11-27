@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mobile_app/models/comment.dart';
 import 'package:mobile_app/services/homePageService.dart';
+import 'package:mobile_app/services/pollCommentService.dart';
 import 'package:mobile_app/view/sidebar/sidebar.dart'; // Import your custom drawer widget
 import 'package:mobile_app/view/pollViewHomePage/pollViewHomePage.dart';
 import 'package:mobile_app/view/pollView/pollView.dart';
@@ -10,6 +11,7 @@ class HomePage extends StatefulWidget {
   @override
   State<HomePage> createState() => _HomePageState();
 }
+
 class _HomePageState extends State<HomePage>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
@@ -25,25 +27,42 @@ class _HomePageState extends State<HomePage>
     _tabController.dispose();
     super.dispose();
   }
-  void tapOnPoll(BuildContext context, pollId, userName, userUsername,
-      profilePictureUrl, postTitle, tags, tagColors, voteCount, postOptions,
-      likeCount, dateTime, comments) {
+
+  void tapOnPoll(
+      BuildContext context,
+      pollId,
+      userName,
+      userUsername,
+      profilePictureUrl,
+      postTitle,
+      tags,
+      tagColors,
+      voteCount,
+      postOptions,
+      likeCount,
+      dateTime,
+      Future<List<CommentData>> comments,
+      isSettled) async {
+    var awaitedComments = await comments;
+    if (!mounted) return;
     Navigator.push(
       context,
       MaterialPageRoute(
         builder: (context) => PollPage(
-            pollId: pollId,
-            userName: userName,
-            userUsername: userUsername,
-            profilePictureUrl: profilePictureUrl,
-            postTitle: postTitle,
-            tags: tags,
-            tagColors: tagColors,
-            voteCount: voteCount,
-            postOptions: postOptions,
-            likeCount: likeCount,
-            dateTime: dateTime,
-            comments: comments),
+          pollId: pollId,
+          userName: userName,
+          userUsername: userUsername,
+          profilePictureUrl: profilePictureUrl,
+          postTitle: postTitle,
+          tags: tags,
+          tagColors: tagColors,
+          voteCount: voteCount,
+          postOptions: postOptions,
+          likeCount: likeCount,
+          dateTime: dateTime,
+          comments: awaitedComments,
+          isSettled: isSettled,
+        ),
       ),
     );
   }
@@ -62,8 +81,8 @@ class _HomePageState extends State<HomePage>
             print(snapshot);
             print("ccc");
             return Text('Error: ${snapshot.error}');
-         // } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-        // Handle the case where no data is available
+            // } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+            // Handle the case where no data is available
 
             print("ddd");
             return const Text('No data available');
@@ -77,43 +96,55 @@ class _HomePageState extends State<HomePage>
               drawer: const Sidebar(), // Use the custom drawer widget
               body: Column(
                 children: [
-                  TabBar(controller: _tabController,
+                  TabBar(
+                    controller: _tabController,
                     tabs: const [
                       Tab(text: 'Active'),
                       Tab(text: 'Settled'),
                     ],
                   ),
                   Expanded(
-                    child: TabBarView(
-                      controller: _tabController,
-                      children: [ListView.separated(
+                    child: TabBarView(controller: _tabController, children: [
+                      ListView.separated(
                         separatorBuilder: (context, index) => const SizedBox(
                             height: 20), // Add spacing between posts
                         shrinkWrap: true,
-                        itemCount: posts.where((post) => post.isSettled == 0).length,
+                        itemCount: posts
+                            .where((post) =>
+                                post.isSettled == 0 &&
+                                post.approvedStatus == true)
+                            .length,
                         itemBuilder: (context, index) {
-                          final filteredPosts = posts.where((post) => post.isSettled == 0).toList();
+                          final filteredPosts = posts
+                              .where((post) =>
+                                  post.isSettled == 0 &&
+                                  post.approvedStatus == true)
+                              .toList();
                           final post = filteredPosts[index];
                           double postHeight = calculatePostHeight(post);
                           return SizedBox(
                             child: GestureDetector(
-
-                              onTap: (){tapOnPoll(context,
-                                  post.pollId,
-                                  post.userName,
-                                  post.userUsername,
-                                  post.profilePictureUrl,
-                                  post.postTitle,
-                                  post.tags,
-                                  post.tagColors,
-                                  post.voteCount,
-                                  post.postOptions,
-                                  post.likeCount,
-                                  post.dateTime,
-                                  post.comments);},
+                              onTap: () {
+                                tapOnPoll(
+                                    context,
+                                    post.pollId,
+                                    post.userName,
+                                    post.userUsername,
+                                    post.profilePictureUrl,
+                                    post.postTitle,
+                                    post.tags,
+                                    post.tagColors,
+                                    post.voteCount,
+                                    post.postOptions,
+                                    post.likeCount,
+                                    post.dateTime,
+                                    PollCommentService.getComments(post.pollId),
+                                    post.isSettled);
+                              },
                               child: SizedBox(
                                 height: postHeight,
-                                child: PollViewHomePage(pollId: post.pollId,
+                                child: PollViewHomePage(
+                                  pollId: post.pollId,
                                   userName: post.userName,
                                   userUsername: post.userUsername,
                                   profilePictureUrl: post.profilePictureUrl,
@@ -126,25 +157,36 @@ class _HomePageState extends State<HomePage>
                                   dateTime: post.dateTime,
                                   comments: post.comments,
                                   isSettled: post.isSettled,
+                                  approvedStatus: post.approvedStatus,
                                 ),
                               ),
                             ),
                           );
                         },
                       ),
-                        ListView.separated(
-                          separatorBuilder: (context, index) => const SizedBox(
-                              height: 20), // Add spacing between posts
-                          shrinkWrap: true,
-                          itemCount: posts.where((post) => post.isSettled == 1).length,
-                          itemBuilder: (context, index) {
-                            final filteredPosts = posts.where((post) => post.isSettled == 1).toList();
-                            final post = filteredPosts[index];
-                            double postHeight = calculatePostHeight(post);
-                            return SizedBox(
-                              child: GestureDetector(
-
-                                onTap: (){tapOnPoll(context,
+                      ListView.separated(
+                        separatorBuilder: (context, index) => const SizedBox(
+                            height: 20), // Add spacing between posts
+                        shrinkWrap: true,
+                        itemCount: posts
+                            .where((post) =>
+                                post.isSettled == 1 &&
+                                post.approvedStatus == true)
+                            .length,
+                        itemBuilder: (context, index) {
+                          final filteredPosts = posts
+                              .where((post) =>
+                                  post.isSettled == 1 &&
+                                  post.approvedStatus == true)
+                              .toList();
+                          final post = filteredPosts[index];
+                          double postHeight = calculatePostHeight(post);
+                          return SizedBox(
+                            child: GestureDetector(
+                              onTap: () {
+                                tapOnPoll(
+                                    context,
+                                    post.pollId,
                                     post.userName,
                                     post.userUsername,
                                     post.profilePictureUrl,
@@ -155,29 +197,33 @@ class _HomePageState extends State<HomePage>
                                     post.postOptions,
                                     post.likeCount,
                                     post.dateTime,
-                                    post.comments);},
-                                child: SizedBox(
-                                  height: postHeight,
-                                  child: PollViewHomePage(pollId: post.pollId,
-                                    userName: post.userName,
-                                    userUsername: post.userUsername,
-                                    profilePictureUrl: post.profilePictureUrl,
-                                    postTitle: post.postTitle,
-                                    tags: post.tags,
-                                    tagColors: post.tagColors,
-                                    voteCount: post.voteCount,
-                                    postOptions: post.postOptions,
-                                    likeCount: post.likeCount,
-                                    dateTime: post.dateTime,
-                                    comments: post.comments,
-                                    isSettled: post.isSettled,
-                                  ),
+                                    PollCommentService.getComments(post.pollId),
+                                    post.isSettled);
+                              },
+                              child: SizedBox(
+                                height: postHeight,
+                                child: PollViewHomePage(
+                                  pollId: post.pollId,
+                                  userName: post.userName,
+                                  userUsername: post.userUsername,
+                                  profilePictureUrl: post.profilePictureUrl,
+                                  postTitle: post.postTitle,
+                                  tags: post.tags,
+                                  tagColors: post.tagColors,
+                                  voteCount: post.voteCount,
+                                  postOptions: post.postOptions,
+                                  likeCount: post.likeCount,
+                                  dateTime: post.dateTime,
+                                  comments: post.comments,
+                                  isSettled: post.isSettled,
+                                  approvedStatus: post.approvedStatus,
                                 ),
                               ),
-                            );
-                          },
-                        )]
-                    ),
+                            ),
+                          );
+                        },
+                      )
+                    ]),
                   ),
                 ],
               ),
@@ -185,7 +231,6 @@ class _HomePageState extends State<HomePage>
           }
         });
   }
-
 
   double calculatePostHeight(PollViewHomePage post) {
     if (post == null) {

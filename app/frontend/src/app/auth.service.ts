@@ -36,8 +36,8 @@ export class AuthService {
         localStorage.setItem('authToken', response.access_token)
         localStorage.setItem('moderatorloggedIn', 'true')
         localStorage.setItem('loggedIn', 'false')
-        localStorage.setItem('user_id', response.user.id)
-        localStorage.setItem('username', response.user.username)
+        localStorage.setItem('user_id', response.moderator.id)
+        localStorage.setItem('username', response.moderator.username)
       }),
       catchError(this.handleError('Login', {})),
     )
@@ -47,6 +47,19 @@ export class AuthService {
   getToken(): string | null {
     return localStorage.getItem('authToken')
   }
+
+  getHeaders(): any {
+    if(this.getToken()){
+      const headers = new HttpHeaders({
+        Authorization: `Bearer ${this.getToken()}`
+      });
+      const options = { headers };
+      return options;
+    }
+  }
+
+// Assuming `getToken()` is a method in your class that returns the authentication token.
+
 
   // User registration
   register(email: string, password: string, username: string): Observable<any> {

@@ -1,18 +1,48 @@
 import 'package:flutter/material.dart';
+import 'package:mobile_app/ScreenArguments.dart';
 
-class WelcomeScreen extends StatelessWidget {
+class WelcomeScreen extends StatefulWidget {
 
 
   const WelcomeScreen({super.key});
 
+  @override
+  State<WelcomeScreen> createState() => _WelcomeScreenState();
+}
 
+class _WelcomeScreenState extends State<WelcomeScreen> {
 
-
+  final GlobalKey<ScaffoldState> scaffoldKey = new GlobalKey<ScaffoldState>();
 
 
   @override
+  void initState() {
+    super.initState();
+
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
+      showSnackBarIfNeeded();
+    });
+  }
+
+  void showSnackBarIfNeeded(){
+    final argsTemp = ModalRoute.of(context)?.settings.arguments;
+
+    if(argsTemp!=null){
+      final args = argsTemp as ScreenArguments;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(args.message),
+          duration: Duration(seconds: 3),
+          backgroundColor: Color(0xFF61EE64),
+        ),
+      );
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final GlobalKey<ScaffoldState> scaffoldKey = new GlobalKey<ScaffoldState>();
+
+
 
     return Scaffold(
       key: scaffoldKey,
@@ -23,10 +53,17 @@ class WelcomeScreen extends StatelessWidget {
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
+
           children: [
-            const SizedBox(height: 80),
+            const SizedBox(height: 30),
+            Image.asset(
+              "assets/app-logo-white.png",
+              scale: 3.5,
+              color: Colors.black,
+
+            ),
             Padding(
-              padding: const EdgeInsets.all(30.0),
+              padding: const EdgeInsets.fromLTRB(30.0,40.0,30.0,0),
               child: const Text(
                 "Poll'up",
                 style: TextStyle(fontSize: 50),
