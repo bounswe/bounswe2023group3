@@ -39,7 +39,7 @@ export class UserService {
     try {
       const user = await this.getUser(username);
       console.log(user);
-      const followeeIds = user.followees?.map((followee: User) => followee.id);
+      const followeeIds = user.followings?.map((followee: User) => followee.id);
       return followeeIds;
     }
     catch(error) {
@@ -48,14 +48,15 @@ export class UserService {
     }
   }
   follow(user_id: string): Promise<any>{
-    console.log(this.options);
+    const payload = {followerUserID: user_id};
     return this.httpClient
-      .post<any>(this.makeUrl("follow"),user_id, this.options)
+      .post<any>(this.makeUrl("follow"),payload, this.options)
       .toPromise();
   }
   unfollow(user_id: string): Promise<any>{
+    const payload = {followerUserID: user_id};
     return this.httpClient
-      .post<any>(this.makeUrl("unfollow"),user_id, this.options)
+      .post<any>(this.makeUrl("unfollow"),payload, this.options)
       .toPromise();
   }
 }

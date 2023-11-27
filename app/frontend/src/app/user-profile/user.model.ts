@@ -9,5 +9,5 @@ export interface User {
   reset_password_token: number
   badges: string[]
   followers: User[]
-  followees: User[]
+  followings: User[]
 }
