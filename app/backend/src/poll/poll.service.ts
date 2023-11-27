@@ -154,8 +154,4 @@ export class PollService {
   public async removeById(id: string): Promise<void> {
     await this.pollRepository.delete(id);
   }
-
-  public async increaseLikeByOne(pollID: string): Promise<void> {
-    return await this.pollRepository.increaseLikeByOne(pollID);
-  }
 }
