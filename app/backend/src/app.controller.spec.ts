@@ -145,3 +145,67 @@ describe('Poll tests', () => {
     await app.close();
   });
 });
+
+describe('Moderator tests', () => {
+  let app;
+
+  beforeAll(async () => {
+    const moduleFixture: TestingModule = await Test.createTestingModule({
+      imports: [AppModule],
+    }).compile();
+
+    app = moduleFixture.createNestApplication();
+    await app.init();
+  });
+
+  it('Check get all moderators response', async () => {
+    await request(app.getHttpServer()).get('/moderator').expect(200);
+  });
+
+  it('Check get moderator with specific ID', async () => {
+    await request(app.getHttpServer())
+      .get('/moderator/8241ecba-e614-40f4-a575-8bf2b543814a')
+      .expect(200);
+  });
+
+  it('Check get moderatorss types', async () => {
+    const response = await request(app.getHttpServer()).get('/user');
+
+    // Assert that the response body is an array
+    expect(response.body).to.be.an('array');
+
+    // Assert that each item in the array is an object of a certain type
+    response.body.forEach((item: any) => {
+      expect(item).to.be.an('object');
+
+      expect(item).to.have.property('email');
+      expect(item).to.have.property('username');
+      expect(item).to.have.property('id');
+
+      expect(item.email).to.be.a('string');
+      expect(item.username).to.be.a('string');
+      expect(item.id).to.be.a('string');
+    });
+  });
+
+  it('Check get moderator response', async () => {
+    const response: any = await request(app.getHttpServer()).get(
+      '/user/8241ecba-e614-40f4-a575-8bf2b543814a',
+    );
+    // Assert that each item in the array is an object of a certain type
+    expect(response.body).to.be.an('object');
+    expect(response.body).to.exist;
+
+    expect(response.body).to.have.property('id');
+    expect(response.body).to.have.property('email');
+    expect(response.body).to.have.property('username');
+
+    expect(response.body.email).to.be.a('string');
+    expect(response.body.username).to.be.a('string');
+    expect(response.body.id).to.be.a('string');
+
+    afterAll(async () => {
+      await app.close();
+    });
+  });
+});
