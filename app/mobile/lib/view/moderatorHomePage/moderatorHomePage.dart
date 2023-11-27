@@ -65,7 +65,9 @@ class _ModeratorHomePageState extends State<ModeratorHomePage>
                     creationDate: creationDate),
               )),
     );
-
+    setState(() {
+      // Refresh the page
+    });
     ScaffoldMessenger.of(context)
       ..removeCurrentSnackBar()
       ..showSnackBar(SnackBar(content: Text(resultMessage), duration: const Duration(seconds: 3),));
@@ -127,13 +129,19 @@ class _ModeratorHomePageState extends State<ModeratorHomePage>
         DioException e = snapshot.error as DioException;
         if (e.response?.statusMessage != null) {
           String r = e.response!.statusMessage!;
-          return CustomErrorWidget(errorMessage: r);
+          return CustomErrorWidget(errorMessage: r, onRetryPressed: () {
+            setState(() {});
+          });
         }
       }
-      return const CustomErrorWidget(errorMessage: 'Something went wrong');
+      return CustomErrorWidget(errorMessage: 'Something went wrong', onRetryPressed: () {
+        setState(() {});
+      });
     } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
       // Handle the case where no data is available
-      return const CustomErrorWidget(errorMessage: 'No data available');
+      return CustomErrorWidget(errorMessage: 'No data available', onRetryPressed: () {
+        setState(() {});
+      });
     } else {
       // Build your UI using the fetched data
       List<RequestViewHome> requests = snapshot.data!;

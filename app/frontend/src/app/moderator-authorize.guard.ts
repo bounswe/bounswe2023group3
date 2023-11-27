@@ -17,6 +17,7 @@ export class ModeratorAuthGuard implements CanActivate {
     if (localStorage.getItem('moderatorloggedIn') == 'true') {
       return true // Allow access to the route
     } else {
+      this.router.navigate(['/app-moderator-login']);
       return false
     }
   }

@@ -38,6 +38,7 @@ class UserInformationWidget extends StatelessWidget {
       ],
     ),);
     if (pollId != ""){
+      rowChildren.add(const SizedBox(width: 180.0,));
       rowChildren.add(ThreeDotsOptions(onSelected: (value) {
             // Handle the selected option here
             switch(value){

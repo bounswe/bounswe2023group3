@@ -27,7 +27,7 @@ class _HomePageState extends State<HomePage>
   }
   void tapOnPoll(BuildContext context, pollId, userName, userUsername,
       profilePictureUrl, postTitle, tags, tagColors, voteCount, postOptions,
-      likeCount, dateTime, comments) {
+      likeCount, dateTime, comments, isSettled) {
     Navigator.push(
       context,
       MaterialPageRoute(
@@ -43,7 +43,8 @@ class _HomePageState extends State<HomePage>
             postOptions: postOptions,
             likeCount: likeCount,
             dateTime: dateTime,
-            comments: comments),
+            comments: comments,
+            isSettled: isSettled,),
       ),
     );
   }
@@ -110,7 +111,8 @@ class _HomePageState extends State<HomePage>
                                   post.postOptions,
                                   post.likeCount,
                                   post.dateTime,
-                                  post.comments);},
+                                  post.comments,
+                                  post.isSettled);},
                               child: SizedBox(
                                 height: postHeight,
                                 child: PollViewHomePage(pollId: post.pollId,
@@ -157,7 +159,8 @@ class _HomePageState extends State<HomePage>
                                     post.postOptions,
                                     post.likeCount,
                                     post.dateTime,
-                                    post.comments);},
+                                    post.comments,
+                                    post.isSettled);},
                                 child: SizedBox(
                                   height: postHeight,
                                   child: PollViewHomePage(pollId: post.pollId,

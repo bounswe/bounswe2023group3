@@ -36,8 +36,8 @@ export class AuthService {
         localStorage.setItem('authToken', response.access_token)
         localStorage.setItem('moderatorloggedIn', 'true')
         localStorage.setItem('loggedIn', 'false')
-        localStorage.setItem('user_id', response.user.id)
-        localStorage.setItem('username', response.user.username)
+        localStorage.setItem('user_id', response.moderator.id)
+        localStorage.setItem('username', response.moderator.username)
       }),
       catchError(this.handleError('Login', {})),
     )

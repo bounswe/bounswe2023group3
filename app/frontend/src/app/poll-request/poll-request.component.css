@@ -2,7 +2,10 @@
   flex: 1;
   align-items: center;
   background-color: #9dc0c4;
-  padding: 50px;
+  padding-top: 30px;
+  padding-bottom: 30px;
+  padding-left: 50px;
+  padding-right: 50px;
   border-radius: 20px;
   width: 100%;
 }
@@ -13,7 +16,7 @@
   margin-top: 5px;
   margin-bottom: 20px;
   margin-right: 10px;
-  background-color: #587283;
+  background-color: #232F44;
   color: #fff;
   border-radius: 25px;
   border: none;
@@ -47,7 +50,7 @@ body {
   padding: 7px;
   margin-bottom: 10px;
   border: 1px solid #ccc;
-  border-radius: 5px;
+  border-radius: 16px;
   text-align: left;
 }
 
