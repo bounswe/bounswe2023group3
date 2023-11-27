@@ -74,6 +74,35 @@ export class OthersProfileComponent implements OnInit {
       this.isFollowing = !this.isFollowing; //change the follow status
     }
   }
+createdPolls(){
+    this.http.get('http://34.105.66.254:1923/poll/').subscribe(
+      (response: any) => {
+
+        this.polls = []
+        for (const r of response) { 
+              if(r.creator.id == this.user.id){
+                this.polls.push(r); 
+              }
+            }
+          
+      },
+      (error) => {
+        console.error('Error fetching polls:', error)
+      },
+    )
+    
+  }
+
+  likedPolls(){
+    this.http.get('http://34.105.66.254:1923/poll/?likedById=' + this.user.id).subscribe(
+      (response: any) => {
+        this.polls = response
+      },
+      (error) => {
+        console.error('Error fetching polls:', error)
+      },
+    )
+  }
 
   
 }

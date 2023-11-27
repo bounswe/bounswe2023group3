@@ -27,7 +27,7 @@ class ModeratorApprovalScreen extends StatelessWidget {
     try {
       Response response = await moderatorPollDecision.answerPoll(isApproved, id);
 
-      if (response.statusCode == 200) {
+      if (response.statusCode == 201) {
 
         if (!context.mounted) return;
         Navigator.pop(context, isApproved ? "Poll is approved successfully" :"Poll is rejected successfully.");

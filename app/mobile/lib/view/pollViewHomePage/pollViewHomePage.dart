@@ -22,6 +22,7 @@ class PollViewHomePage extends StatefulWidget {
   final String dateTime;
   final List<CommentData> comments;
   final int isSettled;
+  final bool? approvedStatus;
 
   const PollViewHomePage({
     super.key,
@@ -38,6 +39,7 @@ class PollViewHomePage extends StatefulWidget {
     required this.dateTime,
     required this.comments,
     required this.isSettled,
+    required this.approvedStatus,
   });
   _PollViewHomePageState createState() => _PollViewHomePageState();
 }
@@ -68,7 +70,7 @@ class _PollViewHomePageState extends State<PollViewHomePage> {
             userName: widget.userName,
             userUsername: widget.userUsername,
             profilePictureUrl: widget.profilePictureUrl,
-            pollId: widget.pollId,
+            pollId: widget.isSettled == 0 ? widget.pollId : "",
           ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16.0),

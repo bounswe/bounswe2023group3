@@ -1,7 +1,9 @@
 import 'dart:ui';
 
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:mobile_app/models/comment.dart';
 import 'package:mobile_app/services/apiService.dart';
 
 import '../view/pollViewHomePage/pollViewHomePage.dart';
@@ -36,6 +38,7 @@ class HomePageService {
         for (var option in optionsJson) {
           optionsList.add(option['answer']);
         }
+
         print(post);
         posts.add(PollViewHomePage(
           pollId: post['id'],
@@ -50,7 +53,9 @@ class HomePageService {
           likeCount: post['likeCount'],
           comments: const [],
           dateTime: post['creation_date'],
-          isSettled: post['is_settled'],// You might want to format the date
+          isSettled: post['is_settled'],
+          approvedStatus:
+              post['approveStatus'], // You might want to format the date
         ));
       }
       print(posts);

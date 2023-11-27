@@ -36,8 +36,11 @@ export class LoginComponent {
         },
         (error) => {
           // Registration failed, handle the error as needed
-          console.error('Login error:', error)
           this.errorMessage = 'Error during login. Please try again later.'
+          window.alert(this.errorMessage);
+          console.error('Login error:', error)
+          window.location.reload()
+
         },
       )
   }

@@ -225,7 +225,8 @@ class _ProfilePageState extends State<ProfilePage> {
                     dateTime: post.dueDate.toString(),
                     // TODO buraya commentCount verilecek
                     comments: [],
-                isSettled: post.isSettled,),
+                isSettled: post.isSettled,
+                approvedStatus: post.approvedStatus,),
               ),
             ),
           );
@@ -256,7 +257,9 @@ class _ProfilePageState extends State<ProfilePage> {
             postOptions: poll.options,
             likeCount: poll.likeCount,
             dateTime: poll.dueDate.toString(),
-            comments: comments),
+            comments: comments,
+          isSettled: poll.isSettled
+        ),
       ),
     );
   }

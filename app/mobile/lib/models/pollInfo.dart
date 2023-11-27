@@ -92,14 +92,14 @@ class PollInfo {
       options: options.map((e) => e['answer'] as String).toList(),
       optionIds: options.map((e) => e['id'] as String).toList(),
 
-      likeCount: json['like_count'] ?? 0,
+      likeCount: json['likeCount'] ?? 0,
       dueDate: DateTime.parse(json['due_date']),
       creationDate: DateTime.parse(json['creation_date']),
       // comments: (json['comments'] as List)
       //     .map((i) => CommentData.fromJson(i))
       //     .toList(),
-      commentCount: json['comment_count'] ?? 0,
-      approvedStatus: json['approved_status'] ?? false,
+      commentCount: json['commentCount'] ?? 0,
+      approvedStatus: json['approveStatus'] ?? false,
       isSettled: json['is_settled'] ?? 0,
     );
   }

@@ -18,7 +18,7 @@ export class PollRequestComponent implements OnInit {
       question: ['', Validators.required],
       tags: this.fb.array([this.fb.control('')]),
       options: this.fb.array([this.fb.control('')]),
-      due_date: ['2023-05-19T15:23:46.789Z', Validators.required],
+      due_date: ['', Validators.required],
     })
   }
 
@@ -53,8 +53,10 @@ onSubmit() {
     const options = { headers };
     console.log(formValue);
 
-    if (formValue.tags.length === 0 || formValue.options.length === 0) {
-      console.error('Error creating poll: Tags or options are empty');
+    if (formValue.tags.length === 0 || formValue.options.length === 0 ||
+      formValue.question === '' || formValue.due_date === '') {
+      window.alert('Error creating poll: Some fields are empty');
+      console.error('Error creating poll: Some fields empty');
       return;
     }
 
@@ -66,6 +68,10 @@ onSubmit() {
           window.location.reload();
         },
         (error) => {
+          if (error.status === 401) {
+            window.alert('Error: Unauthorized access. Please verify account.');
+            window.location.reload();
+          }
           console.error('Error creating poll', error);
         }
       );
