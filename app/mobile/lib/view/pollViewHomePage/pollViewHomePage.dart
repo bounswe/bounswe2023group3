@@ -21,6 +21,7 @@ class PollViewHomePage extends StatefulWidget {
   final int likeCount;
   final String dateTime;
   final List<CommentData> comments;
+  final int isSettled;
 
   const PollViewHomePage({
     super.key,
@@ -36,6 +37,7 @@ class PollViewHomePage extends StatefulWidget {
     required this.likeCount,
     required this.dateTime,
     required this.comments,
+    required this.isSettled,
   });
   _PollViewHomePageState createState() => _PollViewHomePageState();
 }
@@ -79,7 +81,7 @@ class _PollViewHomePageState extends State<PollViewHomePage> {
           TagListWidget(tags: widget.tags, tagColors: widget.tagColors),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16.0),
-            child: Text('Vote Count: $widget.voteCount',
+            child: Text('Vote Count: ${widget.voteCount}',
                 style: const TextStyle(fontSize: 16.0)),
           ),
           for (String option in widget.postOptions)
