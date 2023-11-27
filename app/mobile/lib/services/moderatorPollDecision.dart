@@ -6,16 +6,20 @@ class ModeratorPollDecision {
 
   Future<Response> answerPoll(bool isApproved, String id) async {
     String pollAnswerEndpoint =
-        '/moderator/pollApprove/$id';
+        '/moderator/approve/$id';
 
+
+
+    final Map<String, bool> data = {
+      'approveStatus': isApproved,
+    };
 
 
 
     try {
       final Response response = await ApiService.dio.post(
         pollAnswerEndpoint,
-        data: {'approveStatus': isApproved,
-          },
+        data: data
       );
 
       return response;

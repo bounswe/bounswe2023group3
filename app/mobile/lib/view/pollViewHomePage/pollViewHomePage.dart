@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mobile_app/models/comment.dart';
 import 'package:mobile_app/view/constants.dart';
 import 'package:mobile_app/view/pollView/commentWidget.dart';
 import 'package:mobile_app/view/pollView/tagWidget.dart';
@@ -82,8 +83,7 @@ class _PollViewHomePageState extends State<PollViewHomePage> {
           ),
           for (String option in widget.postOptions)
             PostOptionWidget(
-                optionText: option,
-                onPressed: () => handleOptionPress(option)),
+                optionText: option, onPressed: () => handleOptionPress(option)),
           Padding(
             padding: const EdgeInsets.all(16.0),
             child: ElevatedButton.icon(
@@ -108,7 +108,6 @@ class _PollViewHomePageState extends State<PollViewHomePage> {
     );
   }
 
-
   void handleOptionPress(String option) {
     // Handle option press based on the selected option
     print("pressed $option");
@@ -120,7 +119,6 @@ class _PollViewHomePageState extends State<PollViewHomePage> {
     //print("pressed like");
   //}
 }
-
 
 class LikeCountWidget extends StatelessWidget {
   final int likeCount;

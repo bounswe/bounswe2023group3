@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mobile_app/view/homePage/homePage.dart';
 import 'package:mobile_app/services/apiService.dart';
+import 'package:mobile_app/view/profilePage/profilePage.dart';
 import 'package:mobile_app/view/state.dart';
 
 import '../constants.dart';
@@ -80,7 +81,8 @@ class Sidebar extends StatelessWidget {
                 Navigator.pushNamedAndRemoveUntil(
                   context,
                   '/welcome',
-                      (Route<dynamic> route) => false, // This condition ensures removing all previous routes
+                  (Route<dynamic> route) =>
+                      false, // This condition ensures removing all previous routes
                 );
               },
             ),
@@ -115,7 +117,19 @@ class Sidebar extends StatelessWidget {
             leading: const Icon(Icons.person),
             title: const Text('Profile'),
             onTap: () {
-              // Navigate to the settings page or perform other actions
+              // pass the actual parameter
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (context) =>
+                      // burasi kendi profili.
+                      // denemek icin baskasininkini gostertcem.
+                      // ~faruk
+                      // const ProfilePage(
+                      // userId: '06aa8e23-8349-4352-ac54-2637b9c13a3f'),
+                      ProfilePage(userId: AppState.loggedInUserId),
+                ),
+              );
             },
           ),
           ListTile(
@@ -161,10 +175,7 @@ class Sidebar extends StatelessWidget {
             leading: const Icon(Icons.add),
             title: const Text('Create a poll request'),
             onTap: () {
-                Navigator.pushNamed(
-                  context,
-                  '/pollreq'
-                );
+              Navigator.pushNamed(context, '/pollreq');
               // Navigate to the settings page or perform other actions
             },
           ),
@@ -176,7 +187,8 @@ class Sidebar extends StatelessWidget {
               Navigator.pushNamedAndRemoveUntil(
                 context,
                 '/welcome',
-                    (Route<dynamic> route) => false, // This condition ensures removing all previous routes
+                (Route<dynamic> route) =>
+                    false, // This condition ensures removing all previous routes
               );
             },
           ),

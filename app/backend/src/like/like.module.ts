@@ -10,20 +10,22 @@ import { Tag } from '../tag/entities/tag.entity';
 import { User } from '../user/entities/user.entity';
 import { Badge } from '../badge/entities/badge.entity';
 import { Option } from '../option/entities/option.entity';
-import { JwtModule } from '@nestjs/jwt';
 import { UserService } from '../user/user.service';
 import { BadgeService } from '../badge/badge.service';
+import { Comment } from '../comment/entities/comment.entity';
+import { PollModule } from '../poll/poll.module';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([Like,Poll, Tag, User, Badge, Option]),
-    JwtModule.register({
-      global: true,
-      secret: 'very-secret-key',
-      signOptions: { expiresIn: '10m' },
-    }),
+    TypeOrmModule.forFeature([Like, Poll, Tag, User, Badge, Option]),
   ],
   controllers: [LikeController],
-  providers: [LikeService, PollService, PollRepository,UserService,BadgeService],
+  providers: [
+    LikeService,
+    PollService,
+    PollRepository,
+    UserService,
+    BadgeService,
+  ],
 })
 export class LikeModule {}

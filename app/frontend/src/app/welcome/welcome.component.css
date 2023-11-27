@@ -31,19 +31,21 @@ header {
   text-align: center;
   padding: 10px 0;
   display: flex;
-  justify-content: space-between;
+  justify-content: left;
   align-items: center;
   padding: 20px 30px;
 }
 
 .logo {
   font-size: 24px;
+  cursor: pointer;
 }
 
 .header-links {
   display: flex;
   align-items: center;
   gap: 30px;
+  margin-left: auto;
 }
 
 .header-links a {
@@ -63,6 +65,21 @@ header {
 }
 
 .download-button:hover {
+  background-color: #30568f;
+}
+
+.moderator-button {
+  background-color: #9dc0c4;
+  color: #202a40;
+  font-size: medium;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.moderator-button:hover {
   background-color: #30568f;
 }
 
@@ -87,12 +104,25 @@ header {
 }
 
 /* App Features Styles */
+.features-container {
+  background-color: #fff;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.features-heading {
+  color: #232f44;;
+  font-size: 32px;
+  padding-top: 50px;
+  padding-bottom: 30px;
+}
+
 .features {
   background-color: #fff;
   display: flex;
   justify-content: space-around;
-  padding-top: 50px;
-  padding-bottom: 50px;
+  padding-top: 60px;
+  padding-bottom: 60px;
 }
 
 .feature {
@@ -110,7 +140,7 @@ header {
 .feature h3 {
   margin: 10px 0;
   font-size: 20px;
-  color: #232f44;
+  color:#232f44;
 }
 
 .feature p {
@@ -214,6 +244,7 @@ header {
 }
 
 .about-app p {
+  color:#4e4e4e;
   padding: 40px;
   font-size: 25px;
   line-height: 1.5;

@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsArray, IsNotEmpty, IsString } from 'class-validator';
+import { IsArray, IsNotEmpty, IsOptional, IsString } from 'class-validator';
 
 export class CreatePollDto {
   @ApiProperty({
@@ -9,6 +9,13 @@ export class CreatePollDto {
   @IsString()
   @IsNotEmpty()
   question: string;
+
+  @ApiProperty({
+    example: 'Some description',
+  })
+  @IsString()
+  @IsOptional()
+  description: string;
 
   @ApiProperty({
     example: ['soccer', 'champions league'],

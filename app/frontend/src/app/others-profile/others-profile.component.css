@@ -28,12 +28,12 @@
   flex-direction: column;
 }
 
-.button {
-  width: 120px;
+.follow-button {
+  width: 100px;
+  padding: 8px;
   margin-top: 10px;
   margin-right: 10px;
-  position: absolute;
-  top: 0;
-  right: 0;
-  background-color: rgb(69, 69, 237);
+  cursor: pointer;
+  border-radius: 15px;
+  margin-left: auto;
 }

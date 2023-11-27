@@ -6,10 +6,7 @@ import 'package:mobile_app/services/apiService.dart';
 
 import '../view/pollViewHomePage/pollViewHomePage.dart';
 
-
 class HomePageService {
-
-
   static Future<List<PollViewHomePage>> getPollRequests() async {
     const String getPollsEndpoint = '/poll';
     print("bbb");
@@ -30,7 +27,8 @@ class HomePageService {
 
         for (var tag in tagsJson) {
           tagsList.add(tag['name']);
-          tagColorsList.add(Colors.blue); // You might want to generate colors dynamically
+          tagColorsList.add(
+              Colors.blue); // You might want to generate colors dynamically
         }
 
         List<String> optionsList = [];
@@ -59,6 +57,5 @@ class HomePageService {
     } catch (e) {
       rethrow;
     }
-
   }
 }

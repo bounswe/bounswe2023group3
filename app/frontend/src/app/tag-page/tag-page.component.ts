@@ -11,13 +11,14 @@ import { switchMap } from 'rxjs/operators'
 })
 export class TagPageComponent {
   polls!: any[]
+  tagName: string = '';
 
   constructor(private http: HttpClient,private route: ActivatedRoute,) {
   }
 
   ngOnInit() {
     this.route.params.subscribe((params) => {
-      const tagName = params['tagName'];
+      this.tagName = params['tagName'];
     
       this.http.get(`http://34.105.66.254:1923/poll`).subscribe(
         (pollsResponse: any) => {
@@ -25,7 +26,7 @@ export class TagPageComponent {
           const tagName = this.route.snapshot.params['tagName']; 
           for (const r of pollsResponse) {
             for (const t of r.tags) {
-              if (t.name === tagName) {
+              if (t.name === this.tagName) {
                 this.polls.push(r);
               }
             }

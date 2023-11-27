@@ -6,15 +6,13 @@ import 'readOnlyTextField.dart';
 import 'package:dio/dio.dart';
 import 'package:mobile_app/view/constants.dart';
 
-class AlwaysDisabledFocusNode extends FocusNode {
-  @override
-  bool get hasFocus => false;
-}
 
-class ModeratorApprovalScreen extends StatefulWidget {
 
+
+class ModeratorApprovalScreen extends StatelessWidget {
   final List<Color> tagColors;
   final PollData pollData;
+
   const ModeratorApprovalScreen({
     super.key,
     required this.tagColors,
@@ -22,40 +20,30 @@ class ModeratorApprovalScreen extends StatefulWidget {
 
   });
 
-  @override
-  State<ModeratorApprovalScreen> createState() => _ModeratorApprovalScreenState();
-}
-
-class _ModeratorApprovalScreenState extends State<ModeratorApprovalScreen> {
-
-
-
-  void answerPoll(bool isApproved, String id) async{
+  void answerPoll(BuildContext context, bool isApproved, String id) async{
     // Perform email verification and navigate to the next screen if successful
     ModeratorPollDecision moderatorPollDecision = ModeratorPollDecision();
 
     try {
       Response response = await moderatorPollDecision.answerPoll(isApproved, id);
-      String message = response.statusMessage ?? "";
+
       if (response.statusCode == 200) {
+
         if (!context.mounted) return;
-        if(message != ""){
-          showErrorMessage(context, message); //approve or reject
-        }
-        Navigator.pop(context);
+        Navigator.pop(context, isApproved ? "Poll is approved successfully" :"Poll is rejected successfully.");
       }
 
-
-      else{
-        if (!context.mounted) return;
+      else {
+        showMessageSnackBar(context, "There is a problem about the existing of poll or the system.");
       }
+
     }
     catch (e) {
-      showErrorMessage(context, "Catch block is executed.");
+      showMessageSnackBar(context, "Catch block is executed.");
     }
   }
 
-  void showErrorMessage(BuildContext context, String message) {
+  void showMessageSnackBar(BuildContext context, String message) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(message),
@@ -79,23 +67,16 @@ class _ModeratorApprovalScreenState extends State<ModeratorApprovalScreen> {
             const SectionHeader(headerText: "Title"),
             const SizedBox(height: 4),
             ReadOnlyTextField(
-              text: widget.pollData.pollTitle,
+              text: pollData.pollTitle,
             ),
 
-            // poll description
-            const SizedBox(height: 16),
-            const SectionHeader(headerText: "Description"),
-            const SizedBox(height: 4),
-            ReadOnlyTextField(
-              text: widget.pollData.pollDescription,
-            ),
 
             // added tags
             const SizedBox(height: 16),
             const SectionHeader(headerText: "Tags"),
             Wrap(
               spacing: 8,
-              children: widget.pollData.tags.map((tag) {
+              children: pollData.tags.map((tag) {
                 return Chip(
                   backgroundColor: pink,
                   label: Text(tag),
@@ -103,56 +84,15 @@ class _ModeratorApprovalScreenState extends State<ModeratorApprovalScreen> {
               }).toList(),
             ),
 
-            /*// new tag input
-            Container(
-              decoration: BoxDecoration(
-                color: whitish,
-                border: Border.all(color: navy),
-                borderRadius: BorderRadius.circular(4),
-              ),
-              child: TypeAheadField(
-                textFieldConfiguration: TextFieldConfiguration(
-                  controller: _pollTagController,
-                  focusNode: _pollTagFocus,
-                  decoration: const InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: 'Enter tag',
-                  ),
-                  onSubmitted: (_) {
-                    if (_pollTagController.text.isEmpty) {
-                      FocusScope.of(context)
-                          .requestFocus(_pollOptionFocuses[0]);
-                    } else {
-                      FocusScope.of(context).unfocus();
-                    }
-                  },
-                ),
-                suggestionsCallback: (pattern) async {
-                  return await TagCompletionService.getPossibleCompletions(
-                      pattern);
-                },
-                itemBuilder: (context, suggestion) {
-                  return ListTile(
-                    title: Text(suggestion),
-                  );
-                },
-                onSuggestionSelected: (suggestion) {
-                  setState(() {
-                    pollData.tags.add(suggestion);
-                    _pollTagController.clear();
-                  });
-                  FocusScope.of(context).requestFocus(_pollOptionFocuses[0]);
-                },
-              ),
-            ),
-*/
+
+
             const SizedBox(height: 16),
             const SectionHeader(headerText: "Options"),
-            for (var i = 0; i < widget.pollData.options.length; i++)
+            for (var i = pollData.options.length-1; i >=0 ; i--)
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 8),
                 child: ReadOnlyTextField(
-                  text: widget.pollData.options[i],
+                  text: pollData.options[i],
                 ),
               ),
 
@@ -161,7 +101,7 @@ class _ModeratorApprovalScreenState extends State<ModeratorApprovalScreen> {
             const SectionHeader(headerText: "Image URLs"),
             const SizedBox(height: 16),
 
-            ...widget.pollData.imageURLs.map((url) => ListTile(
+            ...pollData.imageURLs.map((url) => ListTile(
               title: Row(
 
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -197,11 +137,11 @@ class _ModeratorApprovalScreenState extends State<ModeratorApprovalScreen> {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: <Widget>[
                 ElevatedButton(
-                  onPressed: ()=>answerPoll(true, widget.pollData.pollId),
+                  onPressed: ()=>answerPoll(context, true, pollData.pollId),
                   child: const Text('Approve!'),
                 ),
                 ElevatedButton(
-                  onPressed: ()=>answerPoll(false, widget.pollData.pollId),
+                  onPressed: ()=>answerPoll(context, false, pollData.pollId),
                   child: const Text('Reject!'),
                 ),
               ],

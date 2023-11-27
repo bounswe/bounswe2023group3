@@ -19,9 +19,25 @@ export class AuthService {
       tap((response: any) => {
         localStorage.setItem('authToken', response.access_token)
         localStorage.setItem('loggedIn', 'true')
+        localStorage.setItem('moderatorloggedIn', 'false')
         localStorage.setItem('user_id', response.user.id)
         localStorage.setItem('username', response.user.username)
 
+      }),
+      catchError(this.handleError('Login', {})),
+    )
+  }
+
+  //Moderator Login
+  moderatorLogin(email: string, password: string): Observable<any> {
+    const credentials = { email, password }
+    return this.http.post<any>(`http://34.105.66.254:1923/moderator/login`, credentials).pipe(
+      tap((response: any) => {
+        localStorage.setItem('authToken', response.access_token)
+        localStorage.setItem('moderatorloggedIn', 'true')
+        localStorage.setItem('loggedIn', 'false')
+        localStorage.setItem('user_id', response.user.id)
+        localStorage.setItem('username', response.user.username)
       }),
       catchError(this.handleError('Login', {})),
     )

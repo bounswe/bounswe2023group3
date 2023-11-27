@@ -7,13 +7,16 @@
   </head>
   <body>
     <header class="header">
+      <img src="assets/app-logo-white.png" alt="Logo" style="width: 40px; height: 40px; margin-right: 13px; cursor: pointer;">
       <div class="logo">Poll'up</div>
       <div class="header-links">
-        <a href="#about-app">About the App</a>
+        <a href="#about-app">About The App</a>
         <button class="download-button">Download the App</button>
         <p>|</p>
         <a href="app-login">Login</a>
         <a href="app-register">Sign Up</a>
+        <button class="moderator-button" (click)="navigateToModeratorLogin()" >Poll'up+ Moderator</button>
+        
       </div>
     </header>
 
@@ -28,7 +31,9 @@
     </section>
     <br />
 
-    <section class="features">
+    <section class="features-container">
+    <h2 class="features-heading">Why Poll'up?</h2>
+    <div class="features">
       <div class="feature">
         <img src="assets/connect-icon.png" alt="Connect Icon" />
         <h3>Connect with Friends</h3>
@@ -64,6 +69,7 @@
           from already evaluated polls.
         </p>
       </div>
+    </div>
     </section>
 
     <section class="faq-section">
