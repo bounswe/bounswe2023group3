@@ -80,9 +80,10 @@ export class PollRepository extends Repository<Poll> {
     const combinedResults = entities.map((entity) => {
       return {
         ...entity,
-        likeCount:
+        likeCount: parseInt(
           raw[raw.findIndex((item) => item.poll_id === entity.id)]
             .pollLikeCount,
+        ),
       };
     });
 
