@@ -51,7 +51,7 @@ onSubmit() {
       Authorization: `Bearer ${token}`,
     });
     const options = { headers };
-    console.log(formValue);
+    console.log(options);
   
     this.http
       .post('http://34.105.66.254:1923/poll', formValue, options)

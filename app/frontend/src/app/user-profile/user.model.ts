@@ -7,4 +7,7 @@ export interface User {
   password: string
   verification_code: number
   reset_password_token: number
+  badges: string[]
+  followers: User[]
+  followees: User[]
 }
