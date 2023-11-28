@@ -71,6 +71,8 @@ class _ProfilePageState extends State<ProfilePage> {
         createdPolls = viewedPolls = createdPolls.isEmpty
             ? await ProfilePagePollsService.getCreatedPolls(widget.userId)
             : createdPolls;
+        createdPolls = viewedPolls =
+            createdPolls.where((element) => element.approvedStatus).toList();
         break;
       case ProfilePagePollType.Liked:
         likedPolls = viewedPolls = likedPolls.isEmpty
@@ -212,21 +214,23 @@ class _ProfilePageState extends State<ProfilePage> {
               onTap: () => tapOnPoll(context, post),
               child: SizedBox(
                 height: calculatePostHeight(post),
-                child: PollViewHomePage(pollId: post.pollId,
-                    userName: post.userName,
-                    userUsername: post.userUsername,
-                    profilePictureUrl: post.profilePictureUrl,
-                    postTitle: post.postTitle,
-                    tags: post.tags,
-                    tagColors: post.tagColors,
-                    voteCount: post.voteCount,
-                    postOptions: post.options,
-                    likeCount: post.likeCount,
-                    dateTime: post.dueDate.toString(),
-                    // TODO buraya commentCount verilecek
-                    comments: [],
-                isSettled: post.isSettled,
-                approvedStatus: post.approvedStatus,),
+                child: PollViewHomePage(
+                  pollId: post.pollId,
+                  userName: post.userName,
+                  userUsername: post.userUsername,
+                  profilePictureUrl: post.profilePictureUrl,
+                  postTitle: post.postTitle,
+                  tags: post.tags,
+                  tagColors: post.tagColors,
+                  voteCount: post.voteCount,
+                  postOptions: post.options,
+                  likeCount: post.likeCount,
+                  dateTime: post.dueDate.toString(),
+                  // TODO buraya commentCount verilecek
+                  comments: [],
+                  isSettled: post.isSettled,
+                  approvedStatus: post.approvedStatus,
+                ),
               ),
             ),
           );
@@ -258,8 +262,7 @@ class _ProfilePageState extends State<ProfilePage> {
             likeCount: poll.likeCount,
             dateTime: poll.dueDate.toString(),
             comments: comments,
-          isSettled: poll.isSettled
-        ),
+            isSettled: poll.isSettled),
       ),
     );
   }
