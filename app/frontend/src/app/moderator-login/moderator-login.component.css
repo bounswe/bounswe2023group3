@@ -27,7 +27,7 @@ body {
 
 /* Style for the login container */
 .login-container {
-  background-color: #202A40;
+  background-color: #202a40;
   color: #fff;
   text-align: center;
   padding: 30px;
@@ -92,7 +92,7 @@ button[type='submit'] {
 }
 
 button[type='submit']:hover {
-  background-color: #C1666B;
+  background-color: #c1666b;
 }
 
 .login-container a {

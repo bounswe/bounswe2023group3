@@ -2,12 +2,22 @@
 
 <div class="faq-container">
   <div class="faq-questions">
-    <div *ngFor="let faqItem of faqItems; let i = index" class="faq-question" [class.active]="isActive(i)" [class.clicked]="isActive(i)" (click)="toggleAnswer(i)">
+    <div
+      *ngFor="let faqItem of faqItems; let i = index"
+      class="faq-question"
+      [class.active]="isActive(i)"
+      [class.clicked]="isActive(i)"
+      (click)="toggleAnswer(i)"
+    >
       <div class="faq-question-title">
         {{ faqItem.question }}
-        <img src="assets/arrow-icon.png" alt="Arrow Logo" class="arrow-logo">
+        <img src="assets/arrow-icon.png" alt="Arrow Logo" class="arrow-logo" />
       </div>
-      <div class="faq-answer" *ngIf="isActive(i)" [innerHTML]="faqItem.answer"></div>
+      <div
+        class="faq-answer"
+        *ngIf="isActive(i)"
+        [innerHTML]="faqItem.answer"
+      ></div>
     </div>
   </div>
 </div>

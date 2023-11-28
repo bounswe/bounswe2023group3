@@ -4,7 +4,7 @@ body {
 }
 
 .container {
-  background-color: #202A40;
+  background-color: #202a40;
   width: calc(80% - 300px);
   display: flex;
   flex-direction: column;

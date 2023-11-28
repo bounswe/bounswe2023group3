@@ -12,12 +12,12 @@ header {
 
 .logo {
   font-size: 24px;
-  cursor: pointer; 
+  cursor: pointer;
 }
 
 .logo img {
   width: 10px;
-  height:10px;
-  margin-right: 5px; 
+  height: 10px;
+  margin-right: 5px;
   cursor: pointer;
 }

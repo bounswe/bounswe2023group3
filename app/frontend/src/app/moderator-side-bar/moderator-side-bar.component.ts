@@ -7,7 +7,7 @@ import { Router } from '@angular/router'
   styleUrls: ['./moderator-side-bar.component.css'],
 })
 export class ModeratorSideBarComponent {
-  username: any;
+  username: any
 
   constructor(private router: Router) {
     this.username = localStorage.getItem('username')

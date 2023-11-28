@@ -7,12 +7,16 @@
   <body>
     <app-header></app-header>
     <div class="alert-container">
-        <p class="alert-message">Thank you for joining Poll'up! To be able to create polls, you need to verify your email first! If you want, you can skip this step now and verify your account later.</p>
-      </div>
+      <p class="alert-message">
+        Thank you for joining Poll'up! To be able to create polls, you need to
+        verify your email first! If you want, you can skip this step now and
+        verify your account later.
+      </p>
+    </div>
     <div class="verify-container">
       <h2>Verify Your Account</h2>
       <!-- Add the welcome message here -->
-     <form class="login-form" (ngSubmit)="onSubmit()">
+      <form class="login-form" (ngSubmit)="onSubmit()">
         <div class="form-group">
           <label for="email">Email address:</label>
           <input
@@ -24,13 +28,13 @@
           />
         </div>
         <div class="form-group">
-            <label for="verificationCode">Verification Code:</label>
-            <input
-              type="text"
-              email="verificationCode"
-              [(ngModel)]="verificationCode"
-            />
-          </div>
+          <label for="verificationCode">Verification Code:</label>
+          <input
+            type="text"
+            email="verificationCode"
+            [(ngModel)]="verificationCode"
+          />
+        </div>
         <button type="submit" class="login-button">Verify</button>
         <p class="error-message" *ngIf="errorMessage">{{ errorMessage }}</p>
         <button type="submit" class="login-button">Skip This Step</button>

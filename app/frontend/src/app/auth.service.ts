@@ -22,7 +22,6 @@ export class AuthService {
         localStorage.setItem('moderatorloggedIn', 'false')
         localStorage.setItem('user_id', response.user.id)
         localStorage.setItem('username', response.user.username)
-
       }),
       catchError(this.handleError('Login', {})),
     )
@@ -31,16 +30,18 @@ export class AuthService {
   //Moderator Login
   moderatorLogin(email: string, password: string): Observable<any> {
     const credentials = { email, password }
-    return this.http.post<any>(`http://34.105.66.254:1923/moderator/login`, credentials).pipe(
-      tap((response: any) => {
-        localStorage.setItem('authToken', response.access_token)
-        localStorage.setItem('moderatorloggedIn', 'true')
-        localStorage.setItem('loggedIn', 'false')
-        localStorage.setItem('user_id', response.moderator.id)
-        localStorage.setItem('username', response.moderator.username)
-      }),
-      catchError(this.handleError('Login', {})),
-    )
+    return this.http
+      .post<any>(`http://34.105.66.254:1923/moderator/login`, credentials)
+      .pipe(
+        tap((response: any) => {
+          localStorage.setItem('authToken', response.access_token)
+          localStorage.setItem('moderatorloggedIn', 'true')
+          localStorage.setItem('loggedIn', 'false')
+          localStorage.setItem('user_id', response.moderator.id)
+          localStorage.setItem('username', response.moderator.username)
+        }),
+        catchError(this.handleError('Login', {})),
+      )
   }
 
   //get authentication token
@@ -49,17 +50,16 @@ export class AuthService {
   }
 
   getHeaders(): any {
-    if(this.getToken()){
+    if (this.getToken()) {
       const headers = new HttpHeaders({
-        Authorization: `Bearer ${this.getToken()}`
-      });
-      const options = { headers };
-      return options;
+        Authorization: `Bearer ${this.getToken()}`,
+      })
+      const options = { headers }
+      return options
     }
   }
 
-// Assuming `getToken()` is a method in your class that returns the authentication token.
-
+  // Assuming `getToken()` is a method in your class that returns the authentication token.
 
   // User registration
   register(email: string, password: string, username: string): Observable<any> {
@@ -104,5 +104,8 @@ export class AuthService {
 
   getUser(): any {
     return this.user || JSON.parse(localStorage.getItem('user') || '{}')
+  }
+  getUserId(): any {
+    return localStorage.getItem('user_id')
   }
 }

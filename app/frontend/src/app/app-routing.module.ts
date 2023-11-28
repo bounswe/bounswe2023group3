@@ -21,10 +21,14 @@ import { VerifyComponent } from './verify/verify.component'
 
 const routes: Routes = [
   { path: '', component: WelcomeComponent },
-  { path: 'app-moderator-login', component: ModeratorLoginComponent},
-  { path: 'app-verify', component: VerifyComponent},
-  
-  { path: 'app-moderator-requests', component: ModeratorRequestsComponent, canActivate: [ModeratorAuthGuard] },
+  { path: 'app-moderator-login', component: ModeratorLoginComponent },
+  { path: 'app-verify', component: VerifyComponent },
+
+  {
+    path: 'app-moderator-requests',
+    component: ModeratorRequestsComponent,
+    canActivate: [ModeratorAuthGuard],
+  },
   {
     path: 'app-user-profile',
     component: UserProfileComponent,

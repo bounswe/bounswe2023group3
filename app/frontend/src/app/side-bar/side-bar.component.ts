@@ -7,7 +7,7 @@ import { Router } from '@angular/router'
   styleUrls: ['./side-bar.component.css'],
 })
 export class SideBarComponent {
-  username: any;
+  username: any
 
   constructor(private router: Router) {
     this.username = localStorage.getItem('username')
