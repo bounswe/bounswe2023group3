@@ -8,9 +8,11 @@ import { Router } from '@angular/router'
 })
 export class SideBarComponent {
   username: any
+  firstname: any
 
   constructor(private router: Router) {
     this.username = localStorage.getItem('username')
+    this.firstname = localStorage.getItem('firstname')
   }
 
   logOut() {

@@ -16,11 +16,14 @@ export class PollComponent {
   options!: any[]
   due_date!: string
   comment_count!: number
+  creation_time!: string
   vote_count!: number
-  creator!: string
+  creator!: any
   isLikedBy!: boolean
   nofLikes: number = 0
   userId!: string | null
+
+  showPopup = false;
 
   colors: string[] = [
     '#AEEEEE',
@@ -47,9 +50,24 @@ export class PollComponent {
         this.tags = response.tags
         this.options = response.options
         this.due_date = response.due_date
-        this.comment_count = response.comment_count
         this.vote_count = response.vote_count
-        this.creator = response.creator.username
+        this.creator = response.creator
+
+        const time_dif = ((new Date()).valueOf() - new Date(response.creation_date).valueOf())/1000
+
+        if(time_dif<60){
+          this.creation_time = Math.floor(time_dif) + 's'
+        }
+        else if(time_dif/60<60){
+          this.creation_time = Math.floor(time_dif/60) + 'm'
+        }
+        else if(time_dif/3600<24){
+          this.creation_time = Math.floor(time_dif/3600) + 'h'
+        }
+        else{
+          this.creation_time = Math.floor(time_dif/(3600*24)) + 'd'
+        }
+        
       },
       (error) => {
         console.error('Error fetching poll:', error)
@@ -68,6 +86,15 @@ export class PollComponent {
           }
         }
       })
+
+      this.http.get('http://34.105.66.254:1923/comment/' + this.pollId).subscribe(
+      (response: any) => {
+        this.comment_count = response.length
+      },
+      (error) => {
+        console.error('Error fetching comment count:', error)
+      },
+    )
 
     const selectedButtonId = localStorage.getItem('selectedButtonId')
     if (selectedButtonId) {
@@ -124,5 +151,17 @@ export class PollComponent {
 
   getColor(i: number): string {
     return this.colors[i % this.colors.length]
+  }
+
+  openPopup(){
+    this.showPopup = !this.showPopup;
+  }
+
+  deletePoll(){
+
+  }
+
+  settlePollRequest(){
+    
   }
 }
