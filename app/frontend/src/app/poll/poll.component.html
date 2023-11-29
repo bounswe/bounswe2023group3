@@ -15,7 +15,7 @@
 
 
       
-      <img class="popup-options" style="float: right; width: 4%; height: 100%; cursor: pointer;" 
+      <img [class.blurred]="!isAuthenticated"class="popup-options" style="float: right; width: 4%; height: 100%; cursor: pointer;" 
         src="assets/three-dots.png"(click)="openPopup()"/>
         <div class="popup" *ngIf="showPopup"> 
           <div class="popuptext" (click) = "deletePoll()"> Delete Poll</div>
@@ -53,7 +53,7 @@
             class="name"
             style="font-size: small; margin-top: 12px; "
             
-            >{{ creator.firstname }}</b
+            >{{ creator.username }}</b
           >
           <p class="user-name" style="font-size: small; margin-top: 3px">
             &#64;{{ creator.username }}
@@ -120,8 +120,8 @@
           (click)="toggleLike()"
         >
         {{ nofLikes }}
-        <img *ngIf="isLikedBy" src="assets/heart2.png" class="heart-image" />
-        <img *ngIf="!isLikedBy" src="assets/heart1.png" class="heart-image" />
+        <img [class.blurred]="!isAuthenticated"*ngIf="isLikedBy" src="assets/heart2.png" class="heart-image" />
+        <img [class.blurred]="!isAuthenticated"*ngIf="!isLikedBy" src="assets/heart1.png" class="heart-image" />
       </div>
 
         <p style="text-align: center; margin-right: 170px; margin-left: 100px">

@@ -24,6 +24,8 @@ export class PollComponent {
   userId!: string | null
 
   showPopup = false;
+  isAuthenticated: boolean = false;
+
 
   colors: string[] = [
     '#AEEEEE',
@@ -44,6 +46,9 @@ export class PollComponent {
 
   ngOnInit() {
     this.userId = localStorage.getItem('user_id')
+    if(this.userId){
+      this.isAuthenticated=true
+    }
     this.http.get('http://34.105.66.254:1923/poll/' + this.pollId).subscribe(
       (response: any) => {
         this.question = response.question
@@ -80,7 +85,6 @@ export class PollComponent {
           this.isLikedBy = false
         } else {
           if (this.userId) {
-            console.log(likedUsersList)
             this.isLikedBy = likedUsersList.includes(this.userId)
             this.nofLikes = likedUsersList.length
           }

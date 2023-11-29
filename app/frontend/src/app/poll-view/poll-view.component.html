@@ -11,7 +11,7 @@
       <div class="poll-container">
         <app-poll [pollId]="pollId"></app-poll>
         <div class="poll-comments">
-          <div class="comment-input-container">
+          <div [class.blurred]="!isAuthenticated" class="comment-input-container">
             <input
               type="comment"
               id="description"
@@ -19,7 +19,7 @@
               [(ngModel)]="description"
               placeholder="Add a comment..."
             />
-            <button type="submit" (click)="makeComment()">Comment</button>
+            <button [class.blurred]="!isAuthenticated" type="submit" (click)="makeComment()">Comment</button>
           </div>
           <div class="all-comments-container">
             <div

@@ -39,7 +39,7 @@ const routes: Routes = [
   { path: 'app-register', component: RegisterComponent },
   { path: 'app-forget-password', component: ForgetpasswordComponent },
   { path: 'app-reset-password', component: ResetPasswordComponent },
-  { path: 'app-home', component: HomeComponent, canActivate: [AuthGuard] },
+  { path: 'app-home', component: HomeComponent,},
   {
     path: 'app-poll-request',
     component: PollRequestComponent,
@@ -48,12 +48,10 @@ const routes: Routes = [
   {
     path: 'app-profile/:username',
     component: OthersProfileComponent,
-    canActivate: [AuthGuard],
   },
   {
     path: 'app-poll-view/:pollId',
     component: PollViewComponent,
-    canActivate: [AuthGuard],
   },
   {
     path: 'app-tag-page/:tagName',
