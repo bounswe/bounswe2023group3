@@ -13,16 +13,13 @@
     <div class="container" style="position: relative">
 
 
-
-      
       <img [class.blurred]="!isAuthenticated"class="popup-options" style="float: right; width: 4%; height: 100%; cursor: pointer;" 
         src="assets/three-dots.png"(click)="openPopup()"/>
         <div class="popup" *ngIf="showPopup"> 
-          <div class="popuptext" (click) = "deletePoll()"> Delete Poll</div>
+          <div class="popuptext" (click) = "openConfirmationDialog()"> Delete Poll</div>
           <div class="popuptext"> Report User</div>
-          <div class="popuptext" (click) = "settlePollRequest()"> Settle Outcome</div>
+          <div class="popuptext" (click) = "settleRequestForm()"> Settle Outcome</div>
         </div>
-
 
 
       <div class="post-widget" style="display: flex; align-items: start">
@@ -109,6 +106,7 @@
 
       <div style="display: flex; justify-content: space-between">
         <div
+        [class.blurred]="!isAuthenticated"
           style="
             cursor: pointer;
             font-size: smaller;
@@ -120,8 +118,8 @@
           (click)="toggleLike()"
         >
         {{ nofLikes }}
-        <img [class.blurred]="!isAuthenticated"*ngIf="isLikedBy" src="assets/heart2.png" class="heart-image" />
-        <img [class.blurred]="!isAuthenticated"*ngIf="!isLikedBy" src="assets/heart1.png" class="heart-image" />
+        <img *ngIf="isLikedBy" src="assets/heart2.png" class="heart-image" />
+        <img *ngIf="!isLikedBy" src="assets/heart1.png" class="heart-image" />
       </div>
 
         <p style="text-align: center; margin-right: 170px; margin-left: 100px">

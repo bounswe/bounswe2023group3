@@ -1,7 +1,11 @@
 import { HttpClient } from '@angular/common/http'
-import { Component, Input } from '@angular/core'
+import { Component, Input, NgModule } from '@angular/core'
 import { Router } from '@angular/router'
 import { UserService } from 'src/services/user-service/user.service'
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { ConfirmModelComponent } from '../confirm-model/confirm-model.component';
+import { UserSettleRequestComponent } from '../user-settle-request/user-settle-request.component';
+import { MatFormFieldModule } from '@angular/material/form-field'; 
 
 @Component({
   selector: 'app-poll',
@@ -27,6 +31,10 @@ export class PollComponent {
   isAuthenticated: boolean = false;
 
 
+  outcome: string = '';
+  outcomeSource: string = '';
+
+
   colors: string[] = [
     '#AEEEEE',
     '#FFDAB9',
@@ -42,7 +50,38 @@ export class PollComponent {
     private http: HttpClient,
     private router: Router,
     private userService: UserService,
+    public dialog: MatDialog
   ) {}
+
+  openConfirmationDialog(): void {
+    const dialogRef = this.dialog.open(ConfirmModelComponent, {
+      width: '300px',
+    });
+  
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result === true) {
+        console.log('User confirmed deletion');
+        this.deletePoll()
+      } else {
+        console.log('User canceled deletion');
+      }
+    });
+  }
+
+  settleRequestForm(): void {
+    const dialogRef = this.dialog.open(UserSettleRequestComponent, {
+      width: '300px',
+    });
+  
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.outcome = result.outcome;
+        this.outcomeSource = result.outcomeSource;
+        this.settlePollRequest()
+      } else {
+      }
+    });
+  }
 
   ngOnInit() {
     this.userId = localStorage.getItem('user_id')
@@ -162,10 +201,30 @@ export class PollComponent {
   }
 
   deletePoll(){
-
+  this.http.delete('http://34.105.66.254:1923/poll/'+this.pollId).subscribe(
+    () => {
+      console.log(`Poll deleted successfully.`);
+    },
+    (error) => {
+      console.error('Error deleting poll:', error);
+    }
+  );
   }
 
   settlePollRequest(){
-    
+
+    const body= {
+      "outcome":  this.outcome,
+      "outcome_source": this.outcomeSource
+    }
+
+    this.http.post('http://34.105.66.254:1923/poll/settle-request'+this.pollId,body).subscribe(
+    () => {
+      console.log(`Request sent ccessfully.`);
+    },
+    (error) => {
+      console.error('Error sending request:', error);
+    }
+  );
   }
 }
