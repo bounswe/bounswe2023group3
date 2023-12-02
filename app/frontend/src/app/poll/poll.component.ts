@@ -2,10 +2,10 @@ import { HttpClient } from '@angular/common/http'
 import { Component, Input, NgModule } from '@angular/core'
 import { Router } from '@angular/router'
 import { UserService } from 'src/services/user-service/user.service'
-import { MatDialog, MatDialogModule } from '@angular/material/dialog';
-import { ConfirmModelComponent } from '../confirm-model/confirm-model.component';
-import { UserSettleRequestComponent } from '../user-settle-request/user-settle-request.component';
-import { MatFormFieldModule } from '@angular/material/form-field'; 
+import { MatDialog, MatDialogModule } from '@angular/material/dialog'
+import { ConfirmModelComponent } from '../confirm-model/confirm-model.component'
+import { UserSettleRequestComponent } from '../user-settle-request/user-settle-request.component'
+import { MatFormFieldModule } from '@angular/material/form-field'
 
 @Component({
   selector: 'app-poll',
@@ -27,13 +27,11 @@ export class PollComponent {
   nofLikes: number = 0
   userId!: string | null
 
-  showPopup = false;
-  isAuthenticated: boolean = false;
+  showPopup = false
+  isAuthenticated: boolean = false
 
-
-  outcome: string = '';
-  outcomeSource: string = '';
-
+  outcome: string = ''
+  outcomeSource: string = ''
 
   colors: string[] = [
     '#AEEEEE',
@@ -50,43 +48,43 @@ export class PollComponent {
     private http: HttpClient,
     private router: Router,
     private userService: UserService,
-    public dialog: MatDialog
+    public dialog: MatDialog,
   ) {}
 
   openConfirmationDialog(): void {
     const dialogRef = this.dialog.open(ConfirmModelComponent, {
       width: '300px',
-    });
-  
+    })
+
     dialogRef.afterClosed().subscribe((result) => {
       if (result === true) {
-        console.log('User confirmed deletion');
+        console.log('User confirmed deletion')
         this.deletePoll()
       } else {
-        console.log('User canceled deletion');
+        console.log('User canceled deletion')
       }
-    });
+    })
   }
 
   settleRequestForm(): void {
     const dialogRef = this.dialog.open(UserSettleRequestComponent, {
       width: '300px',
-    });
-  
+    })
+
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        this.outcome = result.outcome;
-        this.outcomeSource = result.outcomeSource;
+        this.outcome = result.outcome
+        this.outcomeSource = result.outcomeSource
         this.settlePollRequest()
       } else {
       }
-    });
+    })
   }
 
   ngOnInit() {
     this.userId = localStorage.getItem('user_id')
-    if(this.userId){
-      this.isAuthenticated=true
+    if (this.userId) {
+      this.isAuthenticated = true
     }
     this.http.get('http://34.105.66.254:1923/poll/' + this.pollId).subscribe(
       (response: any) => {
@@ -97,21 +95,19 @@ export class PollComponent {
         this.vote_count = response.vote_count
         this.creator = response.creator
 
-        const time_dif = ((new Date()).valueOf() - new Date(response.creation_date).valueOf())/1000
+        const time_dif =
+          (new Date().valueOf() - new Date(response.creation_date).valueOf()) /
+          1000
 
-        if(time_dif<60){
+        if (time_dif < 60) {
           this.creation_time = Math.floor(time_dif) + 's'
+        } else if (time_dif / 60 < 60) {
+          this.creation_time = Math.floor(time_dif / 60) + 'm'
+        } else if (time_dif / 3600 < 24) {
+          this.creation_time = Math.floor(time_dif / 3600) + 'h'
+        } else {
+          this.creation_time = Math.floor(time_dif / (3600 * 24)) + 'd'
         }
-        else if(time_dif/60<60){
-          this.creation_time = Math.floor(time_dif/60) + 'm'
-        }
-        else if(time_dif/3600<24){
-          this.creation_time = Math.floor(time_dif/3600) + 'h'
-        }
-        else{
-          this.creation_time = Math.floor(time_dif/(3600*24)) + 'd'
-        }
-        
       },
       (error) => {
         console.error('Error fetching poll:', error)
@@ -130,7 +126,7 @@ export class PollComponent {
         }
       })
 
-      this.http.get('http://34.105.66.254:1923/comment/' + this.pollId).subscribe(
+    this.http.get('http://34.105.66.254:1923/comment/' + this.pollId).subscribe(
       (response: any) => {
         this.comment_count = response.length
       },
@@ -196,35 +192,36 @@ export class PollComponent {
     return this.colors[i % this.colors.length]
   }
 
-  openPopup(){
-    this.showPopup = !this.showPopup;
+  openPopup() {
+    this.showPopup = !this.showPopup
   }
 
-  deletePoll(){
-  this.http.delete('http://34.105.66.254:1923/poll/'+this.pollId).subscribe(
-    () => {
-      console.log(`Poll deleted successfully.`);
-    },
-    (error) => {
-      console.error('Error deleting poll:', error);
-    }
-  );
+  deletePoll() {
+    this.http.delete('http://34.105.66.254:1923/poll/' + this.pollId).subscribe(
+      () => {
+        console.log(`Poll deleted successfully.`)
+      },
+      (error) => {
+        console.error('Error deleting poll:', error)
+      },
+    )
   }
 
-  settlePollRequest(){
-
-    const body= {
-      "outcome":  this.outcome,
-      "outcome_source": this.outcomeSource
+  settlePollRequest() {
+    const body = {
+      outcome: this.outcome,
+      outcome_source: this.outcomeSource,
     }
 
-    this.http.post('http://34.105.66.254:1923/poll/settle-request'+this.pollId,body).subscribe(
-    () => {
-      console.log(`Request sent ccessfully.`);
-    },
-    (error) => {
-      console.error('Error sending request:', error);
-    }
-  );
+    this.http
+      .post('http://34.105.66.254:1923/poll/settle-request' + this.pollId, body)
+      .subscribe(
+        () => {
+          console.log(`Request sent ccessfully.`)
+        },
+        (error) => {
+          console.error('Error sending request:', error)
+        },
+      )
   }
 }

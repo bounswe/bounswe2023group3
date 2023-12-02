@@ -9,7 +9,7 @@ import { Component, Input } from '@angular/core'
 export class HomeComponent {
   polls!: any[]
   following!: any[]
-  isAuthenticated: boolean = false;
+  isAuthenticated: boolean = false
 
   constructor(private http: HttpClient) {
     this.http.get('http://34.105.66.254:1923/poll/').subscribe(
@@ -23,8 +23,8 @@ export class HomeComponent {
   }
 
   ngOnInit() {
-    if(localStorage.getItem('user_id')){
-      this.isAuthenticated=true
+    if (localStorage.getItem('user_id')) {
+      this.isAuthenticated = true
     }
   }
 

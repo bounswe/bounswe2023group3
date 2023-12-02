@@ -148,11 +148,16 @@ body {
 }
 
 .blurred {
-  filter: blur(5px); 
-  transition: filter 0.3s ease-in-out; 
+  filter: blur(5px);
+  transition: filter 0.3s ease-in-out;
   pointer-events: none;
 }
 
-
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+html,
+body {
+  height: 100%;
+}
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}

@@ -18,7 +18,10 @@ export class TagsBarComponent {
     '#d7907b',
     '#f9c784',
   ]
-  constructor(private http: HttpClient, private router: Router,) {}
+  constructor(
+    private http: HttpClient,
+    private router: Router,
+  ) {}
 
   ngOnInit() {
     /*this.http.get('http://34.105.66.254:1923/tag/').subscribe(
@@ -29,7 +32,14 @@ export class TagsBarComponent {
         console.error('Error fetching poll:', error)
       },
     )*/
-    this.tags =[{'name':'Movies'},{'name':'Football'},{'name':'Sports'},{'name':'Music'},{'name':'TV Shows'},{'name':'Finance'}]
+    this.tags = [
+      { name: 'Movies' },
+      { name: 'Football' },
+      { name: 'Sports' },
+      { name: 'Music' },
+      { name: 'TV Shows' },
+      { name: 'Finance' },
+    ]
   }
 
   getColor(i: number): string {

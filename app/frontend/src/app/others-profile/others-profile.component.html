@@ -14,9 +14,9 @@
             alt="User Avatar"
           />
           <div class="post-content">
-            <b class="name" style="font-size: xx-large; padding-top: 10px"
-              >{{ this.user.username }}</b
-            >
+            <b class="name" style="font-size: xx-large; padding-top: 10px">{{
+              this.user.username
+            }}</b>
             <!-- add the Actual Name of the user after it is implemented in the backend -->
             <p class="user-name" style="margin-top: 2px">
               &#64;{{ this.user.username }}
@@ -44,10 +44,16 @@
           <button class="user-polls-column" (click)="createdPolls()">
             Created
           </button>
-          <button class="user-polls-column" (click)="likedPolls()"[class.blurred]="!isAuthenticated">
+          <button
+            class="user-polls-column"
+            (click)="likedPolls()"
+            [class.blurred]="!isAuthenticated"
+          >
             Liked
           </button>
-          <button class="user-polls-column"[class.blurred]="!isAuthenticated">Voted</button>
+          <button class="user-polls-column" [class.blurred]="!isAuthenticated">
+            Voted
+          </button>
         </div>
         <div>
           <app-poll *ngFor="let poll of polls" [pollId]="poll.id"></app-poll>
@@ -55,7 +61,10 @@
       </div>
       <div class="flex-column">
         <app-ranks-bar [class.blurred]="!isAuthenticated"></app-ranks-bar>
-        <app-badges-bar [userId]="user.id" [class.blurred]="!isAuthenticated"></app-badges-bar>
+        <app-badges-bar
+          [userId]="user.id"
+          [class.blurred]="!isAuthenticated"
+        ></app-badges-bar>
       </div>
     </div>
   </body>

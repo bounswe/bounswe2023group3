@@ -8,13 +8,13 @@
       <h2 style="border-bottom: 2px solid #000; margin-bottom: 5px">Tags</h2>
       <div class="buttons" style="overflow: auto; max-height: 250px">
         <button
-        class="button"
-        *ngFor="let tag of tags; let i = index"
-        [ngStyle]="{ 'background-color': getColor(i) }"
-        (click) = "goToTag(tag.name)"
-      >
-        {{ tag.name }}
-      </button>
+          class="button"
+          *ngFor="let tag of tags; let i = index"
+          [ngStyle]="{ 'background-color': getColor(i) }"
+          (click)="goToTag(tag.name)"
+        >
+          {{ tag.name }}
+        </button>
       </div>
     </div>
   </body>

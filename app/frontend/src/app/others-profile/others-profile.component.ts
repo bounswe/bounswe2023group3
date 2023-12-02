@@ -12,7 +12,7 @@ import { UserService } from 'src/services/user-service/user.service'
   styleUrls: ['./others-profile.component.css'],
 })
 export class OthersProfileComponent implements OnInit {
-  isAuthenticated: boolean = false;
+  isAuthenticated: boolean = false
   polls: any[] = []
   user!: User
   userId = ''
@@ -29,11 +29,10 @@ export class OthersProfileComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+    console.log('myId::' + this.self_userId)
 
-    console.log('myId::'+this.self_userId)
-
-    if(this.self_userId){
-      this.isAuthenticated = true;
+    if (this.self_userId) {
+      this.isAuthenticated = true
     }
 
     this.route.params.subscribe((params) => {

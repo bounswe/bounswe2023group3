@@ -39,7 +39,7 @@ const routes: Routes = [
   { path: 'app-register', component: RegisterComponent },
   { path: 'app-forget-password', component: ForgetpasswordComponent },
   { path: 'app-reset-password', component: ResetPasswordComponent },
-  { path: 'app-home', component: HomeComponent,},
+  { path: 'app-home', component: HomeComponent },
   {
     path: 'app-poll-request',
     component: PollRequestComponent,
