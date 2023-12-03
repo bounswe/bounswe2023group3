@@ -11,6 +11,7 @@ export class PollViewComponent {
   pollId!: string
   comments!: any[]
   description!: string
+  isAuthenticated: boolean = false
 
   constructor(
     private http: HttpClient,
@@ -18,6 +19,9 @@ export class PollViewComponent {
   ) {}
 
   ngOnInit() {
+    if (localStorage.getItem('user_id')) {
+      this.isAuthenticated = true
+    }
     this.route.params.subscribe((params) => {
       this.pollId = params['pollId']
     })

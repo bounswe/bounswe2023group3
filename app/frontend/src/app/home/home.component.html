@@ -61,7 +61,11 @@
         </form>
 
         <div class="user-polls">
-          <button class="user-polls-column" (click)="followingPolls()">
+          <button
+            class="user-polls-column"
+            [class.blurred]="!isAuthenticated"
+            (click)="followingPolls()"
+          >
             Following
           </button>
           <button class="user-polls-column" (click)="trendingPolls()">

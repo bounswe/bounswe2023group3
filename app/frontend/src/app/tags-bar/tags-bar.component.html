@@ -7,20 +7,14 @@
     <div class="container">
       <h2 style="border-bottom: 2px solid #000; margin-bottom: 5px">Tags</h2>
       <div class="buttons" style="overflow: auto; max-height: 250px">
-        <button class="button" style="background-color: #e57f84">
-          Weather
+        <button
+          class="button"
+          *ngFor="let tag of tags; let i = index"
+          [ngStyle]="{ 'background-color': getColor(i) }"
+          (click)="goToTag(tag.name)"
+        >
+          {{ tag.name }}
         </button>
-        <button class="button" style="background-color: #b4869f">
-          Science
-        </button>
-        <button class="button" style="background-color: #30568f">
-          Politics
-        </button>
-        <button class="button" style="background-color: #c64191">
-          Fashion
-        </button>
-        <button class="button" style="background-color: #d7907b">Sports</button>
-        <button class="button" style="background-color: #f9c784">Music</button>
       </div>
     </div>
   </body>

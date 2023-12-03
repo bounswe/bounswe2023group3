@@ -32,6 +32,10 @@ import { ModeratorHeaderComponent } from './moderator-header/moderator-header.co
 import { VerificationComponent } from './verification/verification.component'
 import { FaqSectionComponent } from './faq-section/faq-section.component'
 import { VerifyComponent } from './verify/verify.component'
+import { ConfirmModelComponent } from './confirm-model/confirm-model.component'
+import { MatDialogModule } from '@angular/material/dialog'
+import { UserSettleRequestComponent } from './user-settle-request/user-settle-request.component'
+import { MatFormFieldModule } from '@angular/material/form-field'
 
 @NgModule({
   declarations: [
@@ -61,6 +65,8 @@ import { VerifyComponent } from './verify/verify.component'
     VerificationComponent,
     FaqSectionComponent,
     VerifyComponent,
+    ConfirmModelComponent,
+    UserSettleRequestComponent,
   ],
   imports: [
     BrowserModule,
@@ -69,6 +75,8 @@ import { VerifyComponent } from './verify/verify.component'
     ReactiveFormsModule,
     HttpClientModule,
     BrowserAnimationsModule,
+    MatDialogModule,
+    MatFormFieldModule,
   ],
   providers: [AuthService],
   bootstrap: [AppComponent],

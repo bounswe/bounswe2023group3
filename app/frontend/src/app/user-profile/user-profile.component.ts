@@ -12,6 +12,7 @@ export class UserProfileComponent {
   polls!: any[]
   user_id!: any
   username: any
+  firstname: any
   nofFollowers: number = 0
   nofFollowees: number = 0
 
@@ -34,6 +35,7 @@ export class UserProfileComponent {
     )
     this.user_id = localStorage.getItem('user_id')
     this.username = localStorage.getItem('username')
+    this.firstname = localStorage.getItem('firstname')
 
     this._userService.getUser(this.username).then((user: User) => {
       this.nofFollowees = user.followings.map(

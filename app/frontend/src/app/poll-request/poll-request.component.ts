@@ -70,6 +70,7 @@ export class PollRequestComponent implements OnInit {
         (response) => {
           console.log('Poll created', response)
           window.location.reload()
+          window.alert('Poll creation request sent.')
         },
         (error) => {
           if (error.status === 401) {
