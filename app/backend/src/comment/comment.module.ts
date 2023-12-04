@@ -14,10 +14,12 @@ import { User } from '../user/entities/user.entity';
 import { Badge } from '../badge/entities/badge.entity';
 import { Poll } from '../poll/entities/poll.entity';
 import { BadgeService } from '../badge/badge.service';
+import { TagModule } from '../tag/tag.module';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([Like,Poll, Tag, User, Badge, Option,Comment]),
+    TypeOrmModule.forFeature([Like, Poll, Tag, User, Badge, Option, Comment]),
+    TagModule,
     JwtModule.register({
       global: true,
       secret: 'very-secret-key',
@@ -25,6 +27,12 @@ import { BadgeService } from '../badge/badge.service';
     }),
   ],
   controllers: [CommentController],
-  providers: [CommentService, PollService, PollRepository,UserService,BadgeService],
+  providers: [
+    CommentService,
+    PollService,
+    PollRepository,
+    UserService,
+    BadgeService,
+  ],
 })
 export class CommentModule {}

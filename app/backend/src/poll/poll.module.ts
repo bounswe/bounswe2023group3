@@ -12,11 +12,25 @@ import { Badge } from '../badge/entities/badge.entity';
 import { BadgeService } from '../badge/badge.service';
 import { Moderator } from '../moderator/entities/moderator.entity';
 import { ModeratorService } from '../moderator/moderator.service';
+import { TagService } from '../tag/tag.service';
 import { Like } from '../like/entities/like.entity';
 import { Comment } from '../comment/entities/comment.entity';
+import { TagModule } from '../tag/tag.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Poll, Option, Tag, User, Badge, Moderator,Like,Comment])],
+  imports: [
+    TypeOrmModule.forFeature([
+      Poll,
+      Option,
+      Tag,
+      User,
+      Badge,
+      Moderator,
+      Like,
+      Comment,
+    ]),
+    TagModule,
+  ],
   controllers: [PollController],
   providers: [
     PollService,
@@ -24,6 +38,7 @@ import { Comment } from '../comment/entities/comment.entity';
     PollRepository,
     BadgeService,
     ModeratorService,
+    TagService,
   ],
   exports: [PollService],
 })

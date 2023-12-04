@@ -9,6 +9,7 @@ import {
   UseGuards,
   Req,
   Query,
+  ParseArrayPipe,
   ConflictException,
   ParseBoolPipe,
 } from '@nestjs/common';
@@ -101,6 +102,7 @@ export class PollController {
   @ApiQuery({ name: 'approveStatus', required: false })
   @ApiQuery({ name: 'likedById', required: false })
   @ApiQuery({ name: 'followedById', required: false })
+  @ApiQuery({ name: 'tags', required: false })
   @ApiResponse({
     status: 200,
     description: 'Polls are fetched successfully.',
@@ -120,12 +122,15 @@ export class PollController {
     likedById?: string,
     @Query('followedById', new ParseUUIDPipe({ optional: true }))
     followedById?: string,
+    @Query('tags', new ParseArrayPipe({ optional: true }))
+    tags?: Array<string>,
   ): Promise<any> {
     return await this.pollService.findAll({
       creatorId,
       approveStatus,
       likedById,
       followedById,
+      tags,
     });
   }
 
@@ -148,6 +153,7 @@ export class PollController {
       approveStatus: null,
       likedById: null,
       followedById: null,
+      tags: null,
     });
   }
 
@@ -189,6 +195,7 @@ export class PollController {
       approveStatus: null,
       likedById: userId,
       followedById: null,
+      tags: null,
     });
   }
 
@@ -210,6 +217,7 @@ export class PollController {
       approveStatus: null,
       likedById: null,
       followedById: userId,
+      tags: null,
     });
   }
 

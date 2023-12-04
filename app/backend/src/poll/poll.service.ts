@@ -13,6 +13,7 @@ import { User } from '../user/entities/user.entity';
 import { Settle } from './enums/settle.enum';
 import { SettlePollRequestDto } from './dto/settle-poll-request.dto';
 import { Like } from '../like/entities/like.entity';
+import { TagService } from '../tag/tag.service';
 
 @Injectable()
 export class PollService {
@@ -23,6 +24,7 @@ export class PollService {
     @InjectRepository(Tag) private readonly tagRepository: Repository<Tag>,
     @InjectRepository(Like)
     private readonly likeRepository: Repository<Like>,
+    private readonly tagService: TagService,
   ) {}
 
   public async createPoll(createPollDto: any): Promise<Poll> {
@@ -130,12 +132,17 @@ export class PollService {
     approveStatus,
     likedById,
     followedById,
+    tags,
   }): Promise<Poll[]> {
+    if (tags) {
+      tags = await this.tagService.getTagIdsFromTagNames(tags);
+    }
     return await this.pollRepository.findAll({
       creatorId,
       approveStatus,
       likedById,
       followedById,
+      tags,
     });
   }
 
