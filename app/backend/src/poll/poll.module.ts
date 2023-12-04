@@ -16,7 +16,18 @@ import { Like } from '../like/entities/like.entity';
 import { Comment } from '../comment/entities/comment.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Poll, Option, Tag, User, Badge, Moderator,Like,Comment])],
+  imports: [
+    TypeOrmModule.forFeature([
+      Poll,
+      Option,
+      Tag,
+      User,
+      Badge,
+      Moderator,
+      Like,
+      Comment,
+    ]),
+  ],
   controllers: [PollController],
   providers: [
     PollService,

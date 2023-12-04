@@ -22,6 +22,7 @@ export class PollRepository extends Repository<Poll> {
     approveStatus,
     likedById,
     followedById,
+    sortString,
   }): Promise<Poll[]> {
     const queryBuilder = this.createQueryBuilder('poll');
 
@@ -39,6 +40,10 @@ export class PollRepository extends Repository<Poll> {
       queryBuilder
         .innerJoin('likes', 'like', 'like.pollId = poll.id')
         .andWhere('like.userId = :likedById', { likedById });
+    }
+
+    if (sortString) {
+      queryBuilder.orderBy('poll.creation_date', sortString);
     }
 
     if (followedById) {

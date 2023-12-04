@@ -95,6 +95,7 @@ export class PollController {
   @ApiQuery({ name: 'approveStatus', required: false })
   @ApiQuery({ name: 'likedById', required: false })
   @ApiQuery({ name: 'followedById', required: false })
+  @ApiQuery({ name: 'sort', required: false })
   @ApiResponse({
     status: 200,
     description: 'Polls are fetched successfully.',
@@ -114,12 +115,15 @@ export class PollController {
     likedById?: string,
     @Query('followedById', new ParseUUIDPipe({ optional: true }))
     followedById?: string,
+    @Query('sort')
+    sortString?: string,
   ): Promise<any> {
     return await this.pollService.findAll({
       creatorId,
       approveStatus,
       likedById,
       followedById,
+      sortString,
     });
   }
 
@@ -142,6 +146,7 @@ export class PollController {
       approveStatus: null,
       likedById: null,
       followedById: null,
+      sortString: null,
     });
   }
 
@@ -163,6 +168,7 @@ export class PollController {
       approveStatus: null,
       likedById: userId,
       followedById: null,
+      sortString: null,
     });
   }
 
@@ -184,6 +190,7 @@ export class PollController {
       approveStatus: null,
       likedById: null,
       followedById: userId,
+      sortString: null,
     });
   }
 
