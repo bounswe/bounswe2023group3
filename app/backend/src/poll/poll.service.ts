@@ -13,6 +13,7 @@ import { User } from '../user/entities/user.entity';
 import { Settle } from './enums/settle.enum';
 import { SettlePollRequestDto } from './dto/settle-poll-request.dto';
 import { Like } from '../like/entities/like.entity';
+import { Sort } from './enums/sort.enum';
 import { TagService } from '../tag/tag.service';
 
 @Injectable()
@@ -132,16 +133,24 @@ export class PollService {
     approveStatus,
     likedById,
     followedById,
-    tags,
+    sortString,
   }): Promise<Poll[]> {
+    if (sortString) {
+      if (!Object.values(Sort).includes(sortString)) {
+        throw new BadRequestException("Sort should be 'ASC' or 'DESC'");
+      }
+    }
+    
     if (tags) {
       tags = await this.tagService.getTagIdsFromTagNames(tags);
     }
+    
     return await this.pollRepository.findAll({
       creatorId,
       approveStatus,
       likedById,
       followedById,
+      sortString,
       tags,
     });
   }

@@ -102,6 +102,7 @@ export class PollController {
   @ApiQuery({ name: 'approveStatus', required: false })
   @ApiQuery({ name: 'likedById', required: false })
   @ApiQuery({ name: 'followedById', required: false })
+  @ApiQuery({ name: 'sort', required: false })
   @ApiQuery({ name: 'tags', required: false })
   @ApiResponse({
     status: 200,
@@ -122,6 +123,8 @@ export class PollController {
     likedById?: string,
     @Query('followedById', new ParseUUIDPipe({ optional: true }))
     followedById?: string,
+    @Query('sort')
+    sortString?: string,
     @Query('tags', new ParseArrayPipe({ optional: true }))
     tags?: Array<string>,
   ): Promise<any> {
@@ -130,6 +133,7 @@ export class PollController {
       approveStatus,
       likedById,
       followedById,
+      sortString,
       tags,
     });
   }
@@ -153,6 +157,7 @@ export class PollController {
       approveStatus: null,
       likedById: null,
       followedById: null,
+      sortString: null,
       tags: null,
     });
   }
@@ -195,6 +200,7 @@ export class PollController {
       approveStatus: null,
       likedById: userId,
       followedById: null,
+      sortString: null,
       tags: null,
     });
   }
@@ -217,6 +223,7 @@ export class PollController {
       approveStatus: null,
       likedById: null,
       followedById: userId,
+      sortString: null,
       tags: null,
     });
   }
