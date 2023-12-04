@@ -19,6 +19,7 @@ import { AuthGuard } from '../auth/guards/auth.guard';
 import { VerificationGuard } from '../auth/guards/verification.guard';
 import { AddBadgeDto } from './dto/add-badge.dto';
 import { GetUserResponseDto } from './dto/responses/get-user-response.dto';
+import { UpdateUserDto } from './dto/update-user.dto';
 
 @ApiBearerAuth()
 @Controller('user')
@@ -114,6 +115,22 @@ export class UserController {
   @Put('badge/:id')
   public async addBadge(@Param('id', ParseUUIDPipe) id: string, @Body() addBadgeDto: AddBadgeDto ) {
     return await this.userService.addBadge(id, addBadgeDto.name);
+  }
+
+  
+  @ApiResponse({
+    status: 200,
+    description: 'Update user request successful.',
+  })
+  @ApiResponse({ status: 404, description: 'User is not found.' })
+  @ApiResponse({
+    status: 500,
+    description: 'Internal server error, contact with backend team.',
+  })
+  @Put()
+  @UseGuards(AuthGuard, VerificationGuard)
+  public async update(@Req() request: any, @Body() updateUserDto: UpdateUserDto) {
+    return await this.userService.updateById(request.user.id, updateUserDto);
   }
 
 
