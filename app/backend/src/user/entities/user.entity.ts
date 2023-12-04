@@ -14,6 +14,7 @@ import {
 import { Badge } from '../../badge/entities/badge.entity';
 import { Like } from '../../like/entities/like.entity';
 import { Comment } from '../../comment/entities/comment.entity';
+import { Report } from './report.entity';
 
 const SALT_ROUNDS = 10;
 
@@ -40,6 +41,9 @@ export class User {
   @Column({ nullable: false, default: false })
   isVerified: boolean;
 
+  @Column({ nullable: false, default: false })
+  isBanned: boolean;
+
   @Column({ nullable: true })
   password: string;
 
@@ -63,11 +67,14 @@ export class User {
   @JoinTable()
   badges: Relation<Badge[]>;
 
-  @OneToMany(() => Like, (like) => like.user)
+  @OneToMany(() => Like, (like) => like.user, { cascade: true })
   likes : Relation<Like[]>;
 
-  @OneToMany(() => Comment, (comment) => comment.user)
+  @OneToMany(() => Comment, (comment) => comment.user, { cascade: true })
   comments : Relation<Comment[]>;
+
+  @OneToMany(() => Report, (report) => report.reporter, { cascade: true })
+  reports : Relation<Report[]>;
 
   @BeforeInsert()
   async hashPasswordBeforeInsert() {

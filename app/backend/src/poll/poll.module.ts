@@ -14,9 +14,10 @@ import { Moderator } from '../moderator/entities/moderator.entity';
 import { ModeratorService } from '../moderator/moderator.service';
 import { Like } from '../like/entities/like.entity';
 import { Comment } from '../comment/entities/comment.entity';
+import { Report } from '../user/entities/report.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Poll, Option, Tag, User, Badge, Moderator,Like,Comment])],
+  imports: [TypeOrmModule.forFeature([Poll, Option, Tag, User, Badge, Moderator,Like,Comment, Report])],
   controllers: [PollController],
   providers: [
     PollService,

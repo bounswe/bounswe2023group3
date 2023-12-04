@@ -14,6 +14,8 @@ import { VerifyModeratorDto } from './dto/verify_moderator.dto';
 import { Poll } from '../poll/entities/poll.entity';
 import { ApproveDTO } from './dto/approve.dto';
 import { LoginModeratorDto } from './dto/login-moderator.dto';
+import { Report } from '../user/entities/report.entity';
+import { User } from '../user/entities/user.entity';
 
 @Injectable()
 export class ModeratorService {
@@ -22,6 +24,10 @@ export class ModeratorService {
     private readonly moderatorRepository: Repository<Moderator>,
     @InjectRepository(Poll)
     private readonly pollRepository: Repository<Poll>,
+    @InjectRepository(Report)
+    private readonly reportRepository: Repository<Report>,
+    @InjectRepository(User)
+    private readonly userRepository: Repository<User>,
     private mailerService: MailerService,
     private jwtService: JwtService,
   ) {}
@@ -190,5 +196,43 @@ export class ModeratorService {
     approveDto: ApproveDTO,
   ): Promise<void> {
     await this.pollRepository.update(pollId, approveDto);
+  }
+
+  public async fetchReports(): Promise<any> {
+    return await this.reportRepository.find({
+      where: {
+        resolution: IsNull(),
+      },
+      order: {
+        creation_date: 'DESC',
+      },
+      relations: ['reporter', 'reported'],
+    });
+  }
+
+  public async banUser(reportId: string): Promise<void> {
+    const report = await this.reportRepository.findOne({
+      where: {
+        id: reportId,
+      },
+      relations: ['reported', 'reporter'],
+    });
+    console.log(report);
+    
+
+    const reported = await this.userRepository.findOne({
+      where: {
+        id: report.reported.id,
+      },
+    });
+
+    await this.userRepository.update(reported.id, {
+      isBanned: true,
+    });
+
+    await this.reportRepository.update(reportId, {
+      resolution: true,
+      resolved_date: new Date(),
+    });
   }
 }
