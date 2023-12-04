@@ -9,17 +9,11 @@ import {
   UseGuards,
   Req,
   Query,
-  ParseIntPipe,
+  ParseArrayPipe,
 } from '@nestjs/common';
 import { PollService } from './poll.service';
 import { CreatePollDto } from './dto/create-poll.dto';
-import {
-  ApiBearerAuth,
-  ApiOkResponse,
-  ApiQuery,
-  ApiResponse,
-  ApiTags,
-} from '@nestjs/swagger';
+import { ApiBearerAuth, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { AuthGuard } from '../auth/guards/auth.guard';
 import { VerificationGuard } from '../auth/guards/verification.guard';
 import { CreatePollResponseDto } from './dto/responses/create-poll-response.dto';
@@ -100,6 +94,7 @@ export class PollController {
   @ApiQuery({ name: 'creatorId', required: false })
   @ApiQuery({ name: 'likedById', required: false })
   @ApiQuery({ name: 'followedById', required: false })
+  @ApiQuery({ name: 'tags', required: false })
   @ApiResponse({
     status: 200,
     description: 'Polls are fetched successfully.',
@@ -117,11 +112,14 @@ export class PollController {
     likedById?: string,
     @Query('followedById', new ParseUUIDPipe({ optional: true }))
     followedById?: string,
+    @Query('tags', new ParseArrayPipe({ optional: true }))
+    tags?: Array<string>,
   ): Promise<any> {
     return await this.pollService.findAll({
       creatorId,
       likedById,
       followedById,
+      tags,
     });
   }
 
@@ -143,6 +141,7 @@ export class PollController {
       creatorId,
       likedById: null,
       followedById: null,
+      tags: null,
     });
   }
 
@@ -163,6 +162,7 @@ export class PollController {
       creatorId: null,
       likedById: userId,
       followedById: null,
+      tags: null,
     });
   }
 
@@ -183,6 +183,7 @@ export class PollController {
       creatorId: null,
       likedById: null,
       followedById: userId,
+      tags: null,
     });
   }
 

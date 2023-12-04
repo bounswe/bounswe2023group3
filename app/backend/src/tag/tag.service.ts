@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { CreateTagDto } from './dto/create-tag.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Tag } from './entities/tag.entity';
-import { Repository } from 'typeorm';
+import { In, Repository } from 'typeorm';
 
 @Injectable()
 export class TagService {
@@ -27,5 +27,15 @@ export class TagService {
 
   public async remove(id: string): Promise<void> {
     await this.tagRepository.delete(id);
+  }
+
+  public async getTagIdsFromTagNames(tagNames): Promise<string[]> {
+    const tags = await this.tagRepository.find({
+      where: { name: In(tagNames) },
+    });
+
+    // Extract the ids from the tags array
+    const tagIds = tags.map((tag) => tag.id);
+    return tagIds;
   }
 }
