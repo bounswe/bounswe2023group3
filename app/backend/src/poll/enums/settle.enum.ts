@@ -1,6 +1,6 @@
 export enum Settle {
-    ACTIVE,
-    PENDING,
-    SETTLED,
-    CANCELLED,
+  ACTIVE,
+  PENDING,
+  SETTLED,
+  CANCELLED,
 }

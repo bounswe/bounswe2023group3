@@ -13,7 +13,7 @@ export class CommentService {
     private pollService: PollService
   ) {}
 
-  async fetchLikes(pollID: string){
+  async fetchComments(pollID: string){
     return await this.commentRepository.find({where : {poll:{id:pollID}}, relations:['user'] })
   }
 

@@ -13,10 +13,12 @@ import { Option } from '../option/entities/option.entity';
 import { UserService } from '../user/user.service';
 import { BadgeService } from '../badge/badge.service';
 import { Report } from '../user/entities/report.entity';
+import { TagModule } from '../tag/tag.module';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([Like, Poll, Tag, User, Badge, Option, Report]),
+    TagModule,
   ],
   controllers: [LikeController],
   providers: [
