@@ -134,6 +134,7 @@ export class PollService {
     likedById,
     followedById,
     sortString,
+    tags,
   }): Promise<Poll[]> {
     if (sortString) {
       if (!Object.values(Sort).includes(sortString)) {
