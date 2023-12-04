@@ -19,6 +19,7 @@ export class PollRepository extends Repository<Poll> {
 
   public async findAll({
     creatorId,
+    approveStatus,
     likedById,
     followedById,
     tags,
@@ -27,6 +28,12 @@ export class PollRepository extends Repository<Poll> {
 
     if (creatorId) {
       queryBuilder.andWhere('poll.creatorId = :creatorId', { creatorId });
+    }
+
+    if (approveStatus != null) {
+      queryBuilder.andWhere('poll.approveStatus = :approveStatus', {
+        approveStatus,
+      });
     }
 
     if (likedById) {

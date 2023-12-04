@@ -35,6 +35,7 @@ export class UserService {
         'badges',
         'followers',
         'followings',
+        'profile_picture'
       ],
     });
   }
@@ -53,6 +54,7 @@ export class UserService {
         'badges',
         'followers',
         'followings',
+        'profile_picture'
       ],
     });
   }

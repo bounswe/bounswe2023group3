@@ -10,6 +10,8 @@ import {
   Req,
   Query,
   ParseArrayPipe,
+  ConflictException,
+  ParseBoolPipe,
 } from '@nestjs/common';
 import { PollService } from './poll.service';
 import { CreatePollDto } from './dto/create-poll.dto';
@@ -24,6 +26,11 @@ import {
 } from './dto/settle-poll-request.dto';
 import { ModeratorGuard } from '../moderator/guards/moderator.guard';
 import { VerificationModeratorGuard } from '../moderator/guards/verification-moderator.guard';
+
+const statusMap = new Map<string,boolean>();
+statusMap.set("pending",null)
+statusMap.set("approved",true)
+statusMap.set("rejected",false)
 
 @ApiBearerAuth()
 @Controller('poll')
@@ -92,6 +99,7 @@ export class PollController {
   }
 
   @ApiQuery({ name: 'creatorId', required: false })
+  @ApiQuery({ name: 'approveStatus', required: false })
   @ApiQuery({ name: 'likedById', required: false })
   @ApiQuery({ name: 'followedById', required: false })
   @ApiQuery({ name: 'tags', required: false })
@@ -108,6 +116,8 @@ export class PollController {
   public async findAll(
     @Query('creatorId', new ParseUUIDPipe({ optional: true }))
     creatorId?: string,
+    @Query('approveStatus', new ParseBoolPipe({ optional: true }))
+    approveStatus?: string,
     @Query('likedById', new ParseUUIDPipe({ optional: true }))
     likedById?: string,
     @Query('followedById', new ParseUUIDPipe({ optional: true }))
@@ -117,6 +127,7 @@ export class PollController {
   ): Promise<any> {
     return await this.pollService.findAll({
       creatorId,
+      approveStatus,
       likedById,
       followedById,
       tags,
@@ -139,10 +150,31 @@ export class PollController {
     const creatorId = req.user.id;
     return await this.pollService.findAll({
       creatorId,
+      approveStatus: null,
       likedById: null,
       followedById: null,
       tags: null,
     });
+  }
+
+  @UseGuards(AuthGuard, VerificationGuard)
+  @ApiQuery({ name: 'get poll with filtered status', required: false })
+  @ApiResponse({
+    status: 200,
+    description: 'Polls are fetched successfully.',
+    type: [GetPollResponseDto],
+  })
+  @ApiResponse({
+    status: 500,
+    description: 'Internal server error, contact with backend team.',
+  })
+  @Get('my-polls/:status')
+  public async findMyPollsWithStatus(@Param('status') status: string, @Req() req: any): Promise<any> {
+    if (!statusMap.has(status)) {
+      throw new ConflictException( status  + " is not a valid status. Status should be one of these: pending, approved, rejected");
+    }
+    const creatorId = req.user.id;
+    return await this.pollService.findPolls(creatorId,statusMap.get(status));
   }
 
   @UseGuards(AuthGuard, VerificationGuard)
@@ -160,6 +192,7 @@ export class PollController {
     const userId = req.user.id;
     return await this.pollService.findAll({
       creatorId: null,
+      approveStatus: null,
       likedById: userId,
       followedById: null,
       tags: null,
@@ -181,6 +214,7 @@ export class PollController {
     const userId = req.user.id;
     return await this.pollService.findAll({
       creatorId: null,
+      approveStatus: null,
       likedById: null,
       followedById: userId,
       tags: null,
