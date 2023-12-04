@@ -9,6 +9,8 @@ import { Repository } from 'typeorm';
 import { CreateUserDto, FollowUserDto } from './dto/create-user.dto';
 import { BadgeService } from '../badge/badge.service';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { Report } from './entities/report.entity';
+import { CreateReportDto } from './dto/create-report.dto';
 
 @Injectable()
 export class UserService {
@@ -16,6 +18,8 @@ export class UserService {
     @InjectRepository(User)
     private readonly userRepository: Repository<User>,
     private readonly badgeService: BadgeService,
+    @InjectRepository(Report)
+    private readonly reportRepository: Repository<Report>,
   ) {}
   public async searchUser(params: { email: string }): Promise<User[]> {
     return await this.userRepository.findBy(params);
@@ -35,7 +39,8 @@ export class UserService {
         'badges',
         'followers',
         'followings',
-        'profile_picture'
+        'profile_picture',
+        'isBanned'
       ],
     });
   }
@@ -54,7 +59,8 @@ export class UserService {
         'badges',
         'followers',
         'followings',
-        'profile_picture'
+        'profile_picture',
+        'isBanned'
       ],
     });
   }
@@ -87,7 +93,8 @@ export class UserService {
         'followings',
         'firstname',
         'lastname',
-        'profile_picture'
+        'profile_picture',
+        'isBanned'
       ],
     });
   }
@@ -174,6 +181,26 @@ export class UserService {
     }
     user.badges.push(badge);
     await this.userRepository.save(user);
+  }
+
+  public async reportUser(reportedId: string, reportDto: CreateReportDto, reporterId: string) {
+    const reportedUser = await this.userRepository.findOne({
+      where: { id: reportedId },
+    });
+    const reporterUser = await this.userRepository.findOne({
+      where: { id: reporterId },
+    });
+    if (!reportedUser || !reporterUser) {
+      throw new NotFoundException('User not found');
+    }
+    const report = this.reportRepository.create({
+      reporter: reporterUser,
+      reported: reportedUser,
+      reason: reportDto.reason,
+    });
+
+    return await this.reportRepository.save(report);
+
   }
 
   public generateCode(): number {

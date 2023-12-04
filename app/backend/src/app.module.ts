@@ -21,6 +21,7 @@ import { Like } from './like/entities/like.entity';
 import { Comment } from './comment/entities/comment.entity';
 import { ConfigModule } from '@nestjs/config';
 import { CommentModule } from './comment/comment.module';
+import { Report } from './user/entities/report.entity';
 
 
 @Module({
@@ -34,7 +35,7 @@ import { CommentModule } from './comment/comment.module';
       port: 5432,
       password: process.env.DB_PASSWORD,
       username: 'postgres',
-      entities: [User, Poll, Tag, Option, Moderator, Badge, Like, Comment],
+      entities: [User, Poll, Tag, Option, Moderator, Badge, Like, Comment, Report],
       database: 'postgres',
       synchronize: true,
       logging: true,

@@ -14,11 +14,12 @@ import { User } from '../user/entities/user.entity';
 import { Badge } from '../badge/entities/badge.entity';
 import { Poll } from '../poll/entities/poll.entity';
 import { BadgeService } from '../badge/badge.service';
+import { Report } from '../user/entities/report.entity';
 import { TagModule } from '../tag/tag.module';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([Like, Poll, Tag, User, Badge, Option, Comment]),
+    TypeOrmModule.forFeature([Like, Poll, Tag, User, Badge, Option, Comment, Report]),
     TagModule,
     JwtModule.register({
       global: true,
