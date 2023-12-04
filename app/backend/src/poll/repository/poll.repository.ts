@@ -19,6 +19,7 @@ export class PollRepository extends Repository<Poll> {
 
   public async findAll({
     creatorId,
+    approveStatus,
     likedById,
     followedById,
   }): Promise<Poll[]> {
@@ -26,6 +27,12 @@ export class PollRepository extends Repository<Poll> {
 
     if (creatorId) {
       queryBuilder.andWhere('poll.creatorId = :creatorId', { creatorId });
+    }
+
+    if (approveStatus != null) {
+      queryBuilder.andWhere('poll.approveStatus = :approveStatus', {
+        approveStatus,
+      });
     }
 
     if (likedById) {
@@ -78,12 +85,12 @@ export class PollRepository extends Repository<Poll> {
         ...entity,
         likeCount: parseInt(
           raw[raw.findIndex((item) => item.poll_id === entity.id)]
-            .pollLikeCount
-          ),
+            .pollLikeCount,
+        ),
         commentCount: parseInt(
           raw[raw.findIndex((item) => item.poll_id === entity.id)]
-            .pollCommentCount
-          ),
+            .pollCommentCount,
+        ),
       };
     });
 
