@@ -24,7 +24,7 @@ export class CommentController {
     description: 'Internal server error, contact with backend team.',
   })
   fetchComments(@Param('pollID') id: string) {
-    return this.commentService.fetchLikes(id);
+    return this.commentService.fetchComments(id);
   }
   
   @Post(':pollID')
