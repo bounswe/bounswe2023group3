@@ -23,6 +23,7 @@ export class PollRepository extends Repository<Poll> {
     likedById,
     followedById,
     sortString,
+    tags,
   }): Promise<Poll[]> {
     const queryBuilder = this.createQueryBuilder('poll');
 
@@ -56,6 +57,22 @@ export class PollRepository extends Repository<Poll> {
         .andWhere('users_followers_user.usersId_1 = :followedById', {
           followedById,
         });
+    }
+
+    if (tags && tags.length > 0) {
+      for (let i = 0; i < tags.length; i++) {
+        const tagId = tags[i];
+        const tagAlias = `tag${i + 1}`;
+
+        console.log('here: ', tagId);
+        queryBuilder
+          .innerJoin(
+            'polls_tags_tags',
+            tagAlias,
+            `${tagAlias}.pollsId = poll.id`,
+          )
+          .andWhere(`${tagAlias}.tagsId = :tagId`, { tagId });
+      }
     }
 
     // Subquery to count likes
