@@ -9,6 +9,7 @@ import {
   UseGuards,
   Req,
   Query,
+  ConflictException,
   ParseBoolPipe,
 } from '@nestjs/common';
 import { PollService } from './poll.service';
@@ -24,6 +25,11 @@ import {
 } from './dto/settle-poll-request.dto';
 import { ModeratorGuard } from '../moderator/guards/moderator.guard';
 import { VerificationModeratorGuard } from '../moderator/guards/verification-moderator.guard';
+
+const statusMap = new Map<string,boolean>();
+statusMap.set("pending",null)
+statusMap.set("approved",true)
+statusMap.set("rejected",false)
 
 @ApiBearerAuth()
 @Controller('poll')
@@ -143,6 +149,26 @@ export class PollController {
       likedById: null,
       followedById: null,
     });
+  }
+
+  @UseGuards(AuthGuard, VerificationGuard)
+  @ApiQuery({ name: 'get poll with filtered status', required: false })
+  @ApiResponse({
+    status: 200,
+    description: 'Polls are fetched successfully.',
+    type: [GetPollResponseDto],
+  })
+  @ApiResponse({
+    status: 500,
+    description: 'Internal server error, contact with backend team.',
+  })
+  @Get('my-polls/:status')
+  public async findMyPollsWithStatus(@Param('status') status: string, @Req() req: any): Promise<any> {
+    if (!statusMap.has(status)) {
+      throw new ConflictException( status  + " is not a valid status. Status should be one of these: pending, approved, rejected");
+    }
+    const creatorId = req.user.id;
+    return await this.pollService.findPolls(creatorId,statusMap.get(status));
   }
 
   @UseGuards(AuthGuard, VerificationGuard)

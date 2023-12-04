@@ -5,7 +5,7 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Poll } from './entities/poll.entity';
-import { Repository } from 'typeorm';
+import { IsNull, Repository } from 'typeorm';
 import { Option } from '../option/entities/option.entity';
 import { Tag } from '../tag/entities/tag.entity';
 import { PollRepository } from './repository/poll.repository';
@@ -137,6 +137,18 @@ export class PollService {
       likedById,
       followedById,
     });
+  }
+
+  public async findPolls(creatorId : string, approveStatus: boolean){
+    return await this.pollRepository.find({
+      where:{
+        approveStatus: approveStatus ?? IsNull(),
+        creator : {
+          id : creatorId
+        }
+      },
+      relations: ['options', 'tags', 'creator', 'outcome'],
+    })
   }
 
   public async findPollById(id) {
