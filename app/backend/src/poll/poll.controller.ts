@@ -10,16 +10,11 @@ import {
   Req,
   Query,
   ConflictException,
+  ParseBoolPipe,
 } from '@nestjs/common';
 import { PollService } from './poll.service';
 import { CreatePollDto } from './dto/create-poll.dto';
-import {
-  ApiBearerAuth,
-  ApiOkResponse,
-  ApiQuery,
-  ApiResponse,
-  ApiTags,
-} from '@nestjs/swagger';
+import { ApiBearerAuth, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { AuthGuard } from '../auth/guards/auth.guard';
 import { VerificationGuard } from '../auth/guards/verification.guard';
 import { CreatePollResponseDto } from './dto/responses/create-poll-response.dto';
@@ -103,6 +98,7 @@ export class PollController {
   }
 
   @ApiQuery({ name: 'creatorId', required: false })
+  @ApiQuery({ name: 'approveStatus', required: false })
   @ApiQuery({ name: 'likedById', required: false })
   @ApiQuery({ name: 'followedById', required: false })
   @ApiResponse({
@@ -118,6 +114,8 @@ export class PollController {
   public async findAll(
     @Query('creatorId', new ParseUUIDPipe({ optional: true }))
     creatorId?: string,
+    @Query('approveStatus', new ParseBoolPipe({ optional: true }))
+    approveStatus?: string,
     @Query('likedById', new ParseUUIDPipe({ optional: true }))
     likedById?: string,
     @Query('followedById', new ParseUUIDPipe({ optional: true }))
@@ -125,6 +123,7 @@ export class PollController {
   ): Promise<any> {
     return await this.pollService.findAll({
       creatorId,
+      approveStatus,
       likedById,
       followedById,
     });
@@ -146,6 +145,7 @@ export class PollController {
     const creatorId = req.user.id;
     return await this.pollService.findAll({
       creatorId,
+      approveStatus: null,
       likedById: null,
       followedById: null,
     });
@@ -186,6 +186,7 @@ export class PollController {
     const userId = req.user.id;
     return await this.pollService.findAll({
       creatorId: null,
+      approveStatus: null,
       likedById: userId,
       followedById: null,
     });
@@ -206,6 +207,7 @@ export class PollController {
     const userId = req.user.id;
     return await this.pollService.findAll({
       creatorId: null,
+      approveStatus: null,
       likedById: null,
       followedById: userId,
     });

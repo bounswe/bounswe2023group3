@@ -34,6 +34,9 @@ export class User {
   @Column({ nullable: true, default: null })
   lastname: string;
 
+  @Column({ nullable: true, default: null })
+  profile_picture: string;
+
   @Column({ nullable: false, default: false })
   isVerified: boolean;
 

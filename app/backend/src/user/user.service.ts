@@ -8,6 +8,7 @@ import { User } from './entities/user.entity';
 import { Repository } from 'typeorm';
 import { CreateUserDto, FollowUserDto } from './dto/create-user.dto';
 import { BadgeService } from '../badge/badge.service';
+import { UpdateUserDto } from './dto/update-user.dto';
 
 @Injectable()
 export class UserService {
@@ -34,6 +35,7 @@ export class UserService {
         'badges',
         'followers',
         'followings',
+        'profile_picture'
       ],
     });
   }
@@ -52,6 +54,7 @@ export class UserService {
         'badges',
         'followers',
         'followings',
+        'profile_picture'
       ],
     });
   }
@@ -84,6 +87,7 @@ export class UserService {
         'followings',
         'firstname',
         'lastname',
+        'profile_picture'
       ],
     });
   }
@@ -142,7 +146,7 @@ export class UserService {
     await this.userRepository.save(authUser);
   }
 
-  public async updateById(id: string, updateUserDto: any): Promise<void> {
+  public async updateById(id: string, updateUserDto: UpdateUserDto): Promise<void> {
     await this.userRepository.update(id, updateUserDto);
   }
 
