@@ -144,7 +144,8 @@ export class PollService {
         creator : {
           id : creatorId
         }
-      }
+      },
+      relations: ['options', 'tags', 'creator', 'outcome'],
     })
   }
 
