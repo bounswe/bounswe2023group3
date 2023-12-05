@@ -135,17 +135,18 @@ export class PollService {
     followedById,
     sortString,
     tags,
+    userId,
   }): Promise<Poll[]> {
     if (sortString) {
       if (!Object.values(Sort).includes(sortString)) {
         throw new BadRequestException("Sort should be 'ASC' or 'DESC'");
       }
     }
-    
+
     if (tags) {
       tags = await this.tagService.getTagIdsFromTagNames(tags);
     }
-    
+
     return await this.pollRepository.findAll({
       creatorId,
       approveStatus,
@@ -153,19 +154,20 @@ export class PollService {
       followedById,
       sortString,
       tags,
+      userId,
     });
   }
 
-  public async findPolls(creatorId : string, approveStatus: boolean){
+  public async findPolls(creatorId: string, approveStatus: boolean) {
     return await this.pollRepository.find({
-      where:{
+      where: {
         approveStatus: approveStatus ?? IsNull(),
-        creator : {
-          id : creatorId
-        }
+        creator: {
+          id: creatorId,
+        },
       },
       relations: ['options', 'tags', 'creator', 'outcome'],
-    })
+    });
   }
 
   public async findPollById(id) {

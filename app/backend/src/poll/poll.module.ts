@@ -29,7 +29,7 @@ import { TagModule } from '../tag/tag.module';
       Moderator,
       Like,
       Comment,
-      Report
+      Report,
     ]),
     TagModule,
   ],
