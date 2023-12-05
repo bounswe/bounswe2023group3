@@ -129,7 +129,7 @@ export class PollController {
     @Query('tags', new ParseArrayPipe({ optional: true }))
     tags?: Array<string>,
   ): Promise<any> {
-    const userId = req.user?.id;
+    const userId = req.user?.sub; // Realize that it is not id instead sub. I do not know why but middleware gives this field.
     return await this.pollService.findAll({
       creatorId,
       approveStatus,
@@ -251,8 +251,12 @@ export class PollController {
     status: 500,
     description: 'Internal server error, contact with backend team.',
   })
-  public async findOne(@Param('id', ParseUUIDPipe) id: string): Promise<any> {
-    return await this.pollService.findPollById(id);
+  public async findOne(
+    @Param('id', ParseUUIDPipe) pollId: string,
+    @Req() req: any,
+  ): Promise<any> {
+    const userId = req.user?.sub; // Realize that it is not id instead sub. I do not know why but middleware gives this field.
+    return await this.pollService.findPollById(pollId, userId);
   }
 
   @ApiResponse({ status: 200, description: 'Poll deleted successfully.' })
