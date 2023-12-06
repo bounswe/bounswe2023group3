@@ -23,48 +23,8 @@ body {
 .question:hover {
   text-decoration: underline;
 }
+
 .heart-image {
-  padding: 3px;
+  padding: 2px;
   vertical-align: middle;
-}
-
-.popup-options:hover {
-  background-color: #96b7bb;
-  border-radius: 10px;
-}
-
-.popup {
-  position: relative;
-  float: right;
-  cursor: pointer;
-  margin-right: px;
-  background-color: #f7f3f3;
-  border-radius: 5px;
-}
-
-.popup .popuptext {
-  margin: 2px;
-  visibility: visible;
-  animation: fadeIn 1s;
-  width: 160px;
-  background-color: #f7f3f3;
-  color: black;
-  text-align: center;
-  border-radius: 8px;
-  padding: 8px;
-  z-index: 1;
-}
-
-.popup .popuptext:hover {
-  visibility: visible;
-  background-color: rgb(182, 181, 181);
-}
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
 }
