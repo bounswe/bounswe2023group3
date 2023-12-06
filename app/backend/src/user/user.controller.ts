@@ -22,6 +22,7 @@ import { GetUserResponseDto } from './dto/responses/get-user-response.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { GetReportResponseDto } from './dto/responses/get-report.response.dto';
 import { CreateReportDto } from './dto/create-report.dto';
+import { ChangePasswordDto } from './dto/change-password.dto';
 
 @ApiBearerAuth()
 @Controller('user')
@@ -134,6 +135,24 @@ export class UserController {
   public async update(@Req() request: any, @Body() updateUserDto: UpdateUserDto) {
     return await this.userService.updateById(request.user.id, updateUserDto);
   }
+
+
+  @ApiResponse({
+    status: 200,
+    description: 'Update user request successful.',
+  })
+  @ApiResponse({ status: 404, description: 'User is not found.' })
+  @ApiResponse({
+    status: 500,
+    description: 'Internal server error, contact with backend team.',
+  })
+  @Put('password')
+  @UseGuards(AuthGuard, VerificationGuard)
+  public async changePassword(@Req() request: any, @Body() changePasswordDto: ChangePasswordDto) {
+    return await this.userService.changePassword(request.user.id, changePasswordDto);
+  }
+
+
 
   @ApiResponse({
     status: 200,
