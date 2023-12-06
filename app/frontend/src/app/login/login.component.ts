@@ -32,7 +32,13 @@ export class LoginComponent {
           // Registration successful, handle the response as needed
           console.log('Login success:', response)
           //this.errorMessage = 'Login success'
-          this.router.navigate(['/app-home'])
+          if (response.user.isVerified) {
+            // User is verified, navigate to home
+            this.router.navigate(['/app-home']);
+          } else {
+            // User is not verified, navigate to verification page
+            this.router.navigate(['/app-verify']);
+          }
         },
         (error) => {
           // Registration failed, handle the error as needed
