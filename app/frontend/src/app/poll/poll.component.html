@@ -118,16 +118,26 @@
             height: 35 px;
           "
           (click)="toggleLike()"
-        ><img *ngIf="isLikedBy" src="assets/heart2.png" class="heart-image" />
-        <img *ngIf="!isLikedBy" src="assets/heart1.png" class="heart-image" />
-      
-          {{ nofLikes }} Like(s)
-          </div>
+        >
+          <img *ngIf="isLikedBy" src="assets/heart2.png" class="heart-image" />
+          <img *ngIf="!isLikedBy" src="assets/heart1.png" class="heart-image" />
 
-        <p style="text-align: center; margin-right: 60px; margin-top: 26px; font-size: small;">
+          {{ nofLikes }} Like(s)
+        </div>
+
+        <p
+          style="
+            text-align: center;
+            margin-right: 60px;
+            margin-top: 26px;
+            font-size: small;
+          "
+        >
           {{ comment_count }} Comment(s)
         </p>
-        <p style="text-align: right; margin-top: 26px; margin-right: 5px;">{{ creation_time }}</p>
+        <p style="text-align: right; margin-top: 26px; margin-right: 5px">
+          {{ creation_time }}
+        </p>
       </div>
     </div>
   </body>

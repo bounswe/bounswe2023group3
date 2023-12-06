@@ -24,8 +24,8 @@ export class AuthService {
         localStorage.setItem('username', response.user.username)
         localStorage.setItem('firstname', response.user.firstname)
         localStorage.setItem('lastname', response.user.lastname)
-        localStorage.setItem('profile_picture', response.user.profile_picture);
-        localStorage.setItem('isVerified', response.user.isVerified);
+        localStorage.setItem('profile_picture', response.user.profile_picture)
+        localStorage.setItem('isVerified', response.user.isVerified)
       }),
       catchError(this.handleError('Login', {})),
     )
@@ -66,8 +66,14 @@ export class AuthService {
   // Assuming `getToken()` is a method in your class that returns the authentication token.
 
   // User registration
-  register(email: string, password: string, username: string, firstname:string, lastname:string, ): Observable<any> {
-    const user = {email, password, username, firstname, lastname }
+  register(
+    email: string,
+    password: string,
+    username: string,
+    firstname: string,
+    lastname: string,
+  ): Observable<any> {
+    const user = { email, password, username, firstname, lastname }
     return this.http
       .post<any>(`${this.apiUrl}/register`, user)
       .pipe(catchError(this.handleError('Registration', {})))

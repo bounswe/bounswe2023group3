@@ -39,8 +39,8 @@ export class PollRequestComponent implements OnInit {
   }
 
   deleteTag(index: number): void {
-    const tags = this.pollForm.get('tags') as FormArray;
-    tags.removeAt(index);
+    const tags = this.pollForm.get('tags') as FormArray
+    tags.removeAt(index)
   }
 
   addOption() {
@@ -48,8 +48,8 @@ export class PollRequestComponent implements OnInit {
   }
 
   deleteOption(index: number): void {
-    const options = this.pollForm.get('options') as FormArray;
-    options.removeAt(index);
+    const options = this.pollForm.get('options') as FormArray
+    options.removeAt(index)
   }
 
   ngOnInit(): void {}

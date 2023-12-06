@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http'
-import { Component, Input, NgModule } from '@angular/core';
+import { Component, Input, NgModule } from '@angular/core'
 import { Router } from '@angular/router'
 import { UserService } from 'src/services/user-service/user.service'
 import { MatDialog, MatDialogModule } from '@angular/material/dialog'
@@ -7,11 +7,10 @@ import { ConfirmModelComponent } from '../confirm-model/confirm-model.component'
 import { UserSettleRequestComponent } from '../user-settle-request/user-settle-request.component'
 import { MatFormFieldModule } from '@angular/material/form-field'
 
-
 @Component({
   selector: 'app-settled-poll',
   templateUrl: './settled-poll.component.html',
-  styleUrls: ['./settled-poll.component.css']
+  styleUrls: ['./settled-poll.component.css'],
 })
 export class SettledPollComponent {
   @Input() pollId!: string
@@ -67,7 +66,6 @@ export class SettledPollComponent {
     })
   }
 
-  
   ngOnInit() {
     this.userId = localStorage.getItem('user_id')
     if (this.userId) {
@@ -193,6 +191,4 @@ export class SettledPollComponent {
       },
     )
   }
-
 }
-

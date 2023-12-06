@@ -1,76 +1,75 @@
 body {
-    background-color: #9dc0c4;
-    height: 70%;
-    margin: 0;
-    padding: 0;
+  background-color: #9dc0c4;
+  height: 70%;
+  margin: 0;
+  padding: 0;
+}
+.container {
+  background-color: #202a40;
+  padding: 20px;
+  margin: 0;
+  color: #f7f3f3;
+}
+.button {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  background-color: #374968;
+  text-align: center;
+  cursor: pointer;
+  border-radius: 15px;
+  color: #fff;
+  border: none;
+}
+.question:hover {
+  text-decoration: underline;
+}
+.heart-image {
+  padding: 2px;
+  vertical-align: middle;
+}
+
+.popup-options:hover {
+  background-color: #374968;
+  border-radius: 10px;
+}
+
+.popup {
+  position: absolute;
+  top: 20px;
+  right: 50px;
+  z-index: 1000;
+  float: right;
+  cursor: pointer;
+  margin-right: px;
+  background-color: #f7f3f3;
+  border-radius: 5px;
+}
+
+.popup .popuptext {
+  margin: 2px;
+  visibility: visible;
+  animation: fadeIn 1s;
+  width: 160px;
+  background-color: #f7f3f3;
+  color: black;
+  text-align: center;
+  border-radius: 8px;
+  padding: 8px;
+  z-index: 1;
+}
+
+.popup .popuptext:hover {
+  visibility: visible;
+  background-color: rgb(182, 181, 181);
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
   }
-  .container {
-    background-color: #202A40;
-    padding: 20px;
-    margin: 0;
-    color: #f7f3f3;
+  to {
+    opacity: 1;
   }
-  .button {
-    display: block;
-    width: 100%;
-    padding: 10px;
-    margin-bottom: 10px;
-    background-color: #374968;
-    text-align: center;
-    cursor: pointer;
-    border-radius: 15px;
-    color: #fff;
-    border: none;
-  }
-  .question:hover {
-    text-decoration: underline;
-  }
-  .heart-image {
-    padding: 2px;
-    vertical-align: middle;
-  }
-  
-  .popup-options:hover {
-    background-color: #374968;
-    border-radius: 10px;
-  }
-  
-  .popup {
-    position: absolute;
-    top: 20px;
-    right: 50px;
-    z-index: 1000;
-    float: right;
-    cursor: pointer;
-    margin-right: px;
-    background-color: #f7f3f3;
-    border-radius: 5px;
-  }
-  
-  .popup .popuptext {
-    margin: 2px;
-    visibility: visible;
-    animation: fadeIn 1s;
-    width: 160px;
-    background-color: #f7f3f3;
-    color: black;
-    text-align: center;
-    border-radius: 8px;
-    padding: 8px;
-    z-index: 1;
-  }
-  
-  .popup .popuptext:hover {
-    visibility: visible;
-    background-color: rgb(182, 181, 181);
-  }
-  
-  @keyframes fadeIn {
-    from {
-      opacity: 0;
-    }
-    to {
-      opacity: 1;
-    }
-  }
-  
+}

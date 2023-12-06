@@ -37,24 +37,37 @@
               style="position: relative"
             >
               <div class="comment-user">
-
-                <img [src]="comment.user?.profile_picture || 'user-avatar.png'" alt="User Avatar" />
+                <img
+                  [src]="comment.user?.profile_picture || 'user-avatar.png'"
+                  alt="User Avatar"
+                />
                 <span class="user-info">
                   <p>&#64;{{ comment.user.username }} • Date</p>
                 </span>
                 <img
-              [class.blurred]="!isAuthenticated"
-              class="popup-options"
-              style="position: absolute; right: 2px ; width: 4%; height: 30%; cursor: pointer; background-color: #e1e8ed;"
-              src="assets/three-dots.png"
-              (click)="openPopup(comment.id)"
-            />
-            <div class="popup" *ngIf="isPopupOpen(comment.id)" style="background-color: #c8d5de;">
-              <div class="popuptext" (click)="deleteComment(comment.id)">
-                Delete Comment
-              </div>
-              <div class="popuptext">Report Comment</div>
-            </div>
+                  [class.blurred]="!isAuthenticated"
+                  class="popup-options"
+                  style="
+                    position: absolute;
+                    right: 2px;
+                    width: 4%;
+                    height: 30%;
+                    cursor: pointer;
+                    background-color: #e1e8ed;
+                  "
+                  src="assets/three-dots.png"
+                  (click)="openPopup(comment.id)"
+                />
+                <div
+                  class="popup"
+                  *ngIf="isPopupOpen(comment.id)"
+                  style="background-color: #c8d5de"
+                >
+                  <div class="popuptext" (click)="deleteComment(comment.id)">
+                    Delete Comment
+                  </div>
+                  <div class="popuptext">Report Comment</div>
+                </div>
               </div>
               <p>{{ comment.description }}</p>
             </div>

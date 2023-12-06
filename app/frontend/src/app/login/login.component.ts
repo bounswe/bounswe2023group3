@@ -34,10 +34,10 @@ export class LoginComponent {
           //this.errorMessage = 'Login success'
           if (response.user.isVerified) {
             // User is verified, navigate to home
-            this.router.navigate(['/app-home']);
+            this.router.navigate(['/app-home'])
           } else {
             // User is not verified, navigate to verification page
-            this.router.navigate(['/app-verify']);
+            this.router.navigate(['/app-verify'])
           }
         },
         (error) => {

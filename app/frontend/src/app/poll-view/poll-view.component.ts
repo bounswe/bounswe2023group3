@@ -14,7 +14,7 @@ export class PollViewComponent {
   isAuthenticated: boolean = false
   showPopup = false
 
-  selectedCommentId: string | null = null;
+  selectedCommentId: string | null = null
   constructor(
     private http: HttpClient,
     private route: ActivatedRoute,
@@ -45,7 +45,6 @@ export class PollViewComponent {
     const body = {
       description: this.description,
     }
-  
 
     const token = this.getToken()
     const headers = new HttpHeaders({
@@ -70,39 +69,41 @@ export class PollViewComponent {
   }
 
   deleteComment(commentId: string) {
-    const token = this.getToken();
+    const token = this.getToken()
     const headers = new HttpHeaders({
       Authorization: `Bearer ${token}`,
-    });
-  
-    const options = { headers };
-  
+    })
+
+    const options = { headers }
+
     this.http
       .delete(`http://34.105.66.254:1923/comment/${this.pollId}`, options)
       .subscribe(
         (response) => {
-          console.log('Comment deleted', response);
+          console.log('Comment deleted', response)
           // Remove the deleted comment from the local array
-          this.comments = this.comments.filter(comment => comment.id !== commentId);
+          this.comments = this.comments.filter(
+            (comment) => comment.id !== commentId,
+          )
         },
         (error) => {
-          console.error('Error deleting comment', error);
-        }
-      );
+          console.error('Error deleting comment', error)
+        },
+      )
   }
 
   openPopup(commentId: string) {
     if (this.selectedCommentId === commentId) {
       // Clicked on the same comment, close the popup
-      this.showPopup = !this.showPopup;
+      this.showPopup = !this.showPopup
     } else {
       // Clicked on a different comment, open the popup
-      this.selectedCommentId = commentId;
-      this.showPopup = true;
+      this.selectedCommentId = commentId
+      this.showPopup = true
     }
   }
 
   isPopupOpen(commentId: string): boolean {
-    return this.showPopup && this.selectedCommentId === commentId;
+    return this.showPopup && this.selectedCommentId === commentId
   }
 }

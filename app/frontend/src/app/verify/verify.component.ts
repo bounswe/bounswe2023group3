@@ -1,7 +1,7 @@
 import { Component } from '@angular/core'
 import { HttpClient } from '@angular/common/http'
 import { Router } from '@angular/router'
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms'
 
 @Component({
   selector: 'app-verify',
@@ -9,25 +9,28 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
   styleUrls: ['./verify.component.css'],
 })
 export class VerifyComponent {
-  verificationForm: FormGroup;
+  verificationForm: FormGroup
   verificationCode!: number
   email!: string
   errorMessage: string = ''
   constructor(
     private http: HttpClient,
     private router: Router,
-    private formBuilder: FormBuilder
-    ) {
-      this.verificationForm = this.formBuilder.group({
-        email: ['', [Validators.required, Validators.email]],
-        verificationCode: ['', [Validators.required, Validators.pattern(/^\d{4}$/)]],
-      });
-    }
+    private formBuilder: FormBuilder,
+  ) {
+    this.verificationForm = this.formBuilder.group({
+      email: ['', [Validators.required, Validators.email]],
+      verificationCode: [
+        '',
+        [Validators.required, Validators.pattern(/^\d{4}$/)],
+      ],
+    })
+  }
 
   onSubmit() {
     const userCredentials = {
       email: this.email,
-      verificationCode: +this.verificationCode
+      verificationCode: +this.verificationCode,
     }
 
     console.log(userCredentials)

@@ -28,13 +28,15 @@ button[disabled] {
   cursor: not-allowed;
 }
 
-.tag-item, .option-item {
+.tag-item,
+.option-item {
   margin-left: 7px;
   align-items: center;
   margin-bottom: 10px;
 }
 
-.tag-input-container, .option-input-container{
+.tag-input-container,
+.option-input-container {
   display: flex;
   align-items: center;
 }
@@ -65,7 +67,6 @@ button[disabled] {
   justify-content: center;
   margin-bottom: 10px;
 }
-
 
 /* Style for the SVG icon */
 .delete-button svg {

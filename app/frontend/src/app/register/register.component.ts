@@ -23,24 +23,30 @@ export class RegisterComponent implements OnInit {
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]],
       username: ['', [Validators.required, Validators.minLength(8)]],
-      firstname: ['', [Validators.required, Validators.pattern(/^[a-zA-Z ]*$/)]],
+      firstname: [
+        '',
+        [Validators.required, Validators.pattern(/^[a-zA-Z ]*$/)],
+      ],
       lastname: ['', [Validators.required, Validators.pattern(/^[a-zA-Z ]*$/)]],
     })
   }
   onSubmit() {
     if (this.registrationForm.valid) {
-      const { email, password, username, firstname, lastname } = this.registrationForm.value
-      this.authService.register(email, password, username, firstname, lastname).subscribe(
-        (response) => {
-          // Registration successful, handle the response as needed
-          console.log('Registration success:', response)
-          this.router.navigate(['/app-login'])
-        },
-        (error) => {
-          // Registration failed, handle the error as needed
-          console.error('Registration error:', error)
-        },
-      )
+      const { email, password, username, firstname, lastname } =
+        this.registrationForm.value
+      this.authService
+        .register(email, password, username, firstname, lastname)
+        .subscribe(
+          (response) => {
+            // Registration successful, handle the response as needed
+            console.log('Registration success:', response)
+            this.router.navigate(['/app-login'])
+          },
+          (error) => {
+            // Registration failed, handle the error as needed
+            console.error('Registration error:', error)
+          },
+        )
     }
   }
 }
