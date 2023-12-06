@@ -18,12 +18,13 @@ import { ModeratorAuthGuard } from './moderator-authorize.guard'
 import { VerificationComponent } from './verification/verification.component'
 import { ModeratorPollReviewComponent } from './moderator-poll-review/moderator-poll-review.component'
 import { VerifyComponent } from './verify/verify.component'
+import { SettledPollComponent } from './settled-poll/settled-poll.component'
 
 const routes: Routes = [
   { path: '', component: WelcomeComponent },
   { path: 'app-moderator-login', component: ModeratorLoginComponent },
   { path: 'app-verify', component: VerifyComponent },
-
+  { path: 'app-settled-poll', component: SettledPollComponent },
   {
     path: 'app-moderator-requests',
     component: ModeratorRequestsComponent,
