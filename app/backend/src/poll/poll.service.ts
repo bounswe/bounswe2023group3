@@ -173,7 +173,7 @@ export class PollService {
     });
   }
 
-  public async findPollById(pollId, userId) {
+  public async findPollById(pollId, userId?) {
     const poll = await this.pollRepository.findOne({
       where: { id: pollId },
       relations: ['options', 'tags', 'creator', 'outcome'],
