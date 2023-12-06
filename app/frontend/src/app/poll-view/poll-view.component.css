@@ -84,7 +84,7 @@ button[type='submit']:hover {
 }
 
 .all-comments-container {
-  width: calc(100% - 5px);
+  width: 100%;
 }
 
 .comment-wrapper {
@@ -130,3 +130,15 @@ button[type='submit']:hover {
   line-height: 1.4;
   color: #333;
 }
+
+.popup-options:hover {
+  background-color: #c8d5de !important;
+  border-radius: 50% !important;
+}
+
+.popup .popuptext:hover {
+  visibility: visible;
+  background-color: #a4b9c8;
+}
+
+
