@@ -81,7 +81,7 @@ export class Poll {
   @Column('int', { default: Settle.ACTIVE })
   is_settled: Settle;
 
-  @Column({ nullable: false })
+  @Column({ nullable: true })
   settle_poll_request_feedback: string;
 
   @Column({ nullable: true })
