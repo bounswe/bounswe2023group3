@@ -1,4 +1,9 @@
-import { Module } from '@nestjs/common';
+import {
+  MiddlewareConsumer,
+  Module,
+  NestModule,
+  RequestMethod,
+} from '@nestjs/common';
 import { PollService } from './poll.service';
 import { PollController } from './poll.controller';
 import { Poll } from './entities/poll.entity';
@@ -12,11 +17,28 @@ import { Badge } from '../badge/entities/badge.entity';
 import { BadgeService } from '../badge/badge.service';
 import { Moderator } from '../moderator/entities/moderator.entity';
 import { ModeratorService } from '../moderator/moderator.service';
+import { TagService } from '../tag/tag.service';
 import { Like } from '../like/entities/like.entity';
 import { Comment } from '../comment/entities/comment.entity';
+import { Report } from '../user/entities/report.entity';
+import { TagModule } from '../tag/tag.module';
+import { TokenDecoderMiddleware } from '../auth/middlewares/tokenDecoder.middleware';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Poll, Option, Tag, User, Badge, Moderator,Like,Comment])],
+  imports: [
+    TypeOrmModule.forFeature([
+      Poll,
+      Option,
+      Tag,
+      User,
+      Badge,
+      Moderator,
+      Like,
+      Comment,
+      Report,
+    ]),
+    TagModule,
+  ],
   controllers: [PollController],
   providers: [
     PollService,
@@ -24,7 +46,17 @@ import { Comment } from '../comment/entities/comment.entity';
     PollRepository,
     BadgeService,
     ModeratorService,
+    TagService,
   ],
   exports: [PollService],
 })
-export class PollModule {}
+export class PollModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer
+      .apply(TokenDecoderMiddleware)
+      .forRoutes(
+        { path: '/poll', method: RequestMethod.GET },
+        { path: '/poll/:param', method: RequestMethod.GET },
+      );
+  }
+}

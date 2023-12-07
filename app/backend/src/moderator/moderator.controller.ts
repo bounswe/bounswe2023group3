@@ -5,6 +5,7 @@ import {
   Get,
   Param,
   Post,
+  Put,
   UseGuards,
 } from '@nestjs/common';
 import { ModeratorService } from './moderator.service';
@@ -19,6 +20,7 @@ import { RegisterResponseDto } from './dto/responses/register-response.dto';
 import { LoginResponseDto } from './dto/responses/login-response.dto';
 import { GetModeratorResponseDto } from './dto/responses/get-moderator-response.dto';
 import { GetPollResponseDto } from '../poll/dto/responses/get-poll-response.dto';
+import { GetReportResponseDto } from '../user/dto/responses/get-report.response.dto';
 
 @ApiBearerAuth()
 @Controller('moderator')
@@ -97,6 +99,30 @@ export class ModeratorController {
     return await this.moderatorService.fetchUnapprovedPolls();
   }
 
+  @UseGuards(ModeratorGuard, VerificationModeratorGuard)
+  @Get('reports')
+  @ApiResponse({ status: 200, description: 'Reports are fetched successfully.', type: [GetReportResponseDto] })
+  @ApiResponse({
+    status: 500,
+    description: 'Internal server error, contact with backend team.',
+  })
+  public async fetchReports(): Promise<GetReportResponseDto[]> {
+    return await this.moderatorService.fetchReports();
+  }
+
+  @UseGuards(ModeratorGuard, VerificationModeratorGuard)
+  @Put('reports/:reportId')
+  @ApiResponse({ status: 200, description: 'User is banned successfully.' })
+  @ApiResponse({ status: 404, description: 'User is not found.' })
+  @ApiResponse({
+    status: 500,
+    description: 'Internal server error, contact with backend team.',
+  })
+  public async banUser(@Param('reportId') reportId: string) {
+    return await this.moderatorService.banUser(reportId);
+  }
+
+
   @Get(':id')
   @ApiResponse({ status: 200, description: 'Moderator is fetched successfully.', type: GetModeratorResponseDto })
   @ApiResponse({
@@ -129,4 +155,6 @@ export class ModeratorController {
   public async approve(@Param('id') id : string, @Body() approveDto: ApproveDTO){
     return await this.moderatorService.approve_disapprove(id,approveDto);
   }
+
+
 }

@@ -31,7 +31,7 @@
       <div class="post-widget" style="display: flex; align-items: start">
         <img
           class="user-avatar"
-          src="assets/unknown.jpg"
+          [src]="creator?.profile_picture || 'assets/unknown.jpg'"
           alt="User Avatar"
           style="
             width: 50px;
@@ -53,7 +53,7 @@
           "
         >
           <b class="name" style="font-size: small; margin-top: 12px">{{
-            creator.username
+            creator.firstname
           }}</b>
           <p class="user-name" style="font-size: small; margin-top: 3px">
             &#64;{{ creator.username }}
@@ -87,7 +87,7 @@
           </button>
         </div>
         <p style="text-align: right; font-size: smaller">
-          {{ vote_count }} Votes
+          {{ vote_count }} Vote(s)
         </p>
       </div>
 
@@ -119,15 +119,25 @@
           "
           (click)="toggleLike()"
         >
-          {{ nofLikes }}
           <img *ngIf="isLikedBy" src="assets/heart2.png" class="heart-image" />
           <img *ngIf="!isLikedBy" src="assets/heart1.png" class="heart-image" />
+
+          {{ nofLikes }} Like(s)
         </div>
 
-        <p style="text-align: center; margin-right: 170px; margin-left: 100px">
-          {{ comment_count }} Comments
+        <p
+          style="
+            text-align: center;
+            margin-right: 60px;
+            margin-top: 26px;
+            font-size: small;
+          "
+        >
+          {{ comment_count }} Comment(s)
         </p>
-        <p style="text-align: right">{{ creation_time }}</p>
+        <p style="text-align: right; margin-top: 26px; margin-right: 5px">
+          {{ creation_time }}
+        </p>
       </div>
     </div>
   </body>

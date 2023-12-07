@@ -11,6 +11,7 @@ export class HomeComponent {
   polls!: any[]
   following!: any[]
   isAuthenticated: boolean = false
+  settledMode!: boolean
 
   options!: any
 
@@ -40,9 +41,11 @@ export class HomeComponent {
         for (const r of response) {
           if (!r.is_settled && !isSettled) {
             this.polls.push(r)
+            this.settledMode = false
           }
           if (r.is_settled && isSettled) {
             this.polls.push(r)
+            this.settledMode = true
           }
         }
       },

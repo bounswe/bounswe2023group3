@@ -88,4 +88,8 @@ export class GetPollResponseDto {
     },
   })
   creator: User;
+  @ApiProperty({
+    example: true,
+  })
+  didLike: boolean;
 }

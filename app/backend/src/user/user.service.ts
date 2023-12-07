@@ -8,6 +8,10 @@ import { User } from './entities/user.entity';
 import { Repository } from 'typeorm';
 import { CreateUserDto, FollowUserDto } from './dto/create-user.dto';
 import { BadgeService } from '../badge/badge.service';
+import { UpdateUserDto } from './dto/update-user.dto';
+import { Report } from './entities/report.entity';
+import { CreateReportDto } from './dto/create-report.dto';
+import { ChangePasswordDto } from './dto/change-password.dto';
 
 @Injectable()
 export class UserService {
@@ -15,6 +19,8 @@ export class UserService {
     @InjectRepository(User)
     private readonly userRepository: Repository<User>,
     private readonly badgeService: BadgeService,
+    @InjectRepository(Report)
+    private readonly reportRepository: Repository<Report>,
   ) {}
   public async searchUser(params: { email: string }): Promise<User[]> {
     return await this.userRepository.findBy(params);
@@ -34,6 +40,8 @@ export class UserService {
         'badges',
         'followers',
         'followings',
+        'profile_picture',
+        'isBanned'
       ],
     });
   }
@@ -52,6 +60,8 @@ export class UserService {
         'badges',
         'followers',
         'followings',
+        'profile_picture',
+        'isBanned'
       ],
     });
   }
@@ -84,6 +94,8 @@ export class UserService {
         'followings',
         'firstname',
         'lastname',
+        'profile_picture',
+        'isBanned'
       ],
     });
   }
@@ -142,7 +154,7 @@ export class UserService {
     await this.userRepository.save(authUser);
   }
 
-  public async updateById(id: string, updateUserDto: any): Promise<void> {
+  public async updateById(id: string, updateUserDto: UpdateUserDto): Promise<void> {
     await this.userRepository.update(id, updateUserDto);
   }
 
@@ -169,6 +181,46 @@ export class UserService {
       throw new ConflictException('User already has this badge');
     }
     user.badges.push(badge);
+    await this.userRepository.save(user);
+  }
+
+  public async reportUser(reportedId: string, reportDto: CreateReportDto, reporterId: string) {
+    const reportedUser = await this.userRepository.findOne({
+      where: { id: reportedId },
+    });
+    const reporterUser = await this.userRepository.findOne({
+      where: { id: reporterId },
+    });
+    if (!reportedUser || !reporterUser) {
+      throw new NotFoundException('User not found');
+    }
+    const report = this.reportRepository.create({
+      reporter: reporterUser,
+      reported: reportedUser,
+      reason: reportDto.reason,
+    });
+
+    return await this.reportRepository.save(report);
+
+  }
+
+  public async changePassword(id: string, changePasswordDto: ChangePasswordDto): Promise<void> {
+    const user = await this.userRepository.findOne({
+      where: { id: id },
+    });
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+    if(!await user.compareEncryptedPassword(changePasswordDto.oldPassword)) {
+      throw new ConflictException('Old password is wrong');
+    }
+    if(changePasswordDto.oldPassword === changePasswordDto.password) {
+      throw new ConflictException('New password cannot be same with old password');
+    }
+    if(changePasswordDto.password !== changePasswordDto.passwordConfirm) {
+      throw new ConflictException('Passwords do not match');
+    }
+    user.password = changePasswordDto.password;
     await this.userRepository.save(user);
   }
 

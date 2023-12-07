@@ -20,12 +20,14 @@ import { ModeratorPollReviewComponent } from './moderator-poll-review/moderator-
 import { VerifyComponent } from './verify/verify.component'
 import { SettingsComponent } from './settings/settings.component'
 import { ChangePasswordComponent } from './change-password/change-password.component'
+import { SettledPollComponent } from './settled-poll/settled-poll.component'
 
 const routes: Routes = [
   { path: '', component: WelcomeComponent },
   { path: 'app-moderator-login', component: ModeratorLoginComponent },
   { path: 'app-verify', component: VerifyComponent },
   { path: 'app-change-password', component: ChangePasswordComponent },
+  { path: 'app-settled-poll', component: SettledPollComponent },
   {
     path: 'app-moderator-requests',
     component: ModeratorRequestsComponent,

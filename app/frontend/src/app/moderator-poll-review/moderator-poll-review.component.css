@@ -1,6 +1,11 @@
+html,
+body {
+  background-color: #89b1b6;
+}
+
 /* Container for the entire component */
 .moderator-review-container {
-  background-color: #9dc0c4;
+  background-color: #202a40;
   padding: 20px;
   border-radius: 20px;
   margin: 20px auto;
@@ -18,12 +23,17 @@
 
 /* Style for review sections */
 .review-section {
-  background-color: #7fb7be;
+  background-color: #202a40;
   padding: 15px;
   border-radius: 10px;
   margin-bottom: 15px;
   display: flex;
   flex-direction: column;
+  width: calc(80% - 300px);
+  display: flex;
+  flex-direction: column;
+  align-items: left;
+  padding: 25px;
 }
 
 /* Style for individual poll items */

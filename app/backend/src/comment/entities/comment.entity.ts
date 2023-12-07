@@ -1,7 +1,8 @@
 import { User } from '../../user/entities/user.entity';
 import { Poll } from '../../poll/entities/poll.entity';
 import {
-    Column,
+  Column,
+  CreateDateColumn,
   Entity,ManyToOne, PrimaryGeneratedColumn, Relation
 } from 'typeorm';
 
@@ -14,6 +15,9 @@ export class Comment {
 
     @Column({nullable:false,onUpdate:"CASCADE"})
     description: string;
+
+    @CreateDateColumn()
+    created_date: Date
 
     @ManyToOne(type => User, (user)=>user.comments,{ nullable: false, onDelete: "CASCADE"})
     user: Relation<User>;
