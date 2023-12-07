@@ -12,7 +12,7 @@
 
 .post-widget-style {
   display: flex;
-  align-items: start;
+  align-items: flex-start;
 }
 
 .name-style {

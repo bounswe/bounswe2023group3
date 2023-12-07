@@ -4,7 +4,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   </head>
   <body>
-    <div class="container">
+    <div class="container" style="position: relative;">
       <div
         class="post-widget"
         style="display: flex; align-items: start; padding-top: 10px"
@@ -39,7 +39,7 @@
           </p>
         </div>
       </div>
-      <div class="buttons">
+      <div class="buttons" style="position: relative;">
         <button
           class="button"
           routerLink="/app-user-profile"
@@ -55,10 +55,11 @@
           Settings
         </button>
 
-        <div class="popup" *ngIf="showSettings" style=" position: fixed;
-        margin-left: 70px;  opacity: 1;
-        background-color: rgba(51, 28, 28, 0.5); z-index: 1000;">
-          <app-settings></app-settings>
+        <div style="position: absolute; z-index: 10;">
+          <div class="popup" *ngIf="showSettings" style="position: relative; top:-20px; left:50px;
+           background-color: #80bbc4; border: 1px solid black;">
+            <app-settings ></app-settings>
+          </div>
         </div>
 
         <button
