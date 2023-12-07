@@ -9,6 +9,13 @@ import { Router } from '@angular/router'
 export class HeaderComponent {
   constructor(private router: Router) {}
   redirectToHome() {
-    this.router.navigate(['/app-home'])
+    if(localStorage.getItem('loggedIn')=='true') {
+      this.router.navigate(['/app-home'])
+    }
+    else{
+      this.router.navigate(['/app-welcome'])
+      localStorage.clear()
+      localStorage.setItem('loggedIn', 'false')
+    }
   }
 }

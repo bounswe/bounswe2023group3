@@ -95,6 +95,16 @@ export class PollComponent {
     })
   }
 
+  formatDateTime(date: Date): string {
+    const day = date.getDate().toString().padStart(2, '0');
+    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+    const year = date.getFullYear();
+    const hours = date.getHours().toString().padStart(2, '0');
+    const minutes = date.getMinutes().toString().padStart(2, '0');
+  
+    return `${day}.${month}.${year} ${hours}:${minutes}`;
+  }
+
   ngOnInit() {
     this.userId = localStorage.getItem('user_id')
     if (this.userId) {
@@ -105,7 +115,8 @@ export class PollComponent {
         this.question = response.question
         this.tags = response.tags
         this.options = response.options
-        this.due_date = response.due_date
+        
+        this.due_date = this.formatDateTime(new Date(response.due_date))
         this.vote_count = response.vote_count
         this.creator = response.creator
 
