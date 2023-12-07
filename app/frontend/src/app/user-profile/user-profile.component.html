@@ -38,8 +38,10 @@
           > Edit Profile </button>
           </ng-container>
           <ng-template #editMode>
-            <input [(ngModel)]="editedUsername" type="text" class="edit-username" 
-            style="border-radius: 10px;background-color: #79abb1; border: none; height: 30px;color: #fff;" placeholder="Enter your name"/>
+            <input [(ngModel)]="editedFirstname" type="text" class="edit-username" 
+            style="border-radius: 10px;background-color: #79abb1; border: none; height: 30px;color: #fff;" placeholder="Enter your first name"/>
+            <input [(ngModel)]="editedLastname" type="text" class="edit-username" 
+            style="border-radius: 10px;background-color: #79abb1; border: none; height: 30px;color: #fff;" placeholder="Enter your last name"/>
             <button class="edit-button" style=" background-color: #63989f; border: none;color: #fff;"(click)="editProfile()">Save</button>
           </ng-template>
 

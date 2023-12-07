@@ -20,7 +20,8 @@ export class UserProfileComponent {
   nofFollowees: number = 0
 
   isEditing: boolean = false
-  editedUsername!: string
+  editedFirstname!: string
+  editedLastname!: string
   options!: any
 
 
@@ -97,19 +98,31 @@ export class UserProfileComponent {
 
   editProfile() {
 
-    if(this.editedUsername!=""){
+
+    if(this.editedFirstname || this.editedLastname){
+
+      const body: any = {}; 
+
+      if (this.editedFirstname !== null && this.editedFirstname !== undefined && this.editedFirstname.trim() !== '') {
+        body.firstname = this.editedFirstname;
+        this.firstname=this.editedFirstname
+      }
+    
+      if (this.editedLastname !== null && this.editedLastname !== undefined && this.editedLastname.trim() !== '') {
+        body.lastname = this.editedLastname;
+        this.lastname=this.editedLastname
+      }
       
-      this.http.put('http://34.105.66.254:1923/user/',{"firstname":this.editedUsername},this.options).subscribe(
+      this.http.put('http://34.105.66.254:1923/user/',body,this.options).subscribe(
       (response: any) => {
+       
       },
       (error) => {
         console.error('Error:', error)
       },
     )
-      this.firstname=this.editedUsername
-      this.isEditing=false
     }
-   
+    this.isEditing=false
   }
 
 }
