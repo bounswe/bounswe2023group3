@@ -4,8 +4,12 @@
     <div class="page-layout">
       <app-side-bar></app-side-bar>
       <div class="container" style="position: relative; padding: 40px">
+
         <div class="post-widget" style="display: flex; align-items: start">
-          <img
+          
+         
+          <ng-container *ngIf="!isEditing; else editMode">
+            <img
             class="user-avatar"
             [src]="this.profile_picture != null ? this.profile_picture : 'assets/unknown.jpg'"
             alt="User Avatar"
@@ -16,7 +20,6 @@
               margin-right: 5px;
             "
           />
-          <ng-container *ngIf="!isEditing; else editMode">
             <div class="post-content">
               <b class="name" style="font-size: xx-large; padding-top: 10px">{{
                 this.firstname 
@@ -38,10 +41,14 @@
           > Edit Profile </button>
           </ng-container>
           <ng-template #editMode>
-            <input [(ngModel)]="editedFirstname" type="text" class="edit-username" 
-            style="border-radius: 10px;background-color: #79abb1; border: none; height: 30px;color: #fff;" placeholder="Enter your first name"/>
-            <input [(ngModel)]="editedLastname" type="text" class="edit-username" 
-            style="border-radius: 10px;background-color: #79abb1; border: none; height: 30px;color: #fff;" placeholder="Enter your last name"/>
+            <app-file-upload (shortLinkEmitter)="receiveShortLink($event)"></app-file-upload>
+            <div style="margin-right: 10px;">
+              <input [(ngModel)]="editedFirstname" type="text" class="edit-username" 
+              style="border-radius: 10px;background-color: #79abb1; border: none; height: 30px;color: #fff; margin-bottom: 10px;" placeholder="Enter your first name"/>
+              <br>
+              <input [(ngModel)]="editedLastname" type="text" class="edit-username" 
+              style="border-radius: 10px;background-color: #79abb1; border: none; height: 30px;color: #fff;" placeholder="Enter your last name"/>
+            </div>
             <button class="edit-button" style=" background-color: #63989f; border: none;color: #fff;"(click)="editProfile()">Save</button>
           </ng-template>
 

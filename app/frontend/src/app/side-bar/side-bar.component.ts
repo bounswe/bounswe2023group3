@@ -19,10 +19,10 @@ export class SideBarComponent {
 
   constructor(private router: Router,private _userService: UserService,) {
     this.username = localStorage.getItem('username')
-    this.firstname = localStorage.getItem('firstname')
-    this.lastname = localStorage.getItem('lastname')
     this._userService.getUser(this.username).then((user: User) => {
       this.profile_picture = user.profile_picture
+      this.firstname = user.firstname
+      this.lastname = user.lastname
     })
     if (this.username) {
       this.isAuthenticated = true

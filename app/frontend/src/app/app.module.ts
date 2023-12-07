@@ -39,7 +39,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { ChangePasswordComponent } from './change-password/change-password.component';
 import { SettingsComponent } from './settings/settings.component'
 import { SettledPollComponent } from './settled-poll/settled-poll.component'
-import { ModeratorPollReviewComponent } from './moderator-poll-review/moderator-poll-review.component'
+import { ModeratorPollReviewComponent } from './moderator-poll-review/moderator-poll-review.component';
+import { FileUploadComponent } from './file-upload/file-upload.component'
 @NgModule({
   declarations: [
     AppComponent,
@@ -74,6 +75,7 @@ import { ModeratorPollReviewComponent } from './moderator-poll-review/moderator-
     SettingsComponent,
     SettledPollComponent,
     ModeratorPollReviewComponent,
+    FileUploadComponent,
   ],
   imports: [
     BrowserModule,
