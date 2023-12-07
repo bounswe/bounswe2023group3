@@ -40,7 +40,8 @@ import { ChangePasswordComponent } from './change-password/change-password.compo
 import { SettingsComponent } from './settings/settings.component'
 import { SettledPollComponent } from './settled-poll/settled-poll.component'
 import { ModeratorPollReviewComponent } from './moderator-poll-review/moderator-poll-review.component';
-import { FileUploadComponent } from './file-upload/file-upload.component'
+import { FileUploadComponent } from './file-upload/file-upload.component';
+import { ReportUserComponent } from './report-user/report-user.component'
 @NgModule({
   declarations: [
     AppComponent,
@@ -76,6 +77,7 @@ import { FileUploadComponent } from './file-upload/file-upload.component'
     SettledPollComponent,
     ModeratorPollReviewComponent,
     FileUploadComponent,
+    ReportUserComponent,
   ],
   imports: [
     BrowserModule,

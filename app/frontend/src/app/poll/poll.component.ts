@@ -6,6 +6,7 @@ import { MatDialog, MatDialogModule } from '@angular/material/dialog'
 import { ConfirmModelComponent } from '../confirm-model/confirm-model.component'
 import { UserSettleRequestComponent } from '../user-settle-request/user-settle-request.component'
 import { MatFormFieldModule } from '@angular/material/form-field'
+import { ReportUserComponent } from '../report-user/report-user.component'
 
 @Component({
   selector: 'app-poll',
@@ -62,6 +63,19 @@ export class PollComponent {
         this.deletePoll()
       } else {
         console.log('User canceled deletion')
+      }
+    })
+  }
+
+  reportUser(): void {
+    const dialogRef = this.dialog.open(ReportUserComponent, {
+      width: '300px',
+    })
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.sendUserReport(result.reason)
+      } else {
       }
     })
   }
@@ -210,8 +224,8 @@ export class PollComponent {
 
   settlePollRequest() {
     const body = {
-      outcome: this.outcome,
-      outcome_source: this.outcomeSource,
+      'outcome': this.outcome,
+      'outcome_source': this.outcomeSource,
     }
 
     this.http
@@ -225,4 +239,22 @@ export class PollComponent {
         },
       )
   }
+  
+  sendUserReport(rsn : string) {
+    const body = {
+      'reason': rsn,
+    }
+
+    this.http
+      .post('http://34.105.66.254:1923/user/report' + this.creator.id, body)
+      .subscribe(
+        () => {
+          console.log(`Request sent ccessfully.`)
+        },
+        (error) => {
+          console.error('Error sending request:', error)
+        },
+      )
+  }
+
 }
