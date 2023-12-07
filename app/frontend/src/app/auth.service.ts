@@ -27,7 +27,6 @@ export class AuthService {
         localStorage.setItem('profile_picture', response.user.profile_picture)
         localStorage.setItem('isVerified', response.user.isVerified)
       }),
-      catchError(this.handleError('Login', {})),
     )
   }
 
@@ -44,7 +43,6 @@ export class AuthService {
           localStorage.setItem('user_id', response.moderator.id)
           localStorage.setItem('username', response.moderator.username)
         }),
-        catchError(this.handleError('Login', {})),
       )
   }
 

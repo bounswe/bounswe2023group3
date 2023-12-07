@@ -9,6 +9,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http'
 })
 export class PollRequestComponent implements OnInit {
   pollForm: FormGroup
+  no_deadline: boolean = false;
 
   constructor(
     public fb: FormBuilder, //for testing, should be fixed later
@@ -16,9 +17,10 @@ export class PollRequestComponent implements OnInit {
   ) {
     this.pollForm = this.fb.group({
       question: ['', Validators.required],
+      description: ['', Validators.required],
       tags: this.fb.array([this.fb.control('')]),
       options: this.fb.array([this.fb.control('')]),
-      due_date: ['', Validators.required],
+      due_date: [''],
     })
   }
 
@@ -61,17 +63,19 @@ export class PollRequestComponent implements OnInit {
       Authorization: `Bearer ${token}`,
     })
     const options = { headers }
-    console.log(formValue)
 
     if (
       formValue.tags.length === 0 ||
       formValue.options.length === 0 ||
-      formValue.question === '' ||
-      formValue.due_date === ''
+      formValue.question === ''
     ) {
       window.alert('Error creating poll: Some fields are empty')
       console.error('Error creating poll: Some fields empty')
       return
+    }
+
+    if(this.no_deadline){ //internal server error
+      formValue.due_date = 'No deadline'
     }
 
     this.http
@@ -90,6 +94,10 @@ export class PollRequestComponent implements OnInit {
           console.error('Error creating poll', error)
         },
       )
+  }
+
+  handleCheckboxChange(){
+    this.no_deadline = !this.no_deadline
   }
 
   reload() {

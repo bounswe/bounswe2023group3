@@ -10,7 +10,7 @@
     </style>
   </head>
   <body style="margin-top: 20px">
-    <div class="container" style="position: relative">
+    <div class="container" style="position: relative;">
       <img
         [class.blurred]="!isAuthenticated"
         class="popup-options"
@@ -18,11 +18,11 @@
         src="assets/three-dots.png"
         (click)="openPopup()"
       />
-      <div class="popup" *ngIf="showPopup">
+      <div class="popup" *ngIf="showPopup" >
         <div class="popuptext" (click)="openConfirmationDialog()">
           Delete Poll
         </div>
-        <div class="popuptext">Report User</div>
+        <div class="popuptext" (click)="reportUser()">Report User</div>
         <div class="popuptext" (click)="settleRequestForm()">
           Settle Outcome
         </div>
@@ -54,7 +54,7 @@
         >
           <b class="name" style="font-size: small; margin-top: 12px">{{
             creator.firstname
-          }}</b>
+          }} {{ creator.lastname }}</b>
           <p class="user-name" style="font-size: small; margin-top: 3px">
             &#64;{{ creator.username }}
           </p>
@@ -137,6 +137,11 @@
         </p>
         <p style="text-align: right; margin-top: 26px; margin-right: 5px">
           {{ creation_time }}
+        </p>
+      </div>
+      <div style="text-align: right; ">
+        <p style="text-align: right; margin-top: 5px; margin-bottom: 2px; font-size: smaller;">
+          Due date: {{ due_date }}
         </p>
       </div>
     </div>

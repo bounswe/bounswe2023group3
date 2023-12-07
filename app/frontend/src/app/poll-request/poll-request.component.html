@@ -21,7 +21,20 @@
               name="question"
               formControlName="question"
               placeholder="Enter the Poll Question"
-              style="margin-bottom: 30px"
+              style="margin-bottom: 30px;"
+              required
+            />
+
+            <label for="" style="text-align: left;"
+              ><b>Provide your description:</b></label
+            >
+            <input
+              class="poll-info"
+              type="text"
+              name="description"
+              formControlName="description"
+              placeholder="Enter Your Description"
+              style="margin-bottom: 30px;"
               required
             />
 
@@ -95,7 +108,7 @@
                     class="poll-info"
                     type="text"
                     [formControlName]="i"
-                    [placeholder]="'Option ' + (i + 1)"
+                    placeholder="Enter an option"
                     style="width: calc(100% - 70px); margin-right: 12px"
                     required
                   />
@@ -156,7 +169,7 @@
                 type="checkbox"
                 id="no_deadline"
                 name="no_deadline"
-                value="no_deadline"
+                (change)="handleCheckboxChange()"
                 style="margin-right: 8px; cursor: pointer"
               />
               No deadline
@@ -168,7 +181,6 @@
               formControlName="due_date"
               placeholder="Enter due date"
               style="margin-bottom: 40px; margin-top: 5px; cursor: pointer"
-              [disabled]="pollForm.get('no_deadline')!.value"
             />
 
             <div style="display: flex; justify-content: center">

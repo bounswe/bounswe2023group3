@@ -1,0 +1,16 @@
+<h2 mat-dialog-title>Report User</h2>
+<mat-dialog-content>
+  <mat-form-field>
+    <input
+      matInput
+      placeholder="Reason"
+      [(ngModel)]="reason"
+      style="width: 200px"
+    />
+  </mat-form-field>
+</mat-dialog-content>
+<mat-dialog-actions
+  style="display: flex; justify-content: center; align-items: center"
+>
+  <button mat-button (click)="sendRequest()">Report</button>
+</mat-dialog-actions>

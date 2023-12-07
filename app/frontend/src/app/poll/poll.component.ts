@@ -6,6 +6,7 @@ import { MatDialog, MatDialogModule } from '@angular/material/dialog'
 import { ConfirmModelComponent } from '../confirm-model/confirm-model.component'
 import { UserSettleRequestComponent } from '../user-settle-request/user-settle-request.component'
 import { MatFormFieldModule } from '@angular/material/form-field'
+import { ReportUserComponent } from '../report-user/report-user.component'
 
 @Component({
   selector: 'app-poll',
@@ -66,6 +67,19 @@ export class PollComponent {
     })
   }
 
+  reportUser(): void {
+    const dialogRef = this.dialog.open(ReportUserComponent, {
+      width: '300px',
+    })
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.sendUserReport(result.reason)
+      } else {
+      }
+    })
+  }
+
   settleRequestForm(): void {
     const dialogRef = this.dialog.open(UserSettleRequestComponent, {
       width: '300px',
@@ -81,6 +95,16 @@ export class PollComponent {
     })
   }
 
+  formatDateTime(date: Date): string {
+    const day = date.getDate().toString().padStart(2, '0');
+    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+    const year = date.getFullYear();
+    const hours = date.getHours().toString().padStart(2, '0');
+    const minutes = date.getMinutes().toString().padStart(2, '0');
+  
+    return `${day}.${month}.${year} ${hours}:${minutes}`;
+  }
+
   ngOnInit() {
     this.userId = localStorage.getItem('user_id')
     if (this.userId) {
@@ -91,7 +115,8 @@ export class PollComponent {
         this.question = response.question
         this.tags = response.tags
         this.options = response.options
-        this.due_date = response.due_date
+        
+        this.due_date = this.formatDateTime(new Date(response.due_date))
         this.vote_count = response.vote_count
         this.creator = response.creator
 
@@ -144,6 +169,7 @@ export class PollComponent {
         this.selectedButton.classList.add('clicked')
       }
     }
+
   }
 
   toggleButton(button: HTMLButtonElement) {
@@ -209,8 +235,8 @@ export class PollComponent {
 
   settlePollRequest() {
     const body = {
-      outcome: this.outcome,
-      outcome_source: this.outcomeSource,
+      'outcome': this.outcome,
+      'outcome_source': this.outcomeSource,
     }
 
     this.http
@@ -224,4 +250,22 @@ export class PollComponent {
         },
       )
   }
+  
+  sendUserReport(rsn : string) {
+    const body = {
+      'reason': rsn,
+    }
+
+    this.http
+      .post('http://34.105.66.254:1923/user/report' + this.creator.id, body)
+      .subscribe(
+        () => {
+          console.log(`Request sent ccessfully.`)
+        },
+        (error) => {
+          console.error('Error sending request:', error)
+        },
+      )
+  }
+
 }

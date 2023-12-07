@@ -10,7 +10,7 @@
         <div class="post-widget" style="display: flex; align-items: start">
           <img
             class="user-avatar-style"
-            [src]="this.user?.profile_picture || 'assets/unknown.jpg'"
+            [src]="user.profile_picture ? user.profile_picture : 'assets/unknown.jpg'"
             alt="User Avatar"
           />
           <div class="post-content">

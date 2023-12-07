@@ -21,26 +21,23 @@
         <div
           class="post-content"
           style="
-            display: flex;
-            flex-direction: column;
-            align-items: start;
             margin-left: 5px;
+            margin-top: 20px;
+            font-size: medium;
           "
         >
-          <b class="name" style="font-size: medium; margin-top: 15px">^-^</b>
           <p class="user-name" style="margin-top: 2px">
             &#64;{{ this.username }}
           </p>
         </div>
       </div>
       <div class="buttons">
-        <button class="button" routerLink="/app-user-profile">
-          My Profile
-        </button>
         <button class="button" routerLink="/app-moderator-requests">
-          Homepage
+          Poll Requests
         </button>
-        <button class="button">Notifications</button>
+        <button class="button" routerLink="/app-report-requests">
+          Report Requests
+        </button>
         <button class="button">Settings</button>
         <button class="button" (click)="logOut()" style="margin-bottom: 20px">
           Log out

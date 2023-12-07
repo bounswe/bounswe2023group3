@@ -7,25 +7,17 @@
 
       <div class="review-section">
         <div class="poll-item">
-          <span class="label">Poll Title:</span>
-          <p class="info-text">Poll Title Example</p>
-        </div>
-        <div class="poll-item">
           <span class="label">Submitted by:</span>
-          <p class="info-text">Username</p>
-        </div>
-        <div class="poll-item">
-          <span class="label">Poll Description:</span>
-          <p class="info-text">This is an example description of the poll...</p>
+          <p class="info-text">{{username}}</p>
         </div>
         <div class="poll-item">
           <span class="label">Poll Question:</span>
-          <p class="info-text">What is your favorite color?</p>
+          <p class="info-text">{{question}}</p>
         </div>
 
         <div class="action-buttons">
-          <button class="action-button approve-button">Approve</button>
-          <button class="action-button reject-button">Reject</button>
+          <button class="action-button approve-button" (click)="onApprove()">Approve</button>
+          <button class="action-button reject-button" (click)="onReject()">Reject</button>
         </div>
       </div>
     </div>

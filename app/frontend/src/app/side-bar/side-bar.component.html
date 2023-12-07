@@ -4,7 +4,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   </head>
   <body>
-    <div class="container">
+    <div class="container" style="position: relative;">
       <div
         class="post-widget"
         style="display: flex; align-items: start; padding-top: 10px"
@@ -12,7 +12,7 @@
       >
         <img
           class="user-avatar-style"
-          [src]="profile_picture || 'assets/unknown.jpg'"
+          [src]="profile_picture ? profile_picture : 'assets/unknown.jpg'"
           alt="User Avatar"
           style="
             width: 60px;
@@ -39,7 +39,7 @@
           </p>
         </div>
       </div>
-      <div class="buttons">
+      <div class="buttons" style="position: relative;">
         <button
           class="button"
           routerLink="/app-user-profile"
@@ -51,9 +51,17 @@
         <button class="button" [class.blurred]="!isAuthenticated">
           Notifications
         </button>
-        <button class="button" [class.blurred]="!isAuthenticated">
+        <button class="button" [class.blurred]="!isAuthenticated" (click)="goToSettings()">
           Settings
         </button>
+
+        <div style="position: absolute; z-index: 10;">
+          <div class="popup" *ngIf="showSettings" style="position: relative; top:-20px; left:50px;
+           background-color: #80bbc4; border: 1px solid black;">
+            <app-settings ></app-settings>
+          </div>
+        </div>
+
         <button
           class="button"
           [class.blurred]="!isAuthenticated"

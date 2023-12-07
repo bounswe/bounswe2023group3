@@ -9,7 +9,14 @@
     <div class="page-layout">
       <app-side-bar></app-side-bar>
       <div class="poll-container">
-        <app-poll [pollId]="pollId"></app-poll>
+
+        <ng-container *ngIf="!isSettled; else settledPoll">
+          <app-poll [pollId]="pollId"></app-poll>
+        </ng-container>
+        <ng-template #settledPoll>
+          <app-settled-poll [pollId]="pollId"></app-settled-poll>
+        </ng-template>
+
         <div class="poll-comments">
           <div
             [class.blurred]="!isAuthenticated"
@@ -38,11 +45,11 @@
             >
               <div class="comment-user">
                 <img
-                  [src]="comment.user?.profile_picture || 'user-avatar.png'"
+                  [src]="comment.user.profile_picture ? comment.user.profile_picture : 'assets/unknown.jpg'"
                   alt="User Avatar"
                 />
                 <span class="user-info">
-                  <p>&#64;{{ comment.user.username }} • Date</p>
+                  <p>&#64;{{ comment.user.username }} • {{comment.created_date}}</p>
                 </span>
                 <img
                   [class.blurred]="!isAuthenticated"
