@@ -38,7 +38,6 @@ import { UserSettleRequestComponent } from './user-settle-request/user-settle-re
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { ChangePasswordComponent } from './change-password/change-password.component';
 import { SettingsComponent } from './settings/settings.component'
-import { MatFormFieldModule } from '@angular/material/form-field'
 import { SettledPollComponent } from './settled-poll/settled-poll.component'
 import { ModeratorPollReviewComponent } from './moderator-poll-review/moderator-poll-review.component'
 @NgModule({
