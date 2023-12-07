@@ -102,7 +102,7 @@ export class PollService {
     await this.pollRepository.save(poll);
   }
 
-  public async settlePoll(id: string, decision: boolean): Promise<void> {
+  public async settlePoll(id: string, decision: boolean, feedback: string): Promise<void> {
     const poll = await this.pollRepository.findOne({
       where: { id },
       relations: ['options', 'outcome'],
@@ -126,6 +126,10 @@ export class PollService {
       poll.is_settled = Settle.SETTLED;
     } else {
       poll.is_settled = Settle.CANCELLED;
+    }
+
+    if (feedback){
+      poll.settle_poll_request_feedback = feedback;
     }
 
     await this.pollRepository.save(poll);
