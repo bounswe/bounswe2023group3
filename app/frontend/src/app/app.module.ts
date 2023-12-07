@@ -35,7 +35,9 @@ import { VerifyComponent } from './verify/verify.component'
 import { ConfirmModelComponent } from './confirm-model/confirm-model.component'
 import { MatDialogModule } from '@angular/material/dialog'
 import { UserSettleRequestComponent } from './user-settle-request/user-settle-request.component'
-import { MatFormFieldModule } from '@angular/material/form-field'
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { ChangePasswordComponent } from './change-password/change-password.component';
+import { SettingsComponent } from './settings/settings.component'
 
 @NgModule({
   declarations: [
@@ -67,6 +69,8 @@ import { MatFormFieldModule } from '@angular/material/form-field'
     VerifyComponent,
     ConfirmModelComponent,
     UserSettleRequestComponent,
+    ChangePasswordComponent,
+    SettingsComponent,
   ],
   imports: [
     BrowserModule,

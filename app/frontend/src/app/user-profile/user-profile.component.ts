@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http'
 import { Component } from '@angular/core'
 import { UserService } from 'src/services/user-service/user.service'
 import { User } from './user.model'
+import { AuthService } from '../auth.service'
 
 @Component({
   selector: 'app-user-profile',
@@ -16,27 +17,28 @@ export class UserProfileComponent {
   nofFollowers: number = 0
   nofFollowees: number = 0
 
+  isEditing: boolean = false
+  editedUsername!: string
+  options!: any
+
+
   constructor(
     private http: HttpClient,
     private _userService: UserService,
+    private authService: AuthService,
   ) {
-    this.http.get('http://34.105.66.254:1923/poll/').subscribe(
+    this.options = this.authService.getHeaders();
+    this.user_id = localStorage.getItem('user_id')
+    this.username = localStorage.getItem('username')
+    this.firstname = localStorage.getItem('firstname')
+    this.http.get('http://34.105.66.254:1923/poll/?creatorId='+this.user_id+"&?approveStatus=true").subscribe(
       (response: any) => {
-        this.polls = []
-        for (const r of response) {
-          if (r.creator.id == this.user_id) {
-            this.polls.push(r)
-          }
-        }
+        this.polls = response
       },
       (error) => {
         console.error('Error fetching polls:', error)
       },
     )
-    this.user_id = localStorage.getItem('user_id')
-    this.username = localStorage.getItem('username')
-    this.firstname = localStorage.getItem('firstname')
-
     this._userService.getUser(this.username).then((user: User) => {
       this.nofFollowees = user.followings.map(
         (followee: User) => followee.id,
@@ -48,14 +50,9 @@ export class UserProfileComponent {
   }
 
   createdPolls() {
-    this.http.get('http://34.105.66.254:1923/poll/').subscribe(
+    this.http.get('http://34.105.66.254:1923/poll/?creatorId='+this.user_id+"&?approveStatus=true").subscribe(
       (response: any) => {
-        this.polls = []
-        for (const r of response) {
-          if (r.creator.id == this.user_id) {
-            this.polls.push(r)
-          }
-        }
+        this.polls = response
       },
       (error) => {
         console.error('Error fetching polls:', error)
@@ -64,7 +61,7 @@ export class UserProfileComponent {
   }
   likedPolls() {
     this.http
-      .get('http://34.105.66.254:1923/poll/?likedById=' + this.user_id)
+      .get('http://34.105.66.254:1923/poll/?likedById=' + this.user_id+"&?approveStatus=true")
       .subscribe(
         (response: any) => {
           this.polls = response
@@ -84,4 +81,26 @@ export class UserProfileComponent {
       },
     )
   }
+
+  toggleEdit(){
+    this.isEditing=true
+  }
+
+  editProfile() {
+
+    if(this.editedUsername!=""){
+      
+      this.http.put('http://34.105.66.254:1923/user/',{"firstname":this.editedUsername},this.options).subscribe(
+      (response: any) => {
+      },
+      (error) => {
+        console.error('Error:', error)
+      },
+    )
+      this.firstname=this.editedUsername
+      this.isEditing=false
+    }
+   
+  }
+
 }

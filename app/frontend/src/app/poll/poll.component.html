@@ -10,7 +10,7 @@
     </style>
   </head>
   <body style="margin-top: 20px">
-    <div class="container" style="position: relative">
+    <div class="container" style="position: relative;">
       <img
         [class.blurred]="!isAuthenticated"
         class="popup-options"
@@ -18,7 +18,7 @@
         src="assets/three-dots.png"
         (click)="openPopup()"
       />
-      <div class="popup" *ngIf="showPopup">
+      <div class="popup" *ngIf="showPopup" style="z-index: 1;">
         <div class="popuptext" (click)="openConfirmationDialog()">
           Delete Poll
         </div>

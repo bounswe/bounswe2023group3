@@ -21,18 +21,9 @@ export class TagPageComponent {
   ngOnInit() {
     this.route.params.subscribe((params) => {
       this.tagName = params['tagName']
-
-      this.http.get(`http://34.105.66.254:1923/poll`).subscribe(
-        (pollsResponse: any) => {
-          this.polls = []
-          const tagName = this.route.snapshot.params['tagName']
-          for (const r of pollsResponse) {
-            for (const t of r.tags) {
-              if (t.name === this.tagName) {
-                this.polls.push(r)
-              }
-            }
-          }
+      this.http.get('http://34.105.66.254:1923/poll/?tags=' + [String(this.tagName)]+"&?approveStatus=true").subscribe(
+        (response: any) => {
+          this.polls = response
         },
         (error) => {
           console.error('Error fetching data:', error)

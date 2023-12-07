@@ -51,9 +51,16 @@
         <button class="button" [class.blurred]="!isAuthenticated">
           Notifications
         </button>
-        <button class="button" [class.blurred]="!isAuthenticated">
+        <button class="button" [class.blurred]="!isAuthenticated" (click)="goToSettings()">
           Settings
         </button>
+
+        <div class="popup" *ngIf="showSettings" style=" position: fixed;
+        margin-left: 70px;  opacity: 1;
+        background-color: rgba(51, 28, 28, 0.5); z-index: 1000;">
+          <app-settings></app-settings>
+        </div>
+
         <button
           class="button"
           [class.blurred]="!isAuthenticated"

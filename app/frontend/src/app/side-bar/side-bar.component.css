@@ -12,3 +12,14 @@
   background-color: #63989f;
   border: none;
 }
+
+
+.popup {
+  position: relative;
+  float: right;
+  cursor: pointer;
+  margin-right: px;
+  background-color: #f7f3f3;
+  border-radius: 5px;
+}
+

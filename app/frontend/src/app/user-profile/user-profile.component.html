@@ -16,15 +16,18 @@
               margin-right: 5px;
             "
           />
-          <div class="post-content">
-            <b class="name" style="font-size: xx-large; padding-top: 10px">{{
-              this.username
-            }}</b>
-            <p class="user-name" style="margin-top: 2px">
-              &#64;{{ this.username }}
-            </p>
-          </div>
-          <button
+          
+          <ng-container *ngIf="!isEditing; else editMode">
+            <div class="post-content">
+              <b class="name" style="font-size: xx-large; padding-top: 10px">{{
+                this.firstname
+              }}</b>
+              <p class="user-name" style="margin-top: 2px">
+                &#64;{{ this.username }}
+              </p>
+            </div>
+
+            <button
             class="edit-button"
             style="
               background-color: #63989f;
@@ -32,9 +35,17 @@
               width: 100px;
               color: #fff;
             "
-          >
-            Edit Profile
-          </button>
+            (click) = "toggleEdit()"
+          > Edit Profile </button>
+          </ng-container>
+          <ng-template #editMode>
+            <input [(ngModel)]="editedUsername" type="text" class="edit-username" 
+            style="border-radius: 10px;background-color: #79abb1; border: none; height: 30px;color: #fff;" placeholder="Enter your name"/>
+            <button class="edit-button" style=" background-color: #63989f; border: none;color: #fff;"(click)="editProfile()">Save</button>
+          </ng-template>
+
+
+
         </div>
 
         <div style="margin-bottom: 15px; margin-top: 10px; text-align: center">

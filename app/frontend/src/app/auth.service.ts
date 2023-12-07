@@ -24,7 +24,6 @@ export class AuthService {
         localStorage.setItem('username', response.user.username)
         localStorage.setItem('firstname', response.user.firstname)
       }),
-      catchError(this.handleError('Login', {})),
     )
   }
 
@@ -41,7 +40,6 @@ export class AuthService {
           localStorage.setItem('user_id', response.moderator.id)
           localStorage.setItem('username', response.moderator.username)
         }),
-        catchError(this.handleError('Login', {})),
       )
   }
 

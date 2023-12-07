@@ -11,12 +11,18 @@ export class SideBarComponent {
   firstname: any
   isAuthenticated: boolean = false
 
+  showSettings: boolean = false
+
   constructor(private router: Router) {
     this.username = localStorage.getItem('username')
     this.firstname = localStorage.getItem('firstname')
     if (this.username) {
       this.isAuthenticated = true
     }
+  }
+
+  goToSettings(){
+    this.showSettings=!this.showSettings
   }
 
   logOut() {
