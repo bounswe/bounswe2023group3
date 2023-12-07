@@ -24,12 +24,6 @@ export class CommentService {
       throw new ConflictException('There is no poll with this id');
     }
 
-    const like = await this.commentRepository.findOne({where: {poll: {id: pollID} , user : {id:userID}}})
-    
-    if (like){
-      throw new ConflictException('User has already commented on this poll');
-    }
-
     const newLike = this.commentRepository.create({
       description: createCommentDto.description,
       poll: { id: pollID},

@@ -10,6 +10,7 @@ export class HomeComponent {
   polls!: any[]
   following!: any[]
   isAuthenticated: boolean = false
+  settledMode!: boolean
 
   constructor(private http: HttpClient) {
     this.http.get('http://34.105.66.254:1923/poll/').subscribe(
@@ -35,9 +36,11 @@ export class HomeComponent {
         for (const r of response) {
           if (!r.is_settled && !isSettled) {
             this.polls.push(r)
+            this.settledMode = false
           }
           if (r.is_settled && isSettled) {
             this.polls.push(r)
+            this.settledMode = true
           }
         }
       },

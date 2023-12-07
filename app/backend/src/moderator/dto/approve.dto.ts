@@ -9,4 +9,9 @@ export class ApproveDTO {
     @IsNotEmpty()
     approveStatus: boolean;
 
+    @ApiProperty({
+      example: 'not a precise poll',
+    })
+    poll_request_rejection_feedback: string;
+
   }

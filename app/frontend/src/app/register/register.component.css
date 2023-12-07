@@ -79,7 +79,7 @@ body {
 
 /* Style for form groups (labels and input fields) */
 .form-group {
-  margin-bottom: 40px;
+  margin-bottom: 20px;
   text-align: left;
   width: 100%;
 }
@@ -93,7 +93,7 @@ body {
 
 .form-group label {
   display: block;
-  margin-bottom: 10px;
+  margin-bottom: 8px;
   font-size: 16px;
   color: #202a40;
 }
@@ -127,17 +127,23 @@ button[type='submit']:hover {
   background-color: #232f44;
 }
 
+button[type='submit']:disabled {
+  background-color: #9a9a9a;
+  color: #202a40;
+  cursor: not-allowed;
+}
+
 .register-container a {
   color: #202a40;
-  font-size: 16px;
+  font-size: 14px;
   margin-top: 0px;
 }
 
 /* Error Message Styles */
 .register-container p {
-  color: #202a40;
-  font-size: 16px;
-  margin: 10px 15px;
+  color: #30568f;
+  font-size: 14px;
+  margin: 10px 10px;
 }
 
 @media only screen and (max-width: 1070px) {

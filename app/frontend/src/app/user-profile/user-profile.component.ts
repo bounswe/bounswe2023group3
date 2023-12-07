@@ -13,6 +13,8 @@ export class UserProfileComponent {
   user_id!: any
   username: any
   firstname: any
+  lastname: any
+  profile_picture: any
   nofFollowers: number = 0
   nofFollowees: number = 0
 
@@ -36,6 +38,8 @@ export class UserProfileComponent {
     this.user_id = localStorage.getItem('user_id')
     this.username = localStorage.getItem('username')
     this.firstname = localStorage.getItem('firstname')
+    this.lastname = localStorage.getItem('lastname')
+    this.profile_picture = localStorage.getItem('profile_picture')
 
     this._userService.getUser(this.username).then((user: User) => {
       this.nofFollowees = user.followings.map(

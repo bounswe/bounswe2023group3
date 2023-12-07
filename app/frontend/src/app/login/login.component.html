@@ -29,17 +29,21 @@
             required
           />
         </div>
-        <button type="submit" class="login-button">Log In</button>
+        <button
+          type="submit"
+          class="login-button"
+          [disabled]="!email || !password"
+        >
+          Log In
+        </button>
       </form>
       <p class="error-message">{{ errorMessage }}</p>
       <a href="app-forget-password">Forgot your password?</a>
       <br />
       <br />
       <br />
-      <br />
-      <br />
       <p>Don't have an account?</p>
-      <a href="app-register">Sign Up</a>
+      <a href="app-register">Register</a>
     </div>
   </body>
 </html>
