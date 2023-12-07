@@ -36,7 +36,8 @@ import { ConfirmModelComponent } from './confirm-model/confirm-model.component'
 import { MatDialogModule } from '@angular/material/dialog'
 import { UserSettleRequestComponent } from './user-settle-request/user-settle-request.component'
 import { MatFormFieldModule } from '@angular/material/form-field'
-
+import { SettledPollComponent } from './settled-poll/settled-poll.component'
+import { ModeratorPollReviewComponent } from './moderator-poll-review/moderator-poll-review.component'
 @NgModule({
   declarations: [
     AppComponent,
@@ -67,6 +68,8 @@ import { MatFormFieldModule } from '@angular/material/form-field'
     VerifyComponent,
     ConfirmModelComponent,
     UserSettleRequestComponent,
+    SettledPollComponent,
+    ModeratorPollReviewComponent,
   ],
   imports: [
     BrowserModule,

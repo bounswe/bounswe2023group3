@@ -18,8 +18,69 @@
   margin-right: 10px;
   background-color: #232f44;
   color: #fff;
-  border-radius: 25px;
+  border-radius: 18px;
   border: none;
+}
+
+button[disabled] {
+  background-color: #9a9a9a;
+  color: #202a40;
+  cursor: not-allowed;
+}
+
+.tag-item,
+.option-item {
+  margin-left: 7px;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.tag-input-container,
+.option-input-container {
+  display: flex;
+  align-items: center;
+}
+
+.delete-button {
+  width: 25px;
+  height: 25px;
+  padding: 0;
+  color: #fff;
+  background-color: #232f44;
+  border-radius: 50%;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.add-button {
+  width: 25px;
+  height: 25px;
+  padding: 0;
+  color: #fff;
+  background-color: #232f44;
+  border-radius: 50%;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 10px;
+}
+
+/* Style for the SVG icon */
+.delete-button svg {
+  width: 15px;
+  height: 15px;
+  fill: white;
+  cursor: pointer;
+}
+
+.add-button svg {
+  width: 15px;
+  height: 15px;
+  fill: white;
+  cursor: pointer;
 }
 
 body {
@@ -47,10 +108,11 @@ body {
 
 .poll-info {
   width: calc(100% - 30px);
+  height: 30px;
   padding: 7px;
   margin-bottom: 10px;
   border: 1px solid #ccc;
-  border-radius: 16px;
+  border-radius: 4px;
   text-align: left;
 }
 
@@ -61,7 +123,7 @@ label {
 
 .info-container {
   background-color: #9dc0c4;
-  padding: 10px;
+  padding: 20px;
   border-radius: 20px;
   text-align: left;
   margin-top: 20px;

@@ -74,7 +74,14 @@
         </div>
 
         <div>
-          <app-poll *ngFor="let poll of polls" [pollId]="poll.id"></app-poll>
+          <ng-container *ngFor="let poll of polls">
+            <ng-container *ngIf="!settledMode; else settledPoll">
+              <app-poll [pollId]="poll.id"></app-poll>
+            </ng-container>
+            <ng-template #settledPoll>
+              <app-settled-poll [pollId]="poll.id"></app-settled-poll>
+            </ng-template>
+          </ng-container>
         </div>
       </div>
       <div style="display: flex; flex-direction: column">

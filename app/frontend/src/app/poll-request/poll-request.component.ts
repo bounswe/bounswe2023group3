@@ -38,8 +38,18 @@ export class PollRequestComponent implements OnInit {
     this.tags.push(this.fb.control(''))
   }
 
+  deleteTag(index: number): void {
+    const tags = this.pollForm.get('tags') as FormArray
+    tags.removeAt(index)
+  }
+
   addOption() {
     this.options.push(this.fb.control(''))
+  }
+
+  deleteOption(index: number): void {
+    const options = this.pollForm.get('options') as FormArray
+    options.removeAt(index)
   }
 
   ngOnInit(): void {}

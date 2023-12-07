@@ -23,9 +23,6 @@
           Delete Poll
         </div>
         <div class="popuptext">Report User</div>
-        <div class="popuptext" (click)="settleRequestForm()">
-          Settle Outcome
-        </div>
       </div>
 
       <div class="post-widget" style="display: flex; align-items: start">
@@ -121,7 +118,6 @@
         >
           <img *ngIf="isLikedBy" src="assets/heart2.png" class="heart-image" />
           <img *ngIf="!isLikedBy" src="assets/heart1.png" class="heart-image" />
-
           {{ nofLikes }} Like(s)
         </div>
 

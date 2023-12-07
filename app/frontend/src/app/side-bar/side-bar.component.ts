@@ -9,11 +9,15 @@ import { Router } from '@angular/router'
 export class SideBarComponent {
   username: any
   firstname: any
+  lastname: any
+  profile_picture: any
   isAuthenticated: boolean = false
 
   constructor(private router: Router) {
     this.username = localStorage.getItem('username')
     this.firstname = localStorage.getItem('firstname')
+    this.lastname = localStorage.getItem('lastname')
+    this.profile_picture = localStorage.getItem('profile_picture')
     if (this.username) {
       this.isAuthenticated = true
     }

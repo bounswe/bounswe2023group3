@@ -12,4 +12,5 @@ export interface User {
   badges: string[]
   followers: User[]
   followings: User[]
+  profile_picture: string
 }
