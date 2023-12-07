@@ -15,7 +15,7 @@ export class UserProfileComponent {
   username: any
   firstname: any
   lastname: any
-  profile_picture: any
+  profile_picture!: any 
   nofFollowers: number = 0
   nofFollowees: number = 0
 
@@ -30,9 +30,6 @@ export class UserProfileComponent {
     private authService: AuthService,
   ) {
     this.options = this.authService.getHeaders();
-    this.user_id = localStorage.getItem('user_id')
-    this.username = localStorage.getItem('username')
-    this.firstname = localStorage.getItem('firstname')
     this.http.get('http://34.105.66.254:1923/poll/?creatorId='+this.user_id+"&?approveStatus=true").subscribe(
       (response: any) => {
         this.polls = response
@@ -45,9 +42,9 @@ export class UserProfileComponent {
     this.username = localStorage.getItem('username')
     this.firstname = localStorage.getItem('firstname')
     this.lastname = localStorage.getItem('lastname')
-    this.profile_picture = localStorage.getItem('profile_picture')
 
     this._userService.getUser(this.username).then((user: User) => {
+      this.profile_picture = user.profile_picture
       this.nofFollowees = user.followings.map(
         (followee: User) => followee.id,
       ).length
@@ -57,6 +54,10 @@ export class UserProfileComponent {
     })
   }
 
+  ngOnInit(){
+    this.profile_picture = localStorage.getItem('profile_picture')
+
+  }
   createdPolls() {
     this.http.get('http://34.105.66.254:1923/poll/?creatorId='+this.user_id+"&?approveStatus=true").subscribe(
       (response: any) => {

@@ -12,7 +12,7 @@
       >
         <img
           class="user-avatar-style"
-          [src]="profile_picture || 'assets/unknown.jpg'"
+          [src]="profile_picture ? profile_picture : 'assets/unknown.jpg'"
           alt="User Avatar"
           style="
             width: 60px;

@@ -17,6 +17,7 @@ export class HomeComponent {
 
   constructor(private http: HttpClient,private authService: AuthService) {
     this.options = this.authService.getHeaders();
+    this.settledMode = false
 
     this.http.get('http://34.105.66.254:1923/poll/?approveStatus=true').subscribe(
       (response: any) => {
@@ -29,6 +30,7 @@ export class HomeComponent {
   }
 
   ngOnInit() {
+    this.settledMode = false
     if (localStorage.getItem('user_id')) {
       this.isAuthenticated = true
     }
@@ -56,6 +58,7 @@ export class HomeComponent {
   }
 
   trendingPolls() {
+    this.settledMode = false
     this.http.get('http://34.105.66.254:1923/poll/?tags='+['Trending']+'&?approveStatus=true').subscribe(
       (response: any) => {
         this.polls = response
@@ -67,6 +70,7 @@ export class HomeComponent {
   }
 
   followingPolls() {
+    this.settledMode = false
     this.http.get('http://34.105.66.254:1923/poll/my-followings',this.options).subscribe(
       (response: any) => {
         this.polls = response

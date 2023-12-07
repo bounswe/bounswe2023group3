@@ -144,6 +144,7 @@ export class PollComponent {
         this.selectedButton.classList.add('clicked')
       }
     }
+
   }
 
   toggleButton(button: HTMLButtonElement) {

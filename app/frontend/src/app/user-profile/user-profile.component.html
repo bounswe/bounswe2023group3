@@ -7,7 +7,7 @@
         <div class="post-widget" style="display: flex; align-items: start">
           <img
             class="user-avatar"
-            [src]="this?.profile_picture || 'assets/unknown.jpg'"
+            [src]="this.profile_picture != null ? this.profile_picture : 'assets/unknown.jpg'"
             alt="User Avatar"
             style="
               width: 90px;

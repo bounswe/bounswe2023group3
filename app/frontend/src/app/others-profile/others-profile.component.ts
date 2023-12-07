@@ -29,7 +29,6 @@ export class OthersProfileComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    console.log('myId::' + this.self_userId)
 
     if (this.self_userId) {
       this.isAuthenticated = true

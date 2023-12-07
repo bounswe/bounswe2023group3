@@ -14,19 +14,36 @@ export class PollViewComponent {
   isAuthenticated: boolean = false
   showPopup = false
 
+  isSettled!: boolean
+
   selectedCommentId: string | null = null
   constructor(
     private http: HttpClient,
     private route: ActivatedRoute,
-  ) {}
+  ) {
+    
+  }
 
   ngOnInit() {
+
     if (localStorage.getItem('user_id')) {
       this.isAuthenticated = true
     }
     this.route.params.subscribe((params) => {
       this.pollId = params['pollId']
     })
+
+    this.http.get('http://34.105.66.254:1923/poll/' + this.pollId).subscribe(
+      (response: any) => {
+        if(response.is_settled!=0){
+          this.isSettled = true
+        }
+        else this.isSettled = false
+      },
+      (error) => {
+        console.error('Error fetching poll:', error)
+      },
+    )
     this.http.get('http://34.105.66.254:1923/comment/' + this.pollId).subscribe(
       (response: any) => {
         this.comments = response
