@@ -9,6 +9,7 @@ import {
   Relation,
   OneToMany,
 } from 'typeorm';
+import { Annotation } from '../../annotation/entities/annotation.entity';
 
 @Entity('options')
 export class Option {
@@ -23,5 +24,8 @@ export class Option {
   poll: Relation<Poll>;
 
   @OneToMany(() => Vote, (vote) => vote.user, { cascade: true })
-  votes : Relation<Vote[]>;
+  votes: Relation<Vote[]>;
+
+  @OneToMany(() => Annotation, (annotation) => annotation.option)
+  annotations: Relation<Annotation[]>;
 }
