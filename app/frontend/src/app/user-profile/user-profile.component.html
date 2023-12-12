@@ -1,9 +1,9 @@
 <html lang="en">
-  <body>
+  <body style="padding-top: 80px;">
     <app-header></app-header>
     <div class="page-layout">
       <app-side-bar></app-side-bar>
-      <div class="container" style="position: relative; padding: 40px">
+      <div class="container" style="padding: 40px; justify-self: center; margin-left: 240px; margin-right: 260px;">
 
         <div class="post-widget" style="display: flex; align-items: start">
           
@@ -79,7 +79,7 @@
           <app-poll *ngFor="let poll of polls" [pollId]="poll.id"></app-poll>
         </div>
       </div>
-      <div style="display: flex; flex-direction: column">
+      <div class="fixed-elements" style="display: flex; flex-direction: column">
         <app-ranks-bar></app-ranks-bar>
         <app-badges-bar [userId]="user_id"></app-badges-bar>
       </div>
