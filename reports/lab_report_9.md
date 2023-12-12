@@ -56,12 +56,12 @@
 | Implement ranking functionality| [#558](https://github.com/bounswe/bounswe2023group3/issues/558) | BE/ Batuhan İlhan | 19.12.2023 | 4hr |
 | Add image url field to polls| [#560](https://github.com/bounswe/bounswe2023group3/issues/560) | BE/ Batuhan İlhan | 19.12.2023 | 1hr |
 | Semantic Search | [#520](https://github.com/bounswe/bounswe2023group3/issues/520) | BE/Batuhan Çetin | 19.12.2023 | 4hr |
+| Refactor Annotation | [#559](https://github.com/bounswe/bounswe2023group3/issues/559) | BE/Alp Tuna | 19.12.2023 | 4hr |
 | Implement Notification | [#570](https://github.com/bounswe/bounswe2023group3/issues/570) | MT/Baturhan | 19.12.2023 | 4hr |
 | Implement Annotations | [#571](https://github.com/bounswe/bounswe2023group3/issues/571) | MT/Berke, MT/Simar | 19.12.2023 | 4hr |
 | Add user profile link in polls | [#572](https://github.com/bounswe/bounswe2023group3/issues/572) | MT/Faruk | 19.12.2023 | 0.5hr |
 | fix profile pictures in polls | [#573](https://github.com/bounswe/bounswe2023group3/issues/573) | MT/Faruk | 19.12.2023 | 1hr |
 | edit profile page | [#574](https://github.com/bounswe/bounswe2023group3/issues/574) | MT/Faruk | 19.12.2023 | 2hr |
-
 
 ## Path Convergence
 For the upcoming two weeks, we need to complete the voting mechanism, add rating, ranks, leaderboard and badge annotations. These are dependent on each other so we built a convergence path for these tasks. The diagram can be seen below:
