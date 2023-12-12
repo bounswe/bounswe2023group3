@@ -28,4 +28,22 @@ class ModeratorPollDecision {
     }
   }
 
+  Future<Response> settlePoll(bool decision, String feedback, String id) async {
+    String pollSettleEndpoint = '/poll/settle/$id';
+    try {
+      final Response response = await ApiService.dio.post(
+        pollSettleEndpoint,
+        data: {
+          'decision': decision,
+          'settle_poll_request_feedback': feedback,
+        },
+      );
+
+      return response;
+    } catch (e) {
+      rethrow;
+    }
+    }
+
+
 }

@@ -14,7 +14,8 @@ class PollData {
   final String profilePictureUrl;
   final List<Color> tagColors;
   final String creationDate; //dateTime
-
+  final String outcome;
+  final String outcomeSource;
 
 
   const PollData({
@@ -28,7 +29,9 @@ class PollData {
     required this.userUsername,
     required this.profilePictureUrl,
     required this.tagColors,
-    required this.creationDate
+    required this.creationDate,
+    required this.outcome,
+    required this.outcomeSource,
 
 
 
