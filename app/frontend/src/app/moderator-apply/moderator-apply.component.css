@@ -1,0 +1,133 @@
+/* Reset default margin and padding */
+html,
+body,
+h1,
+h2,
+h3,
+p,
+ul,
+li {
+  margin: 0;
+  padding: 0;
+}
+
+body,
+html,
+#background {
+  width: 100vw;
+  min-height: 100vh;
+  background-color: #89b1b6;
+}
+
+/* Set the font family for the entire page */
+body {
+  background-color: #89b1b6;
+  font-family: Arial, sans-serif;
+}
+
+/* Style for the login container */
+.apply-container {
+  background-color: #202a40;
+  color: #fff;
+  text-align: center;
+  padding: 30px;
+  border-radius: 4px;
+  max-width: 400px;
+  margin: 0 auto;
+  margin-top: 50px;
+}
+
+/* Style for the form title */
+.apply-container h2 {
+  font-size: 28px;
+  margin: 0 0 40px;
+  color: #fff;
+}
+
+/* Style for form groups (labels and input fields) */
+.form-group {
+  margin-bottom: 20px;
+  text-align: left;
+  width: 100%;
+}
+
+.apply-form {
+  text-align: center; /* Center text horizontally within the form */
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Center items horizontally within the form */
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 10px;
+  font-size: 16px;
+  color: #fff;
+}
+
+.form-group input[type='text'] {
+  width: calc(100% - 10px);
+  padding: 10px 0px;
+  border-color: #232f44;
+  border: none;
+  border-radius: 10px;
+  font-size: 16px;
+  background-color: #f4eae6;
+  color: #232f44;
+  padding-left: 10px;
+  margin-bottom: 20px;
+}
+
+/* Button Styles */
+button[type='submit'] {
+  background-color: #30568f;
+  color: #fff;
+  border: none;
+  border-radius: 20px;
+  padding: 10px 20px;
+  margin-top: 30px;
+  margin-bottom: 5px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+button[type='submit']:hover {
+  background-color: #c1666b;
+}
+
+.login-container a {
+  color: #fff;
+  font-size: 14px;
+  margin: 10px 30px;
+}
+
+/* Error Message Styles */
+.login-container p {
+  color: #fff;
+  font-size: 14px;
+  margin: 10px 15px;
+}
+
+.submission-success {
+  text-align: center;
+  padding: 20px;
+  background-color: #dff0d8;
+  border: 1px solid #d0e9c6;
+  border-radius: 5px;
+  margin-top: 20px;
+}
+
+.custom-file-input-label {
+  display: inline-block;
+  padding: 10px;
+  height: 18px;
+  background-color: #89b1b6;
+  color: white;
+  cursor: pointer;
+  border-radius: 10px;
+}
+
+/* Style the file input */
+input[type="file"] {
+  display: none; /* Hide the default file input */
+}

@@ -1,5 +1,7 @@
-/* Header Styles */
 header {
+  position: fixed;
+  top: 0;
+  width: 100%;
   background-color: #232f44;
   color: #fff;
   text-align: center;
@@ -8,6 +10,7 @@ header {
   justify-content: left;
   align-items: center;
   padding: 20px 30px;
+  z-index: 1000;
 }
 
 .logo {

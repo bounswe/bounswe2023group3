@@ -13,6 +13,7 @@ import { User } from '../user/entities/user.entity';
 import { Settle } from './enums/settle.enum';
 import { SettlePollRequestDto } from './dto/settle-poll-request.dto';
 import { Like } from '../like/entities/like.entity';
+import { Comment } from '../comment/entities/comment.entity';
 import { Sort } from './enums/sort.enum';
 import { TagService } from '../tag/tag.service';
 
@@ -25,6 +26,8 @@ export class PollService {
     @InjectRepository(Tag) private readonly tagRepository: Repository<Tag>,
     @InjectRepository(Like)
     private readonly likeRepository: Repository<Like>,
+    @InjectRepository(Comment)
+    private readonly commentRepository: Repository<Comment>,
     private readonly tagService: TagService,
   ) {}
 
@@ -99,7 +102,7 @@ export class PollService {
     await this.pollRepository.save(poll);
   }
 
-  public async settlePoll(id: string, decision: boolean): Promise<void> {
+  public async settlePoll(id: string, decision: boolean, feedback: string): Promise<void> {
     const poll = await this.pollRepository.findOne({
       where: { id },
       relations: ['options', 'outcome'],
@@ -125,6 +128,10 @@ export class PollService {
       poll.is_settled = Settle.CANCELLED;
     }
 
+    if (feedback){
+      poll.settle_poll_request_feedback = feedback;
+    }
+
     await this.pollRepository.save(poll);
   }
 
@@ -135,17 +142,18 @@ export class PollService {
     followedById,
     sortString,
     tags,
+    userId,
   }): Promise<Poll[]> {
     if (sortString) {
       if (!Object.values(Sort).includes(sortString)) {
         throw new BadRequestException("Sort should be 'ASC' or 'DESC'");
       }
     }
-    
+
     if (tags) {
       tags = await this.tagService.getTagIdsFromTagNames(tags);
     }
-    
+
     return await this.pollRepository.findAll({
       creatorId,
       approveStatus,
@@ -153,30 +161,57 @@ export class PollService {
       followedById,
       sortString,
       tags,
+      userId,
     });
   }
 
-  public async findPolls(creatorId : string, approveStatus: boolean){
+  public async findPolls(creatorId: string, approveStatus: boolean) {
     return await this.pollRepository.find({
-      where:{
+      where: {
         approveStatus: approveStatus ?? IsNull(),
-        creator : {
-          id : creatorId
-        }
+        creator: {
+          id: creatorId,
+        },
       },
       relations: ['options', 'tags', 'creator', 'outcome'],
-    })
+    });
   }
 
-  public async findPollById(id) {
-    return await this.pollRepository.findOne({
-      where: { id },
+  public async findPollById(pollId, userId?) {
+    const poll = await this.pollRepository.findOne({
+      where: { id: pollId },
       relations: ['options', 'tags', 'creator', 'outcome'],
     });
+
+    if (!poll) {
+      throw new NotFoundException('Poll not found');
+    }
+
+    let like = false;
+    if (userId) {
+      like = await this.likeRepository.exist({
+        where: { poll: { id: pollId }, user: { id: userId } },
+        relations: ['user', 'poll'],
+      });
+    }
+
+    return {
+      ...poll,
+      likeCount: await this.findLikeCount(pollId),
+      commentCount: await this.findCommentCount(pollId),
+      didLike: like,
+    };
   }
 
   async findLikeCount(pollID: string): Promise<number> {
     return await this.likeRepository.count({
+      where: { poll: { id: pollID } },
+      relations: ['user'],
+    });
+  }
+
+  async findCommentCount(pollID: string): Promise<number> {
+    return await this.commentRepository.count({
       where: { poll: { id: pollID } },
       relations: ['user'],
     });

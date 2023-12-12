@@ -15,6 +15,7 @@ export class ModeratorSideBarComponent {
 
   logOut() {
     this.router.navigate(['/app-welcome'])
+    localStorage.clear()
     localStorage.setItem('moderatorloggedIn', 'false')
   }
 }

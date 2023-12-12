@@ -15,6 +15,7 @@ import { Badge } from '../../badge/entities/badge.entity';
 import { Like } from '../../like/entities/like.entity';
 import { Comment } from '../../comment/entities/comment.entity';
 import { Report } from './report.entity';
+import { Vote } from '../../vote/entities/vote.entity';
 
 const SALT_ROUNDS = 10;
 
@@ -75,6 +76,9 @@ export class User {
 
   @OneToMany(() => Report, (report) => report.reporter, { cascade: true })
   reports : Relation<Report[]>;
+
+  @OneToMany(() => Vote, (vote) => vote.user, { cascade: true })
+  votes : Relation<Vote[]>;
 
   @BeforeInsert()
   async hashPasswordBeforeInsert() {

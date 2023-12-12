@@ -24,4 +24,9 @@ export class SettlePollDto {
     })
     @IsNotEmpty()
     decision: boolean;
+
+    @ApiProperty({
+        example: "not a good to time to settle it",
+    })
+    settle_poll_request_feedback: string;
 }

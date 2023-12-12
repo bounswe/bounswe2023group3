@@ -24,6 +24,7 @@ export class PollRepository extends Repository<Poll> {
     followedById,
     sortString,
     tags,
+    userId,
   }): Promise<Poll[]> {
     const queryBuilder = this.createQueryBuilder('poll');
 
@@ -75,6 +76,19 @@ export class PollRepository extends Repository<Poll> {
       }
     }
 
+    let didLikeSubQuery;
+
+    if (userId) {
+      didLikeSubQuery = queryBuilder
+        .subQuery()
+        .select('COUNT(likeSub.id)', 'likeCount')
+        .from(Like, 'likeSub')
+        .where('likeSub.pollId = poll.id AND likeSub.userId = :userId', {
+          userId,
+        })
+        .getQuery();
+    }
+
     // Subquery to count likes
     const likesSubQuery = queryBuilder
       .subQuery()
@@ -94,6 +108,9 @@ export class PollRepository extends Repository<Poll> {
     // Add the subquery to the main query
     queryBuilder.addSelect(`(${likesSubQuery})`, 'pollLikeCount');
     queryBuilder.addSelect(`(${commentsSubQuery})`, 'pollCommentCount');
+    if (userId) {
+      queryBuilder.addSelect(`(${didLikeSubQuery})`, 'didLike');
+    }
 
     const { entities, raw } = await queryBuilder
       .leftJoinAndSelect('poll.options', 'options')
@@ -113,6 +130,9 @@ export class PollRepository extends Repository<Poll> {
           raw[raw.findIndex((item) => item.poll_id === entity.id)]
             .pollCommentCount,
         ),
+        didLike:
+          raw[raw.findIndex((item) => item.poll_id === entity.id)].didLike ===
+          '1',
       };
     });
 

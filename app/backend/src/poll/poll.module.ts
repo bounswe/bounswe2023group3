@@ -1,4 +1,9 @@
-import { Module } from '@nestjs/common';
+import {
+  MiddlewareConsumer,
+  Module,
+  NestModule,
+  RequestMethod,
+} from '@nestjs/common';
 import { PollService } from './poll.service';
 import { PollController } from './poll.controller';
 import { Poll } from './entities/poll.entity';
@@ -17,6 +22,7 @@ import { Like } from '../like/entities/like.entity';
 import { Comment } from '../comment/entities/comment.entity';
 import { Report } from '../user/entities/report.entity';
 import { TagModule } from '../tag/tag.module';
+import { TokenDecoderMiddleware } from '../auth/middlewares/tokenDecoder.middleware';
 
 @Module({
   imports: [
@@ -29,7 +35,7 @@ import { TagModule } from '../tag/tag.module';
       Moderator,
       Like,
       Comment,
-      Report
+      Report,
     ]),
     TagModule,
   ],
@@ -44,4 +50,13 @@ import { TagModule } from '../tag/tag.module';
   ],
   exports: [PollService],
 })
-export class PollModule {}
+export class PollModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer
+      .apply(TokenDecoderMiddleware)
+      .forRoutes(
+        { path: '/poll', method: RequestMethod.GET },
+        { path: '/poll/:param', method: RequestMethod.GET },
+      );
+  }
+}

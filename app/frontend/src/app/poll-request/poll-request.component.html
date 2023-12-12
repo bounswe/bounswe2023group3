@@ -1,9 +1,9 @@
 <html lang="en">
-  <body>
+  <body style="padding-top: 80px;">
     <app-header></app-header>
     <div class="page-layout">
       <app-side-bar></app-side-bar>
-      <div class="container" style="position: relative">
+      <div class="container" style="padding: 40px; justify-self: center; margin-left: 240px; margin-right: 310px;">
         <div class="post-widget" style="display: flex; align-items: start">
           <!-- User avatar and information -->
         </div>
@@ -21,23 +21,77 @@
               name="question"
               formControlName="question"
               placeholder="Enter the Poll Question"
-              style="margin-bottom: 30px"
+              style="margin-bottom: 30px;"
+              required
+            />
+
+            <label for="" style="text-align: left;"
+              ><b>Provide your description:</b></label
+            >
+            <input
+              class="poll-info"
+              type="text"
+              name="description"
+              formControlName="description"
+              placeholder="Enter Your Description"
+              style="margin-bottom: 30px;"
+              required
             />
 
             <!-- Add Tags -->
             <div formArrayName="tags">
               <label for="" style="text-align: left"><b>Poll tags:</b></label>
-              <div *ngFor="let tag of tags.controls; let i = index">
-                <input
-                  class="poll-info"
-                  type="text"
-                  [formControlName]="i"
-                  placeholder="Enter a tag"
-                />
+              <div
+                *ngFor="let tag of tags.controls; let i = index"
+                class="tag-item"
+              >
+                <div class="tag-input-container">
+                  <input
+                    class="poll-info"
+                    type="text"
+                    [formControlName]="i"
+                    placeholder="Enter a tag"
+                    style="width: calc(100% - 70px); margin-right: 12px"
+                    required
+                  />
+                  <button
+                    class="delete-button"
+                    type="button"
+                    (click)="deleteTag(i)"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M6 18L18 6M6 6l12 12"
+                      />
+                    </svg>
+                  </button>
+                </div>
               </div>
             </div>
             <div style="display: flex; justify-content: center">
-              <button class="button" (click)="addTag()">Add Tag</button>
+              <button class="add-button" type="button" (click)="addTag()">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M12 6v6m0 0v6m0-6h6m-6 0H6"
+                  ></path>
+                </svg>
+              </button>
             </div>
 
             <!-- Add Options -->
@@ -45,30 +99,80 @@
               ><b>Poll Options:</b></label
             >
             <div formArrayName="options">
-              <div *ngFor="let option of options.controls; let i = index">
-                <input
-                  class="poll-info"
-                  type="text"
-                  [formControlName]="i"
-                  [placeholder]="'Option ' + (i + 1)"
-                />
+              <div
+                *ngFor="let option of options.controls; let i = index"
+                class="option-item"
+              >
+                <div class="option-input-container">
+                  <input
+                    class="poll-info"
+                    type="text"
+                    [formControlName]="i"
+                    placeholder="Enter an option"
+                    style="width: calc(100% - 70px); margin-right: 12px"
+                    required
+                  />
+                  <button
+                    class="delete-button"
+                    type="button"
+                    (click)="deleteOption(i)"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M6 18L18 6M6 6l12 12"
+                      />
+                    </svg>
+                  </button>
+                </div>
               </div>
             </div>
             <div style="display: flex; justify-content: center">
-              <button class="button" (click)="addOption()">Add Option</button>
+              <button class="add-button" type="button" (click)="addOption()">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M12 6v6m0 0v6m0-6h6m-6 0H6"
+                  ></path>
+                </svg>
+              </button>
             </div>
 
             <label for="" style="text-align: left"
               ><b>Choose a deadline:</b></label
             >
-            <p style="text-align: left; font-size: small; margin-left: 16px">
-              No deadline
+            <p
+              style="
+                text-align: left;
+                font-size: small;
+                display: flex;
+                align-items: center;
+                margin-top: 15px;
+                margin-left: 5px;
+              "
+            >
               <input
                 type="checkbox"
                 id="no_deadline"
                 name="no_deadline"
-                value="no_deadline"
+                (change)="handleCheckboxChange()"
+                style="margin-right: 8px; cursor: pointer"
               />
+              No deadline
             </p>
 
             <input
@@ -76,7 +180,7 @@
               type="datetime-local"
               formControlName="due_date"
               placeholder="Enter due date"
-              style="margin-bottom: 40px; margin-top: 0"
+              style="margin-bottom: 40px; margin-top: 5px; cursor: pointer"
             />
 
             <div style="display: flex; justify-content: center">
@@ -84,6 +188,7 @@
                 class="button"
                 type="submit"
                 style="width: 150px; height: 40px; background-color: #232f44"
+                [disabled]="pollForm.invalid"
                 (click)="onSubmit()"
               >
                 Send for approval
@@ -100,7 +205,7 @@
           </form>
         </div>
       </div>
-      <div class="info-container">
+      <div class="fixed-elements info-container">
         <h2 style="border-bottom: 2px solid #000; margin-bottom: 5px">Rules</h2>
         <p>
           Please do not forget that Poll'up only allows the poll questions whose

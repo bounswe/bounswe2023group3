@@ -1,13 +1,17 @@
 <html lang="en">
-  <body>
+  <body style="padding-top: 80px;">
     <app-header></app-header>
     <div class="page-layout">
       <app-side-bar></app-side-bar>
-      <div class="container" style="position: relative; padding: 40px">
+      <div class="container" style="padding: 40px; justify-self: center; margin-left: 240px; margin-right: 260px;">
+
         <div class="post-widget" style="display: flex; align-items: start">
-          <img
+          
+         
+          <ng-container *ngIf="!isEditing; else editMode">
+            <img
             class="user-avatar"
-            src="assets/unknown.jpg"
+            [src]="this.profile_picture != null ? this.profile_picture : 'assets/unknown.jpg'"
             alt="User Avatar"
             style="
               width: 90px;
@@ -16,14 +20,15 @@
               margin-right: 5px;
             "
           />
-          <div class="post-content">
-            <b class="name" style="font-size: xx-large; padding-top: 10px">{{
-              this.username
-            }}</b>
-            <p class="user-name" style="margin-top: 2px">
-              &#64;{{ this.username }}
-            </p>
-          </div>
+            <div class="post-content">
+              <b class="name" style="font-size: xx-large; padding-top: 10px">{{
+                this.firstname 
+              }} {{ this.lastname }}</b>
+              <p class="user-name" style="margin-top: 2px">
+                &#64;{{ this.username }}
+              </p>
+            </div>
+
           <button
             class="edit-button"
             style="
@@ -32,9 +37,23 @@
               width: 100px;
               color: #fff;
             "
-          >
-            Edit Profile
-          </button>
+            (click) = "toggleEdit()"
+          > Edit Profile </button>
+          </ng-container>
+          <ng-template #editMode>
+            <app-file-upload (shortLinkEmitter)="receiveShortLink($event)"></app-file-upload>
+            <div style="margin-right: 10px;">
+              <input [(ngModel)]="editedFirstname" type="text" class="edit-username" 
+              style="border-radius: 10px;background-color: #79abb1; border: none; height: 30px;color: #fff; margin-bottom: 10px;" placeholder="Enter your first name"/>
+              <br>
+              <input [(ngModel)]="editedLastname" type="text" class="edit-username" 
+              style="border-radius: 10px;background-color: #79abb1; border: none; height: 30px;color: #fff;" placeholder="Enter your last name"/>
+            </div>
+            <button class="edit-button" style=" background-color: #63989f; border: none;color: #fff;"(click)="editProfile()">Save</button>
+          </ng-template>
+
+
+
         </div>
 
         <div style="margin-bottom: 15px; margin-top: 10px; text-align: center">
@@ -60,7 +79,7 @@
           <app-poll *ngFor="let poll of polls" [pollId]="poll.id"></app-poll>
         </div>
       </div>
-      <div style="display: flex; flex-direction: column">
+      <div class="fixed-elements" style="display: flex; flex-direction: column">
         <app-ranks-bar></app-ranks-bar>
         <app-badges-bar [userId]="user_id"></app-badges-bar>
       </div>

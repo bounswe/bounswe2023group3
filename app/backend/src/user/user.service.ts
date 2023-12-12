@@ -11,6 +11,7 @@ import { BadgeService } from '../badge/badge.service';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { Report } from './entities/report.entity';
 import { CreateReportDto } from './dto/create-report.dto';
+import { ChangePasswordDto } from './dto/change-password.dto';
 
 @Injectable()
 export class UserService {
@@ -201,6 +202,26 @@ export class UserService {
 
     return await this.reportRepository.save(report);
 
+  }
+
+  public async changePassword(id: string, changePasswordDto: ChangePasswordDto): Promise<void> {
+    const user = await this.userRepository.findOne({
+      where: { id: id },
+    });
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+    if(!await user.compareEncryptedPassword(changePasswordDto.oldPassword)) {
+      throw new ConflictException('Old password is wrong');
+    }
+    if(changePasswordDto.oldPassword === changePasswordDto.password) {
+      throw new ConflictException('New password cannot be same with old password');
+    }
+    if(changePasswordDto.password !== changePasswordDto.passwordConfirm) {
+      throw new ConflictException('Passwords do not match');
+    }
+    user.password = changePasswordDto.password;
+    await this.userRepository.save(user);
   }
 
   public generateCode(): number {

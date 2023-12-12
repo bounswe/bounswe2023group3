@@ -1,14 +1,36 @@
 .container {
+  position: fixed;
+  top: 80px; /* Adjust as needed */
   display: flex;
   flex-direction: column;
   align-items: center;
-  float: left;
   text-align: left;
   margin-left: 20px;
   width: 200px;
+  z-index: 1000; /* Adjust as needed */
+}
+
+.page-layout {
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+  width: 100%;
+  margin-left: 220px; /* Adjust based on the width of your sidebar */
 }
 
 .button {
+  display: block;
+  width: 180px;
+  padding: 10px;
+  margin-bottom: 10px;
   background-color: #63989f;
+  text-align: center;
+  cursor: pointer;
+  border-radius: 15px;
   border: none;
+}
+
+/* Add a margin to the main content area to make space for the fixed sidebar */
+.main-content {
+  margin-left: 220px; /* Adjust based on the width of your sidebar */
 }

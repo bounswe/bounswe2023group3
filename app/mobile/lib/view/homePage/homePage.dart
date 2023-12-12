@@ -41,9 +41,9 @@ class _HomePageState extends State<HomePage>
       postOptions,
       likeCount,
       dateTime,
-      Future<List<CommentData>> comments,
-      isSettled) async {
-    var awaitedComments = await comments;
+      isSettled,
+      didLike,
+      commentCount) {
     if (!mounted) return;
     Navigator.push(
       context,
@@ -60,7 +60,6 @@ class _HomePageState extends State<HomePage>
           postOptions: postOptions,
           likeCount: likeCount,
           dateTime: dateTime,
-          comments: awaitedComments,
           isSettled: isSettled,
         ),
       ),
@@ -138,27 +137,28 @@ class _HomePageState extends State<HomePage>
                                     post.postOptions,
                                     post.likeCount,
                                     post.dateTime,
-                                    PollCommentService.getComments(post.pollId),
-                                    post.isSettled);
+                                    post.isSettled,
+                                    post.didLike,
+                                    post.commentCount);
                               },
                               child: SizedBox(
                                 height: postHeight,
                                 child: PollViewHomePage(
-                                  pollId: post.pollId,
-                                  userName: post.userName,
-                                  userUsername: post.userUsername,
-                                  profilePictureUrl: post.profilePictureUrl,
-                                  postTitle: post.postTitle,
-                                  tags: post.tags,
-                                  tagColors: post.tagColors,
-                                  voteCount: post.voteCount,
-                                  postOptions: post.postOptions,
-                                  likeCount: post.likeCount,
-                                  dateTime: post.dateTime,
-                                  comments: post.comments,
-                                  isSettled: post.isSettled,
-                                  approvedStatus: post.approvedStatus,
-                                ),
+                                    pollId: post.pollId,
+                                    userName: post.userName,
+                                    userUsername: post.userUsername,
+                                    profilePictureUrl: post.profilePictureUrl,
+                                    postTitle: post.postTitle,
+                                    tags: post.tags,
+                                    tagColors: post.tagColors,
+                                    voteCount: post.voteCount,
+                                    postOptions: post.postOptions,
+                                    likeCount: post.likeCount,
+                                    dateTime: post.dateTime,
+                                    isSettled: post.isSettled,
+                                    approvedStatus: post.approvedStatus,
+                                    didLike: post.didLike,
+                                    commentCount: post.commentCount),
                               ),
                             ),
                           );
@@ -197,8 +197,9 @@ class _HomePageState extends State<HomePage>
                                     post.postOptions,
                                     post.likeCount,
                                     post.dateTime,
-                                    PollCommentService.getComments(post.pollId),
-                                    post.isSettled);
+                                    post.isSettled,
+                                    post.didLike,
+                                    post.commentCount);
                               },
                               child: SizedBox(
                                 height: postHeight,
@@ -214,9 +215,10 @@ class _HomePageState extends State<HomePage>
                                   postOptions: post.postOptions,
                                   likeCount: post.likeCount,
                                   dateTime: post.dateTime,
-                                  comments: post.comments,
                                   isSettled: post.isSettled,
                                   approvedStatus: post.approvedStatus,
+                                  didLike: post.didLike,
+                                  commentCount: post.commentCount,
                                 ),
                               ),
                             ),

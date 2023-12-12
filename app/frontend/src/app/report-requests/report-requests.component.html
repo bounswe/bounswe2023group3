@@ -1,0 +1,23 @@
+<html lang="en">
+  <body>
+    <app-moderator-header></app-moderator-header>
+
+    <div class="page-layout" style="padding-top: 80px;">
+      <app-moderator-side-bar ></app-moderator-side-bar>
+      <div class="container">
+        <div class="moderator-requests">
+          <button class="moderator-requests-column">
+            User Report Requests
+          </button>
+        </div>
+        <div *ngFor="let report of reports" class="poll-notification">
+          <div class="username">{{ report.reporter.username }}</div>
+          <div class="question">{{ report.reported.username }}</div>
+          <div class="date">{{ report.creation_date }}</div>
+          <button class="disapprove-button">Approve</button>
+          <button class="disapprove-button">Disapprove</button>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

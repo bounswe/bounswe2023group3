@@ -30,6 +30,14 @@ body {
   height: 100%;
 }
 
+.fixed-elements {
+  position: fixed;
+  top: 80px;
+  right: 0;
+  display: flex;
+  flex-direction: column;
+}
+
 .buttons {
   margin-top: 20px;
   padding: 5px;
@@ -54,6 +62,7 @@ body {
   text-align: center;
   cursor: pointer;
   border-radius: 15px;
+  border: none;
 }
 
 .page-layout {
@@ -160,4 +169,48 @@ body {
 body {
   margin: 0;
   font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+.popup-options:hover {
+  background-color: #96b7bb;
+  border-radius: 50%;
+}
+
+.popup {
+  position: absolute;
+  top: 20px;
+  right: 50px;
+  z-index: 1000;
+  float: right;
+  cursor: pointer;
+  margin-right: px;
+  background-color: #9dc0c4;
+  border-radius: 5px;
+  padding: 8px;
+}
+
+.popup .popuptext {
+  margin: 2px;
+  visibility: visible;
+  animation: fadeIn 1s;
+  width: 160px;
+  color: #202a40;
+  text-align: center;
+  border-radius: 8px;
+  padding: 8px;
+  z-index: 1;
+}
+
+.popup .popuptext:hover {
+  visibility: visible;
+  background-color: #96b7bb;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }

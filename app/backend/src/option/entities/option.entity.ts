@@ -1,3 +1,4 @@
+import { Vote } from '../../vote/entities/vote.entity';
 import { Poll } from '../../poll/entities/poll.entity';
 import {
   Entity,
@@ -6,7 +7,9 @@ import {
   ManyToOne,
   JoinColumn,
   Relation,
+  OneToMany,
 } from 'typeorm';
+import { Annotation } from '../../annotation/entities/annotation.entity';
 
 @Entity('options')
 export class Option {
@@ -19,4 +22,10 @@ export class Option {
   @ManyToOne(() => Poll, (poll) => poll.options, { onDelete: 'CASCADE' }) // Establishing the many-to-one relationship
   @JoinColumn() // Specifying the foreign key column
   poll: Relation<Poll>;
+
+  @OneToMany(() => Vote, (vote) => vote.user, { cascade: true })
+  votes: Relation<Vote[]>;
+
+  @OneToMany(() => Annotation, (annotation) => annotation.option)
+  annotations: Relation<Annotation[]>;
 }

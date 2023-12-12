@@ -35,8 +35,15 @@ import { VerifyComponent } from './verify/verify.component'
 import { ConfirmModelComponent } from './confirm-model/confirm-model.component'
 import { MatDialogModule } from '@angular/material/dialog'
 import { UserSettleRequestComponent } from './user-settle-request/user-settle-request.component'
-import { MatFormFieldModule } from '@angular/material/form-field'
-
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { ChangePasswordComponent } from './change-password/change-password.component';
+import { SettingsComponent } from './settings/settings.component'
+import { SettledPollComponent } from './settled-poll/settled-poll.component'
+import { ModeratorPollReviewComponent } from './moderator-poll-review/moderator-poll-review.component';
+import { FileUploadComponent } from './file-upload/file-upload.component';
+import { ReportUserComponent } from './report-user/report-user.component';
+import { ReportRequestsComponent } from './report-requests/report-requests.component';
+import { ModeratorApplyComponent } from './moderator-apply/moderator-apply.component'
 @NgModule({
   declarations: [
     AppComponent,
@@ -67,6 +74,14 @@ import { MatFormFieldModule } from '@angular/material/form-field'
     VerifyComponent,
     ConfirmModelComponent,
     UserSettleRequestComponent,
+    ChangePasswordComponent,
+    SettingsComponent,
+    SettledPollComponent,
+    ModeratorPollReviewComponent,
+    FileUploadComponent,
+    ReportUserComponent,
+    ReportRequestsComponent,
+    ModeratorApplyComponent,
   ],
   imports: [
     BrowserModule,
