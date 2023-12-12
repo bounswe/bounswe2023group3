@@ -1,7 +1,9 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile_app/models/comment.dart';
+import 'package:mobile_app/services/apiService.dart';
 import 'package:mobile_app/services/createCommentService.dart';
+import 'package:mobile_app/services/pollCommentService.dart';
 import 'package:mobile_app/view/pollView/commentWidget.dart';
 import 'package:mobile_app/view/pollView/tagWidget.dart';
 import 'package:mobile_app/view/pollView/postOptionWidget.dart';
@@ -44,6 +46,10 @@ class PollPage extends StatefulWidget {
 
   @override
   State<PollPage> createState() => _PollPageState();
+
+  Future<List<CommentData>> fetchComments() async {
+    return await PollCommentService.getComments(pollId);
+  }
 }
 
 class _PollPageState extends State<PollPage> {
@@ -98,14 +104,43 @@ class _PollPageState extends State<PollPage> {
                 parentSetState: () {
                   setState(() {});
                 }),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              child: Text('${widget.comments.length} Comments',
-                  style: const TextStyle(fontSize: 16.0)),
+            FutureBuilder<List<CommentData>>(
+              future: widget
+                  .fetchComments(), // Your asynchronous data fetch function
+              builder: (BuildContext context,
+                  AsyncSnapshot<List<CommentData>> snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  // Show a loading indicator while waiting for the comments to load
+                  return const Center(child: CircularProgressIndicator());
+                } else if (snapshot.hasError) {
+                  // If we run into an error, display it to the user
+                  return Text('Error: ${snapshot.error}');
+                } else {
+                  var comments = snapshot.hasData ? snapshot.data! : [];
+                  // Whether we have data or not, display the number of comments
+                  int commentCount = comments.length;
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                        child: Text('$commentCount Comments',
+                            style: const TextStyle(fontSize: 16.0)),
+                      ),
+                      // If we have data, display the list of comments
+                      if (snapshot.hasData)
+                        ...comments
+                            .map((comment) => CommentWidget(
+                                  user: comment.user,
+                                  commentText: comment.commentText,
+                                ))
+                            .toList(),
+                      // If there's no data, there's nothing else to add to the column
+                    ],
+                  );
+                }
+              },
             ),
-            for (CommentData comment in widget.comments)
-              CommentWidget(
-                  user: comment.user, commentText: comment.commentText),
           ],
         ),
       ),
