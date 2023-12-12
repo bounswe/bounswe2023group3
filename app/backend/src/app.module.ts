@@ -24,7 +24,8 @@ import { CommentModule } from './comment/comment.module';
 import { Report } from './user/entities/report.entity';
 import { VoteModule } from './vote/vote.module';
 import { Vote } from './vote/entities/vote.entity';
-
+import { AnnotationModule } from './annotation/annotation.module';
+import { Annotation } from './annotation/entities/annotation.entity';
 
 @Module({
   imports: [
@@ -37,7 +38,19 @@ import { Vote } from './vote/entities/vote.entity';
       port: 5432,
       password: process.env.DB_PASSWORD,
       username: 'postgres',
-      entities: [User, Poll, Tag, Option, Moderator, Badge, Like, Comment, Report,Vote],
+      entities: [
+        User,
+        Poll,
+        Tag,
+        Option,
+        Moderator,
+        Badge,
+        Like,
+        Comment,
+        Report,
+        Vote,
+        Annotation,
+      ],
       database: 'postgres',
       synchronize: true,
       logging: true,
@@ -69,9 +82,9 @@ import { Vote } from './vote/entities/vote.entity';
     LikeModule,
     CommentModule,
     VoteModule,
+    AnnotationModule,
   ],
   controllers: [AppController],
   providers: [AppService],
 })
-
 export class AppModule {}
