@@ -1,7 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile_app/models/comment.dart';
-import 'package:mobile_app/services/apiService.dart';
 import 'package:mobile_app/services/createCommentService.dart';
 import 'package:mobile_app/services/pollCommentService.dart';
 import 'package:mobile_app/view/pollView/commentWidget.dart';
