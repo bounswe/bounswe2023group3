@@ -4,14 +4,17 @@ body {
 .container {
   background-color: #202a40;
   color: #f4eae6;
+  float: left;
+  padding-top: 20px;
+  position: fixed;
+  top: 80px; /* Adjust as needed */
   display: flex;
   flex-direction: column;
   align-items: center;
-  float: left;
   text-align: left;
-  padding-top: 20px;
   margin-left: 20px;
   width: 200px;
+  z-index: 1000; /* Adjust as needed */
 }
 
 .button {
