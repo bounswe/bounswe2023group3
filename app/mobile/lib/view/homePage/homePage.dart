@@ -42,7 +42,9 @@ class _HomePageState extends State<HomePage>
       likeCount,
       dateTime,
       Future<List<CommentData>> comments,
-      isSettled) async {
+      isSettled,
+      didLike,
+      commentCount) async {
     var awaitedComments = await comments;
     if (!mounted) return;
     Navigator.push(
@@ -139,7 +141,9 @@ class _HomePageState extends State<HomePage>
                                     post.likeCount,
                                     post.dateTime,
                                     PollCommentService.getComments(post.pollId),
-                                    post.isSettled);
+                                    post.isSettled,
+                                    post.didLike,
+                                    post.commentCount);
                               },
                               child: SizedBox(
                                 height: postHeight,
@@ -158,6 +162,8 @@ class _HomePageState extends State<HomePage>
                                   comments: post.comments,
                                   isSettled: post.isSettled,
                                   approvedStatus: post.approvedStatus,
+                                  didLike: post.didLike,
+                                  commentCount: post.commentCount
                                 ),
                               ),
                             ),
@@ -198,7 +204,9 @@ class _HomePageState extends State<HomePage>
                                     post.likeCount,
                                     post.dateTime,
                                     PollCommentService.getComments(post.pollId),
-                                    post.isSettled);
+                                    post.isSettled,
+                                    post.didLike,
+                                    post.commentCount);
                               },
                               child: SizedBox(
                                 height: postHeight,
@@ -217,6 +225,8 @@ class _HomePageState extends State<HomePage>
                                   comments: post.comments,
                                   isSettled: post.isSettled,
                                   approvedStatus: post.approvedStatus,
+                                  didLike: post.didLike,
+                                  commentCount: post.commentCount,
                                 ),
                               ),
                             ),

@@ -230,6 +230,8 @@ class _ProfilePageState extends State<ProfilePage> {
                   comments: [],
                   isSettled: post.isSettled,
                   approvedStatus: post.approvedStatus,
+                  didLike: false,
+                  commentCount: post.commentCount,
                 ),
               ),
             ),
