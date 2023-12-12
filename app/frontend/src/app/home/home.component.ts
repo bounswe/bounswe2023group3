@@ -49,6 +49,7 @@ export class HomeComponent {
   }
 
   trendingPolls() {
+    this.clickedButton = 'trending';
     this.http.get('http://34.105.66.254:1923/poll/').subscribe(
       (response: any) => {
         this.polls = []
@@ -67,6 +68,7 @@ export class HomeComponent {
   }
 
   followingPolls() {
+    this.clickedButton = 'following';
     this.http.get('http://34.105.66.254:1923/poll/').subscribe(
       (pollResponse: any) => {
         const user_id = localStorage.getItem('user_id')

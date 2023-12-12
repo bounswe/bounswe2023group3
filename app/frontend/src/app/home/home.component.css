@@ -16,3 +16,7 @@
   outline: none;
   background-color: #fff; /* Change to your preferred focus color */
 }
+
+.underlined {
+  text-decoration: underline;
+}
