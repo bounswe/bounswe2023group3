@@ -10,11 +10,28 @@
     </style>
   </head>
   <body style="margin-top: 20px">
-    <div class="container" style="position: relative">
+    <div class="container" style="position: relative;">
+      <img
+        [class.blurred]="!isAuthenticated"
+        class="popup-options"
+        style="float: right; width: 4%; height: 100%; cursor: pointer"
+        src="assets/three-dots.png"
+        (click)="openPopup()"
+      />
+      <div class="popup" *ngIf="showPopup" >
+        <div class="popuptext" (click)="openConfirmationDialog()">
+          Delete Poll
+        </div>
+        <div class="popuptext" (click)="reportUser()">Report User</div>
+        <div class="popuptext" (click)="settleRequestForm()">
+          Settle Outcome
+        </div>
+      </div>
+
       <div class="post-widget" style="display: flex; align-items: start">
         <img
           class="user-avatar"
-          src="assets/unknown.jpg"
+          [src]="creator?.profile_picture || 'assets/unknown.jpg'"
           alt="User Avatar"
           style="
             width: 50px;
@@ -25,22 +42,21 @@
           "
         />
         <div
+          (click)="navigateToProfile(creator.username)"
           class="post-content"
           style="
             display: flex;
             flex-direction: column;
             align-items: start;
             margin-left: 5px;
+            cursor: pointer;
           "
         >
-          <b
-            class="name"
-            style="font-size: small; margin-top: 12px; cursor: pointer"
-            (click)="navigateToProfile(creator)"
-            >{{ creator }}</b
-          >
+          <b class="name" style="font-size: small; margin-top: 12px">{{
+            creator.firstname
+          }} {{ creator.lastname }}</b>
           <p class="user-name" style="font-size: small; margin-top: 3px">
-            &#64;{{ creator }}
+            &#64;{{ creator.username }}
           </p>
         </div>
       </div>
@@ -70,12 +86,8 @@
             {{ tag.name }}
           </button>
         </div>
-
         <p style="text-align: right; font-size: smaller">
-          {{ nofLikes }} Likes
-        </p>
-        <p style="text-align: right; font-size: smaller">
-          {{ vote_count }} Votes
+          {{ vote_count }} Vote(s)
         </p>
       </div>
 
@@ -95,29 +107,42 @@
       <input type="hidden" [(ngModel)]="isLikedBy" name="isLiked" />
 
       <div style="display: flex; justify-content: space-between">
-        <button
+        <div
+          [class.blurred]="!isAuthenticated"
           style="
-            width: 100px;
-            height: 35px;
-            background-color: #187795;
-            color: #fff;
             cursor: pointer;
-            border-radius: 15px;
             font-size: smaller;
             margin-bottom: 10px;
             margin-top: 20px;
-            border: none;
+            vertical-align: middle;
+            height: 35 px;
           "
           (click)="toggleLike()"
-          [style.background-color]="isLikedBy ? '#e57f84' : '#187795'"
         >
-          {{ isLikedBy ? 'Unlike' : 'Like' }}
-        </button>
+          <img *ngIf="isLikedBy" src="assets/heart2.png" class="heart-image" />
+          <img *ngIf="!isLikedBy" src="assets/heart1.png" class="heart-image" />
 
-        <p style="text-align: center; margin-right: 170px; margin-left: 100px">
-          {{ comment_count }} Comments
+          {{ nofLikes }} Like(s)
+        </div>
+
+        <p
+          style="
+            text-align: center;
+            margin-right: 60px;
+            margin-top: 26px;
+            font-size: small;
+          "
+        >
+          {{ comment_count }} Comment(s)
         </p>
-        <p style="text-align: right">3d</p>
+        <p style="text-align: right; margin-top: 26px; margin-right: 5px">
+          {{ creation_time }}
+        </p>
+      </div>
+      <div style="text-align: right; ">
+        <p style="text-align: right; margin-top: 5px; margin-bottom: 2px; font-size: smaller;">
+          Due date: {{ due_date }}
+        </p>
       </div>
     </div>
   </body>

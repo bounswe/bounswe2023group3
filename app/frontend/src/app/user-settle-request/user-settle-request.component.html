@@ -1,0 +1,26 @@
+<h2 mat-dialog-title>Send Settle Request</h2>
+<mat-dialog-content>
+  <mat-form-field
+    style="display: flex; justify-content: center; align-items: center"
+  >
+    <input
+      matInput
+      placeholder="Outcome"
+      [(ngModel)]="outcome"
+      style="width: 190px"
+    />
+  </mat-form-field>
+  <mat-form-field>
+    <input
+      matInput
+      placeholder="Outcome Source"
+      [(ngModel)]="outcomeSource"
+      style="width: 200px"
+    />
+  </mat-form-field>
+</mat-dialog-content>
+<mat-dialog-actions
+  style="display: flex; justify-content: center; align-items: center"
+>
+  <button mat-button (click)="sendRequest()">Send Request</button>
+</mat-dialog-actions>

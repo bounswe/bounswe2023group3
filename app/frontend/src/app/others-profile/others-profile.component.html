@@ -10,12 +10,12 @@
         <div class="post-widget" style="display: flex; align-items: start">
           <img
             class="user-avatar-style"
-            src="assets/unknown.jpg"
+            [src]="user.profile_picture ? user.profile_picture : 'assets/unknown.jpg'"
             alt="User Avatar"
           />
           <div class="post-content">
             <b class="name" style="font-size: xx-large; padding-top: 10px"
-              >^-^</b
+              >{{ this.user.firstname }} {{ this.user.lastname }}</b
             >
             <!-- add the Actual Name of the user after it is implemented in the backend -->
             <p class="user-name" style="margin-top: 2px">
@@ -26,6 +26,7 @@
           <button
             class="follow-button"
             style="background-color: #e57f84; border: none; color: #fff"
+            [class.blurred]="!isAuthenticated"
             (click)="toggleFollow()"
             [textContent]="isFollowing ? 'Unfollow' : 'Follow'"
           ></button>
@@ -43,18 +44,27 @@
           <button class="user-polls-column" (click)="createdPolls()">
             Created
           </button>
-          <button class="user-polls-column" (click)="likedPolls()">
+          <button
+            class="user-polls-column"
+            (click)="likedPolls()"
+            [class.blurred]="!isAuthenticated"
+          >
             Liked
           </button>
-          <button class="user-polls-column">Voted</button>
+          <button class="user-polls-column" [class.blurred]="!isAuthenticated">
+            Voted
+          </button>
         </div>
         <div>
           <app-poll *ngFor="let poll of polls" [pollId]="poll.id"></app-poll>
         </div>
       </div>
       <div class="flex-column">
-        <app-ranks-bar></app-ranks-bar>
-        <app-badges-bar [userId]="user.id"></app-badges-bar>
+        <app-ranks-bar [class.blurred]="!isAuthenticated"></app-ranks-bar>
+        <app-badges-bar
+          [userId]="user.id"
+          [class.blurred]="!isAuthenticated"
+        ></app-badges-bar>
       </div>
     </div>
   </body>

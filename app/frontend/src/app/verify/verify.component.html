@@ -16,14 +16,18 @@
     <div class="verify-container">
       <h2>Verify Your Account</h2>
       <!-- Add the welcome message here -->
-      <form class="login-form" (ngSubmit)="onSubmit()">
+      <form
+        class="login-form"
+        [formGroup]="verificationForm"
+        (ngSubmit)="onSubmit()"
+      >
         <div class="form-group">
           <label for="email">Email address:</label>
           <input
             type="text"
             id="email"
             name="email"
-            [(ngModel)]="email"
+            formControlName="email"
             required
           />
         </div>
@@ -31,13 +35,19 @@
           <label for="verificationCode">Verification Code:</label>
           <input
             type="text"
-            email="verificationCode"
-            [(ngModel)]="verificationCode"
+            name="verificationCode"
+            formControlName="verificationCode"
           />
         </div>
-        <button type="submit" class="login-button">Verify</button>
+        <button
+          type="submit"
+          class="login-button"
+          [disabled]="verificationForm.invalid"
+        >
+          Verify
+        </button>
         <p class="error-message" *ngIf="errorMessage">{{ errorMessage }}</p>
-        <button type="submit" class="login-button">Skip This Step</button>
+        <a href="/app-home">Skip For Now</a>
       </form>
     </div>
   </body>

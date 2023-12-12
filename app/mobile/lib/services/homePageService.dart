@@ -39,7 +39,6 @@ class HomePageService {
           optionsList.add(option['answer']);
         }
 
-        print(post);
         posts.add(PollViewHomePage(
           pollId: post['id'],
           userName: creator['username'],
@@ -52,10 +51,11 @@ class HomePageService {
           postOptions: optionsList,
           likeCount: post['likeCount'],
           comments: const [],
+          commentCount : post['commentCount'],
           dateTime: post['creation_date'],
           isSettled: post['is_settled'],
-          approvedStatus:
-              post['approveStatus'], // You might want to format the date
+          approvedStatus: post['approveStatus'],
+          didLike: post['didLike']// You might want to format the date
         ));
       }
       print(posts);

@@ -13,7 +13,7 @@ export class CommentService {
     private pollService: PollService
   ) {}
 
-  async fetchLikes(pollID: string){
+  async fetchComments(pollID: string){
     return await this.commentRepository.find({where : {poll:{id:pollID}}, relations:['user'] })
   }
 
@@ -22,12 +22,6 @@ export class CommentService {
     
     if (!poll){
       throw new ConflictException('There is no poll with this id');
-    }
-
-    const like = await this.commentRepository.findOne({where: {poll: {id: pollID} , user : {id:userID}}})
-    
-    if (like){
-      throw new ConflictException('User has already commented on this poll');
     }
 
     const newLike = this.commentRepository.create({

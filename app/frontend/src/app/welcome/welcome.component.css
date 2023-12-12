@@ -51,6 +51,13 @@ header {
 .header-links a {
   text-decoration: none;
   color: #fff;
+  font-size: medium;
+}
+
+.header-links a {
+  text-decoration: none;
+  color: #fff;
+  font-size: medium;
 }
 
 .download-button {

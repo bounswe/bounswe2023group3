@@ -4,12 +4,12 @@
 
     <div class="page-layout">
       <app-moderator-side-bar></app-moderator-side-bar>
-      <div class="container">
+      <div class="container" >
         <div class="moderator-requests">
-          <button class="moderator-requests-column">
+          <button class="moderator-requests-column" (click)="onPollCreationReq()">
             Poll Creation Requests
           </button>
-          <button class="moderator-requests-column">
+          <button class="moderator-requests-column" (click) ="onOutcomeVerifiationReq()">
             Outcome Verification Requests
           </button>
         </div>
@@ -17,23 +17,8 @@
           <div class="username">{{ poll.creator.username }}</div>
           <div class="question">{{ poll.question }}</div>
           <div class="date">{{ poll.creation_date }}</div>
-          <button class="details-button">See Details</button>
-          <button class="disapprove-button">Disapprove</button>
-        </div>
-
-        <div class="poll-notification">
-          <div class="username">johndoe</div>
-          <div class="question">Who will be the next James Bond?</div>
-          <div class="date">10m</div>
-          <button class="details-button">See Details</button>
-          <button class="disapprove-button">Dissapprove</button>
-        </div>
-        <div class="poll-notification">
-          <div class="username">janesmith</div>
-          <div class="question">Who will the Champion this year?</div>
-          <div class="date">20m</div>
-          <button class="details-button">See Details</button>
-          <button class="disapprove-button">Dissapprove</button>
+          <button class="details-button" (click)="navigateToDetailedView(poll.id)">See Details</button>
+          <button class="disapprove-button" (click) = "deletePoll(poll.id)">Disapprove</button>
         </div>
       </div>
     </div>

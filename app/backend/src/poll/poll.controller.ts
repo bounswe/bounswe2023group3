@@ -9,17 +9,13 @@ import {
   UseGuards,
   Req,
   Query,
-  ParseIntPipe,
+  ParseArrayPipe,
+  ConflictException,
+  ParseBoolPipe,
 } from '@nestjs/common';
 import { PollService } from './poll.service';
 import { CreatePollDto } from './dto/create-poll.dto';
-import {
-  ApiBearerAuth,
-  ApiOkResponse,
-  ApiQuery,
-  ApiResponse,
-  ApiTags,
-} from '@nestjs/swagger';
+import { ApiBearerAuth, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { AuthGuard } from '../auth/guards/auth.guard';
 import { VerificationGuard } from '../auth/guards/verification.guard';
 import { CreatePollResponseDto } from './dto/responses/create-poll-response.dto';
@@ -30,6 +26,11 @@ import {
 } from './dto/settle-poll-request.dto';
 import { ModeratorGuard } from '../moderator/guards/moderator.guard';
 import { VerificationModeratorGuard } from '../moderator/guards/verification-moderator.guard';
+
+const statusMap = new Map<string, boolean>();
+statusMap.set('pending', null);
+statusMap.set('approved', true);
+statusMap.set('rejected', false);
 
 @ApiBearerAuth()
 @Controller('poll')
@@ -98,8 +99,11 @@ export class PollController {
   }
 
   @ApiQuery({ name: 'creatorId', required: false })
+  @ApiQuery({ name: 'approveStatus', required: false })
   @ApiQuery({ name: 'likedById', required: false })
   @ApiQuery({ name: 'followedById', required: false })
+  @ApiQuery({ name: 'sort', required: false })
+  @ApiQuery({ name: 'tags', required: false })
   @ApiResponse({
     status: 200,
     description: 'Polls are fetched successfully.',
@@ -111,17 +115,29 @@ export class PollController {
   })
   @Get()
   public async findAll(
+    @Req() req: any,
     @Query('creatorId', new ParseUUIDPipe({ optional: true }))
     creatorId?: string,
+    @Query('approveStatus', new ParseBoolPipe({ optional: true }))
+    approveStatus?: string,
     @Query('likedById', new ParseUUIDPipe({ optional: true }))
     likedById?: string,
     @Query('followedById', new ParseUUIDPipe({ optional: true }))
     followedById?: string,
+    @Query('sort')
+    sortString?: string,
+    @Query('tags', new ParseArrayPipe({ optional: true }))
+    tags?: Array<string>,
   ): Promise<any> {
+    const userId = req.user?.sub; // Realize that it is not id instead sub. I do not know why but middleware gives this field.
     return await this.pollService.findAll({
       creatorId,
+      approveStatus,
       likedById,
       followedById,
+      sortString,
+      tags,
+      userId,
     });
   }
 
@@ -141,9 +157,39 @@ export class PollController {
     const creatorId = req.user.id;
     return await this.pollService.findAll({
       creatorId,
+      approveStatus: null,
       likedById: null,
       followedById: null,
+      sortString: null,
+      tags: null,
+      userId: creatorId,
     });
+  }
+
+  @UseGuards(AuthGuard, VerificationGuard)
+  @ApiQuery({ name: 'get poll with filtered status', required: false })
+  @ApiResponse({
+    status: 200,
+    description: 'Polls are fetched successfully.',
+    type: [GetPollResponseDto],
+  })
+  @ApiResponse({
+    status: 500,
+    description: 'Internal server error, contact with backend team.',
+  })
+  @Get('my-polls/:status')
+  public async findMyPollsWithStatus(
+    @Param('status') status: string,
+    @Req() req: any,
+  ): Promise<any> {
+    if (!statusMap.has(status)) {
+      throw new ConflictException(
+        status +
+          ' is not a valid status. Status should be one of these: pending, approved, rejected',
+      );
+    }
+    const creatorId = req.user.id;
+    return await this.pollService.findPolls(creatorId, statusMap.get(status));
   }
 
   @UseGuards(AuthGuard, VerificationGuard)
@@ -161,8 +207,12 @@ export class PollController {
     const userId = req.user.id;
     return await this.pollService.findAll({
       creatorId: null,
+      approveStatus: null,
       likedById: userId,
       followedById: null,
+      sortString: null,
+      tags: null,
+      userId,
     });
   }
 
@@ -181,8 +231,12 @@ export class PollController {
     const userId = req.user.id;
     return await this.pollService.findAll({
       creatorId: null,
+      approveStatus: null,
       likedById: null,
       followedById: userId,
+      sortString: null,
+      tags: null,
+      userId,
     });
   }
 
@@ -197,8 +251,12 @@ export class PollController {
     status: 500,
     description: 'Internal server error, contact with backend team.',
   })
-  public async findOne(@Param('id', ParseUUIDPipe) id: string): Promise<any> {
-    return await this.pollService.findPollById(id);
+  public async findOne(
+    @Param('id', ParseUUIDPipe) pollId: string,
+    @Req() req: any,
+  ): Promise<any> {
+    const userId = req.user?.sub; // Realize that it is not id instead sub. I do not know why but middleware gives this field.
+    return await this.pollService.findPollById(pollId, userId);
   }
 
   @ApiResponse({ status: 200, description: 'Poll deleted successfully.' })

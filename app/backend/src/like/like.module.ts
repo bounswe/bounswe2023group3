@@ -8,16 +8,27 @@ import { PollService } from '../poll/poll.service';
 import { PollRepository } from '../poll/repository/poll.repository';
 import { Tag } from '../tag/entities/tag.entity';
 import { User } from '../user/entities/user.entity';
+import { Comment } from '../comment/entities/comment.entity';
 import { Badge } from '../badge/entities/badge.entity';
 import { Option } from '../option/entities/option.entity';
 import { UserService } from '../user/user.service';
 import { BadgeService } from '../badge/badge.service';
-import { Comment } from '../comment/entities/comment.entity';
-import { PollModule } from '../poll/poll.module';
+import { Report } from '../user/entities/report.entity';
+import { TagModule } from '../tag/tag.module';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([Like, Poll, Tag, User, Badge, Option]),
+    TypeOrmModule.forFeature([
+      Like,
+      Poll,
+      Tag,
+      User,
+      Badge,
+      Option,
+      Report,
+      Comment,
+    ]),
+    TagModule,
   ],
   controllers: [LikeController],
   providers: [

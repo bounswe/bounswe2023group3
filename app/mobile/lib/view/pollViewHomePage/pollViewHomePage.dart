@@ -23,6 +23,8 @@ class PollViewHomePage extends StatefulWidget {
   final List<CommentData> comments;
   final int isSettled;
   final bool? approvedStatus;
+  final bool didLike;
+  final int commentCount;
 
   const PollViewHomePage({
     super.key,
@@ -40,25 +42,43 @@ class PollViewHomePage extends StatefulWidget {
     required this.comments,
     required this.isSettled,
     required this.approvedStatus,
+    required this.didLike,
+    required this.commentCount,
   });
   _PollViewHomePageState createState() => _PollViewHomePageState();
 }
 
 class _PollViewHomePageState extends State<PollViewHomePage> {
   late int likeCount;
+  late bool didLike;
 
   @override
   void initState() {
     super.initState();
     likeCount = widget.likeCount;
+    didLike = widget.didLike;
   }
 
-  void handleLikePress(String pollId) {
+  void handleLikePress(String pollId) async {
     PollViewHomePageLike pollLike = PollViewHomePageLike();
     pollLike.like(pollId);
-    setState(() {
-      likeCount++;
-    });
+    bool likeSuccess = await pollLike.like(pollId);
+    if (likeSuccess) {
+      setState(() {
+        likeCount++;
+        didLike = true;
+      });
+    }
+  }
+  void handleUnlikePress(String pollId) async {
+    PollViewHomePageLike pollLike = PollViewHomePageLike();
+    bool unlikeSuccess = await pollLike.unlike(pollId); // Assuming an unlike method exists
+    if (unlikeSuccess) {
+      setState(() {
+        likeCount--;
+        didLike = false;
+      });
+    }
   }
   @override
   Widget build(BuildContext context) {
@@ -91,7 +111,13 @@ class _PollViewHomePageState extends State<PollViewHomePage> {
                 optionText: option, onPressed: () => handleOptionPress(option)),
           Padding(
             padding: const EdgeInsets.all(16.0),
-            child: ElevatedButton.icon(
+            child: didLike
+                ? ElevatedButton.icon(
+              onPressed: () => handleUnlikePress(widget.pollId),
+              icon: const Icon(Icons.thumb_down),
+              label: const Text('Unlike'),
+            )
+                : ElevatedButton.icon(
               onPressed: () => handleLikePress(widget.pollId),
               icon: const Icon(Icons.thumb_up),
               label: const Text('Like'),
@@ -99,7 +125,7 @@ class _PollViewHomePageState extends State<PollViewHomePage> {
           ),
           Row(
             children: [
-              LikeCountWidget(likeCount: widget.likeCount),
+              LikeCountWidget(likeCount: likeCount),
               DateTimeWidget(dateTime: widget.dateTime),
             ],
           ),

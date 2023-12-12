@@ -18,15 +18,25 @@ import { ModeratorAuthGuard } from './moderator-authorize.guard'
 import { VerificationComponent } from './verification/verification.component'
 import { ModeratorPollReviewComponent } from './moderator-poll-review/moderator-poll-review.component'
 import { VerifyComponent } from './verify/verify.component'
+import { SettingsComponent } from './settings/settings.component'
+import { ChangePasswordComponent } from './change-password/change-password.component'
+import { SettledPollComponent } from './settled-poll/settled-poll.component'
+import { ReportRequestsComponent } from './report-requests/report-requests.component'
 
 const routes: Routes = [
   { path: '', component: WelcomeComponent },
   { path: 'app-moderator-login', component: ModeratorLoginComponent },
   { path: 'app-verify', component: VerifyComponent },
-
+  { path: 'app-change-password', component: ChangePasswordComponent },
+  { path: 'app-settled-poll', component: SettledPollComponent },
   {
     path: 'app-moderator-requests',
     component: ModeratorRequestsComponent,
+    canActivate: [ModeratorAuthGuard],
+  },
+  {
+    path: 'app-report-requests',
+    component: ReportRequestsComponent,
     canActivate: [ModeratorAuthGuard],
   },
   {
@@ -39,7 +49,7 @@ const routes: Routes = [
   { path: 'app-register', component: RegisterComponent },
   { path: 'app-forget-password', component: ForgetpasswordComponent },
   { path: 'app-reset-password', component: ResetPasswordComponent },
-  { path: 'app-home', component: HomeComponent, canActivate: [AuthGuard] },
+  { path: 'app-home', component: HomeComponent },
   {
     path: 'app-poll-request',
     component: PollRequestComponent,
@@ -48,17 +58,14 @@ const routes: Routes = [
   {
     path: 'app-profile/:username',
     component: OthersProfileComponent,
-    canActivate: [AuthGuard],
   },
   {
     path: 'app-poll-view/:pollId',
     component: PollViewComponent,
-    canActivate: [AuthGuard],
   },
   {
     path: 'app-tag-page/:tagName',
     component: TagPageComponent,
-    canActivate: [AuthGuard],
   },
   {
     path: 'app-verification',
@@ -66,7 +73,7 @@ const routes: Routes = [
     canActivate: [AuthGuard],
   },
   {
-    path: 'app-moderator-poll-review',
+    path: 'app-moderator-poll-review/:pollId',
     component: ModeratorPollReviewComponent,
     canActivate: [ModeratorAuthGuard],
   },

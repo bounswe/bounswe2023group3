@@ -27,6 +27,10 @@ export class AuthGuard implements CanActivate {
       });
       const user = await this.userService.searchUser({ email: payload.email });
 
+      if (user[0].isBanned) {        
+        throw new UnauthorizedException();
+
+      }
       request['user'] = user[0];
     } catch {
       throw new UnauthorizedException();

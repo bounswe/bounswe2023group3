@@ -1,7 +1,12 @@
 import { HttpClient } from '@angular/common/http'
-import { Component, Input } from '@angular/core'
+import { Component, Input, NgModule } from '@angular/core'
 import { Router } from '@angular/router'
 import { UserService } from 'src/services/user-service/user.service'
+import { MatDialog, MatDialogModule } from '@angular/material/dialog'
+import { ConfirmModelComponent } from '../confirm-model/confirm-model.component'
+import { UserSettleRequestComponent } from '../user-settle-request/user-settle-request.component'
+import { MatFormFieldModule } from '@angular/material/form-field'
+import { ReportUserComponent } from '../report-user/report-user.component'
 
 @Component({
   selector: 'app-poll',
@@ -16,11 +21,18 @@ export class PollComponent {
   options!: any[]
   due_date!: string
   comment_count!: number
+  creation_time!: string
   vote_count!: number
-  creator!: string
+  creator!: any
   isLikedBy!: boolean
   nofLikes: number = 0
   userId!: string | null
+
+  showPopup = false
+  isAuthenticated: boolean = false
+
+  outcome: string = ''
+  outcomeSource: string = ''
 
   colors: string[] = [
     '#AEEEEE',
@@ -37,19 +49,90 @@ export class PollComponent {
     private http: HttpClient,
     private router: Router,
     private userService: UserService,
+    public dialog: MatDialog,
   ) {}
+
+  openConfirmationDialog(): void {
+    const dialogRef = this.dialog.open(ConfirmModelComponent, {
+      width: '300px',
+    })
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result === true) {
+        console.log('User confirmed deletion')
+        this.deletePoll()
+      } else {
+        console.log('User canceled deletion')
+      }
+    })
+  }
+
+  reportUser(): void {
+    const dialogRef = this.dialog.open(ReportUserComponent, {
+      width: '300px',
+    })
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.sendUserReport(result.reason)
+      } else {
+      }
+    })
+  }
+
+  settleRequestForm(): void {
+    const dialogRef = this.dialog.open(UserSettleRequestComponent, {
+      width: '300px',
+    })
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.outcome = result.outcome
+        this.outcomeSource = result.outcomeSource
+        this.settlePollRequest()
+      } else {
+      }
+    })
+  }
+
+  formatDateTime(date: Date): string {
+    const day = date.getDate().toString().padStart(2, '0');
+    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+    const year = date.getFullYear();
+    const hours = date.getHours().toString().padStart(2, '0');
+    const minutes = date.getMinutes().toString().padStart(2, '0');
+  
+    return `${day}.${month}.${year} ${hours}:${minutes}`;
+  }
 
   ngOnInit() {
     this.userId = localStorage.getItem('user_id')
+    if (this.userId) {
+      this.isAuthenticated = true
+    }
     this.http.get('http://34.105.66.254:1923/poll/' + this.pollId).subscribe(
       (response: any) => {
         this.question = response.question
         this.tags = response.tags
         this.options = response.options
-        this.due_date = response.due_date
-        this.comment_count = response.comment_count
+        
+        this.due_date = this.formatDateTime(new Date(response.due_date))
         this.vote_count = response.vote_count
-        this.creator = response.creator.username
+        this.creator = response.creator
+
+        const time_dif =
+          (new Date().valueOf() - new Date(response.creation_date).valueOf()) /
+          1000
+
+        if (time_dif < 60) {
+          this.creation_time = Math.floor(time_dif) + 's'
+        } else if (time_dif / 60 < 60) {
+          this.creation_time = Math.floor(time_dif / 60) + 'm'
+        } else if (time_dif / 3600 < 24) {
+          this.creation_time = Math.floor(time_dif / 3600) + 'h'
+        } else {
+          this.creation_time = Math.floor(time_dif / (3600 * 24)) + 'd'
+        }
       },
       (error) => {
         console.error('Error fetching poll:', error)
@@ -62,12 +145,20 @@ export class PollComponent {
           this.isLikedBy = false
         } else {
           if (this.userId) {
-            console.log(likedUsersList)
             this.isLikedBy = likedUsersList.includes(this.userId)
             this.nofLikes = likedUsersList.length
           }
         }
       })
+
+    this.http.get('http://34.105.66.254:1923/comment/' + this.pollId).subscribe(
+      (response: any) => {
+        this.comment_count = response.length
+      },
+      (error) => {
+        console.error('Error fetching comment count:', error)
+      },
+    )
 
     const selectedButtonId = localStorage.getItem('selectedButtonId')
     if (selectedButtonId) {
@@ -78,6 +169,7 @@ export class PollComponent {
         this.selectedButton.classList.add('clicked')
       }
     }
+
   }
 
   toggleButton(button: HTMLButtonElement) {
@@ -125,4 +217,55 @@ export class PollComponent {
   getColor(i: number): string {
     return this.colors[i % this.colors.length]
   }
+
+  openPopup() {
+    this.showPopup = !this.showPopup
+  }
+
+  deletePoll() {
+    this.http.delete('http://34.105.66.254:1923/poll/' + this.pollId).subscribe(
+      () => {
+        console.log(`Poll deleted successfully.`)
+      },
+      (error) => {
+        console.error('Error deleting poll:', error)
+      },
+    )
+  }
+
+  settlePollRequest() {
+    const body = {
+      'outcome': this.outcome,
+      'outcome_source': this.outcomeSource,
+    }
+
+    this.http
+      .post('http://34.105.66.254:1923/poll/settle-request' + this.pollId, body)
+      .subscribe(
+        () => {
+          console.log(`Request sent ccessfully.`)
+        },
+        (error) => {
+          console.error('Error sending request:', error)
+        },
+      )
+  }
+  
+  sendUserReport(rsn : string) {
+    const body = {
+      'reason': rsn,
+    }
+
+    this.http
+      .post('http://34.105.66.254:1923/user/report' + this.creator.id, body)
+      .subscribe(
+        () => {
+          console.log(`Request sent ccessfully.`)
+        },
+        (error) => {
+          console.error('Error sending request:', error)
+        },
+      )
+  }
+
 }

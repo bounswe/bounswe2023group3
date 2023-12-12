@@ -12,6 +12,7 @@ import { UserService } from 'src/services/user-service/user.service'
   styleUrls: ['./others-profile.component.css'],
 })
 export class OthersProfileComponent implements OnInit {
+  isAuthenticated: boolean = false
   polls: any[] = []
   user!: User
   userId = ''
@@ -28,6 +29,11 @@ export class OthersProfileComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+
+    if (this.self_userId) {
+      this.isAuthenticated = true
+    }
+
     this.route.params.subscribe((params) => {
       const usernameToFetch = params['username']
       // Fetch user data when the component initializes
@@ -44,7 +50,7 @@ export class OthersProfileComponent implements OnInit {
           )).length
           this.userId = user.id
           this.http
-            .get('http://34.105.66.254:1923/poll/?creatorId=' + this.user?.id)
+            .get('http://34.105.66.254:1923/poll/?creatorId=' + this.user?.id+"&?approveStatus=true")
             .subscribe(
               (response: any) => {
                 this.polls = response
@@ -88,14 +94,9 @@ export class OthersProfileComponent implements OnInit {
     }
   }
   createdPolls() {
-    this.http.get('http://34.105.66.254:1923/poll/').subscribe(
+    this.http.get('http://34.105.66.254:1923/poll/?creatorId='+this.user.id+"&?approveStatus=true").subscribe(
       (response: any) => {
-        this.polls = []
-        for (const r of response) {
-          if (r.creator.id == this.user.id) {
-            this.polls.push(r)
-          }
-        }
+        this.polls = response
       },
       (error) => {
         console.error('Error fetching polls:', error)
@@ -105,7 +106,7 @@ export class OthersProfileComponent implements OnInit {
 
   likedPolls() {
     this.http
-      .get('http://34.105.66.254:1923/poll/?likedById=' + this.user.id)
+      .get('http://34.105.66.254:1923/poll/?likedById=' + this.user.id+"&?approveStatus=true")
       .subscribe(
         (response: any) => {
           this.polls = response

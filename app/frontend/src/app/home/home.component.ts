@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http'
 import { Component, Input } from '@angular/core'
+import { AuthService } from '../auth.service'
 
 @Component({
   selector: 'app-home',
@@ -9,9 +10,16 @@ import { Component, Input } from '@angular/core'
 export class HomeComponent {
   polls!: any[]
   following!: any[]
+  isAuthenticated: boolean = false
+  settledMode!: boolean
 
-  constructor(private http: HttpClient) {
-    this.http.get('http://34.105.66.254:1923/poll/').subscribe(
+  options!: any
+
+  constructor(private http: HttpClient,private authService: AuthService) {
+    this.options = this.authService.getHeaders();
+    this.settledMode = false
+
+    this.http.get('http://34.105.66.254:1923/poll/?approveStatus=true').subscribe(
       (response: any) => {
         this.polls = response
       },
@@ -21,18 +29,25 @@ export class HomeComponent {
     )
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.settledMode = false
+    if (localStorage.getItem('user_id')) {
+      this.isAuthenticated = true
+    }
+  }
 
   settledPolls(isSettled: boolean) {
-    this.http.get('http://34.105.66.254:1923/poll/').subscribe(
+    this.http.get('http://34.105.66.254:1923/poll/?approveStatus=true').subscribe(
       (response: any) => {
         this.polls = []
         for (const r of response) {
           if (!r.is_settled && !isSettled) {
             this.polls.push(r)
+            this.settledMode = false
           }
           if (r.is_settled && isSettled) {
             this.polls.push(r)
+            this.settledMode = true
           }
         }
       },
@@ -43,16 +58,10 @@ export class HomeComponent {
   }
 
   trendingPolls() {
-    this.http.get('http://34.105.66.254:1923/poll/').subscribe(
+    this.settledMode = false
+    this.http.get('http://34.105.66.254:1923/poll/?tags='+['Trending']+'&?approveStatus=true').subscribe(
       (response: any) => {
-        this.polls = []
-        for (const r of response) {
-          for (const t of r.tags) {
-            if (t.name === 'Trending') {
-              this.polls.push(r)
-            }
-          }
-        }
+        this.polls = response
       },
       (error) => {
         console.error('Error fetching polls:', error)
@@ -61,28 +70,10 @@ export class HomeComponent {
   }
 
   followingPolls() {
-    this.http.get('http://34.105.66.254:1923/poll/').subscribe(
-      (pollResponse: any) => {
-        const user_id = localStorage.getItem('user_id')
-        console.log(user_id)
-        this.http.get('http://34.105.66.254:1923/user/' + user_id).subscribe(
-          (response: any) => {
-            this.following = response.followings
-            console.log(response.followings)
-            this.polls = []
-            for (const r of pollResponse) {
-              for (const account of this.following) {
-                if (r.creator.id == account.id) {
-                  this.polls.push(r)
-                  break
-                }
-              }
-            }
-          },
-          (error) => {
-            console.error('Error fetching polls:', error)
-          },
-        )
+    this.settledMode = false
+    this.http.get('http://34.105.66.254:1923/poll/my-followings',this.options).subscribe(
+      (response: any) => {
+        this.polls = response
       },
       (error) => {
         console.error('Error fetching polls:', error)

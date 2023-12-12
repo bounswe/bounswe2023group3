@@ -9,9 +9,19 @@
     <div class="page-layout">
       <app-side-bar></app-side-bar>
       <div class="poll-container">
-        <app-poll [pollId]="pollId"></app-poll>
+
+        <ng-container *ngIf="!isSettled; else settledPoll">
+          <app-poll [pollId]="pollId"></app-poll>
+        </ng-container>
+        <ng-template #settledPoll>
+          <app-settled-poll [pollId]="pollId"></app-settled-poll>
+        </ng-template>
+
         <div class="poll-comments">
-          <div class="comment-input-container">
+          <div
+            [class.blurred]="!isAuthenticated"
+            class="comment-input-container"
+          >
             <input
               type="comment"
               id="description"
@@ -19,18 +29,52 @@
               [(ngModel)]="description"
               placeholder="Add a comment..."
             />
-            <button type="submit" (click)="makeComment()">Comment</button>
+            <button
+              [class.blurred]="!isAuthenticated"
+              type="submit"
+              (click)="makeComment()"
+            >
+              Comment
+            </button>
           </div>
           <div class="all-comments-container">
             <div
               class="comment-wrapper"
               *ngFor="let comment of comments; let i = index"
+              style="position: relative"
             >
               <div class="comment-user">
-                <img src="user-avatar.png" alt="User Avatar" />
+                <img
+                  [src]="comment.user.profile_picture ? comment.user.profile_picture : 'assets/unknown.jpg'"
+                  alt="User Avatar"
+                />
                 <span class="user-info">
-                  <p>&#64;{{ comment.user.username }} • Date</p>
+                  <p>&#64;{{ comment.user.username }} • {{comment.created_date}}</p>
                 </span>
+                <img
+                  [class.blurred]="!isAuthenticated"
+                  class="popup-options"
+                  style="
+                    position: absolute;
+                    right: 2px;
+                    width: 4%;
+                    height: 30%;
+                    cursor: pointer;
+                    background-color: #e1e8ed;
+                  "
+                  src="assets/three-dots.png"
+                  (click)="openPopup(comment.id)"
+                />
+                <div
+                  class="popup"
+                  *ngIf="isPopupOpen(comment.id)"
+                  style="background-color: #c8d5de"
+                >
+                  <div class="popuptext" (click)="deleteComment(comment.id)">
+                    Delete Comment
+                  </div>
+                  <div class="popuptext">Report Comment</div>
+                </div>
               </div>
               <p>{{ comment.description }}</p>
             </div>

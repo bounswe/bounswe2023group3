@@ -4,14 +4,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   </head>
   <body>
-    <div class="container">
+    <div class="container" style="position: relative;">
       <div
         class="post-widget"
         style="display: flex; align-items: start; padding-top: 10px"
+        [class.blurred]="!isAuthenticated"
       >
         <img
-          class="user-avatar"
-          src="assets/unknown.jpg"
+          class="user-avatar-style"
+          [src]="profile_picture ? profile_picture : 'assets/unknown.jpg'"
           alt="User Avatar"
           style="
             width: 60px;
@@ -30,26 +31,50 @@
             margin-left: 5px;
           "
         >
-          <b class="name" style="font-size: medium; margin-top: 15px">^-^</b>
+          <b class="name" style="font-size: medium; margin-top: 15px"
+            >{{ this.firstname }} {{ this.lastname }}</b
+          >
           <p class="user-name" style="margin-top: 2px">
             &#64;{{ this.username }}
           </p>
         </div>
       </div>
-      <div class="buttons">
-        <button class="button" routerLink="/app-user-profile">
+      <div class="buttons" style="position: relative;">
+        <button
+          class="button"
+          routerLink="/app-user-profile"
+          [class.blurred]="!isAuthenticated"
+        >
           My Profile
         </button>
         <button class="button" routerLink="/app-home">Homepage</button>
-        <button class="button">Notifications</button>
-        <button class="button">Settings</button>
-        <button class="button" (click)="logOut()" style="margin-bottom: 40px">
+        <button class="button" [class.blurred]="!isAuthenticated">
+          Notifications
+        </button>
+        <button class="button" [class.blurred]="!isAuthenticated" (click)="goToSettings()">
+          Settings
+        </button>
+
+        <div style="position: absolute; z-index: 10;">
+          <div class="popup" *ngIf="showSettings" style="position: relative; top:-20px; left:50px;
+           background-color: #80bbc4; border: 1px solid black;">
+            <app-settings ></app-settings>
+          </div>
+        </div>
+
+        <button
+          class="button"
+          [class.blurred]="!isAuthenticated"
+          (click)="logOut()"
+          style="margin-bottom: 40px"
+        >
           Log out
         </button>
         <button
           class="button"
           routerLink="/app-poll-request"
           style="background-color: #e57f84; color: #fff"
+          [class.blurred]="!isAuthenticated"
         >
           Create a poll request
         </button>

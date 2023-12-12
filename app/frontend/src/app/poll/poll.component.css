@@ -23,3 +23,8 @@ body {
 .question:hover {
   text-decoration: underline;
 }
+
+.heart-image {
+  padding: 2px;
+  vertical-align: middle;
+}

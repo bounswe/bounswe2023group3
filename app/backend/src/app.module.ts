@@ -21,7 +21,11 @@ import { Like } from './like/entities/like.entity';
 import { Comment } from './comment/entities/comment.entity';
 import { ConfigModule } from '@nestjs/config';
 import { CommentModule } from './comment/comment.module';
-
+import { Report } from './user/entities/report.entity';
+import { VoteModule } from './vote/vote.module';
+import { Vote } from './vote/entities/vote.entity';
+import { AnnotationModule } from './annotation/annotation.module';
+import { Annotation } from './annotation/entities/annotation.entity';
 
 @Module({
   imports: [
@@ -34,7 +38,19 @@ import { CommentModule } from './comment/comment.module';
       port: 5432,
       password: process.env.DB_PASSWORD,
       username: 'postgres',
-      entities: [User, Poll, Tag, Option, Moderator, Badge, Like, Comment],
+      entities: [
+        User,
+        Poll,
+        Tag,
+        Option,
+        Moderator,
+        Badge,
+        Like,
+        Comment,
+        Report,
+        Vote,
+        Annotation,
+      ],
       database: 'postgres',
       synchronize: true,
       logging: true,
@@ -65,9 +81,10 @@ import { CommentModule } from './comment/comment.module';
     BadgeModule,
     LikeModule,
     CommentModule,
+    VoteModule,
+    AnnotationModule,
   ],
   controllers: [AppController],
   providers: [AppService],
 })
-
 export class AppModule {}
