@@ -10,6 +10,7 @@ export class HomeComponent {
   polls!: any[]
   following!: any[]
   isAuthenticated: boolean = false
+  clickedButton: string = '';
 
   constructor(private http: HttpClient) {
     this.http.get('http://34.105.66.254:1923/poll/').subscribe(
