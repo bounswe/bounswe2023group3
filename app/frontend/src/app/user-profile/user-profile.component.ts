@@ -15,6 +15,7 @@ export class UserProfileComponent {
   firstname: any
   nofFollowers: number = 0
   nofFollowees: number = 0
+  clickedButton: string = '';
 
   constructor(
     private http: HttpClient,
@@ -48,6 +49,7 @@ export class UserProfileComponent {
   }
 
   createdPolls() {
+    this.clickedButton = 'created';
     this.http.get('http://34.105.66.254:1923/poll/').subscribe(
       (response: any) => {
         this.polls = []
@@ -63,6 +65,7 @@ export class UserProfileComponent {
     )
   }
   likedPolls() {
+    this.clickedButton = 'liked';
     this.http
       .get('http://34.105.66.254:1923/poll/?likedById=' + this.user_id)
       .subscribe(
@@ -75,6 +78,7 @@ export class UserProfileComponent {
       )
   }
   votedPolls() {
+    this.clickedButton = 'voted';
     this.http.get('http://34.105.66.254:1923/poll/').subscribe(
       (response: any) => {
         this.polls = []

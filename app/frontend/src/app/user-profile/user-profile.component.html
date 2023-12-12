@@ -46,13 +46,13 @@
           </p>
         </div>
         <div class="user-polls">
-          <button class="user-polls-column" (click)="createdPolls()">
+          <button class="user-polls-column" [class.underlined]="clickedButton === 'created'" (click)="createdPolls()">
             Created
           </button>
-          <button class="user-polls-column" (click)="likedPolls()">
+          <button class="user-polls-column" [class.underlined]="clickedButton === 'liked'" (click)="likedPolls()">
             Liked
           </button>
-          <button class="user-polls-column" (click)="votedPolls()">
+          <button class="user-polls-column" [class.underlined]="clickedButton === 'voted'" (click)="votedPolls()">
             Voted
           </button>
         </div>
