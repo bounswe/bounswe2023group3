@@ -23,10 +23,10 @@ class PollPage extends StatefulWidget {
   final List<String> postOptions;
   final int likeCount;
   final String dateTime;
-  final List<CommentData> comments;
+  List<CommentData> comments;
   final int isSettled;
 
-  const PollPage({
+  PollPage({
     super.key,
     required this.pollId,
     required this.userName,
@@ -39,15 +39,15 @@ class PollPage extends StatefulWidget {
     required this.postOptions,
     required this.likeCount,
     required this.dateTime,
-    required this.comments,
     required this.isSettled,
-  });
+  }) : comments = [];
 
   @override
   State<PollPage> createState() => _PollPageState();
 
   Future<List<CommentData>> fetchComments() async {
-    return await PollCommentService.getComments(pollId);
+    comments = await PollCommentService.getComments(pollId);
+    return comments;
   }
 }
 
@@ -115,9 +115,10 @@ class _PollPageState extends State<PollPage> {
                   // If we run into an error, display it to the user
                   return Text('Error: ${snapshot.error}');
                 } else {
-                  var comments = snapshot.hasData ? snapshot.data! : [];
-                  // Whether we have data or not, display the number of comments
-                  int commentCount = comments.length;
+                  var fetchedComments = snapshot.hasData ? snapshot.data! : [];
+
+                  // Whether we have data or not, display the number of fetchedComments
+                  int commentCount = fetchedComments.length;
                   return Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
@@ -126,9 +127,9 @@ class _PollPageState extends State<PollPage> {
                         child: Text('$commentCount Comments',
                             style: const TextStyle(fontSize: 16.0)),
                       ),
-                      // If we have data, display the list of comments
+                      // If we have data, display the list of fetchedComments
                       if (snapshot.hasData)
-                        ...comments
+                        ...fetchedComments
                             .map((comment) => CommentWidget(
                                   user: comment.user,
                                   commentText: comment.commentText,
