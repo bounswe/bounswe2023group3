@@ -20,7 +20,6 @@ class PollViewHomePage extends StatefulWidget {
   final List<String> postOptions;
   final int likeCount;
   final String dateTime;
-  final List<CommentData> comments;
   final int isSettled;
   final bool? approvedStatus;
   final bool didLike;
@@ -39,7 +38,6 @@ class PollViewHomePage extends StatefulWidget {
     required this.postOptions,
     required this.likeCount,
     required this.dateTime,
-    required this.comments,
     required this.isSettled,
     required this.approvedStatus,
     required this.didLike,
@@ -70,9 +68,11 @@ class _PollViewHomePageState extends State<PollViewHomePage> {
       });
     }
   }
+
   void handleUnlikePress(String pollId) async {
     PollViewHomePageLike pollLike = PollViewHomePageLike();
-    bool unlikeSuccess = await pollLike.unlike(pollId); // Assuming an unlike method exists
+    bool unlikeSuccess =
+        await pollLike.unlike(pollId); // Assuming an unlike method exists
     if (unlikeSuccess) {
       setState(() {
         likeCount--;
@@ -80,6 +80,7 @@ class _PollViewHomePageState extends State<PollViewHomePage> {
       });
     }
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -113,15 +114,15 @@ class _PollViewHomePageState extends State<PollViewHomePage> {
             padding: const EdgeInsets.all(16.0),
             child: didLike
                 ? ElevatedButton.icon(
-              onPressed: () => handleUnlikePress(widget.pollId),
-              icon: const Icon(Icons.thumb_down),
-              label: const Text('Unlike'),
-            )
+                    onPressed: () => handleUnlikePress(widget.pollId),
+                    icon: const Icon(Icons.thumb_down),
+                    label: const Text('Unlike'),
+                  )
                 : ElevatedButton.icon(
-              onPressed: () => handleLikePress(widget.pollId),
-              icon: const Icon(Icons.thumb_up),
-              label: const Text('Like'),
-            ),
+                    onPressed: () => handleLikePress(widget.pollId),
+                    icon: const Icon(Icons.thumb_up),
+                    label: const Text('Like'),
+                  ),
           ),
           Row(
             children: [
@@ -131,7 +132,7 @@ class _PollViewHomePageState extends State<PollViewHomePage> {
           ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 20),
-            child: Text('${widget.comments.length} Comments',
+            child: Text('${widget.commentCount} Comments',
                 style: const TextStyle(fontSize: 16.0)),
           ),
         ],
@@ -145,9 +146,9 @@ class _PollViewHomePageState extends State<PollViewHomePage> {
   }
 
   //void handleLikePress(String pollId) {
-   // PollViewHomePageLike pollLike = PollViewHomePageLike();
-   // pollLike.like(pollId);
-    //print("pressed like");
+  // PollViewHomePageLike pollLike = PollViewHomePageLike();
+  // pollLike.like(pollId);
+  //print("pressed like");
   //}
 }
 
