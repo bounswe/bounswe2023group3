@@ -45,6 +45,8 @@ import { ReportUserComponent } from './report-user/report-user.component';
 import { ReportRequestsComponent } from './report-requests/report-requests.component';
 import { ModeratorApplyComponent } from './moderator-apply/moderator-apply.component';
 import { FollowListComponent } from './follow-list/follow-list.component'
+import { MatInputModule } from '@angular/material/input';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -94,6 +96,7 @@ import { FollowListComponent } from './follow-list/follow-list.component'
     BrowserAnimationsModule,
     MatDialogModule,
     MatFormFieldModule,
+    MatInputModule
   ],
   providers: [AuthService],
   bootstrap: [AppComponent],

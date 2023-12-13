@@ -71,9 +71,9 @@
             <b>{{ this.nofFollowers }}</b> followers
           </p>
         </div>
-        <div style="position: absolute; z-index: 10;">
+        <div style="position: absolute; z-index: 10;;">
           <div class="popup" *ngIf="showFollowers" style="position: relative; top:-10px; left:50px;
-           background-color: #80bbc4; border: 1px solid black;">
+           background-color: #80bbc4; border: 1px solid black; ">
             <app-follow-list [followList]="followList" [title]="'My Followers'"></app-follow-list>
           </div>
         </div>

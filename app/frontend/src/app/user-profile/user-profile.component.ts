@@ -55,7 +55,7 @@ export class UserProfileComponent {
   }
 
   ngOnInit(){
-    this.http.get('http://34.105.66.254:1923/user'+this.user_id).subscribe(
+    this.http.get('http://34.105.66.254:1923/user/'+this.user_id).subscribe(
       (response: any) => {
         this.username = response.username
         this.firstname = response.firstname

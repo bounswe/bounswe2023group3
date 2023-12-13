@@ -8,16 +8,16 @@
         <div class="post-widget" style="display: flex; align-items: start">
           <img
             class="user-avatar-style"
-            [src]="user.profile_picture ? user.profile_picture : 'assets/unknown.jpg'"
+            [src]="user && user.profile_picture ? user.profile_picture : 'assets/unknown.jpg'"
             alt="User Avatar"
           />
           <div class="post-content">
             <b class="name" style="font-size: xx-large; padding-top: 10px"
-              >{{ this.user.firstname }} {{ this.user.lastname }}</b
+              >{{ this.user? this.user.firstname : '' }} {{ this.user? this.user.lastname : '' }}</b
             >
             <!-- add the Actual Name of the user after it is implemented in the backend -->
             <p class="user-name" style="margin-top: 2px">
-              &#64;{{ this.user.username }}
+              &#64;{{ this.user? this.user.username : '' }}
             </p>
           </div>
           <input type="hidden" [(ngModel)]="isFollowing" name="isFollowing" />
@@ -60,7 +60,7 @@
       <div class="fixed-elements flex-column">
         <app-ranks-bar [class.blurred]="!isAuthenticated"></app-ranks-bar>
         <app-badges-bar
-          [userId]="user.id"
+          [userId]="userId"
           [class.blurred]="!isAuthenticated"
         ></app-badges-bar>
       </div>
