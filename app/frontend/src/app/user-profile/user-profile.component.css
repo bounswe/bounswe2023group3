@@ -11,3 +11,7 @@
   border-radius: 15px;
   margin-left: auto;
 }
+
+.underlined {
+  text-decoration: underline;
+}
