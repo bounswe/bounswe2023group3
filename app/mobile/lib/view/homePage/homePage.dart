@@ -44,7 +44,8 @@ class _HomePageState extends State<HomePage>
       Future<List<CommentData>> comments,
       isSettled,
       didLike,
-      commentCount) async {
+      commentCount,
+      chosenVoteIndex) async {
     var awaitedComments = await comments;
     if (!mounted) return;
     Navigator.push(
@@ -64,6 +65,7 @@ class _HomePageState extends State<HomePage>
           dateTime: dateTime,
           comments: awaitedComments,
           isSettled: isSettled,
+          chosenVoteIndex: chosenVoteIndex,
         ),
       ),
     );
@@ -143,7 +145,8 @@ class _HomePageState extends State<HomePage>
                                     PollCommentService.getComments(post.pollId),
                                     post.isSettled,
                                     post.didLike,
-                                    post.commentCount);
+                                    post.commentCount,
+                                    post.chosenVoteIndex);
                               },
                               child: SizedBox(
                                 height: postHeight,
@@ -163,7 +166,8 @@ class _HomePageState extends State<HomePage>
                                   isSettled: post.isSettled,
                                   approvedStatus: post.approvedStatus,
                                   didLike: post.didLike,
-                                  commentCount: post.commentCount
+                                  commentCount: post.commentCount,
+                                  chosenVoteIndex: post.chosenVoteIndex,
                                 ),
                               ),
                             ),
@@ -206,7 +210,8 @@ class _HomePageState extends State<HomePage>
                                     PollCommentService.getComments(post.pollId),
                                     post.isSettled,
                                     post.didLike,
-                                    post.commentCount);
+                                    post.commentCount,
+                                    post.chosenVoteIndex);
                               },
                               child: SizedBox(
                                 height: postHeight,
@@ -227,6 +232,7 @@ class _HomePageState extends State<HomePage>
                                   approvedStatus: post.approvedStatus,
                                   didLike: post.didLike,
                                   commentCount: post.commentCount,
+                                  chosenVoteIndex: post.chosenVoteIndex,
                                 ),
                               ),
                             ),

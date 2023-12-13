@@ -231,7 +231,10 @@ class _ProfilePageState extends State<ProfilePage> {
                   isSettled: post.isSettled,
                   approvedStatus: post.approvedStatus,
                   didLike: false,
+                  chosenVoteIndex: post.chosenVoteIndex,
                   commentCount: post.commentCount,
+
+
                 ),
               ),
             ),
@@ -264,7 +267,10 @@ class _ProfilePageState extends State<ProfilePage> {
             likeCount: poll.likeCount,
             dateTime: poll.dueDate.toString(),
             comments: comments,
-            isSettled: poll.isSettled),
+            isSettled: poll.isSettled,
+            chosenVoteIndex: poll.chosenVoteIndex,
+
+        ),
       ),
     );
   }

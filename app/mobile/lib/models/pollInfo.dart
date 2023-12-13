@@ -23,12 +23,17 @@ class PollInfo {
 
   final List<String> optionIds;
   final List<String> options;
+  final List<int> optionsVoteCount;
+
 
   final DateTime dueDate;
   final DateTime creationDate;
 
   final bool approvedStatus;
   final int isSettled;
+
+  final int chosenVoteIndex;
+
 
   Future<List<CommentData>> get comments async {
     if (!_commentsAreFetched) {
@@ -60,6 +65,8 @@ class PollInfo {
     required this.pollId,
     required this.optionIds,
     required this.tagIds,
+    required this.optionsVoteCount,
+    required this.chosenVoteIndex,
   })  : _comments = [],
         _commentsAreFetched = false;
 
@@ -91,7 +98,7 @@ class PollInfo {
       voteCount: json['vote_count'],
       options: options.map((e) => e['answer'] as String).toList(),
       optionIds: options.map((e) => e['id'] as String).toList(),
-
+      optionsVoteCount: options.map((e) => e['vote_count'] as int).toList(),
       likeCount: json['likeCount'] ?? 0,
       dueDate: DateTime.parse(json['due_date']),
       creationDate: DateTime.parse(json['creation_date']),
@@ -101,6 +108,7 @@ class PollInfo {
       commentCount: json['commentCount'] ?? 0,
       approvedStatus: json['approveStatus'] ?? false,
       isSettled: json['is_settled'] ?? 0,
+      chosenVoteIndex: -1, //json['chosenVoteIndex']
     );
   }
 }
