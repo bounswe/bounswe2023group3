@@ -15,6 +15,10 @@
           <span class="label">Poll Question:</span>
           <p class="info-text">{{question}}</p>
         </div>
+        <div class="poll-item" *ngIf="is_settled==1">
+          <span class="label">Poll Outcome:</span>
+          <p class="info-text">{{outcome.answer}}</p>
+        </div>
 
         <div class="action-buttons">
           <button class="action-button approve-button" (click)="onApprove()">Approve</button>

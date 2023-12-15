@@ -70,7 +70,20 @@ export class ModeratorRequestsComponent {
   }
 
   onOutcomeVerifiationReq(){
-    this.polls = []
+    this.http.get('http://34.105.66.254:1923/poll/').subscribe(
+      (response: any) => {
+
+        this.polls = []
+        for (const r of response) { 
+          if (r.is_settled === 1) {
+            this.polls.push(r); 
+          }
+        }
+      },
+      (error) => {
+        console.error('Error fetching polls:', error)
+      },
+    )
   }
 
   navigateToDetailedView(pollId: any) {

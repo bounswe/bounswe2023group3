@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router} from '@angular/router';
 
 @Component({
   selector: 'app-follow-list',
@@ -14,8 +14,11 @@ export class FollowListComponent {
     private router: Router,
   ) {}
 
-  navigateToProfile(username: string) {
-    this.router.navigate(['/app-profile', username])
+
+  navigateToProfile(username: string) { 
+    this.router.navigate(['/app-profile', username]).then(() => {
+      window.location.reload();
+    });
   }
 
 }

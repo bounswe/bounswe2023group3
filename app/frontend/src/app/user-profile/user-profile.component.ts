@@ -160,6 +160,8 @@ export class UserProfileComponent {
 
   toggleFollowers(){
     this.showFollowers=!this.showFollowers
+    this.showFollowees = false
+    this.followList = []
     if(this.showFollowers){
       this.http.get('http://34.105.66.254:1923/user/'+this.user_id).subscribe(
       (response: any) => {
@@ -174,6 +176,8 @@ export class UserProfileComponent {
 
   toggleFollowees(){
     this.showFollowees=!this.showFollowees
+    this.showFollowers = false
+    this.followList = []
     if(this.showFollowees){
       this.http.get('http://34.105.66.254:1923/user/'+this.user_id).subscribe(
       (response: any) => {
