@@ -15,7 +15,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors());
 
 app.get("/", (req, res) => {
-  res.send("Hello, Express!");
+  res.send("Hello from Annotation Server!");
 });
 
 app.listen(port, async () => {
