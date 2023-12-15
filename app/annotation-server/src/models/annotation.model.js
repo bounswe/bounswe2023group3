@@ -10,6 +10,7 @@ Annotation.init(
     },
     id: {
       type: DataTypes.STRING(),
+      primaryKey: true,
     },
     type: {
       type: DataTypes.STRING(),
