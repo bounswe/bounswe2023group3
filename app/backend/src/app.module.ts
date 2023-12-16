@@ -26,6 +26,8 @@ import { VoteModule } from './vote/vote.module';
 import { Vote } from './vote/entities/vote.entity';
 import { AnnotationModule } from './annotation/annotation.module';
 import { Annotation } from './annotation/entities/annotation.entity';
+import { RankingModule } from './ranking/ranking.module';
+import { Ranking } from './ranking/entities/ranking.entity';
 
 @Module({
   imports: [
@@ -50,6 +52,7 @@ import { Annotation } from './annotation/entities/annotation.entity';
         Report,
         Vote,
         Annotation,
+        Ranking
       ],
       database: 'postgres',
       synchronize: true,
@@ -83,6 +86,7 @@ import { Annotation } from './annotation/entities/annotation.entity';
     CommentModule,
     VoteModule,
     AnnotationModule,
+    RankingModule,
   ],
   controllers: [AppController],
   providers: [AppService],
