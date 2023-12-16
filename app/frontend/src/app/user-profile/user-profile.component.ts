@@ -18,6 +18,7 @@ export class UserProfileComponent {
   profile_picture!: any 
   nofFollowers: number = 0
   nofFollowees: number = 0
+  clickedButton: string = '';
 
   isEditing: boolean = false
   editedFirstname!: string
@@ -78,6 +79,7 @@ export class UserProfileComponent {
   }
 
   createdPolls() {
+    this.clickedButton = 'created';
     this.http.get('http://34.105.66.254:1923/poll/?creatorId='+this.user_id+"&?approveStatus=true").subscribe(
       (response: any) => {
         this.polls = response
@@ -88,6 +90,7 @@ export class UserProfileComponent {
     )
   }
   likedPolls() {
+    this.clickedButton = 'liked';
     this.http
       .get('http://34.105.66.254:1923/poll/?likedById=' + this.user_id+"&?approveStatus=true")
       .subscribe(
@@ -100,6 +103,7 @@ export class UserProfileComponent {
       )
   }
   votedPolls() {
+    this.clickedButton = 'voted';
     this.http.get('http://34.105.66.254:1923/poll/').subscribe(
       (response: any) => {
         this.polls = []

@@ -1,5 +1,4 @@
 .container {
-  align-items: center;
   width: 100%;
 }
 
@@ -15,4 +14,8 @@
 #searchInput:focus {
   outline: none;
   background-color: #fff; /* Change to your preferred focus color */
+}
+
+.underlined {
+  text-decoration: underline;
 }

@@ -3,11 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:mobile_app/services/moderatorService.dart';
 import 'package:mobile_app/view/moderatorApproval/moderatorApprovalScreen.dart';
 import 'package:mobile_app/view/moderatorApproval/pollData.dart';
+import 'package:mobile_app/view/moderatorHomePage/settleViewHome.dart';
 import 'package:mobile_app/view/sidebar/sidebar.dart';
 import 'package:mobile_app/view/moderatorHomePage/requestViewHome.dart';
 import 'package:mobile_app/view/constants.dart';
 
 import '../errorWidget/errorWidget.dart';
+import '../moderatorApproval/moderatorSettleApproval.dart';
 
 class ModeratorHomePage extends StatefulWidget {
   const ModeratorHomePage({Key? key}) : super(key: key);
@@ -62,7 +64,54 @@ class _ModeratorHomePageState extends State<ModeratorHomePage>
                 userUsername: userUsername,
                 profilePictureUrl: profilePictureUrl,
                 tagColors: tagColors,
-                creationDate: creationDate),
+                creationDate: creationDate,
+                outcome: '',
+                outcomeSource: '',
+
+            ),
+          )),
+    );
+    setState(() {
+      // Refresh the page
+    });
+    ScaffoldMessenger.of(context)
+      ..removeCurrentSnackBar()
+      ..showSnackBar(SnackBar(content: Text(resultMessage), duration: const Duration(seconds: 3),));
+  }
+  Future<void> tapOnSettle(
+      BuildContext context,
+      String pollId,
+      String pollTitle,
+      String username,
+      String userUsername,
+      String profilePictureUrl,
+      List<String> options,
+      List<String> tags,
+      List<String> imageURLs,
+      List<Color> tagColors,
+      String dueDate,
+      String creationDate,
+      String outcome,
+      String outcomeSource) async {
+    final resultMessage = await Navigator.push(
+      context,
+      MaterialPageRoute(
+          builder: (context) => ModeratorSettleApproval(
+            tagColors: const [Colors.pink, Colors.blue],
+            pollData: PollData(
+                pollId: pollId,
+                pollTitle: pollTitle,
+                options: options,
+                tags: tags,
+                imageURLs: imageURLs,
+                dueDate: dueDate,
+                userName: username,
+                userUsername: userUsername,
+                profilePictureUrl: profilePictureUrl,
+                tagColors: tagColors,
+                creationDate: creationDate,
+                outcome: outcome,
+                outcomeSource: outcomeSource),
           )),
     );
     setState(() {
@@ -104,10 +153,10 @@ class _ModeratorHomePageState extends State<ModeratorHomePage>
                   },
                 ),
                 // Tab 2: Poll Settle Requests
-                FutureBuilder<List<RequestViewHome>>(
-                  future: ModeratorService.getPollRequests(),
+                FutureBuilder<List<SettleViewHome>>(
+                  future: ModeratorService.getSettleRequests(),
                   builder: (BuildContext context,
-                      AsyncSnapshot<List<RequestViewHome>> snapshot) {
+                      AsyncSnapshot<List<SettleViewHome>> snapshot) {
                     return buildSettledList(snapshot);
                   },
                 ),
@@ -228,19 +277,32 @@ class _ModeratorHomePageState extends State<ModeratorHomePage>
     }
   }
 
-  Widget buildSettledList(AsyncSnapshot<List<RequestViewHome>> snapshot) {
+  Widget buildSettledList(AsyncSnapshot<List<SettleViewHome>> snapshot) {
     if (snapshot.connectionState == ConnectionState.waiting) {
       // Show a loading indicator while the data is being fetched
       return const Center(child: CircularProgressIndicator());
     } else if (snapshot.hasError) {
       // Show an error message if there is an error
-      return Text('Error: ${snapshot.error}');
+      if (snapshot.error is DioException) {
+        DioException e = snapshot.error as DioException;
+        if (e.response?.statusMessage != null) {
+          String r = e.response!.statusMessage!;
+          return CustomErrorWidget(errorMessage: r, onRetryPressed: () {
+            setState(() {});
+          });
+        }
+      }
+      return CustomErrorWidget(errorMessage: 'Something went wrong', onRetryPressed: () {
+        setState(() {});
+      });
     } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
       // Handle the case where no data is available
-      return const Text('No data available');
+      return CustomErrorWidget(errorMessage: 'No data available', onRetryPressed: () {
+        setState(() {});
+      });
     } else {
       // Build your UI using the fetched data
-      List<RequestViewHome> requests = snapshot.data!;
+      List<SettleViewHome> requests = snapshot.data!;
       return Column(
         children: [
           // Scrollable Post Section
@@ -255,22 +317,22 @@ class _ModeratorHomePageState extends State<ModeratorHomePage>
                 return SizedBox(
                   width: 50,
                   height: 250,
-                  child: Stack( // TODO - Delete expanded
+                  child: Stack(
                     children: [
                       // Your existing RequestViewHome widget with Expanded
-                      Expanded(
-                        child: RequestViewHome(
-                          userName: request.userName,
-                          userUsername: request.userUsername,
-                          profilePictureUrl: request.profilePictureUrl,
-                          postTitle: request.postTitle,
-                          tags: request.tags,
-                          tagColors: request.tagColors,
-                          dateTime: request.dateTime,
-                          pollId: request.pollId,
-                          options: request.options,
-                          dueDate: request.dueDate,
-                        ),
+                      SettleViewHome(
+                        userName: request.userName,
+                        userUsername: request.userUsername,
+                        profilePictureUrl: request.profilePictureUrl,
+                        postTitle: request.postTitle,
+                        tags: request.tags,
+                        tagColors: request.tagColors,
+                        dateTime: request.dateTime,
+                        pollId: request.pollId,
+                        options: request.options,
+                        dueDate: request.dueDate,
+                        outcome: request.outcome,
+                        outcomeSource: request.outcomeSource
                       ),
                       // Align the button to the right and bottom of the container
                       Align(
@@ -286,7 +348,7 @@ class _ModeratorHomePageState extends State<ModeratorHomePage>
                             child: InkWell(
                               borderRadius: BorderRadius.circular(30.0),
                               onTap: () {
-                                tapOnPoll(
+                                tapOnSettle(
                                     context,
                                     request.pollId,
                                     request.postTitle,
@@ -298,7 +360,9 @@ class _ModeratorHomePageState extends State<ModeratorHomePage>
                                     [],
                                     request.tagColors,
                                     request.dueDate,
-                                    request.dateTime
+                                    request.dateTime,
+                                    request.outcome,
+                                    request.outcomeSource
                                 );
                               },
                               child: Container(

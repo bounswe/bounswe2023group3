@@ -11,8 +11,8 @@ export class HomeComponent {
   polls!: any[]
   following!: any[]
   isAuthenticated: boolean = false
+  clickedButton: string = '';
   settledMode!: boolean
-
   options!: any
 
   constructor(private http: HttpClient,private authService: AuthService) {
@@ -58,6 +58,7 @@ export class HomeComponent {
   }
 
   trendingPolls() {
+    this.clickedButton = 'trending';
     this.settledMode = false
     this.http.get('http://34.105.66.254:1923/poll/?tags='+['Trending']+'&?approveStatus=true').subscribe(
       (response: any) => {
@@ -70,6 +71,7 @@ export class HomeComponent {
   }
 
   followingPolls() {
+    this.clickedButton = 'following';
     this.settledMode = false
     this.http.get('http://34.105.66.254:1923/poll/my-followings',this.options).subscribe(
       (response: any) => {
