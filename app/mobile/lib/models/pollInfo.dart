@@ -26,6 +26,7 @@ class PollInfo {
   final DateTime dueDate;
   final DateTime creationDate;
 
+  final bool isPending;
   final bool approvedStatus;
   final int isSettled;
 
@@ -44,6 +45,7 @@ class PollInfo {
     required this.dueDate,
     required this.creationDate,
     required this.commentCount,
+    required this.isPending,
     required this.approvedStatus,
     required this.isSettled,
     required this.pollId,
@@ -93,6 +95,7 @@ class PollInfo {
       //     .map((i) => CommentData.fromJson(i))
       //     .toList(),
       commentCount: json['commentCount'] ?? 0,
+      isPending: json['approveStatus'] == null,
       approvedStatus: json['approveStatus'] ?? false,
       isSettled: json['is_settled'] ?? 0,
       chosenVoteIndex: -1, //json['chosenVoteIndex']

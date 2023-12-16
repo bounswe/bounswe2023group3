@@ -10,7 +10,6 @@ class PostOptionWidget extends StatelessWidget {
   final int isSettled;
   //final bool isCorrect;
 
-
   const PostOptionWidget({
     Key? key,
     required this.optionText,
@@ -37,36 +36,33 @@ class PostOptionWidget extends StatelessWidget {
           ),
           child: Stack(
             children: [
-              if(isSettled==1)
+              if (isSettled == 1)
                 Container(
-                height: 30,
-                width: percentage * 2, // Adjust the multiplier as needed
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(20.0),
-                  color: blue,//isCorrect? Colors.green: Colors.red,
-                  backgroundBlendMode: BlendMode.srcATop,
+                  height: 30,
+                  width: percentage * 2, // Adjust the multiplier as needed
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(20.0),
+                    color: blue, //isCorrect? Colors.green: Colors.red,
+                    backgroundBlendMode: BlendMode.srcATop,
+                  ),
                 ),
-              ),
-
-              Center(
-                child: Positioned.fill(
-                  child: Center(
-                    child: Text(
-                      optionText,
-                      style: TextStyle(
-                        color: Colors.black,
-                      ),
+              Positioned.fill(
+                child: Center(
+                  child: Text(
+                    optionText,
+                    style: TextStyle(
+                      color: Colors.black,
                     ),
                   ),
                 ),
               ),
-              if(isSettled==1)
+              if (isSettled == 1)
                 Positioned(
                   right: 0,
                   top: 0,
                   bottom: 0,
                   child: Padding(
-                    padding: const EdgeInsets.fromLTRB(0,0,7,0),
+                    padding: const EdgeInsets.fromLTRB(0, 0, 7, 0),
                     child: Center(
                       child: Text(
                         '$percentage%',

@@ -18,7 +18,7 @@ class PollViewHomePage extends StatefulWidget {
   final List<String> tags;
   final List<Color> tagColors;
   final int voteCount;
-  final List<dynamic> postOptions;
+  final List<dynamic> postOptions; // {"id":"", "answer":""}
   final int likeCount;
   final String dateTime;
   final int isSettled;
