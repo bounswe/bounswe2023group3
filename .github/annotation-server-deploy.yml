@@ -33,4 +33,4 @@ jobs:
             docker rm annotation-server
             docker rmi pollup:annotation-server-image
             docker build -t pollup:annotation-server-image .
-            docker run --name annotation-server -p 1923:3000 -d pollup:annotation-server-image
+            docker run --name annotation-server -p 1924:3001 -d pollup:annotation-server-image
