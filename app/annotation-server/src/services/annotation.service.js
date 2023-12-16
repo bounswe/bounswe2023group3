@@ -3,7 +3,7 @@ const Annotation = require("../models/annotation.model");
 
 async function annotationWithIdExists(id) {
   const annotation = await Annotation.findOne({
-    where: { id: id },
+    where: { id },
   });
   return annotation !== null;
 }
@@ -14,6 +14,7 @@ async function getAnnotations() {
 }
 
 async function getAnnotation(id) {
+  console.log("id: ", id);
   const annotation = await Annotation.findOne({
     where: { id: id },
   });
@@ -23,10 +24,10 @@ async function getAnnotation(id) {
 async function createAnnotation(body) {
   const annotation_id = uuidv4();
 
-  const annotation = await Lawyer.create({
-    context: body.context,
+  const annotation = await Annotation.create({
+    context: "http://www.w3.org/ns/anno.jsonld",
     id: annotation_id,
-    type: body.type,
+    type: "Annotation",
     body: body.body,
     target: body.target,
   });
@@ -35,17 +36,16 @@ async function createAnnotation(body) {
 }
 
 async function updateAnnotation(id, body) {
-  const result = await Lawyer.update(
+  const [_, [updatedAnnotation]] = await Annotation.update(
     { body: body.body },
     {
       where: {
         id: id,
       },
+      returning: true,
     }
   );
-  console.log(result);
-  return;
-  //return annotation !== null;
+  return updatedAnnotation;
 }
 
 async function deleteAnnotation(id) {

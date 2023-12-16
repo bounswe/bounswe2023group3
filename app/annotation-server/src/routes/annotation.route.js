@@ -7,7 +7,7 @@ const router = express.Router();
 
 /**
  * @openapi
- * '/annotation/:id':
+ * '/annotation/{id}':
  *  get:
  *    tags:
  *     - Annotation
@@ -46,7 +46,7 @@ router.get(
  *  get:
  *    tags:
  *     - Annotation
- *    summary: Get all annotations
+ *    summary: Get all annotations with query parameter
  *    responses:
  *      200:
  *        description: Annotations are fetched successfully
@@ -73,9 +73,6 @@ router.get("/annotation", annotationController.getAnnotations);
  *        application/json:
  *          schema:
  *            GetAnnotationInputWrapper:
- *              type: object
- *              required:
- *              - annotation
  *            $ref: '#/components/schemas/CreateAnnotationInput'
  *    responses:
  *      201:
@@ -98,11 +95,11 @@ router.post(
 
 /**
  * @openapi
- * '/annotation/:id':
+ * '/annotation/{id}':
  *  patch:
  *    tags:
  *     - Annotation
- *    summary: Create new annotation
+ *    summary: Update annotation
  *    parameters:
  *    - in: path
  *      name: id
@@ -139,7 +136,7 @@ router.patch(
 
 /**
  * @openapi
- * '/annotation/:id':
+ * '/annotation/{id}':
  *  delete:
  *    tags:
  *     - Annotation

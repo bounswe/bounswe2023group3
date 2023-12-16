@@ -105,17 +105,15 @@ const { z } = require("zod");
  *           required: true
  */
 
-const textPositionSelectorSchema = z.object({
-  type: z.literal("TextPositionSelector"),
-  start: z.number().int().positive(),
-  end: z
-    .number()
-    .int()
-    .positive()
-    .refine((end, data) => end >= data.start, {
-      message: "End must be greater than or equal to start",
-    }),
-});
+const textPositionSelectorSchema = z
+  .object({
+    type: z.literal("TextPositionSelector"),
+    start: z.number().int().positive(),
+    end: z.number().int().positive(),
+  })
+  .refine((data) => data.end >= data.start, {
+    message: "End must be greater than or equal to start",
+  });
 
 /**
  * @openapi
@@ -156,7 +154,7 @@ const textQuoteSelectorSchema = z.object({
  *         - $ref: "#/components/schemas/TextQuoteSelector"
  */
 
-const selectorSchema = textQuoteSelectorSchema.or(textPositionSelectorSchema);
+const selectorSchema = textPositionSelectorSchema.or(textQuoteSelectorSchema);
 
 /**
  * @openapi
@@ -175,7 +173,7 @@ const selectorSchema = textQuoteSelectorSchema.or(textPositionSelectorSchema);
  */
 
 const targetObjectSchema = z.object({
-  source: z.string().url,
+  source: z.string().url(),
   selector: selectorSchema,
 });
 
@@ -316,15 +314,11 @@ const bodySchema = bodyUriSchema.or(bodyObjectSchema);
  */
 
 const createAnnotationSchema = z.object({
-  body: z
-    .object({
-      body: bodySchema,
-      target: targetSchema,
-      creator: z.string(),
-    })
-    .refine((data) => data.type === "Annotation", {
-      message: "Type must be 'Annotation'",
-    }),
+  body: z.object({
+    body: bodySchema,
+    target: targetSchema,
+    creator: z.string(),
+  }),
 });
 
 /**

@@ -16,15 +16,15 @@ Annotation.init(
       type: DataTypes.STRING(),
     },
     body: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.JSON(),
     },
     target: {
-      type: DataTypes.STRING(),
+      type: DataTypes.JSON(),
     },
   },
   {
     sequelize,
-    modelName: "Annotation",
+    modelName: "annotation",
     timestamps: true,
   }
 );

@@ -27,7 +27,6 @@ async function createAnnotation(req, res) {
 async function getAnnotation(req, res) {
   try {
     const { id } = req.params;
-
     const annotationExists = await annotationService.annotationWithIdExists(id);
     if (!annotationExists) {
       return res
@@ -45,10 +44,10 @@ async function getAnnotation(req, res) {
 }
 
 async function updateAnnotation(req, res) {
-  try {
-    const { id } = req.params;
-    const body = req.body;
+  const { id } = req.params;
+  const body = req.body;
 
+  try {
     const annotationExists = await annotationService.annotationWithIdExists(id);
     if (!annotationExists) {
       return res
@@ -71,7 +70,6 @@ async function updateAnnotation(req, res) {
 async function deleteAnnotation(req, res) {
   try {
     const { id } = req.params;
-
     const annotationExists = await annotationService.annotationWithIdExists(id);
     if (!annotationExists) {
       return res
