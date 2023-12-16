@@ -37,6 +37,7 @@ export class PollService {
     poll.description = createPollDto.description;
     poll.creator = createPollDto.creator;
     poll.due_date = createPollDto.due_date;
+    poll.image_urls = createPollDto.image_urls
     const savedPoll = await this.pollRepository.save(poll);
 
     const options = createPollDto.options.map((option) => {

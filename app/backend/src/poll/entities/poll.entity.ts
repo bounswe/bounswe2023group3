@@ -87,4 +87,7 @@ export class Poll {
 
   @Column({ nullable: true })
   poll_request_rejection_feedback: string;
+
+  @Column("simple-array",{ nullable: true })
+  image_urls: string[];
 }
