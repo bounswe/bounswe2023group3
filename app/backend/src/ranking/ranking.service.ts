@@ -23,25 +23,23 @@ export class RankingService {
 
   ){}
 
-  create(createRankingDto: CreateRankingDto) {
-    return 'This action adds a new ranking';
+
+  async findAll(id:string) {
+    return await this.rankingRepository.find(
+      {
+        where:
+          {tag:{
+            id:id,
+          }
+        },
+        order:{
+          score:"ASC"
+        },
+        relations:["user","tag"]
+      }
+      )
   }
 
-  findAll() {
-    return `This action returns all ranking`;
-  }
-
-  findOne(id: number) {
-    return `This action returns a #${id} ranking`;
-  }
-
-  update(id: number, updateRankingDto: UpdateRankingDto) {
-    return `This action updates a #${id} ranking`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} ranking`;
-  }
 
   async settlePoints(poll: Poll,option: Option){
     const votes : Vote[] = await this.voteRepository.find({
