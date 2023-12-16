@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mobile_app/view/pollView/clickableUsername.dart';
 import 'package:mobile_app/view/pollView/threeDotsOptions.dart';
-import 'package:mobile_app/view/profilePage/profilePage.dart';
 
 import '../settleRequest/settleRequestPage.dart';
 
