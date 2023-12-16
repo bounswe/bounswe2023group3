@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile_app/models/comment.dart';
 import 'package:mobile_app/services/createCommentService.dart';
+import 'package:mobile_app/services/pollViewHomePageVote.dart';
 import 'package:mobile_app/services/pollCommentService.dart';
 import 'package:mobile_app/view/pollView/commentWidget.dart';
 import 'package:mobile_app/view/pollView/tagWidget.dart';
@@ -20,11 +21,14 @@ class PollPage extends StatefulWidget {
   final List<String> tags;
   final List<Color> tagColors;
   final int voteCount;
-  final List<String> postOptions;
+  final List<dynamic> postOptions;
   final int likeCount;
   final String dateTime;
   List<CommentData> comments;
   final int isSettled;
+  final bool? approvedStatus;
+  final int chosenVoteIndex;
+
 
   PollPage({
     super.key,
@@ -40,6 +44,8 @@ class PollPage extends StatefulWidget {
     required this.likeCount,
     required this.dateTime,
     required this.isSettled,
+    this.approvedStatus,
+    required this.chosenVoteIndex,
   }) : comments = [];
 
   @override
@@ -52,6 +58,17 @@ class PollPage extends StatefulWidget {
 }
 
 class _PollPageState extends State<PollPage> {
+
+
+  late int chosenVoteIndex;
+
+  @override
+  void initState() {
+    super.initState();
+    chosenVoteIndex = widget.chosenVoteIndex;
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -80,10 +97,9 @@ class _PollPageState extends State<PollPage> {
               child: Text('Vote Count: ${widget.voteCount}',
                   style: const TextStyle(fontSize: 16.0)),
             ),
-            for (String option in widget.postOptions)
-              PostOptionWidget(
-                  optionText: option,
-                  onPressed: () => handleOptionPress(option)),
+            for (int index = 0;index <widget.postOptions.length;index++)
+              PostOptionWidget( //(100*int.parse(widget.postOptions[index]["voteCount"])/widget.voteCount).toInt()
+                  optionText: widget.postOptions[index]["answer"], isSelected:  chosenVoteIndex>=0? true: false, isChosen: chosenVoteIndex==index,percentage: 30, onPressed: () => handleOptionPress(widget.postOptions[index]["id"],index), isSettled: widget.isSettled,),
             Padding(
               padding: const EdgeInsets.all(16.0),
               child: ElevatedButton.icon(
@@ -147,9 +163,16 @@ class _PollPageState extends State<PollPage> {
     );
   }
 
-  void handleOptionPress(String option) {
+  void handleOptionPress(String optionId, int index) async{
     // Handle option press based on the selected option
-    print("pressed $option");
+    PollViewHomePageVote pollVote = PollViewHomePageVote();
+    bool voteSuccess = await pollVote.vote(optionId);
+    if (voteSuccess) {
+      setState(() {
+        chosenVoteIndex=index;
+      });
+    }
+
   }
 
   void handleLikePress() {

@@ -33,29 +33,28 @@ class HomePageService {
               Colors.blue); // You might want to generate colors dynamically
         }
 
-        List<String> optionsList = [];
-
-        for (var option in optionsJson) {
-          optionsList.add(option['answer']);
-        }
 
         posts.add(PollViewHomePage(
-            pollId: post['id'],
-            userName: creator['username'],
-            userUsername: creator['username'],
-            profilePictureUrl: "", // Replace with the actual key
-            postTitle: post['question'],
-            tags: tagsList,
-            tagColors: tagColorsList,
-            voteCount: post['vote_count'],
-            postOptions: optionsList,
-            likeCount: post['likeCount'],
-            commentCount: post['commentCount'],
-            dateTime: post['creation_date'],
-            isSettled: post['is_settled'],
-            approvedStatus: post['approveStatus'],
-            didLike: post['didLike'] // You might want to format the date
-            ));
+          pollId: post['id'],
+          userName: creator['username'],
+          userUsername: creator['username'],
+          profilePictureUrl: "", // Replace with the actual key
+          postTitle: post['question'],
+          tags: tagsList,
+          tagColors: tagColorsList,
+          voteCount: post['vote_count'],
+          postOptions: optionsJson,
+          likeCount: post['likeCount'],
+          comments: const [],
+          commentCount : post['commentCount'],
+          dateTime: post['creation_date'],
+          isSettled: post['is_settled'],
+          approvedStatus: post['approveStatus'],
+          didLike: post['didLike'],// You might want to format the date
+          chosenVoteIndex: -1, //it will be post['chosenVoteIndex']
+
+        ));
+
       }
       print(posts);
       return posts;
