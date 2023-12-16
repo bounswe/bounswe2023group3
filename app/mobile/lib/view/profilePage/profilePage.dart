@@ -226,8 +226,6 @@ class _ProfilePageState extends State<ProfilePage> {
                   postOptions: post.options,
                   likeCount: post.likeCount,
                   dateTime: post.dueDate.toString(),
-                  // TODO buraya commentCount verilecek
-                  comments: [],
                   isSettled: post.isSettled,
                   approvedStatus: post.approvedStatus,
                   didLike: false,

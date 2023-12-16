@@ -42,7 +42,8 @@ import { SettledPollComponent } from './settled-poll/settled-poll.component'
 import { ModeratorPollReviewComponent } from './moderator-poll-review/moderator-poll-review.component';
 import { FileUploadComponent } from './file-upload/file-upload.component';
 import { ReportUserComponent } from './report-user/report-user.component';
-import { ReportRequestsComponent } from './report-requests/report-requests.component'
+import { ReportRequestsComponent } from './report-requests/report-requests.component';
+import { ModeratorApplyComponent } from './moderator-apply/moderator-apply.component'
 @NgModule({
   declarations: [
     AppComponent,
@@ -80,6 +81,7 @@ import { ReportRequestsComponent } from './report-requests/report-requests.compo
     FileUploadComponent,
     ReportUserComponent,
     ReportRequestsComponent,
+    ModeratorApplyComponent,
   ],
   imports: [
     BrowserModule,

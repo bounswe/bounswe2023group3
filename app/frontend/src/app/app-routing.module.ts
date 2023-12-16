@@ -22,10 +22,12 @@ import { SettingsComponent } from './settings/settings.component'
 import { ChangePasswordComponent } from './change-password/change-password.component'
 import { SettledPollComponent } from './settled-poll/settled-poll.component'
 import { ReportRequestsComponent } from './report-requests/report-requests.component'
+import { ModeratorApplyComponent } from './moderator-apply/moderator-apply.component'
 
 const routes: Routes = [
   { path: '', component: WelcomeComponent },
   { path: 'app-moderator-login', component: ModeratorLoginComponent },
+  { path: 'app-moderator-apply', component: ModeratorApplyComponent },
   { path: 'app-verify', component: VerifyComponent },
   { path: 'app-change-password', component: ChangePasswordComponent },
   { path: 'app-settled-poll', component: SettledPollComponent },

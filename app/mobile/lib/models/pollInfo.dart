@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mobile_app/models/comment.dart';
 import 'package:mobile_app/services/pollCommentService.dart';
+import 'package:mobile_app/view/constants.dart';
 
 class PollInfo {
   final String pollId;
@@ -19,7 +20,6 @@ class PollInfo {
   int likeCount;
   int commentCount;
   List<CommentData> _comments;
-  bool _commentsAreFetched;
 
   final List<String> optionIds;
   final List<String> options;
@@ -36,14 +36,11 @@ class PollInfo {
 
 
   Future<List<CommentData>> get comments async {
-    if (!_commentsAreFetched) {
-      _comments = await PollCommentService.getComments("pollId");
-      // TODO I am not sure if all comments are going to be returned or a subset
-      // of them. so assumed the initialy set commentCount is always stay same
-      // for the entire life time of this objcet.
-      // commentCount = _comments.length;
-      _commentsAreFetched = true;
-    }
+    _comments = await PollCommentService.getComments(pollId);
+    // TODO I am not sure if all comments are going to be returned or a subset
+    // of them. so assumed the initialy set commentCount is always stay same
+    // for the entire life time of this objcet.
+    // commentCount = _comments.length;
     return _comments;
   }
 
@@ -80,7 +77,7 @@ class PollInfo {
     } else {
       int length = (json['tags'] as List).length;
       for (int ii = 0; ii < length; ii++) {
-        tagColorList.add(Colors.blue);
+        tagColorList.add(pink);
       }
     }
     List<dynamic> options = json['options'];

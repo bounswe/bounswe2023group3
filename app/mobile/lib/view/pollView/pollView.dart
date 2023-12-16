@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:mobile_app/models/comment.dart';
 import 'package:mobile_app/services/createCommentService.dart';
 import 'package:mobile_app/services/pollViewHomePageVote.dart';
+import 'package:mobile_app/services/pollCommentService.dart';
 import 'package:mobile_app/view/pollView/commentWidget.dart';
 import 'package:mobile_app/view/pollView/tagWidget.dart';
 import 'package:mobile_app/view/pollView/postOptionWidget.dart';
@@ -23,13 +24,13 @@ class PollPage extends StatefulWidget {
   final List<dynamic> postOptions;
   final int likeCount;
   final String dateTime;
-  final List<CommentData> comments;
+  List<CommentData> comments;
   final int isSettled;
   final bool? approvedStatus;
   final int chosenVoteIndex;
 
 
-  const PollPage({
+  PollPage({
     super.key,
     required this.pollId,
     required this.userName,
@@ -42,14 +43,18 @@ class PollPage extends StatefulWidget {
     required this.postOptions,
     required this.likeCount,
     required this.dateTime,
-    required this.comments,
     required this.isSettled,
     this.approvedStatus,
     required this.chosenVoteIndex,
-  });
+  }) : comments = [];
 
   @override
   State<PollPage> createState() => _PollPageState();
+
+  Future<List<CommentData>> fetchComments() async {
+    comments = await PollCommentService.getComments(pollId);
+    return comments;
+  }
 }
 
 class _PollPageState extends State<PollPage> {
@@ -114,14 +119,44 @@ class _PollPageState extends State<PollPage> {
                 parentSetState: () {
                   setState(() {});
                 }),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              child: Text('${widget.comments.length} Comments',
-                  style: const TextStyle(fontSize: 16.0)),
+            FutureBuilder<List<CommentData>>(
+              future: widget
+                  .fetchComments(), // Your asynchronous data fetch function
+              builder: (BuildContext context,
+                  AsyncSnapshot<List<CommentData>> snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  // Show a loading indicator while waiting for the comments to load
+                  return const Center(child: CircularProgressIndicator());
+                } else if (snapshot.hasError) {
+                  // If we run into an error, display it to the user
+                  return Text('Error: ${snapshot.error}');
+                } else {
+                  var fetchedComments = snapshot.hasData ? snapshot.data! : [];
+
+                  // Whether we have data or not, display the number of fetchedComments
+                  int commentCount = fetchedComments.length;
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                        child: Text('$commentCount Comments',
+                            style: const TextStyle(fontSize: 16.0)),
+                      ),
+                      // If we have data, display the list of fetchedComments
+                      if (snapshot.hasData)
+                        ...fetchedComments
+                            .map((comment) => CommentWidget(
+                                  user: comment.user,
+                                  commentText: comment.commentText,
+                                ))
+                            .toList(),
+                      // If there's no data, there's nothing else to add to the column
+                    ],
+                  );
+                }
+              },
             ),
-            for (CommentData comment in widget.comments)
-              CommentWidget(
-                  user: comment.user, commentText: comment.commentText),
           ],
         ),
       ),
