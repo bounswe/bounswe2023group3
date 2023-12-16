@@ -45,4 +45,16 @@ export class ReportRequestsComponent {
     this.router.navigate(['/app-profile', username])
   }
 
+
+  handleApproval(reportID: string){
+    this.http.put('http://34.105.66.254:1923/moderator/reports/'+reportID,this.options).subscribe(
+      (response: any) => {
+      },
+      (error) => {
+        console.error('Error approving poll:', error)
+      },
+    )
+  }
+
+
 }

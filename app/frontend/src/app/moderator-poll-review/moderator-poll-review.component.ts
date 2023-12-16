@@ -69,6 +69,23 @@ export class ModeratorPollReviewComponent {
       )
     }
     onReject(){
+      
+    if(this.is_settled==1){
+      this.http.post('http://34.105.66.254:1923/poll/settle/'+this.pollId,
+      {
+        "decision": false,
+        "settle_poll_request_feedback": "not a good to time to settle it"
+      },this.options).subscribe(
+        (response: any) => {
+        },
+        (error) => {
+          console.error('Error deleting poll:', error)
+        },
+      )
+      window.location.reload()
+      return
+    }
+
       this.http.post('http://34.105.66.254:1923/moderator/approve/'+this.pollId,{'approveStatus': false, 
       "poll_request_rejection_feedback": "not a precise poll"}, this.options).subscribe(
         (response: any) => {

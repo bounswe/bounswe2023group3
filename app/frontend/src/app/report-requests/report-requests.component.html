@@ -16,7 +16,7 @@
           (click)="navigateToProfile(report.reported.username)">Reported User: {{ report.reported.username }}</div>
           <div class="question">Reason: {{ report.reason }}</div>
           <div class="date">{{ report.creation_date }}</div>
-          <button class="details-button">Approve</button>
+          <button class="details-button" (click)="handleApproval(report.id)">Approve</button>
           <button class="disapprove-button">Disapprove</button>
         </div>
       </div>
