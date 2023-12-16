@@ -15,6 +15,9 @@ import { UserService } from '../user/user.service';
 import { BadgeService } from '../badge/badge.service';
 import { Report } from '../user/entities/report.entity';
 import { TagModule } from '../tag/tag.module';
+import { RankingService } from '../ranking/ranking.service';
+import { Ranking } from '../ranking/entities/ranking.entity';
+import { Vote } from '../vote/entities/vote.entity';
 
 @Module({
   imports: [
@@ -27,6 +30,8 @@ import { TagModule } from '../tag/tag.module';
       Option,
       Report,
       Comment,
+      Ranking,
+      Vote
     ]),
     TagModule,
   ],
@@ -37,6 +42,7 @@ import { TagModule } from '../tag/tag.module';
     PollRepository,
     UserService,
     BadgeService,
+    RankingService
   ],
 })
 export class LikeModule {}

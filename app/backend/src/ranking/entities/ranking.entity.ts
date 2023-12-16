@@ -12,7 +12,7 @@ export class Ranking {
     id: string;
 
     @Column({nullable:false})
-    rank: number;
+    score: number;
     
     @ManyToOne(type => User, (user)=>user.rankings,{ nullable: false, onDelete: "CASCADE"})
     user: Relation<User>;
