@@ -231,8 +231,6 @@ class _ProfilePageState extends State<ProfilePage> {
                   didLike: false,
                   chosenVoteIndex: post.chosenVoteIndex,
                   commentCount: post.commentCount,
-
-
                 ),
               ),
             ),
@@ -247,27 +245,24 @@ class _ProfilePageState extends State<ProfilePage> {
     // TODO burada comments Future<CommentData> olarak verilip, detailed poll
     // view sayfasisin gelmesini geciktirmeyecek. await dondugu zaman o sayfada
     // commentler render'lanacak
-    var comments = await poll.comments;
     if (!mounted) return;
     Navigator.push(
       context,
       MaterialPageRoute(
         builder: (context) => PollPage(
-            pollId: poll.pollId,
-            userName: poll.userName,
-            userUsername: poll.userUsername,
-            profilePictureUrl: poll.profilePictureUrl,
-            postTitle: poll.postTitle,
-            tags: poll.tags,
-            tagColors: poll.tagColors,
-            voteCount: poll.voteCount,
-            postOptions: poll.options,
-            likeCount: poll.likeCount,
-            dateTime: poll.dueDate.toString(),
-            comments: comments,
-            isSettled: poll.isSettled,
-            chosenVoteIndex: poll.chosenVoteIndex,
-
+          pollId: poll.pollId,
+          userName: poll.userName,
+          userUsername: poll.userUsername,
+          profilePictureUrl: poll.profilePictureUrl,
+          postTitle: poll.postTitle,
+          tags: poll.tags,
+          tagColors: poll.tagColors,
+          voteCount: poll.voteCount,
+          postOptions: poll.options,
+          likeCount: poll.likeCount,
+          dateTime: poll.dueDate.toString(),
+          isSettled: poll.isSettled,
+          chosenVoteIndex: poll.chosenVoteIndex,
         ),
       ),
     );
