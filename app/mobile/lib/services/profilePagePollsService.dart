@@ -4,7 +4,6 @@ import 'package:mobile_app/services/apiService.dart';
 
 class ProfilePagePollsService {
   static Future<List<PollInfo>> getLikedPolls(String userId) async {
-    // TODO make filtering
     // TODO handle errors
     String pollsEndpoint = "/poll?likedById=$userId";
     Response response = await ApiService.dio.get(pollsEndpoint);
@@ -34,6 +33,23 @@ class ProfilePagePollsService {
       return polls;
     } catch (e) {
       // Handle error properly - you can throw an exception or return an empty list based on your app's needs
+      print(e);
+      return [];
+    }
+  }
+
+  static Future<List<PollInfo>> getPendingPolls(String userId) async {
+    String pollsEndpoint = "/poll?creatorId=$userId";
+    try {
+      // Perform the GET request with the userId as a query parameter
+      Response response = await ApiService.dio.get(pollsEndpoint);
+      // Map the response data to PollInfo objects
+      var polls = List.from(response.data)
+          .map((e) => PollInfo.fromJson(e))
+          .where((element) => element.isPending)
+          .toList();
+      return polls;
+    } catch (e) {
       print(e);
       return [];
     }
