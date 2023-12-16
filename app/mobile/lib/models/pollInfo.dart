@@ -20,6 +20,7 @@ class PollInfo {
 
   final List<String> optionIds;
   final List<String> options;
+  final List<dynamic> optionIdCouples;
   final List<int> optionsVoteCount;
 
   final DateTime dueDate;
@@ -47,6 +48,7 @@ class PollInfo {
     required this.isSettled,
     required this.pollId,
     required this.optionIds,
+    required this.optionIdCouples,
     required this.tagIds,
     required this.optionsVoteCount,
     required this.chosenVoteIndex,
@@ -69,6 +71,7 @@ class PollInfo {
     List<dynamic> tags = json['tags'];
 
     return PollInfo.withoutComments(
+      optionIdCouples: options,
       pollId: json['id'],
       userName: json['creator']['username'],
       userUsername: json['creator']['username'],

@@ -9,7 +9,6 @@ import 'package:mobile_app/view/pollView/pollView.dart';
 import 'package:mobile_app/services/pollViewHomePageLike.dart';
 import 'package:mobile_app/services/pollViewHomePageVote.dart';
 
-
 class PollViewHomePage extends StatefulWidget {
   final String pollId;
   final String userName;
@@ -113,9 +112,15 @@ class _PollViewHomePageState extends State<PollViewHomePage> {
             child: Text('Vote Count: ${widget.voteCount}',
                 style: const TextStyle(fontSize: 16.0)),
           ),
-          for (int index = 0;index <widget.postOptions.length;index++)
+          for (int index = 0; index < widget.postOptions.length; index++)
             PostOptionWidget(
-                optionText: widget.postOptions[index]["answer"], isSelected:  chosenVoteIndex>=0? true: false, isChosen: chosenVoteIndex==index,percentage: 30, onPressed: () => handleOptionPress(widget.postOptions[index]["id"],index), isSettled:widget.isSettled),
+                optionText: widget.postOptions[index]["answer"],
+                isSelected: chosenVoteIndex >= 0 ? true : false,
+                isChosen: chosenVoteIndex == index,
+                percentage: 30,
+                onPressed: () =>
+                    handleOptionPress(widget.postOptions[index]["id"], index),
+                isSettled: widget.isSettled),
           Padding(
             padding: const EdgeInsets.all(16.0),
             child: didLike
@@ -146,18 +151,16 @@ class _PollViewHomePageState extends State<PollViewHomePage> {
     );
   }
 
-  void handleOptionPress(String optionId, int index) async{
+  void handleOptionPress(String optionId, int index) async {
     // Handle option press based on the selected option
     PollViewHomePageVote pollVote = PollViewHomePageVote();
     bool voteSuccess = await pollVote.vote(optionId);
     if (voteSuccess) {
       setState(() {
-        chosenVoteIndex=index;
+        chosenVoteIndex = index;
       });
     }
-
   }
-
 
   //void handleLikePress(String pollId) {
   // PollViewHomePageLike pollLike = PollViewHomePageLike();
