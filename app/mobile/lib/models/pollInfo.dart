@@ -80,7 +80,9 @@ class PollInfo {
       voteCount: json['vote_count'],
       options: options.map((e) => e['answer'] as String).toList(),
       optionIds: options.map((e) => e['id'] as String).toList(),
-      optionsVoteCount: options.map((e) => e['vote_count'] as int).toList(),
+      // TODO vote_count field'i kontrol edilecek
+      optionsVoteCount:
+          options.map((e) => (e['vote_count'] ?? 0) as int).toList(),
       likeCount: json['likeCount'] ?? 0,
       dueDate: DateTime.parse(json['due_date']),
       creationDate: DateTime.parse(json['creation_date']),
