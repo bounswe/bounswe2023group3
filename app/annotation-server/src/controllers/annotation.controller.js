@@ -14,7 +14,7 @@ async function createAnnotation(req, res) {
   try {
     const body = req.body;
     const annotation = await annotationService.createAnnotation(body);
-    return res.status(200).json({
+    return res.status(201).json({
       message: "Annotation successfully created",
       annotation: annotation,
     });

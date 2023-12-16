@@ -1,7 +1,7 @@
 const { DataTypes, Model } = require("sequelize");
 const { sequelize } = require("../utils/db");
 
-class LawyerProfile extends Model {}
+class Annotation extends Model {}
 
 Annotation.init(
   {
@@ -29,4 +29,4 @@ Annotation.init(
   }
 );
 
-module.exports = LawyerProfile;
+module.exports = Annotation;
