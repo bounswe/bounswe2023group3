@@ -16,10 +16,10 @@ Annotation.init(
       type: DataTypes.STRING(),
     },
     body: {
-      type: DataTypes.JSON(),
+      type: DataTypes.JSONB(),
     },
     target: {
-      type: DataTypes.JSON(),
+      type: DataTypes.JSONB(),
     },
   },
   {

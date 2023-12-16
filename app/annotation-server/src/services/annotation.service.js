@@ -1,3 +1,4 @@
+const { Op } = require("sequelize");
 const { v4: uuidv4 } = require("uuid");
 const Annotation = require("../models/annotation.model");
 
@@ -8,8 +9,18 @@ async function annotationWithIdExists(id) {
   return annotation !== null;
 }
 
-async function getAnnotations() {
-  const annotations = await Annotation.findAll();
+async function getAnnotations(pollId) {
+  const baseQuery = {};
+
+  if (pollId !== undefined) {
+    baseQuery.where = {
+      target: {
+        [Op.contains]: { source: pollId },
+      },
+    };
+  }
+
+  const annotations = await Annotation.findAll(baseQuery);
   return annotations;
 }
 

@@ -47,6 +47,13 @@ router.get(
  *    tags:
  *     - Annotation
  *    summary: Get all annotations with query parameter
+ *    parameters:
+ *    - in: query
+ *      name: pollId
+ *      description: Get annotations for a specific poll
+ *      required: false
+ *      schema:
+ *        type: string
  *    responses:
  *      200:
  *        description: Annotations are fetched successfully

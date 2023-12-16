@@ -1,8 +1,9 @@
 const annotationService = require("../services/annotation.service");
 
-async function getAnnotations(_, res) {
+async function getAnnotations(req, res) {
   try {
-    const annotations = await annotationService.getAnnotations();
+    const { pollId } = req.query;
+    const annotations = await annotationService.getAnnotations(pollId);
     return res.status(200).json({ annotations: annotations });
   } catch (e) {
     console.error("Error getting annotations", e);
