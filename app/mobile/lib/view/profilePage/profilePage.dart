@@ -242,9 +242,6 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   void tapOnPoll(BuildContext context, PollInfo poll) async {
-    // TODO burada comments Future<CommentData> olarak verilip, detailed poll
-    // view sayfasisin gelmesini geciktirmeyecek. await dondugu zaman o sayfada
-    // commentler render'lanacak
     if (!mounted) return;
     Navigator.push(
       context,
