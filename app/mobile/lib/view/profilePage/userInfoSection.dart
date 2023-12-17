@@ -111,12 +111,13 @@ class _UserInfoSectionState extends State<UserInfoSection> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  widget.profileInfo.username,
+                  "${widget.profileInfo.firstname}"
+                  " ${widget.profileInfo.lastname}",
                   style: const TextStyle(
                       fontSize: 20, fontWeight: FontWeight.bold),
                 ),
                 Text(
-                  widget.profileInfo.id,
+                  widget.profileInfo.username,
                   style: const TextStyle(fontSize: 16),
                 ),
                 Row(
