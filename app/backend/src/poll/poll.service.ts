@@ -278,7 +278,7 @@ export class PollService {
     });
   }
 
-  public async searchSemanticPolls(query: string): Promise<any[]> {
+  public async searchSemanticPolls(query: string): Promise<Poll[]> {
     let results = await this.pineconeStore.similaritySearchWithScore(query, 5);
     results = results.filter((result) => result[1] > 0.7).map((result) => result[0].metadata.id);
     return await this.pollRepository.find({

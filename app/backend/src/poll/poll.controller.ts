@@ -26,7 +26,7 @@ import {
 } from './dto/settle-poll-request.dto';
 import { ModeratorGuard } from '../moderator/guards/moderator.guard';
 import { VerificationModeratorGuard } from '../moderator/guards/verification-moderator.guard';
-import { SemanticSearchResponseDto } from './dto/responses/semantic-search-response.dto';
+import { Poll } from './entities/poll.entity';
 
 const statusMap = new Map<string, boolean>();
 statusMap.set('pending', null);
@@ -44,7 +44,7 @@ export class PollController {
   }
 
   @Post('pinecone/sync')
-  public async pineconeInsert(): Promise<any> {
+  public async pineconeSync(): Promise<any> {
     return await this.pollService.syncVectorStore();
   }
 
@@ -52,14 +52,14 @@ export class PollController {
   @ApiResponse({
     status: 200,
     description: 'Polls are searched successfully.',
-    type: [SemanticSearchResponseDto],
+    type: [GetPollResponseDto],
   })
   @ApiResponse({
     status: 500,
     description: 'Internal server error, contact with backend team.',
   })
   @Post('pinecone/search')
-  public async pineconeSearch(@Query('searchQuery') searchQuery: string): Promise<SemanticSearchResponseDto[]> {
+  public async pineconeSearch(@Query('searchQuery') searchQuery: string): Promise<Poll[]> {
     return await this.pollService.searchSemanticPolls(searchQuery);
   }
 
