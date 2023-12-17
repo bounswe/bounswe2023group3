@@ -78,7 +78,7 @@ class _LoginScreenState extends State<LoginScreen> {
         try {
           Response loggedInUserData = await ApiService.dio.get('/auth/me');
           if (loggedInUserData.statusCode == 200) {
-            AppState.isModerator=false;
+            AppState.isModerator = false;
             AppState.loggedInUserId = loggedInUserData.data['id'];
             print("loginScreen.login: ${AppState.loggedInUserId}");
           } else {
