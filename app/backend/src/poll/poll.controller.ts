@@ -95,7 +95,7 @@ export class PollController {
     @Param('id', ParseUUIDPipe) id: string,
     @Body() settlePollDto: SettlePollDto,
   ): Promise<void> {
-    return await this.pollService.settlePoll(id, settlePollDto.decision);
+    return await this.pollService.settlePoll(id, settlePollDto.decision,settlePollDto.settle_poll_request_feedback);
   }
 
   @ApiQuery({ name: 'creatorId', required: false })

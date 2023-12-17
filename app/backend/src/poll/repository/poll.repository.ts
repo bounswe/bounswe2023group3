@@ -13,7 +13,7 @@ export class PollRepository extends Repository<Poll> {
   public async findPollById(id) {
     return await this.findOne({
       where: { id },
-      relations: ['options', 'tags', 'creator', 'outcome'],
+      relations: ['options', 'tags', 'creator'],
     });
   }
 
@@ -116,7 +116,6 @@ export class PollRepository extends Repository<Poll> {
       .leftJoinAndSelect('poll.options', 'options')
       .leftJoinAndSelect('poll.tags', 'tags')
       .leftJoinAndSelect('poll.creator', 'creator')
-      .leftJoinAndSelect('poll.outcome', 'outcome')
       .getRawAndEntities();
 
     const combinedResults = entities.map((entity) => {
