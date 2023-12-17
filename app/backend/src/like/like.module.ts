@@ -17,6 +17,9 @@ import { Report } from '../user/entities/report.entity';
 import { TagModule } from '../tag/tag.module';
 import { Pinecone } from '@pinecone-database/pinecone';
 import { GoogleGenerativeAIEmbeddings } from '@langchain/google-genai';
+import { RankingService } from '../ranking/ranking.service';
+import { Ranking } from '../ranking/entities/ranking.entity';
+import { Vote } from '../vote/entities/vote.entity';
 
 @Module({
   imports: [
@@ -29,6 +32,8 @@ import { GoogleGenerativeAIEmbeddings } from '@langchain/google-genai';
       Option,
       Report,
       Comment,
+      Ranking,
+      Vote
     ]),
     TagModule,
   ],
@@ -41,6 +46,7 @@ import { GoogleGenerativeAIEmbeddings } from '@langchain/google-genai';
     BadgeService,
     Pinecone,
     GoogleGenerativeAIEmbeddings,
+    RankingService
   ],
 })
 export class LikeModule {}

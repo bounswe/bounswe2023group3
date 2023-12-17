@@ -18,7 +18,6 @@ import { Settle } from '../enums/settle.enum';
 import { Like } from '../../like/entities/like.entity';
 import { Comment } from '../../comment/entities/comment.entity';
 import { Vote } from '../../vote/entities/vote.entity';
-import { Annotation } from '../../annotation/entities/annotation.entity';
 
 // @Todo Some entities are not ready, therefore this is not the finalized version.
 @Entity('polls')
@@ -43,9 +42,8 @@ export class Poll {
   @OneToMany(() => Option, (option) => option.poll, { cascade: true })
   options: Relation<Option[]>;
 
-  @OneToOne(() => Option, { nullable: true })
-  @JoinColumn()
-  outcome: Option;
+  @Column({ nullable: true })
+  outcome: string
 
   @Column({ nullable: true })
   outcome_source: string;
@@ -68,9 +66,6 @@ export class Poll {
 
   @Column({ default: 0 })
   vote_count: number;
-
-  @OneToMany(() => Annotation, (annotation) => annotation.poll)
-  annotations: Relation<Annotation[]>;
 
   // @Todo Replace with report entity
   //@Column({ nullable: true })
