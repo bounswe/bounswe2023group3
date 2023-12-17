@@ -1,0 +1,36 @@
+name: Deploy-Backend-to-Compute-Engine
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "app/annotation-server/**"
+      - ".github/workflows/annotation-server-deploy.yml"
+
+jobs:
+  deploy:
+    name: Deploy to Compute Engine
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout the files
+        uses: actions/checkout@v2
+
+      - name: Deploy to server
+        uses: easingthemes/ssh-deploy@main
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_KEY }}
+          REMOTE_HOST: 34.105.66.254
+          REMOTE_USER: alp.tuna.453
+          SOURCE: app/annotation-server/
+          TARGET: ~/annotation-server
+          ARGS: --delete
+          EXCLUDE: .env
+          SCRIPT_AFTER: |
+            cd ~/annotation-server
+            docker stop annotation-server 
+            docker rm annotation-server
+            docker rmi pollup:annotation-server-image
+            docker build -t pollup:annotation-server-image .
+            docker run --name annotation-server -p 1924:3001 -d pollup:annotation-server-image

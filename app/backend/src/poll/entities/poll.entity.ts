@@ -18,7 +18,6 @@ import { Settle } from '../enums/settle.enum';
 import { Like } from '../../like/entities/like.entity';
 import { Comment } from '../../comment/entities/comment.entity';
 import { Vote } from '../../vote/entities/vote.entity';
-import { Annotation } from '../../annotation/entities/annotation.entity';
 
 // @Todo Some entities are not ready, therefore this is not the finalized version.
 @Entity('polls')
@@ -67,9 +66,6 @@ export class Poll {
 
   @Column({ default: 0 })
   vote_count: number;
-
-  @OneToMany(() => Annotation, (annotation) => annotation.poll)
-  annotations: Relation<Annotation[]>;
 
   // @Todo Replace with report entity
   //@Column({ nullable: true })

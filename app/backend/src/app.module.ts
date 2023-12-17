@@ -24,8 +24,6 @@ import { CommentModule } from './comment/comment.module';
 import { Report } from './user/entities/report.entity';
 import { VoteModule } from './vote/vote.module';
 import { Vote } from './vote/entities/vote.entity';
-import { AnnotationModule } from './annotation/annotation.module';
-import { Annotation } from './annotation/entities/annotation.entity';
 import { RankingModule } from './ranking/ranking.module';
 import { Ranking } from './ranking/entities/ranking.entity';
 
@@ -51,8 +49,7 @@ import { Ranking } from './ranking/entities/ranking.entity';
         Comment,
         Report,
         Vote,
-        Annotation,
-        Ranking
+        Ranking,
       ],
       database: 'postgres',
       synchronize: true,
@@ -85,7 +82,6 @@ import { Ranking } from './ranking/entities/ranking.entity';
     LikeModule,
     CommentModule,
     VoteModule,
-    AnnotationModule,
     RankingModule,
   ],
   controllers: [AppController],
