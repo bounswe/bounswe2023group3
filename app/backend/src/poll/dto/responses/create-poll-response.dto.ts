@@ -28,7 +28,7 @@ export class CreatePollResponseDto {
     @ApiProperty({
         example: null
     })
-    outcome: Option;
+    outcome: string;
     @ApiProperty({
         example: 'https://www.google.com/search?q=besiktas'
     })

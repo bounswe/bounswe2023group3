@@ -206,14 +206,14 @@ export class PollService {
           id: creatorId,
         },
       },
-      relations: ['options', 'tags', 'creator', 'outcome'],
+      relations: ['options', 'tags', 'creator'],
     });
   }
 
   public async findPollById(pollId, userId?) {
     const poll = await this.pollRepository.findOne({
       where: { id: pollId },
-      relations: ['options', 'tags', 'creator', 'outcome'],
+      relations: ['options', 'tags', 'creator'],
     });
 
     if (!poll) {
@@ -284,7 +284,7 @@ export class PollService {
     results = results.filter((result) => result[1] > 0.7).map((result) => result[0].metadata.id);
     return await this.pollRepository.find({
       where: {id: In(results)},
-      relations: ['options', 'tags', 'creator', 'outcome', 'likes', 'comments', 'votes', 'annotations'],
+      relations: ['options', 'tags', 'creator', 'likes', 'comments', 'votes', 'annotations'],
     })
   }
 }
