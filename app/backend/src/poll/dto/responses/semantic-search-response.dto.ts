@@ -1,7 +1,4 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Tag } from '../../../tag/entities/tag.entity';
-import { Option } from '../../../option/entities/option.entity';
-import { User } from '../../../user/entities/user.entity';
 
 export class SemanticSearchResponseDto {
   @ApiProperty({
