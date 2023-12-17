@@ -23,6 +23,8 @@ import { Comment } from '../comment/entities/comment.entity';
 import { Report } from '../user/entities/report.entity';
 import { TagModule } from '../tag/tag.module';
 import { TokenDecoderMiddleware } from '../auth/middlewares/tokenDecoder.middleware';
+import { Pinecone } from '@pinecone-database/pinecone';
+import { GoogleGenerativeAIEmbeddings } from '@langchain/google-genai';
 import { RankingService } from '../ranking/ranking.service';
 import { Ranking } from '../ranking/entities/ranking.entity';
 import { Vote } from '../vote/entities/vote.entity';
@@ -52,6 +54,8 @@ import { Vote } from '../vote/entities/vote.entity';
     BadgeService,
     ModeratorService,
     TagService,
+    Pinecone,
+    GoogleGenerativeAIEmbeddings,
     RankingService
   ],
   exports: [PollService],
