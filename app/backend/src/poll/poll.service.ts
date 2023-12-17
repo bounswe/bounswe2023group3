@@ -5,7 +5,7 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Poll } from './entities/poll.entity';
-import { IsNull, Repository } from 'typeorm';
+import { In, IsNull, Repository } from 'typeorm';
 import { Option } from '../option/entities/option.entity';
 import { Tag } from '../tag/entities/tag.entity';
 import { PollRepository } from './repository/poll.repository';
@@ -279,8 +279,11 @@ export class PollService {
   }
 
   public async searchSemanticPolls(query: string): Promise<any[]> {
-    const results = await this.pineconeStore.similaritySearchWithScore(query, 5);
-    
-    return results.filter((result) => result[1] > 0.7).map((result) => result[0]);
+    let results = await this.pineconeStore.similaritySearchWithScore(query, 5);
+    results = results.filter((result) => result[1] > 0.7).map((result) => result[0].metadata.id);
+    return await this.pollRepository.find({
+      where: {id: In(results)},
+      relations: ['options', 'tags', 'creator', 'outcome', 'likes', 'comments', 'votes', 'annotations'],
+    })
   }
 }
