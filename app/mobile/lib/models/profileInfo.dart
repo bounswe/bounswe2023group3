@@ -5,6 +5,8 @@ class ProfileInfo {
   String id;
   String profilePictureUrl;
   String username;
+  String firstname;
+  String lastname;
   int followingCount;
   int followersCount;
   bool isFollowingVisible;
@@ -22,6 +24,8 @@ class ProfileInfo {
     required this.id,
     required this.profilePictureUrl,
     required this.username,
+    required this.firstname,
+    required this.lastname,
     required this.followingCount,
     required this.followersCount,
     this.isFollowingVisible = true,
@@ -43,8 +47,10 @@ class ProfileInfo {
 
     return ProfileInfo(
       id: json['id'],
-      profilePictureUrl: json['profile_picture_url'] ?? '',
+      profilePictureUrl: json['profile_picture'] ?? '',
       username: json['username'],
+      firstname: json['firstname'] ?? '',
+      lastname: json['lastname'] ?? '',
       followingCount: json['followingCount'] ?? 0,
       followersCount: json['followersCount'] ?? 0,
       isFollowingVisible: json['isFollowingVisible'] ?? true,
@@ -57,6 +63,28 @@ class ProfileInfo {
       isLoggedInUser: json['id'] == AppState.loggedInUserId,
       followerIds: followers.map((e) => e['id'] as String).toList(),
       followingIds: followings.map((e) => e['id'] as String).toList(),
+    );
+  }
+
+  ProfileInfo copy() {
+    return ProfileInfo(
+      id: id,
+      profilePictureUrl: profilePictureUrl,
+      username: username,
+      firstname: firstname,
+      lastname: lastname,
+      followingCount: followingCount,
+      followersCount: followersCount,
+      isFollowingVisible: isFollowingVisible,
+      isFollowersVisible: isFollowersVisible,
+      isCreatedPollsVisible: isCreatedPollsVisible,
+      isLikedPollsVisible: isLikedPollsVisible,
+      isVotedPollsVisible: isVotedPollsVisible,
+      ranks: List<String>.from(ranks),
+      badges: List<String>.from(badges),
+      followingIds: List<String>.from(followingIds),
+      followerIds: List<String>.from(followerIds),
+      isLoggedInUser: isLoggedInUser,
     );
   }
 }
