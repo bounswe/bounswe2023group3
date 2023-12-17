@@ -2,14 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:mobile_app/models/profileInfo.dart';
 import 'package:mobile_app/services/followService.dart';
 import 'package:mobile_app/view/constants.dart';
+import 'package:mobile_app/view/profilePage/editProfilePage.dart';
 import 'package:mobile_app/view/profilePage/pendingPollsList.dart';
+import 'package:mobile_app/view/profilePage/profilePictureWidget.dart';
 import 'package:mobile_app/view/state.dart';
 
 class UserInfoSection extends StatefulWidget {
   final ProfileInfo profileInfo;
+  final void Function() profilePageReload;
   const UserInfoSection({
     Key? key,
     required this.profileInfo,
+    required this.profilePageReload,
   }) : super(key: key);
 
   @override
@@ -17,13 +21,11 @@ class UserInfoSection extends StatefulWidget {
 }
 
 class _UserInfoSectionState extends State<UserInfoSection> {
-  ImageProvider? profilePhoto;
   bool isFollowing = false;
 
   @override
   void initState() {
     super.initState();
-    profilePhoto = NetworkImage(widget.profileInfo.profilePictureUrl);
     _updateFollowButton();
   }
 
@@ -78,7 +80,14 @@ class _UserInfoSectionState extends State<UserInfoSection> {
     );
   }
 
-  void _editProfile() {}
+  void _editProfile() {
+    Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+      return EditProfilePage(
+        profileInfo: widget.profileInfo,
+        profilePageReload: widget.profilePageReload,
+      );
+    }));
+  }
 
   _updateFollowButton() async {
     await _learnIsFollowing();
@@ -92,13 +101,9 @@ class _UserInfoSectionState extends State<UserInfoSection> {
       padding: const EdgeInsets.all(16.0),
       child: Row(
         children: [
-          CircleAvatar(
-            backgroundImage: profilePhoto,
+          ProfilePictureWidget(
+            imageUrl: widget.profileInfo.profilePictureUrl,
             radius: 40,
-            onBackgroundImageError: (exception, stackTrace) {
-              profilePhoto = const AssetImage("assets/def_profile_photo2.jpg");
-              setState(() {});
-            },
           ),
           const SizedBox(width: 10),
           Expanded(

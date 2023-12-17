@@ -51,7 +51,6 @@ class _ProfilePageState extends State<ProfilePage> {
       ProfilePagePollType.Voted: !profileInfo!.isVotedPollsVisible,
     };
     setState(() {});
-    _loadPolls(activeCategory);
   }
 
   @override
@@ -59,6 +58,7 @@ class _ProfilePageState extends State<ProfilePage> {
     super.initState();
     print("init state");
     _fetchUserData();
+    _loadPolls(activeCategory);
   }
 
   Future<void> _loadPolls(ProfilePagePollType category) async {
@@ -104,7 +104,12 @@ class _ProfilePageState extends State<ProfilePage> {
           SliverToBoxAdapter(
             child: profileInfo == null
                 ? const CircularProgressIndicator()
-                : UserInfoSection(profileInfo: profileInfo!),
+                : UserInfoSection(
+                    profileInfo: profileInfo!,
+                    profilePageReload: () {
+                      _fetchUserData();
+                      setState(() {});
+                    }),
           ),
           SliverToBoxAdapter(
             child: Container(
