@@ -23,6 +23,8 @@ import { Comment } from '../comment/entities/comment.entity';
 import { Report } from '../user/entities/report.entity';
 import { TagModule } from '../tag/tag.module';
 import { TokenDecoderMiddleware } from '../auth/middlewares/tokenDecoder.middleware';
+import { Pinecone } from '@pinecone-database/pinecone';
+import { GoogleGenerativeAIEmbeddings } from '@langchain/google-genai';
 
 @Module({
   imports: [
@@ -47,7 +49,9 @@ import { TokenDecoderMiddleware } from '../auth/middlewares/tokenDecoder.middlew
     BadgeService,
     ModeratorService,
     TagService,
-  ],
+    Pinecone,
+    GoogleGenerativeAIEmbeddings
+    ],
   exports: [PollService],
 })
 export class PollModule implements NestModule {

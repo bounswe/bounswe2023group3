@@ -16,6 +16,8 @@ import { Poll } from '../poll/entities/poll.entity';
 import { BadgeService } from '../badge/badge.service';
 import { Report } from '../user/entities/report.entity';
 import { TagModule } from '../tag/tag.module';
+import { Pinecone } from '@pinecone-database/pinecone';
+import { GoogleGenerativeAIEmbeddings } from '@langchain/google-genai';
 
 @Module({
   imports: [
@@ -34,6 +36,8 @@ import { TagModule } from '../tag/tag.module';
     PollRepository,
     UserService,
     BadgeService,
+    Pinecone,
+    GoogleGenerativeAIEmbeddings
   ],
 })
 export class CommentModule {}

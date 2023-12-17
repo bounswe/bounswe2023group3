@@ -16,9 +16,16 @@ import { Like } from '../like/entities/like.entity';
 import { Comment } from '../comment/entities/comment.entity';
 import { Sort } from './enums/sort.enum';
 import { TagService } from '../tag/tag.service';
+import { Document } from "langchain/document";
+import { Pinecone } from "@pinecone-database/pinecone";
+import { PineconeStore } from "langchain/vectorstores/pinecone";
+import { GoogleGenerativeAIEmbeddings } from "@langchain/google-genai";
+import { TaskType } from "@google/generative-ai";
 
 @Injectable()
 export class PollService {
+  private pineconeStore: PineconeStore;
+  private embeddings: GoogleGenerativeAIEmbeddings
   constructor(
     private readonly pollRepository: PollRepository,
     @InjectRepository(Option)
@@ -29,7 +36,19 @@ export class PollService {
     @InjectRepository(Comment)
     private readonly commentRepository: Repository<Comment>,
     private readonly tagService: TagService,
-  ) {}
+    private readonly pinecone: Pinecone,
+  ) {
+    this.embeddings = new GoogleGenerativeAIEmbeddings({
+      modelName: "embedding-001", // 768 dimensions
+      taskType: TaskType.RETRIEVAL_DOCUMENT,
+      title: "Prediction Polls",
+    });
+    this.pineconeStore = new PineconeStore(
+      this.embeddings,
+      {
+        pineconeIndex: pinecone.Index("prediction-polls"),
+      });
+  }
 
   public async createPoll(createPollDto: any): Promise<Poll> {
     const poll = new Poll();
@@ -64,6 +83,18 @@ export class PollService {
     );
 
     savedPoll.tags = tags;
+    try {
+      await this.pineconeStore.addDocuments([
+        new Document({
+          metadata: {id: savedPoll.id},
+          pageContent: savedPoll.question + ' ' + savedPoll.description + ' ' + savedPoll.tags.map((tag) => tag.name).join(' ')
+        }),
+      ], {
+        ids: [savedPoll.id],
+      });
+    } catch (e) {
+      console.log(e);
+    }
 
     return await this.pollRepository.save(savedPoll);
   }
@@ -220,5 +251,36 @@ export class PollService {
 
   public async removeById(id: string): Promise<void> {
     await this.pollRepository.delete(id);
+  }
+
+  public async removeAll(): Promise<void> {
+    await this.pollRepository.delete({});
+  }
+
+  public async pineconeTest(): Promise<any> {
+    return this.pineconeStore.pineconeIndex;
+  }
+
+  public async syncVectorStore(): Promise<any> {
+    const polls = await this.pollRepository.find({
+      relations: ['options', 'tags'],
+    });
+
+    const documents = polls.map((poll) => {
+      return new Document({
+        metadata: {id: poll.id},
+        pageContent: poll.question + ' ' + poll.description + ' ' + poll.tags.map((tag) => tag.name).join(' '),
+      });
+    });
+
+    await this.pineconeStore.addDocuments(documents, {
+      ids: polls.map((poll) => poll.id),
+    });
+  }
+
+  public async searchSemanticPolls(query: string): Promise<any[]> {
+    const results = await this.pineconeStore.similaritySearchWithScore(query, 5);
+    
+    return results.filter((result) => result[1] > 0.7).map((result) => result[0]);
   }
 }
