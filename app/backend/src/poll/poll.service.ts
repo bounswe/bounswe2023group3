@@ -31,7 +31,8 @@ export class PollService {
     private readonly pollRepository: PollRepository,
     @InjectRepository(Option)
     private readonly optionRepository: Repository<Option>,
-    @InjectRepository(Tag) private readonly tagRepository: Repository<Tag>,
+    @InjectRepository(Tag) 
+    private readonly tagRepository: Repository<Tag>,
     @InjectRepository(Like)
     private readonly likeRepository: Repository<Like>,
     @InjectRepository(Comment)
