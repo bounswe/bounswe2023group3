@@ -33,7 +33,7 @@ export class RankingService {
           }
         },
         order:{
-          score:"ASC"
+          score:"DESC"
         },
         relations:["user","tag"]
       }
