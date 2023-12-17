@@ -29,7 +29,7 @@ export class UserService {
   public async searchUserByUsername(username: string): Promise<User> {
     return await this.userRepository.findOne({
       where: { username: username },
-      relations: ['polls', 'badges', 'followings', 'followers'],
+      relations: ['polls', 'badges', 'followings', 'followers','rankings'],
       select: [
         'id',
         'email',
@@ -41,7 +41,8 @@ export class UserService {
         'followers',
         'followings',
         'profile_picture',
-        'isBanned'
+        'isBanned',
+        'rankings'
       ],
     });
   }
@@ -49,7 +50,7 @@ export class UserService {
   public async findUserById(id: string): Promise<User> {
     return await this.userRepository.findOne({
       where: { id: id },
-      relations: ['polls', 'badges', 'followings', 'followers'],
+      relations: ['polls', 'badges', 'followings', 'followers','rankings'],
       select: [
         'id',
         'email',
@@ -83,7 +84,7 @@ export class UserService {
 
   public async findAll(): Promise<User[]> {
     return await this.userRepository.find({
-      relations: ['polls', 'badges', 'followings', 'followers'],
+      relations: ['polls', 'badges', 'followings', 'followers','rankings'],
       select: [
         'id',
         'email',
@@ -95,7 +96,8 @@ export class UserService {
         'firstname',
         'lastname',
         'profile_picture',
-        'isBanned'
+        'isBanned',
+        'rankings'
       ],
     });
   }

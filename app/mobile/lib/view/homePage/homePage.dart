@@ -43,7 +43,8 @@ class _HomePageState extends State<HomePage>
       dateTime,
       isSettled,
       didLike,
-      commentCount) {
+      commentCount,
+      chosenVoteIndex) async {
     if (!mounted) return;
     Navigator.push(
       context,
@@ -61,6 +62,7 @@ class _HomePageState extends State<HomePage>
           likeCount: likeCount,
           dateTime: dateTime,
           isSettled: isSettled,
+          chosenVoteIndex: chosenVoteIndex,
         ),
       ),
     );
@@ -139,26 +141,29 @@ class _HomePageState extends State<HomePage>
                                     post.dateTime,
                                     post.isSettled,
                                     post.didLike,
-                                    post.commentCount);
+                                    post.commentCount,
+                                    post.chosenVoteIndex);
                               },
                               child: SizedBox(
                                 height: postHeight,
                                 child: PollViewHomePage(
-                                    pollId: post.pollId,
-                                    userName: post.userName,
-                                    userUsername: post.userUsername,
-                                    profilePictureUrl: post.profilePictureUrl,
-                                    postTitle: post.postTitle,
-                                    tags: post.tags,
-                                    tagColors: post.tagColors,
-                                    voteCount: post.voteCount,
-                                    postOptions: post.postOptions,
-                                    likeCount: post.likeCount,
-                                    dateTime: post.dateTime,
-                                    isSettled: post.isSettled,
-                                    approvedStatus: post.approvedStatus,
-                                    didLike: post.didLike,
-                                    commentCount: post.commentCount),
+                                  pollId: post.pollId,
+                                  userName: post.userName,
+                                  userUsername: post.userUsername,
+                                  profilePictureUrl: post.profilePictureUrl,
+                                  postTitle: post.postTitle,
+                                  tags: post.tags,
+                                  tagColors: post.tagColors,
+                                  voteCount: post.voteCount,
+                                  postOptions: post.postOptions,
+                                  likeCount: post.likeCount,
+                                  dateTime: post.dateTime,
+                                  isSettled: post.isSettled,
+                                  approvedStatus: post.approvedStatus,
+                                  didLike: post.didLike,
+                                  commentCount: post.commentCount,
+                                  chosenVoteIndex: post.chosenVoteIndex,
+                                ),
                               ),
                             ),
                           );
@@ -199,7 +204,8 @@ class _HomePageState extends State<HomePage>
                                     post.dateTime,
                                     post.isSettled,
                                     post.didLike,
-                                    post.commentCount);
+                                    post.commentCount,
+                                    post.chosenVoteIndex);
                               },
                               child: SizedBox(
                                 height: postHeight,
@@ -219,6 +225,7 @@ class _HomePageState extends State<HomePage>
                                   approvedStatus: post.approvedStatus,
                                   didLike: post.didLike,
                                   commentCount: post.commentCount,
+                                  chosenVoteIndex: post.chosenVoteIndex,
                                 ),
                               ),
                             ),

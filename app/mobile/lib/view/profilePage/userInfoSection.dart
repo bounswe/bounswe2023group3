@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mobile_app/models/profileInfo.dart';
 import 'package:mobile_app/services/followService.dart';
 import 'package:mobile_app/view/constants.dart';
+import 'package:mobile_app/view/profilePage/pendingPollsList.dart';
 import 'package:mobile_app/view/state.dart';
 
 class UserInfoSection extends StatefulWidget {
@@ -244,13 +245,19 @@ class _UserInfoSectionState extends State<UserInfoSection> {
             ? [
                 badges,
                 ranks,
-                // ListTile(
-                //   title: Text('Pending Polls'),
-                //   onTap: () {
-                //     // Insert pending polls functionality here
-                //     Navigator.of(context).pop();
-                //   },
-                // ),
+                ListTile(
+                  title: const Text('Pending Polls'),
+                  onTap: () {
+                    Navigator.of(context).pop();
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) =>
+                            PendingPollList(userId: widget.profileInfo.id),
+                      ),
+                    );
+                  },
+                ),
               ]
             : [
                 ListTile(
