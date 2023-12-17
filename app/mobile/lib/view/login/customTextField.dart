@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:mobile_app/view/constants.dart';
 
-
 class CustomTextField extends StatelessWidget {
   final String labelText;
   final TextEditingController controller;
   final TextInputType keyboardType;
   final bool obscureText;
   final Function(String) onChanged;
+  final Function(String)? onSubmitted;
   final String errorText;
 
   const CustomTextField({
@@ -18,6 +18,7 @@ class CustomTextField extends StatelessWidget {
     this.obscureText = false,
     required this.onChanged,
     required this.errorText,
+    this.onSubmitted,
   }) : super(key: key);
 
   @override
@@ -40,6 +41,7 @@ class CustomTextField extends StatelessWidget {
             keyboardType: keyboardType,
             obscureText: obscureText,
             onChanged: onChanged,
+            onSubmitted: onSubmitted,
             decoration: InputDecoration(
               hintText: labelText,
               border: InputBorder.none,
