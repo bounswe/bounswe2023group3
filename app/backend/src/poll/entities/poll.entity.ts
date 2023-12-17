@@ -43,9 +43,8 @@ export class Poll {
   @OneToMany(() => Option, (option) => option.poll, { cascade: true })
   options: Relation<Option[]>;
 
-  @OneToOne(() => Option, { nullable: true })
-  @JoinColumn()
-  outcome: Option;
+  @Column({ nullable: true })
+  outcome: string
 
   @Column({ nullable: true })
   outcome_source: string;
