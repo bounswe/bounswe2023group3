@@ -257,6 +257,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   didLike: post.didlike,
                   chosenVoteIndex: post.chosenVoteIndex,
                   commentCount: post.commentCount,
+                  annotationIndices: [],
                 ),
               ),
             ),
