@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mobile_app/view/homePage/homePage.dart';
 import 'package:mobile_app/services/apiService.dart';
+import 'package:mobile_app/view/leaderboard/leaderboardPage.dart';
 import 'package:mobile_app/view/moderatorHomePage/moderatorHomePage.dart';
 import 'package:mobile_app/view/profilePage/profilePage.dart';
 import 'package:mobile_app/view/state.dart';
@@ -81,6 +82,21 @@ class Sidebar extends StatelessWidget {
                   '/search',
                 );
               },
+            ),
+            ListTile(
+              leading: const Icon(Icons.leaderboard),
+              title: const Text('Leaderboard'),
+              onTap: () {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => LeaderboardPage(selectedTagName: '',selectedTagID: '',),
+                  ),
+                );
+              },
+            ),
+            const SizedBox(
+              height: 6.0,
             ),
             ListTile(
               leading: const Icon(Icons.notifications),
@@ -202,6 +218,18 @@ class Sidebar extends StatelessWidget {
               Navigator.pushReplacementNamed(
                 context,
                 '/search',
+              );
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.leaderboard),
+            title: const Text('Leaderboard'),
+            onTap: () {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => LeaderboardPage(selectedTagName: '',selectedTagID: '',),
+                ),
               );
             },
           ),
