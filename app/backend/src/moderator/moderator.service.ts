@@ -16,6 +16,7 @@ import { ApproveDTO } from './dto/approve.dto';
 import { LoginModeratorDto } from './dto/login-moderator.dto';
 import { Report } from '../user/entities/report.entity';
 import { User } from '../user/entities/user.entity';
+import { Settle } from '../poll/enums/settle.enum';
 
 @Injectable()
 export class ModeratorService {
@@ -233,6 +234,18 @@ export class ModeratorService {
     await this.reportRepository.update(reportId, {
       resolution: true,
       resolved_date: new Date(),
+    });
+  }
+
+  public async fetchQueryPolls(is_settled: Settle): Promise<any> {
+    return await this.pollRepository.find({
+      where: {
+        is_settled: is_settled,
+      },
+      relations: ['options', 'tags', 'creator'],
+      order: {
+        creation_date: 'ASC',
+      },
     });
   }
 }
