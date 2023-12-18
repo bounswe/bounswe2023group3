@@ -99,53 +99,83 @@ class _UserInfoSectionState extends State<UserInfoSection> {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(16.0),
-      child: Row(
+      child: Column(
         children: [
-          ProfilePictureWidget(
-            imageUrl: widget.profileInfo.profilePictureUrl,
-            radius: 40,
-          ),
-          const SizedBox(width: 10),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  "${widget.profileInfo.firstname}"
-                  " ${widget.profileInfo.lastname}",
-                  style: const TextStyle(
-                      fontSize: 20, fontWeight: FontWeight.bold),
-                ),
-                Text(
-                  widget.profileInfo.username,
-                  style: const TextStyle(fontSize: 16),
-                ),
-                Row(
+          Row(
+            children: [
+              ProfilePictureWidget(
+                imageUrl: widget.profileInfo.profilePictureUrl,
+                radius: 40,
+              ),
+              const SizedBox(width: 10),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const SizedBox(width: 60),
-                    _buildProfileActionButton(),
+                    Text(
+                      "${widget.profileInfo.firstname}"
+                      " ${widget.profileInfo.lastname}",
+                      style: const TextStyle(
+                          fontSize: 20, fontWeight: FontWeight.bold),
+                    ),
+                    Text(
+                      widget.profileInfo.username,
+                      style: const TextStyle(fontSize: 16),
+                    ),
+                    Row(
+                      children: [
+                        const SizedBox(width: 60),
+                        _buildProfileActionButton(),
+                      ],
+                    ),
                   ],
                 ),
-              ],
-            ),
-          ),
-          Column(
-            children: [
-              OutlinedButton(
-                onPressed: () {
-                  _showMoreOptions(context);
-                },
-                style: OutlinedButton.styleFrom(
-                  shape: const CircleBorder(),
-                  padding: const EdgeInsets.all(7),
-                ),
-                child: const Icon(Icons.more_horiz, size: 24, color: navy),
               ),
-              const SizedBox(
-                height: 70,
-              )
+              Column(
+                children: [
+                  OutlinedButton(
+                    onPressed: () {
+                      _showMoreOptions(context);
+                    },
+                    style: OutlinedButton.styleFrom(
+                      shape: const CircleBorder(),
+                      padding: const EdgeInsets.all(7),
+                    ),
+                    child: const Icon(Icons.more_horiz, size: 24, color: navy),
+                  ),
+                  const SizedBox(
+                    height: 70,
+                  )
+                ],
+              ),
             ],
           ),
+          Row(children: [
+            Text(
+              "${widget.profileInfo.followersCount}",
+              style: const TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            const Text(
+              " Followers",
+              style: TextStyle(fontSize: 18, color: darkgray),
+            ),
+            const SizedBox(width: 30),
+            Text(
+              "${widget.profileInfo.followingCount}",
+              style: const TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+                // decoration: TextDecoration.underline,
+              ),
+            ),
+            const Text(
+              " Followings",
+              style: TextStyle(fontSize: 18, color: darkgray),
+            ),
+          ]),
         ],
       ),
     );
