@@ -82,13 +82,13 @@ class Sidebar extends StatelessWidget {
               },
             ),
             ListTile(
-              leading: const Icon(Icons.settings),
+              leading: const Icon(Icons.leaderboard),
               title: const Text('Leaderboard'),
               onTap: () {
                 Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => LeaderboardPage(),
+                    builder: (context) => LeaderboardPage(selectedTagName: '',selectedTagID: '',),
                   ),
                 );
               },
@@ -214,6 +214,18 @@ class Sidebar extends StatelessWidget {
               Navigator.pushReplacementNamed(
                 context,
                 '/search',
+              );
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.leaderboard),
+            title: const Text('Leaderboard'),
+            onTap: () {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => LeaderboardPage(selectedTagName: '',selectedTagID: '',),
+                ),
               );
             },
           ),

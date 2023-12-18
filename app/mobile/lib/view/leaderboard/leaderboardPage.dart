@@ -1,59 +1,56 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
+import 'package:mobile_app/models/tag.dart';
+import 'package:mobile_app/services/leaderboardService.dart';
+import 'package:mobile_app/services/tagsRequestService.dart';
+import 'package:mobile_app/view/errorWidget/errorWidget.dart';
+import 'package:mobile_app/view/leaderboard/personData.dart';
 import 'package:mobile_app/view/sidebar/sidebar.dart';
 
-void main() {
-  runApp(MyApp());
-}
 
-class MyApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      home: LeaderboardPage(),
-    );
-  }
-}
+
 
 class LeaderboardPage extends StatefulWidget {
+  final String selectedTagID; // Currently selected tag
+  final String selectedTagName; // Currently selected tag
+  const LeaderboardPage(
+      {super.key, required this.selectedTagName, required this.selectedTagID});
+
   @override
   _LeaderboardPageState createState() => _LeaderboardPageState();
 }
 
 class _LeaderboardPageState extends State<LeaderboardPage>
-  with SingleTickerProviderStateMixin{
-
-  // Dummy user data with rankings
-  List<UserData> globalLeaderboard = [
-    UserData(name: 'User 1', ranking: 1),
-    UserData(name: 'User 2', ranking: 2),
-    UserData(name: 'User 3', ranking: 3),
-    // Add more users with rankings
-  ];
-
-  // Dummy user data with tag-specific rankings
-  Map<String, List<UserData>> tagLeaderboards = {
-    'Tag 1': [
-      UserData(name: 'Tag 1 User A', ranking: 5),
-      UserData(name: 'Tag 1 User B', ranking: 8),
-      // Add more users with rankings for Tag 1
-    ],
-    'Tag 2': [
-      UserData(name: 'Tag 2 User X', ranking: 3),
-      UserData(name: 'Tag 2 User Y', ranking: 7),
-      // Add more users with rankings for Tag 2
-    ],
-    // Add more tags with corresponding user rankings
-  };
+    with SingleTickerProviderStateMixin {
 
 
   late TabController _tabController;
-  String selectedTag = 'Tag 1'; // Currently selected tag
+  final TextEditingController _controller = TextEditingController();
+  List<TagData> tags = [];
+
+  late String selectedTagID;
+  late String selectedTagName;
+
+  List<PersonData> globalLeaderboard = [];
 
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 2, initialIndex: 0,vsync: this);
+    _tabController = TabController(length: 2, initialIndex: 0, vsync: this);
+    WidgetsBinding.instance.addPostFrameCallback((_){
+      _getTagsFuture();
+    });
+    selectedTagID = widget.selectedTagID;
+    selectedTagName = widget.selectedTagName;
+    _controller.text = selectedTagName;
+  }
+
+  _getTagsFuture() async {
+    var result = await TagsRequestService.getTags();
+    setState(() {
+      tags = result;
+    });
   }
 
   @override
@@ -63,42 +60,92 @@ class _LeaderboardPageState extends State<LeaderboardPage>
   }
 
 
-  final TextEditingController _controller = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
 
 
+    print(tags.map((e) => e.name).toList());
     return Scaffold(
-
-        appBar: AppBar(
-          title: Text('Leaderboard'),
-          bottom: TabBar(
-            controller: _tabController,
-            tabs: [
-              Tab(text: 'Global'),
-              Tab(text: 'Tag-Specific'),
-            ],
-          ),
-        ),
-        drawer: const Sidebar(), // Use the custom drawer widget
-        body: TabBarView(
+      appBar: AppBar(
+        title: Text('Leaderboard'),
+        bottom: TabBar(
           controller: _tabController,
-          children: [
-            // First tab: Global Leaderboard
-            buildLeaderboardTab(globalLeaderboard),
-
-            // Second tab: Tag-Specific Leaderboard
-            buildTagLeaderboardTab(tagLeaderboards),
-
-
+          tabs: [
+            Tab(text: 'Global'),
+            Tab(text: 'Tag-Specific'),
           ],
         ),
+      ),
+      drawer: const Sidebar(), // Use the custom drawer widget
+      body: TabBarView(
+        controller: _tabController,
+        children: [
+
+
+          // First tab: Global Leaderboard
+          globalLeaderboard.isEmpty?
+            FutureBuilder<List<PersonData>>(
+              future: LeaderboardService.getRankings("global"),
+              builder: (BuildContext context,
+                  AsyncSnapshot<List<PersonData>> snapshot) {
+                return buildLeaderboardSnapshot(snapshot);
+              },
+            ):
+            buildLeaderboardTab(globalLeaderboard),
+
+
+
+          // Second tab: Tag-Specific Leaderboard
+          FutureBuilder<List<PersonData>>(
+            future: LeaderboardService.getRankings(
+                selectedTagID == "" ? tags[0].tagId : selectedTagID),
+            builder: (BuildContext context,
+                AsyncSnapshot<List<PersonData>> snapshot) {
+              return buildTagLeaderboardSnapshot(snapshot);
+            },
+          ),
+        ],
+      ),
     );
   }
 
+  Widget buildLeaderboardSnapshot(AsyncSnapshot<List<PersonData>> snapshot) {
+    if (snapshot.connectionState == ConnectionState.waiting) {
+      // Show a loading indicator while the data is being fetched
+      return const Center(child: CircularProgressIndicator());
+    } else if (snapshot.hasError) {
+      // Show an error message if there is an error
+      if (snapshot.error is DioException) {
+        DioException e = snapshot.error as DioException;
+        if (e.response?.statusMessage != null) {
+          String r = e.response!.statusMessage!;
+          return CustomErrorWidget(
+              errorMessage: r,
+              onRetryPressed: () {
+                setState(() {});
+              });
+        }
+      }
+      return CustomErrorWidget(
+          errorMessage: 'Something went wrong',
+          onRetryPressed: () {
+            setState(() {});
+          });
+    } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+      // Handle the case where no data is available
+      return CustomErrorWidget(
+          errorMessage: 'No data available',
+          onRetryPressed: () {
+            setState(() {});
+          });
+    } else {
+      return buildLeaderboardTab(snapshot.data!);
+    }
+  }
+
   // Function to build the leaderboard for a specific tab
-  Widget buildLeaderboardTab(List<UserData> leaderboardData) {
+  Widget buildLeaderboardTab(List<PersonData> leaderboardData) {
     return Column(
       children: [
         // Title at the top
@@ -109,27 +156,48 @@ class _LeaderboardPageState extends State<LeaderboardPage>
             style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
           ),
         ),
-        // Current user's ranking (Replace this with your logic)
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: buildUserCard('Your User ID', 0), // Replace 'Your User ID' and 0 with actual data
-        ),
-        // Scrollable widget for other people's rankings
-        Expanded(
-          child: ListView.builder(
-            itemCount: leaderboardData.length,
-            itemBuilder: (context, index) {
-              final user = leaderboardData[index];
-              return buildUserCard(user.name, user.ranking);
-            },
-          ),
-        ),
+        // Current user's ranking (Replace this with your logic) and tag-specific rankings
+        RankingTable(leaderboardData: leaderboardData),
       ],
     );
   }
 
+  Widget buildTagLeaderboardSnapshot(AsyncSnapshot<List<PersonData>> snapshot) {
+    if (snapshot.connectionState == ConnectionState.waiting) {
+      // Show a loading indicator while the data is being fetched
+      return const Center(child: CircularProgressIndicator());
+    } else if (snapshot.hasError) {
+      // Show an error message if there is an error
+      if (snapshot.error is DioException) {
+        DioException e = snapshot.error as DioException;
+        if (e.response?.statusMessage != null) {
+          String r = e.response!.statusMessage!;
+          return CustomErrorWidget(
+              errorMessage: r,
+              onRetryPressed: () {
+                setState(() {});
+              });
+        }
+      }
+      return CustomErrorWidget(
+          errorMessage: 'Something went wrong',
+          onRetryPressed: () {
+            setState(() {});
+          });
+    } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+      // Handle the case where no data is available
+      return CustomErrorWidget(
+          errorMessage: 'No data available',
+          onRetryPressed: () {
+            setState(() {});
+          });
+    } else {
+      return buildTagLeaderboardTab(snapshot.data!);
+    }
+  }
+
   // Function to build the second tab with tag-specific leaderboard
-  Widget buildTagLeaderboardTab(Map<String,List<UserData>> tagLeaderboards) {
+  Widget buildTagLeaderboardTab(List<PersonData> tagLeaderboards) {
     return Column(
       children: [
         // Title at the top
@@ -157,8 +225,9 @@ class _LeaderboardPageState extends State<LeaderboardPage>
               ),
             ),
             suggestionsCallback: (pattern) {
-              return tagLeaderboards.keys
-                  .where((country) => country.toLowerCase().contains(pattern.toLowerCase()))
+              return tags.map((tag) => tag.name).toList()
+                  .where((tagName) =>
+                      tagName.toLowerCase().contains(pattern.toLowerCase()))
                   .toList();
             },
             itemBuilder: (context, suggestion) {
@@ -170,32 +239,31 @@ class _LeaderboardPageState extends State<LeaderboardPage>
               // Handle when a suggestion is selected.
               _controller.text = suggestion;
               setState(() {
-                selectedTag = suggestion;
+                selectedTagName = suggestion;
+                selectedTagID = tags
+                    .firstWhere((tag) => tag.name == suggestion)
+                    .tagId;
               });
             },
           ),
         ),
-
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: buildUserCard('Your User ID', 0), // Replace 'Your User ID' and 0 with actual data
-        ),
-        // Scrollable widget for tag-specific rankings
-        Expanded(
-          child: ListView.builder(
-            itemCount: tagLeaderboards[selectedTag]!.length,
-            itemBuilder: (context, index) {
-              final user = tagLeaderboards[selectedTag]![index];
-              return buildUserCard(user.name, user.ranking);
-            },
-          ),
-        ),
+        // Current user's ranking (Replace this with your logic) and tag-specific rankings
+        RankingTable(leaderboardData: tagLeaderboards),
       ],
     );
   }
+}
+
+
+// Function to build the table of rankings
+class RankingTable extends StatelessWidget {
+  final List<PersonData> leaderboardData;
+
+  const RankingTable({super.key, required this.leaderboardData});
 
   // Function to build a user card
-  Widget buildUserCard(String userName, int userRanking, {Color color=Colors.white}) {
+  Widget buildUserCard(String userName, int userRanking,
+      {Color color = Colors.white}) {
     return Card(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(20.0),
@@ -208,12 +276,27 @@ class _LeaderboardPageState extends State<LeaderboardPage>
       ),
     );
   }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(children: [
+      Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: buildUserCard(
+            'Your User ID', 0), // Replace 'Your User ID' and 0 with actual data
+      ),
+// Scrollable widget for other people's rankings
+      Expanded(
+        child: ListView.builder(
+          itemCount: leaderboardData.length,
+          itemBuilder: (context, index) {
+            final user = leaderboardData[index];
+            return buildUserCard(user.name, user.ranking);
+          },
+        ),
+      ),
+    ]);
+  }
 }
 
-// Model class for user data
-class UserData {
-  final String name;
-  final int ranking;
 
-  UserData({required this.name, required this.ranking});
-}
