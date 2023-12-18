@@ -84,9 +84,13 @@ class ModeratorService {
         }
 
         posts.add(SettleViewHome(
-          userName: creator['username'],
+          userName: creator['firstname'] != null || creator['lastname'] != null
+              ? ((creator['firstname'] ?? "") +
+                  " " +
+                  (creator["lastname"] ?? ""))
+              : creator['username'],
           userUsername: creator['username'],
-          profilePictureUrl: "", // Replace with the actual key
+          profilePictureUrl: creator['profile_picture'] ?? "",
           postTitle: post['question'],
           tags: tagsList,
           tagColors: tagColorsList,
