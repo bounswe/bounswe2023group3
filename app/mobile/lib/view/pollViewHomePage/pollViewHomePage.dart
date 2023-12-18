@@ -107,6 +107,10 @@ class _PollViewHomePageState extends State<PollViewHomePage> {
                     fontSize: 18.0, fontWeight: FontWeight.bold)),
           ),
           TagListWidget(tags: widget.tags, tagColors: widget.tagColors),
+          const Padding(
+            padding: EdgeInsets.all(8.0),
+            child: PressableTextWithPopup(),
+          ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16.0),
             child: Text('Vote Count: ${widget.voteCount}',
@@ -168,6 +172,47 @@ class _PollViewHomePageState extends State<PollViewHomePage> {
   //print("pressed like");
   //}
 }
+class PressableTextWithPopup extends StatelessWidget {
+  const PressableTextWithPopup({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () {
+        _showPopup(context);
+      },
+      child: const Text(
+        'Press me!',
+        style: TextStyle(
+          fontSize: 24,
+          color: Colors.blue,
+          decoration: TextDecoration.underline,
+        ),
+      ),
+    );
+  }
+
+  void _showPopup(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Popup Title'),
+          content: const Text('This is the content of the popup.'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text('Close'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+}
+
 
 class LikeCountWidget extends StatelessWidget {
   final int likeCount;
