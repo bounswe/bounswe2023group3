@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mobile_app/view/pollView/clickableUsername.dart';
 import 'package:mobile_app/view/pollView/threeDotsOptions.dart';
 import 'package:mobile_app/view/profilePage/profilePictureWidget.dart';
 
@@ -34,7 +35,10 @@ class UserInformationWidget extends StatelessWidget {
       Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(userName, style: const TextStyle(fontWeight: FontWeight.bold)),
+          ClickableUsername(
+            username: userName,
+            textStyle: const TextStyle(fontWeight: FontWeight.bold),
+          ),
           Text(userUsername),
         ],
       ),

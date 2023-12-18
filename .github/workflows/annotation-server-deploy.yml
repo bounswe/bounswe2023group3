@@ -5,8 +5,8 @@ on:
     branches:
       - main
     paths:
-      - "app/backend/**"
-      - ".github/workflows/backend-deploy.yml"
+      - "app/annotation-server/**"
+      - ".github/workflows/annotation-server-deploy.yml"
 
 jobs:
   deploy:
@@ -23,15 +23,14 @@ jobs:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_KEY }}
           REMOTE_HOST: 34.105.66.254
           REMOTE_USER: alp.tuna.453
-          SOURCE: app/backend/
-          TARGET: ~/backend
+          SOURCE: app/annotation-server/
+          TARGET: ~/annotation-server
           ARGS: --delete
           EXCLUDE: .env
           SCRIPT_AFTER: |
-            cd ~/backend
-            docker stop app 
-            docker rm app
-            docker rmi pollup:backend
-            docker build -t pollup:backend .
-            docker run --name app -p 1923:3000 -d pollup:backend
-            docker system prune
+            cd ~/annotation-server
+            docker stop annotation-server 
+            docker rm annotation-server
+            docker rmi pollup:annotation-server-image
+            docker build -t pollup:annotation-server-image .
+            docker run --name annotation-server -p 1924:3001 -d pollup:annotation-server-image

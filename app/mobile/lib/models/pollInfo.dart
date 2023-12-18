@@ -29,6 +29,7 @@ class PollInfo {
   final bool isPending;
   final bool approvedStatus;
   final int isSettled;
+  final bool didlike;
 
   final int chosenVoteIndex;
 
@@ -48,6 +49,7 @@ class PollInfo {
     required this.isPending,
     required this.approvedStatus,
     required this.isSettled,
+    required this.didlike,
     required this.pollId,
     required this.optionIds,
     required this.optionIdCouples,
@@ -98,6 +100,7 @@ class PollInfo {
       isPending: json['approveStatus'] == null,
       approvedStatus: json['approveStatus'] ?? false,
       isSettled: json['is_settled'] ?? 0,
+      didlike: json['didLike'],
       chosenVoteIndex: -1, //json['chosenVoteIndex']
     );
   }

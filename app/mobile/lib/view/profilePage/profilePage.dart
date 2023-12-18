@@ -15,13 +15,24 @@ enum ProfilePagePollType { Created, Liked, Voted }
 
 class ProfilePage extends StatefulWidget {
   final String userId;
-  const ProfilePage({Key? key, required this.userId}) : super(key: key);
+  final String username;
+  final bool withId;
+  const ProfilePage.withId({Key? key, required this.userId})
+      : username = "",
+        withId = true,
+        super(key: key);
+
+  const ProfilePage.withUsername({Key? key, required this.username})
+      : userId = "",
+        withId = false,
+        super(key: key);
 
   @override
   State<ProfilePage> createState() => _ProfilePageState();
 }
 
 class _ProfilePageState extends State<ProfilePage> {
+  String userId = "";
   List<PollInfo> viewedPolls = [];
   ProfileInfo? profileInfo;
   List<PollInfo> likedPolls = [];
@@ -38,10 +49,18 @@ class _ProfilePageState extends State<ProfilePage> {
   _fetchUserData() async {
     isLoadingProfile = true;
     setState(() {});
-    Response response = await ApiService.dio.get('/user/${widget.userId}');
+    print("fetch user data");
+    Response response;
+    if (widget.withId) {
+      userId = widget.userId;
+      response = await ApiService.dio.get('/user/$userId');
+    } else {
+      response = await ApiService.dio.get('/user/username/${widget.username}');
+    }
     if (response.statusCode == 200) {
       var userData = response.data;
       profileInfo = ProfileInfo.fromJson(userData);
+      userId = profileInfo!.id;
     }
     isLoadingProfile = false;
     categoryLocked = {
@@ -71,19 +90,19 @@ class _ProfilePageState extends State<ProfilePage> {
     switch (category) {
       case ProfilePagePollType.Created:
         createdPolls = viewedPolls = createdPolls.isEmpty
-            ? await ProfilePagePollsService.getCreatedPolls(widget.userId)
+            ? await ProfilePagePollsService.getCreatedPolls(userId)
             : createdPolls;
         createdPolls = viewedPolls =
             createdPolls.where((element) => element.approvedStatus).toList();
         break;
       case ProfilePagePollType.Liked:
         likedPolls = viewedPolls = likedPolls.isEmpty
-            ? await ProfilePagePollsService.getLikedPolls(widget.userId)
+            ? await ProfilePagePollsService.getLikedPolls(userId)
             : likedPolls;
         break;
       case ProfilePagePollType.Voted:
         votedPolls = viewedPolls = votedPolls.isEmpty
-            ? await ProfilePagePollsService.getVotedPolls(widget.userId)
+            ? await ProfilePagePollsService.getVotedPolls(userId)
             : votedPolls;
         break;
       default:
@@ -95,7 +114,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
   @override
   Widget build(BuildContext context) {
-    bool isOwnProfile = AppState.loggedInUserId == widget.userId;
+    bool isOwnProfile = AppState.loggedInUserId == userId;
     return Scaffold(
       appBar: AppBar(
         title: const Text('Profile'),
@@ -235,7 +254,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   dateTime: post.dueDate.toString(),
                   isSettled: post.isSettled,
                   approvedStatus: post.approvedStatus,
-                  didLike: false,
+                  didLike: post.didlike,
                   chosenVoteIndex: post.chosenVoteIndex,
                   commentCount: post.commentCount,
                 ),

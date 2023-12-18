@@ -29,7 +29,7 @@ class Sidebar extends StatelessWidget {
                     Column(
                       children: [
                         Padding(
-                          padding: const EdgeInsets.fromLTRB(0,13,0,0),
+                          padding: const EdgeInsets.fromLTRB(0, 13, 0, 0),
                           child: Image.asset(
                             "assets/app-logo-white.png",
                             scale: 8,
@@ -44,7 +44,9 @@ class Sidebar extends StatelessWidget {
                         ),
                       ],
                     ),
-                    const SizedBox(width: 25.0,),
+                    const SizedBox(
+                      width: 25.0,
+                    ),
                     Center(
                       child: Text(
                         'Side Menu',
@@ -131,7 +133,7 @@ class Sidebar extends StatelessWidget {
                   Column(
                     children: [
                       Padding(
-                        padding: const EdgeInsets.fromLTRB(0,13,0,0),
+                        padding: const EdgeInsets.fromLTRB(0, 13, 0, 0),
                         child: Image.asset(
                           "assets/app-logo-white.png",
                           scale: 8,
@@ -146,7 +148,9 @@ class Sidebar extends StatelessWidget {
                       ),
                     ],
                   ),
-                  const SizedBox(width: 25.0,),
+                  const SizedBox(
+                    width: 25.0,
+                  ),
                   Center(
                     child: Text(
                       'Side Menu',
@@ -174,7 +178,7 @@ class Sidebar extends StatelessWidget {
                       // ~faruk
                       // const ProfilePage(
                       // userId: '06aa8e23-8349-4352-ac54-2637b9c13a3f'),
-                      ProfilePage(userId: AppState.loggedInUserId),
+                      ProfilePage.withId(userId: AppState.loggedInUserId),
                 ),
               );
             },
