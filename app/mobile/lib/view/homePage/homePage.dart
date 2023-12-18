@@ -163,6 +163,7 @@ class _HomePageState extends State<HomePage>
                                   didLike: post.didLike,
                                   commentCount: post.commentCount,
                                   chosenVoteIndex: post.chosenVoteIndex,
+                                  annotationIndices: post.annotationIndices,
                                 ),
                               ),
                             ),
@@ -205,7 +206,8 @@ class _HomePageState extends State<HomePage>
                                     post.isSettled,
                                     post.didLike,
                                     post.commentCount,
-                                    post.chosenVoteIndex);
+                                    post.chosenVoteIndex,
+                                );
                               },
                               child: SizedBox(
                                 height: postHeight,
@@ -226,6 +228,7 @@ class _HomePageState extends State<HomePage>
                                   didLike: post.didLike,
                                   commentCount: post.commentCount,
                                   chosenVoteIndex: post.chosenVoteIndex,
+                                  annotationIndices: post.annotationIndices,
                                 ),
                               ),
                             ),

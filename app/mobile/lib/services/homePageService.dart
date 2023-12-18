@@ -50,6 +50,7 @@ class HomePageService {
           approvedStatus: post['approveStatus'],
           didLike: post['didLike'], // You might want to format the date
           chosenVoteIndex: -1, //it will be post['chosenVoteIndex']
+          annotationIndices: [[2,5], [7,10]],
         ));
       }
       print(posts);
