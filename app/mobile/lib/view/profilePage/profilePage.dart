@@ -38,7 +38,6 @@ class _ProfilePageState extends State<ProfilePage> {
   _fetchUserData() async {
     isLoadingProfile = true;
     setState(() {});
-    print("fetch user data");
     Response response = await ApiService.dio.get('/user/${widget.userId}');
     if (response.statusCode == 200) {
       var userData = response.data;
@@ -53,12 +52,15 @@ class _ProfilePageState extends State<ProfilePage> {
     setState(() {});
   }
 
+  void _fetchUserDataLoadPolls() async {
+    await _fetchUserData();
+    _loadPolls(activeCategory);
+  }
+
   @override
   void initState() {
     super.initState();
-    print("init state");
-    _fetchUserData();
-    _loadPolls(activeCategory);
+    _fetchUserDataLoadPolls();
   }
 
   Future<void> _loadPolls(ProfilePagePollType category) async {
