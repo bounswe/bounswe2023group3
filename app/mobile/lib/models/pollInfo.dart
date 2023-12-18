@@ -73,13 +73,16 @@ class PollInfo {
     }
     List<dynamic> options = json['options'];
     List<dynamic> tags = json['tags'];
+    var creator = json['creator'];
 
     return PollInfo.withoutComments(
       optionIdCouples: options,
       pollId: json['id'],
-      userName: json['creator']['username'],
-      userUsername: json['creator']['username'],
-      profilePictureUrl: json['creator']['profile_picture'] ?? '',
+      userName: creator['firstname'] != null || creator['lastname'] != null
+          ? ((creator['firstname'] ?? "") + " " + (creator["lastname"] ?? ""))
+          : creator['username'],
+      userUsername: creator['username'],
+      profilePictureUrl: creator['profile_picture'] ?? '',
       postTitle: json['question'],
       tags: tags.map((e) => e['name'] as String).toList(),
       tagIds: tags.map((e) => e['id'] as String).toList(),

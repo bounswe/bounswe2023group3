@@ -35,7 +35,11 @@ class ModeratorService {
         }
 
         posts.add(RequestViewHome(
-          userName: creator['username'],
+          userName: creator['firstname'] != null || creator['lastname'] != null
+              ? ((creator['firstname'] ?? "") +
+                  " " +
+                  (creator["lastname"] ?? ""))
+              : creator['username'],
           userUsername: creator['username'],
           profilePictureUrl: creator['profile_picture'] ?? "",
           postTitle: post['question'],

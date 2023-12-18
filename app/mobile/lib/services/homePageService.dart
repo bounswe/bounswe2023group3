@@ -35,7 +35,11 @@ class HomePageService {
 
         posts.add(PollViewHomePage(
           pollId: post['id'],
-          userName: creator['username'],
+          userName: creator['firstname'] != null || creator['lastname'] != null
+              ? ((creator['firstname'] ?? "") +
+                  " " +
+                  (creator["lastname"] ?? ""))
+              : creator['username'],
           userUsername: creator['username'],
           profilePictureUrl: creator['profile_picture'] ?? "",
           postTitle: post['question'],
