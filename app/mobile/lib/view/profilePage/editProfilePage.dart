@@ -154,6 +154,30 @@ class _EditProfilePageState extends State<EditProfilePage> {
                 // },
               ),
             ),
+            ListTile(
+              title: const Text('is followings visible'),
+              trailing: Switch(
+                value: profileInfo.isFollowingVisible,
+                onChanged: null,
+                // (value) {
+                //   setState(() {
+                //     profileInfo.isFollowingVisible = value;
+                //   });
+                // },
+              ),
+            ),
+            // ListTile(
+            //   title: const Text('is followers visible'),
+            //   trailing: Switch(
+            //     value: profileInfo.isFollowersVisible,
+            //     onChanged: null,
+            //     // (value) {
+            //     //   setState(() {
+            //     //     profileInfo.isFollowersVisible = value;
+            //     //   });
+            //     // },
+            //   ),
+            // ),
 
             const SizedBox(height: 30),
             // Save Button
