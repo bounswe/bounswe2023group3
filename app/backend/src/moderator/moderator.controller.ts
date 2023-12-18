@@ -4,12 +4,14 @@ import {
   Delete,
   Get,
   Param,
+  ParseIntPipe,
   Post,
   Put,
+  Query,
   UseGuards,
 } from '@nestjs/common';
 import { ModeratorService } from './moderator.service';
-import { ApiBearerAuth, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { CreateModeratorDto } from './dto/create_moderator.dto';
 import { VerifyModeratorDto } from './dto/verify_moderator.dto';
 import { ModeratorGuard } from './guards/moderator.guard';
@@ -21,6 +23,7 @@ import { LoginResponseDto } from './dto/responses/login-response.dto';
 import { GetModeratorResponseDto } from './dto/responses/get-moderator-response.dto';
 import { GetPollResponseDto } from '../poll/dto/responses/get-poll-response.dto';
 import { GetReportResponseDto } from '../user/dto/responses/get-report.response.dto';
+import { Settle } from '../poll/enums/settle.enum';
 
 @ApiBearerAuth()
 @Controller('moderator')
@@ -97,6 +100,16 @@ export class ModeratorController {
   })
   public async fetchUnapprovedPolls(): Promise<GetPollResponseDto[]> {
     return await this.moderatorService.fetchUnapprovedPolls();
+  }
+  
+  @ApiQuery({ name: 'is_settled', required: false, description: '0: ACTIVE, 1: PENDING, 2: SETTLED, 3: CANCELLED' })
+  @UseGuards(ModeratorGuard, VerificationModeratorGuard)
+  @Get('polls/query')
+  public async fetchQueryPolls(
+    @Query('is_settled', new ParseIntPipe({ optional: true }))
+    is_settled?: Settle,
+  ): Promise<GetPollResponseDto[]> {
+    return await this.moderatorService.fetchQueryPolls(is_settled);
   }
 
   @UseGuards(ModeratorGuard, VerificationModeratorGuard)
