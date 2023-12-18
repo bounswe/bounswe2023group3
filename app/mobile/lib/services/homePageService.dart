@@ -37,7 +37,7 @@ class HomePageService {
           pollId: post['id'],
           userName: creator['username'],
           userUsername: creator['username'],
-          profilePictureUrl: "", // Replace with the actual key
+          profilePictureUrl: creator['profile_picture'] ?? "",
           postTitle: post['question'],
           tags: tagsList,
           tagColors: tagColorsList,

@@ -79,7 +79,7 @@ class PollInfo {
       pollId: json['id'],
       userName: json['creator']['username'],
       userUsername: json['creator']['username'],
-      profilePictureUrl: json['creator']['profile_picture_url'] ?? '',
+      profilePictureUrl: json['creator']['profile_picture'] ?? '',
       postTitle: json['question'],
       tags: tags.map((e) => e['name'] as String).toList(),
       tagIds: tags.map((e) => e['id'] as String).toList(),
