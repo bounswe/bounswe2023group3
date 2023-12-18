@@ -34,4 +34,9 @@ export class CreatePollDto {
   })
   @IsNotEmpty()
   due_date: Date;
+
+  @ApiProperty({
+    example: '[url-of-picture.com]',
+  })
+  image_urls: string[];
 }

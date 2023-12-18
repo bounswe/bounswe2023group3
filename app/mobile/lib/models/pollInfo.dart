@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:mobile_app/models/comment.dart';
-import 'package:mobile_app/services/pollCommentService.dart';
 import 'package:mobile_app/view/constants.dart';
 
 class PollInfo {
@@ -19,30 +17,21 @@ class PollInfo {
   int voteCount;
   int likeCount;
   int commentCount;
-  List<CommentData> _comments;
 
   final List<String> optionIds;
   final List<String> options;
+  final List<dynamic> optionIdCouples;
   final List<int> optionsVoteCount;
-
 
   final DateTime dueDate;
   final DateTime creationDate;
 
+  final bool isPending;
   final bool approvedStatus;
   final int isSettled;
+  final bool didlike;
 
   final int chosenVoteIndex;
-
-
-  Future<List<CommentData>> get comments async {
-    _comments = await PollCommentService.getComments(pollId);
-    // TODO I am not sure if all comments are going to be returned or a subset
-    // of them. so assumed the initialy set commentCount is always stay same
-    // for the entire life time of this objcet.
-    // commentCount = _comments.length;
-    return _comments;
-  }
 
   PollInfo.withoutComments({
     required this.userName,
@@ -57,15 +46,17 @@ class PollInfo {
     required this.dueDate,
     required this.creationDate,
     required this.commentCount,
+    required this.isPending,
     required this.approvedStatus,
     required this.isSettled,
+    required this.didlike,
     required this.pollId,
     required this.optionIds,
+    required this.optionIdCouples,
     required this.tagIds,
     required this.optionsVoteCount,
     required this.chosenVoteIndex,
-  })  : _comments = [],
-        _commentsAreFetched = false;
+  });
 
   static PollInfo fromJson(Map<String, dynamic> json) {
     var tagColorList = <Color>[];
@@ -84,6 +75,7 @@ class PollInfo {
     List<dynamic> tags = json['tags'];
 
     return PollInfo.withoutComments(
+      optionIdCouples: options,
       pollId: json['id'],
       userName: json['creator']['username'],
       userUsername: json['creator']['username'],
@@ -95,7 +87,9 @@ class PollInfo {
       voteCount: json['vote_count'],
       options: options.map((e) => e['answer'] as String).toList(),
       optionIds: options.map((e) => e['id'] as String).toList(),
-      optionsVoteCount: options.map((e) => e['vote_count'] as int).toList(),
+      // TODO vote_count field'i kontrol edilecek
+      optionsVoteCount:
+          options.map((e) => (e['vote_count'] ?? 0) as int).toList(),
       likeCount: json['likeCount'] ?? 0,
       dueDate: DateTime.parse(json['due_date']),
       creationDate: DateTime.parse(json['creation_date']),
@@ -103,8 +97,10 @@ class PollInfo {
       //     .map((i) => CommentData.fromJson(i))
       //     .toList(),
       commentCount: json['commentCount'] ?? 0,
+      isPending: json['approveStatus'] == null,
       approvedStatus: json['approveStatus'] ?? false,
       isSettled: json['is_settled'] ?? 0,
+      didlike: json['didLike'],
       chosenVoteIndex: -1, //json['chosenVoteIndex']
     );
   }

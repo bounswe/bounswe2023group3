@@ -45,7 +45,6 @@ class _HomePageState extends State<HomePage>
       didLike,
       commentCount,
       chosenVoteIndex) async {
-    var awaitedComments = await comments;
     if (!mounted) return;
     Navigator.push(
       context,
@@ -159,7 +158,6 @@ class _HomePageState extends State<HomePage>
                                   postOptions: post.postOptions,
                                   likeCount: post.likeCount,
                                   dateTime: post.dateTime,
-                                  comments: post.comments,
                                   isSettled: post.isSettled,
                                   approvedStatus: post.approvedStatus,
                                   didLike: post.didLike,

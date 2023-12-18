@@ -23,6 +23,11 @@ import { Comment } from '../comment/entities/comment.entity';
 import { Report } from '../user/entities/report.entity';
 import { TagModule } from '../tag/tag.module';
 import { TokenDecoderMiddleware } from '../auth/middlewares/tokenDecoder.middleware';
+import { Pinecone } from '@pinecone-database/pinecone';
+import { GoogleGenerativeAIEmbeddings } from '@langchain/google-genai';
+import { RankingService } from '../ranking/ranking.service';
+import { Ranking } from '../ranking/entities/ranking.entity';
+import { Vote } from '../vote/entities/vote.entity';
 
 @Module({
   imports: [
@@ -36,6 +41,8 @@ import { TokenDecoderMiddleware } from '../auth/middlewares/tokenDecoder.middlew
       Like,
       Comment,
       Report,
+      Ranking,
+      Vote
     ]),
     TagModule,
   ],
@@ -47,6 +54,9 @@ import { TokenDecoderMiddleware } from '../auth/middlewares/tokenDecoder.middlew
     BadgeService,
     ModeratorService,
     TagService,
+    Pinecone,
+    GoogleGenerativeAIEmbeddings,
+    RankingService
   ],
   exports: [PollService],
 })

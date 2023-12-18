@@ -26,6 +26,7 @@ import {
 } from './dto/settle-poll-request.dto';
 import { ModeratorGuard } from '../moderator/guards/moderator.guard';
 import { VerificationModeratorGuard } from '../moderator/guards/verification-moderator.guard';
+import { Poll } from './entities/poll.entity';
 
 const statusMap = new Map<string, boolean>();
 statusMap.set('pending', null);
@@ -37,6 +38,30 @@ statusMap.set('rejected', false);
 @ApiTags('poll')
 export class PollController {
   constructor(private readonly pollService: PollService) {}
+  @Get('pinecone')
+  public async pinecone(): Promise<any> {
+    return await this.pollService.pineconeTest();
+  }
+
+  @Post('pinecone/sync')
+  public async pineconeSync(): Promise<any> {
+    return await this.pollService.syncVectorStore();
+  }
+
+  @UseGuards(AuthGuard, VerificationGuard)
+  @ApiResponse({
+    status: 200,
+    description: 'Polls are searched successfully.',
+    type: [GetPollResponseDto],
+  })
+  @ApiResponse({
+    status: 500,
+    description: 'Internal server error, contact with backend team.',
+  })
+  @Post('pinecone/search')
+  public async pineconeSearch(@Query('searchQuery') searchQuery: string): Promise<Poll[]> {
+    return await this.pollService.searchSemanticPolls(searchQuery);
+  }
 
   @UseGuards(AuthGuard, VerificationGuard)
   @Post()
@@ -95,7 +120,7 @@ export class PollController {
     @Param('id', ParseUUIDPipe) id: string,
     @Body() settlePollDto: SettlePollDto,
   ): Promise<void> {
-    return await this.pollService.settlePoll(id, settlePollDto.decision);
+    return await this.pollService.settlePoll(id, settlePollDto.decision,settlePollDto.settle_poll_request_feedback);
   }
 
   @ApiQuery({ name: 'creatorId', required: false })
@@ -257,6 +282,21 @@ export class PollController {
   ): Promise<any> {
     const userId = req.user?.sub; // Realize that it is not id instead sub. I do not know why but middleware gives this field.
     return await this.pollService.findPollById(pollId, userId);
+  }
+
+  @UseGuards(AuthGuard, VerificationGuard)
+  @ApiResponse({
+    status: 200,
+    description: 'Polls are removed successfully.',
+  })
+  @ApiResponse({ status: 404, description: 'Poll not found.' })
+  @ApiResponse({
+    status: 500,
+    description: 'Internal server error, contact with backend team.',
+  })
+  @Delete()
+  public async removeAll() {
+    return await this.pollService.removeAll();
   }
 
   @ApiResponse({ status: 200, description: 'Poll deleted successfully.' })

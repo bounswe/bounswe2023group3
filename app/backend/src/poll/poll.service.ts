@@ -5,7 +5,7 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Poll } from './entities/poll.entity';
-import { IsNull, Repository } from 'typeorm';
+import { In, IsNull, Repository } from 'typeorm';
 import { Option } from '../option/entities/option.entity';
 import { Tag } from '../tag/entities/tag.entity';
 import { PollRepository } from './repository/poll.repository';
@@ -16,20 +16,42 @@ import { Like } from '../like/entities/like.entity';
 import { Comment } from '../comment/entities/comment.entity';
 import { Sort } from './enums/sort.enum';
 import { TagService } from '../tag/tag.service';
+import { Document } from "langchain/document";
+import { Pinecone } from "@pinecone-database/pinecone";
+import { PineconeStore } from "langchain/vectorstores/pinecone";
+import { GoogleGenerativeAIEmbeddings } from "@langchain/google-genai";
+import { TaskType } from "@google/generative-ai";
+import { RankingService } from '../ranking/ranking.service';
 
 @Injectable()
 export class PollService {
+  private pineconeStore: PineconeStore;
+  private embeddings: GoogleGenerativeAIEmbeddings
   constructor(
     private readonly pollRepository: PollRepository,
     @InjectRepository(Option)
     private readonly optionRepository: Repository<Option>,
-    @InjectRepository(Tag) private readonly tagRepository: Repository<Tag>,
+    @InjectRepository(Tag) 
+    private readonly tagRepository: Repository<Tag>,
     @InjectRepository(Like)
     private readonly likeRepository: Repository<Like>,
     @InjectRepository(Comment)
     private readonly commentRepository: Repository<Comment>,
     private readonly tagService: TagService,
-  ) {}
+    private readonly pinecone: Pinecone,
+    private readonly rankingService: RankingService
+  ) {
+    this.embeddings = new GoogleGenerativeAIEmbeddings({
+      modelName: "embedding-001", // 768 dimensions
+      taskType: TaskType.RETRIEVAL_DOCUMENT,
+      title: "Prediction Polls",
+    });
+    this.pineconeStore = new PineconeStore(
+      this.embeddings,
+      {
+        pineconeIndex: pinecone.Index("prediction-polls"),
+      });
+  }
 
   public async createPoll(createPollDto: any): Promise<Poll> {
     const poll = new Poll();
@@ -37,6 +59,7 @@ export class PollService {
     poll.description = createPollDto.description;
     poll.creator = createPollDto.creator;
     poll.due_date = createPollDto.due_date;
+    poll.image_urls = createPollDto.image_urls
     const savedPoll = await this.pollRepository.save(poll);
 
     const options = createPollDto.options.map((option) => {
@@ -63,6 +86,18 @@ export class PollService {
     );
 
     savedPoll.tags = tags;
+    try {
+      await this.pineconeStore.addDocuments([
+        new Document({
+          metadata: {id: savedPoll.id},
+          pageContent: savedPoll.question + ' ' + savedPoll.description + ' ' + savedPoll.tags.map((tag) => tag.name).join(' ')
+        }),
+      ], {
+        ids: [savedPoll.id],
+      });
+    } catch (e) {
+      console.log(e);
+    }
 
     return await this.pollRepository.save(savedPoll);
   }
@@ -73,10 +108,10 @@ export class PollService {
     settlePollDto: SettlePollRequestDto,
   ): Promise<void> {
     const poll = await this.pollRepository.findOne({
-      where: { id, creator: { id: user.id } },
-      relations: ['options', 'outcome'],
+      where: { id:id , creator: { id: user.id } },
+      relations: ['options'],
     });
-
+    console.log(poll);
     if (!poll) {
       throw new NotFoundException('Poll not found.');
     }
@@ -85,18 +120,15 @@ export class PollService {
       throw new BadRequestException('Poll is not eligible to be settled.');
     }
 
-    if (poll.due_date < new Date()) {
-      throw new BadRequestException('Due date is passed.');
-    }
     const option = await this.optionRepository.findOne({
-      where: { answer: settlePollDto.outcome },
+      where: { answer: settlePollDto.outcome, poll :{ id:id} },
     });
 
     if (!option) {
       throw new BadRequestException('Outcome option not found.');
     }
 
-    poll.outcome = option;
+    poll.outcome = option.id;
     poll.outcome_source = settlePollDto.outcome_source;
     poll.is_settled = Settle.PENDING;
     await this.pollRepository.save(poll);
@@ -105,7 +137,7 @@ export class PollService {
   public async settlePoll(id: string, decision: boolean, feedback: string): Promise<void> {
     const poll = await this.pollRepository.findOne({
       where: { id },
-      relations: ['options', 'outcome'],
+      relations: ['options','tags'],
     });
 
     if (!poll) {
@@ -116,7 +148,7 @@ export class PollService {
       throw new BadRequestException('Poll is not eligible to be settled.');
     }
 
-    const option = poll.options.find((option) => option.id === poll.outcome.id);
+    const option = poll.options.find((option) => option.id === poll.outcome);
 
     if (!option) {
       throw new BadRequestException('Outcome option not found.');
@@ -124,6 +156,7 @@ export class PollService {
 
     if (decision) {
       poll.is_settled = Settle.SETTLED;
+      await this.rankingService.settlePoints(poll,option)
     } else {
       poll.is_settled = Settle.CANCELLED;
     }
@@ -173,14 +206,14 @@ export class PollService {
           id: creatorId,
         },
       },
-      relations: ['options', 'tags', 'creator', 'outcome'],
+      relations: ['options', 'tags', 'creator'],
     });
   }
 
   public async findPollById(pollId, userId?) {
     const poll = await this.pollRepository.findOne({
       where: { id: pollId },
-      relations: ['options', 'tags', 'creator', 'outcome'],
+      relations: ['options', 'tags', 'creator'],
     });
 
     if (!poll) {
@@ -219,5 +252,39 @@ export class PollService {
 
   public async removeById(id: string): Promise<void> {
     await this.pollRepository.delete(id);
+  }
+
+  public async removeAll(): Promise<void> {
+    await this.pollRepository.delete({});
+  }
+
+  public async pineconeTest(): Promise<any> {
+    return this.pineconeStore.pineconeIndex;
+  }
+
+  public async syncVectorStore(): Promise<any> {
+    const polls = await this.pollRepository.find({
+      relations: ['options', 'tags'],
+    });
+
+    const documents = polls.map((poll) => {
+      return new Document({
+        metadata: {id: poll.id},
+        pageContent: poll.question + ' ' + poll.description + ' ' + poll.tags.map((tag) => tag.name).join(' '),
+      });
+    });
+
+    await this.pineconeStore.addDocuments(documents, {
+      ids: polls.map((poll) => poll.id),
+    });
+  }
+
+  public async searchSemanticPolls(query: string): Promise<Poll[]> {
+    let results = await this.pineconeStore.similaritySearchWithScore(query, 5);
+    results = results.filter((result) => result[1] > 0.7).map((result) => result[0].metadata.id);
+    return await this.pollRepository.find({
+      where: {id: In(results)},
+      relations: ['options', 'tags', 'creator', 'likes', 'comments', 'votes'],
+    })
   }
 }
