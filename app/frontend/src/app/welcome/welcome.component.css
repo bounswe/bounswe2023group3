@@ -69,10 +69,11 @@ header {
   border-radius: 20px;
   cursor: pointer;
   text-decoration: none;
+  transition: background-color 0.2s;
 }
 
 .download-button:hover {
-  background-color: #30568f;
+  background-color: #c55d63;
 }
 
 .moderator-button {
@@ -84,10 +85,11 @@ header {
   border-radius: 20px;
   cursor: pointer;
   text-decoration: none;
+  transition: background-color 0.2s;
 }
 
 .moderator-button:hover {
-  background-color: #30568f;
+  background-color: #779295;
 }
 
 /* Navigation Bar Styles */
@@ -148,6 +150,7 @@ header {
   margin: 10px 0;
   font-size: 20px;
   color: #232f44;
+  font-weight: bold; 
 }
 
 .feature p {
@@ -213,10 +216,11 @@ header {
   padding: 10px 20px;
   cursor: pointer;
   margin-bottom: 10px;
+  transition: background-color 0.2s;
 }
 
 .cta-button:hover {
-  background-color: #e57f84;
+  background-color: #779295;
 }
 
 /* About the App Styles */
@@ -242,6 +246,7 @@ header {
   margin-bottom: 20px;
   margin-top: 30px;
   width: 400px;
+  line-height: 1;
 }
 
 .about-app-content p {

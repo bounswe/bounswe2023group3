@@ -10,7 +10,7 @@
       <h2>Log In</h2>
       <form class="login-form" (ngSubmit)="onSubmit()">
         <div class="form-group">
-          <label for="email">Email address:</label>
+          <label for="email">Email address</label>
           <input
             type="text"
             id="email"
@@ -20,7 +20,7 @@
           />
         </div>
         <div class="form-group">
-          <label for="password">Password:</label>
+          <label for="password">Password</label>
           <input
             type="password"
             id="password"
@@ -29,7 +29,7 @@
             required
           />
         </div>
-        <button type="submit" class="login-button">Log In</button>
+        <button type="submit" class="login-button" [disabled]="!email || !password">Log In</button>
       </form>
       <p class="error-message">{{ errorMessage }}</p>
       <a href="app-forget-password">Forgot your password?</a>
@@ -37,7 +37,7 @@
       <br />
       <br />
       <p>Don't have an account?</p>
-      <a href="app-moderator-login">Apply</a>
+      <a href="app-moderator-apply">Apply</a>
     </div>
   </body>
 </html>

@@ -59,3 +59,8 @@
     90deg
   ); /* Rotate the arrow logo 180 degrees when the question is clicked */
 }
+
+.faq-question:hover .faq-question-title:not(.bullet-point) {
+  text-decoration: underline;
+}
+
