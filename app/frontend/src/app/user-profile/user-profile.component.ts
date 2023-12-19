@@ -21,10 +21,14 @@ export class UserProfileComponent {
   clickedButton: string = '';
 
   isEditing: boolean = false
+  showFollowees: boolean = false
+  showFollowers: boolean = false
   editedFirstname!: string
   editedLastname!: string
   options!: any
   shortLink: string = "";
+
+  followList!: any[]
 
 
   constructor(
@@ -51,7 +55,7 @@ export class UserProfileComponent {
   }
 
   ngOnInit(){
-    this.http.get('http://34.105.66.254:1923/user'+this.user_id).subscribe(
+    this.http.get('http://34.105.66.254:1923/user/'+this.user_id).subscribe(
       (response: any) => {
         this.username = response.username
         this.firstname = response.firstname
@@ -72,6 +76,8 @@ export class UserProfileComponent {
         console.error('Error fetching polls:', error)
       },
     )
+
+
   }
 
   receiveShortLink(shortLink: string) {
@@ -150,6 +156,38 @@ export class UserProfileComponent {
     )
     }
     this.isEditing=false
+  }
+
+  toggleFollowers(){
+    this.showFollowers=!this.showFollowers
+    this.showFollowees = false
+    this.followList = []
+    if(this.showFollowers){
+      this.http.get('http://34.105.66.254:1923/user/'+this.user_id).subscribe(
+      (response: any) => {
+        this.followList= response.followers
+      },
+      (error) => {
+        console.error('Error fetching polls:', error)
+      },
+    )
+    }
+  }
+
+  toggleFollowees(){
+    this.showFollowees=!this.showFollowees
+    this.showFollowers = false
+    this.followList = []
+    if(this.showFollowees){
+      this.http.get('http://34.105.66.254:1923/user/'+this.user_id).subscribe(
+      (response: any) => {
+        this.followList= response.followings
+      },
+      (error) => {
+        console.error('Error fetching polls:', error)
+      },
+    )
+    }
   }
 
 }

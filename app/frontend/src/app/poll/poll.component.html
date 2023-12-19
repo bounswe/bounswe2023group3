@@ -31,7 +31,7 @@
       <div class="post-widget" style="display: flex; align-items: start">
         <img
           class="user-avatar"
-          [src]="creator?.profile_picture || 'assets/unknown.jpg'"
+          [src]="creator && creator.profile_picture? creator.profile_picture : 'assets/unknown.jpg'"
           alt="User Avatar"
           style="
             width: 50px;
@@ -41,7 +41,7 @@
             margin-top: 5px;
           "
         />
-        <div
+        <div 
           (click)="navigateToProfile(creator.username)"
           class="post-content"
           style="
@@ -53,10 +53,10 @@
           "
         >
           <b class="name" style="font-size: small; margin-top: 12px">{{
-            creator.firstname
-          }} {{ creator.lastname }}</b>
+            creator? creator.firstname : ''
+          }} {{ creator? creator.lastname : '' }}</b>
           <p class="user-name" style="font-size: small; margin-top: 3px">
-            &#64;{{ creator.username }}
+            &#64;{{ creator? creator.username : '' }}
           </p>
         </div>
       </div>

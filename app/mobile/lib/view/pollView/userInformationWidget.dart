@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mobile_app/view/pollView/clickableUsername.dart';
 import 'package:mobile_app/view/pollView/threeDotsOptions.dart';
+import 'package:mobile_app/view/profilePage/profilePictureWidget.dart';
 
 import '../settleRequest/settleRequestPage.dart';
 
@@ -22,9 +23,9 @@ class UserInformationWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     rowChildren.add(
-      CircleAvatar(
+      ProfilePictureWidget(
         radius: 30.0,
-        backgroundImage: NetworkImage(profilePictureUrl),
+        imageUrl: profilePictureUrl,
       ),
     );
     rowChildren.add(

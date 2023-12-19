@@ -43,7 +43,10 @@ import { ModeratorPollReviewComponent } from './moderator-poll-review/moderator-
 import { FileUploadComponent } from './file-upload/file-upload.component';
 import { ReportUserComponent } from './report-user/report-user.component';
 import { ReportRequestsComponent } from './report-requests/report-requests.component';
-import { ModeratorApplyComponent } from './moderator-apply/moderator-apply.component'
+import { ModeratorApplyComponent } from './moderator-apply/moderator-apply.component';
+import { FollowListComponent } from './follow-list/follow-list.component'
+import { MatInputModule } from '@angular/material/input';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -82,6 +85,7 @@ import { ModeratorApplyComponent } from './moderator-apply/moderator-apply.compo
     ReportUserComponent,
     ReportRequestsComponent,
     ModeratorApplyComponent,
+    FollowListComponent,
   ],
   imports: [
     BrowserModule,
@@ -92,6 +96,7 @@ import { ModeratorApplyComponent } from './moderator-apply/moderator-apply.compo
     BrowserAnimationsModule,
     MatDialogModule,
     MatFormFieldModule,
+    MatInputModule
   ],
   providers: [AuthService],
   bootstrap: [AppComponent],

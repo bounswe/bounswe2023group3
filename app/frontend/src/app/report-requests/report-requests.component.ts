@@ -19,6 +19,9 @@ export class ReportRequestsComponent {
     this.http.get('http://34.105.66.254:1923/moderator/reports/',this.options).subscribe(
       (response: any) => {
         this.reports = response
+        this.reports.forEach(report => {
+          report.creation_date = this.formatDateTime(new Date(report.creation_date))
+        });
         console.log('Fetched reports:', this.reports)
       },
       (error) => {
@@ -26,6 +29,32 @@ export class ReportRequestsComponent {
       },
     )
 
-   
   }
+
+  formatDateTime(date: Date): string {
+    const day = date.getDate().toString().padStart(2, '0');
+    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+    const year = date.getFullYear();
+    const hours = date.getHours().toString().padStart(2, '0');
+    const minutes = date.getMinutes().toString().padStart(2, '0');
+  
+    return `${day}.${month}.${year} ${hours}:${minutes}`;
+  }
+
+  navigateToProfile(username: string) {
+    this.router.navigate(['/app-profile', username])
+  }
+
+
+  handleApproval(reportID: string){
+    this.http.put('http://34.105.66.254:1923/moderator/reports/'+reportID,this.options).subscribe(
+      (response: any) => {
+      },
+      (error) => {
+        console.error('Error approving poll:', error)
+      },
+    )
+  }
+
+
 }

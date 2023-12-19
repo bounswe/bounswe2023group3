@@ -1,0 +1,11 @@
+  <h2 mat-dialog-title>{{title}}</h2>
+<mat-dialog-actions style="display: flex; justify-content: center; align-items: center">
+  <div class="follower-list">
+    <div *ngFor="let user of followList" class="follower-item">
+      <p style="cursor: pointer; width: 80px; height: 15px;" (click)="navigateToProfile(user.username)">
+        @{{ user.username }}
+      </p>
+    </div>
+  </div>
+</mat-dialog-actions>
+

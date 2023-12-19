@@ -57,13 +57,27 @@
         </div>
 
         <div style="margin-bottom: 15px; margin-top: 10px; text-align: center">
-          <p class="follow-text" style="margin-right: 100px">
+          <p class="follow-text" style="margin-right: 100px; cursor: pointer;" (click)="toggleFollowees()">
             <b>{{ this.nofFollowees }}</b> followings
           </p>
-          <p class="follow-text">
+          <div style="position: absolute; z-index: 10;">
+            <div class="popup" *ngIf="showFollowees" style="position: relative; top:0px; left:170px;
+             background-color: #80bbc4; border: 1px solid black;">
+              <app-follow-list  [followList]="followList" [title]="'Following'"></app-follow-list>
+            </div>
+          </div>
+
+          <p class="follow-text" style="cursor: pointer;" (click)="toggleFollowers()">
             <b>{{ this.nofFollowers }}</b> followers
           </p>
         </div>
+        <div style="position: absolute; z-index: 10;">
+          <div class="popup" *ngIf="showFollowers" style="position: relative; top:-15px; left:350px;
+           background-color: #80bbc4; border: 1px solid black; ">
+            <app-follow-list [followList]="followList" [title]="'My Followers'"></app-follow-list>
+          </div>
+        </div>
+
         <div class="user-polls">
           <button class="user-polls-column" [class.underlined]="clickedButton === 'created'" (click)="createdPolls()">
             Created

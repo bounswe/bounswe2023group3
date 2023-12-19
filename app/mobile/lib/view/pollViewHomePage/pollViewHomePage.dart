@@ -1,3 +1,4 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile_app/models/comment.dart';
 import 'package:mobile_app/view/constants.dart';
@@ -26,6 +27,7 @@ class PollViewHomePage extends StatefulWidget {
   final bool didLike;
   final int chosenVoteIndex;
   final int commentCount;
+  final List<List<int>> annotationIndices;
 
   const PollViewHomePage({
     super.key,
@@ -44,7 +46,7 @@ class PollViewHomePage extends StatefulWidget {
     required this.approvedStatus,
     required this.didLike,
     required this.chosenVoteIndex,
-    required this.commentCount,
+    required this.commentCount, required this.annotationIndices,
   });
   _PollViewHomePageState createState() => _PollViewHomePageState();
 }
@@ -77,7 +79,7 @@ class _PollViewHomePageState extends State<PollViewHomePage> {
   void handleUnlikePress(String pollId) async {
     PollViewHomePageLike pollLike = PollViewHomePageLike();
     bool unlikeSuccess =
-        await pollLike.unlike(pollId); // Assuming an unlike method exists
+    await pollLike.unlike(pollId); // Assuming an unlike method exists
     if (unlikeSuccess) {
       setState(() {
         likeCount--;
@@ -99,14 +101,19 @@ class _PollViewHomePageState extends State<PollViewHomePage> {
             pollId: widget.isSettled == 0 ? widget.pollId : "",
           ),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0),
-            child: Text(widget.postTitle,
-                overflow: TextOverflow.ellipsis,
-                maxLines: 3,
-                style: const TextStyle(
-                    fontSize: 18.0, fontWeight: FontWeight.bold)),
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              // child: Text(widget.postTitle,
+              //     overflow: TextOverflow.ellipsis,
+              //     maxLines: 3,
+              //     style: const TextStyle(
+              //         fontSize: 18.0, fontWeight: FontWeight.bold)),
+              child: buildRichText(widget.postTitle, widget.annotationIndices)
           ),
           TagListWidget(tags: widget.tags, tagColors: widget.tagColors),
+          const Padding(
+            padding: EdgeInsets.all(8.0),
+            child: PressableTextWithPopup(),
+          ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16.0),
             child: Text('Vote Count: ${widget.voteCount}',
@@ -125,15 +132,15 @@ class _PollViewHomePageState extends State<PollViewHomePage> {
             padding: const EdgeInsets.all(16.0),
             child: didLike
                 ? ElevatedButton.icon(
-                    onPressed: () => handleUnlikePress(widget.pollId),
-                    icon: const Icon(Icons.thumb_down),
-                    label: const Text('Unlike'),
-                  )
+              onPressed: () => handleUnlikePress(widget.pollId),
+              icon: const Icon(Icons.thumb_down),
+              label: const Text('Unlike'),
+            )
                 : ElevatedButton.icon(
-                    onPressed: () => handleLikePress(widget.pollId),
-                    icon: const Icon(Icons.thumb_up),
-                    label: const Text('Like'),
-                  ),
+              onPressed: () => handleLikePress(widget.pollId),
+              icon: const Icon(Icons.thumb_up),
+              label: const Text('Like'),
+            ),
           ),
           Row(
             children: [
@@ -151,6 +158,81 @@ class _PollViewHomePageState extends State<PollViewHomePage> {
     );
   }
 
+
+  RichText buildRichText(String fullText, List<List<int>> indices) {
+
+
+    List<TextSpan> textSpans = [];
+
+    int previousIndex = 0;
+
+    for (List<int> indexPair in indices) {
+      int startIndex = indexPair[0];
+      int endIndex = indexPair[1];
+
+      // Add non-underlined text before the current underlined part
+      textSpans.add(
+        TextSpan(
+          text: fullText.substring(previousIndex, startIndex),
+          style: const TextStyle(color: Colors.black),
+        ),
+      );
+
+      // Add underlined text with tap gesture recognizer
+      textSpans.add(
+        TextSpan(
+          text: fullText.substring(startIndex, endIndex),
+          style: const TextStyle(
+            color: Colors.blue,
+            decoration: TextDecoration.underline,
+          ),
+          recognizer: TapGestureRecognizer()
+            ..onTap = () {
+              // Handle tap on the underlined text
+              _showPopup(context, fullText.substring(startIndex, endIndex));
+              print('Tapped on underlined text from index $startIndex to $endIndex!');
+            },
+        ),
+      );
+
+      // Update the previous index to the end index of the current underlined part
+      previousIndex = endIndex;
+    }
+
+    // Add any remaining non-underlined text after the last underlined part
+    textSpans.add(
+      TextSpan(
+        text: fullText.substring(previousIndex),
+        style: const TextStyle(color: Colors.black),
+      ),
+    );
+
+    return RichText(
+      text: TextSpan(
+        children: textSpans,
+      ),
+    );
+  }
+
+  void _showPopup(BuildContext context, String underlinedText) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          // title: const Text('Popup Title'),
+          content: Text(underlinedText),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text('Close'),
+            ),
+          ],
+        );
+      },
+    );
+  }
   void handleOptionPress(String optionId, int index) async {
     // Handle option press based on the selected option
     PollViewHomePageVote pollVote = PollViewHomePageVote();
@@ -162,12 +244,53 @@ class _PollViewHomePageState extends State<PollViewHomePage> {
     }
   }
 
-  //void handleLikePress(String pollId) {
-  // PollViewHomePageLike pollLike = PollViewHomePageLike();
-  // pollLike.like(pollId);
-  //print("pressed like");
-  //}
+//void handleLikePress(String pollId) {
+// PollViewHomePageLike pollLike = PollViewHomePageLike();
+// pollLike.like(pollId);
+//print("pressed like");
+//}
 }
+class PressableTextWithPopup extends StatelessWidget {
+  const PressableTextWithPopup({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () {
+        _showPopup(context);
+      },
+      child: const Text(
+        'Press me!',
+        style: TextStyle(
+          fontSize: 24,
+          color: Colors.blue,
+          decoration: TextDecoration.underline,
+        ),
+      ),
+    );
+  }
+
+  void _showPopup(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Popup Title'),
+          content: const Text('This is the content of the popup.'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text('Close'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+}
+
 
 class LikeCountWidget extends StatelessWidget {
   final int likeCount;

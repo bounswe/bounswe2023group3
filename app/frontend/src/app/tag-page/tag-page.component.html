@@ -1,15 +1,17 @@
 <html lang="en">
-  <body>
+  <body >
     <app-header></app-header>
-    <div class="page-layout">
+    <div class="page-layout"style="padding-top: 80px;">
       <app-side-bar></app-side-bar>
-      <div class="container" style="position: relative">
+      <div class="container" style="position: relative" style="padding: 40px; justify-self: center; margin-left: 240px; margin-right: 260px;">
         <h2>{{ tagName }}</h2>
         <div>
           <app-poll *ngFor="let poll of polls" [pollId]="poll.id"></app-poll>
         </div>
       </div>
-      <app-tags-bar></app-tags-bar>
+      <div class="fixed-elements">
+        <app-tags-bar></app-tags-bar>
+      </div>
     </div>
   </body>
 </html>
