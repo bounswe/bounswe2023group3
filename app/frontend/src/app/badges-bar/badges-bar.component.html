@@ -12,11 +12,11 @@
           *ngFor="let badge of badges; let i = index"
           [ngStyle]="{ 'background-color': getColor(i) }"
         >
-          {{ badge.name }}
+          {{ badge?.name }}
         </button>
 
         <div
-          *ngIf="badges.length === 0"
+          *ngIf="badges?.length === 0"
           style="text-align: center; color: rgb(44, 39, 39)"
         >
           This user doesn't have any badges yet.

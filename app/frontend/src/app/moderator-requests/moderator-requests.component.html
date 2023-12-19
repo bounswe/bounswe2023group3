@@ -4,7 +4,7 @@
 
     <div class="page-layout" style="padding-top: 80px;">
       <app-moderator-side-bar></app-moderator-side-bar>
-      <div class="container" >
+      <div class="container" style="padding: 40px; justify-self: center; margin-left: 240px; margin-right: 260px;">
         <div class="moderator-requests">
           <button class="moderator-requests-column" (click)="onPollCreationReq()">
             Poll Creation Requests
@@ -18,7 +18,7 @@
           <div class="question">{{ poll.question }}</div>
           <div class="date">{{ poll.creation_date }}</div>
           <button class="details-button" (click)="navigateToDetailedView(poll.id)">See Details</button>
-          <button class="disapprove-button" (click) = "deletePoll(poll.id)">Disapprove</button>
+          <button class="disapprove-button" (click) = "handleDisapprove(poll.id)">Disapprove</button>
         </div>
       </div>
     </div>

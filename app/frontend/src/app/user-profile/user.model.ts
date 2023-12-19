@@ -5,8 +5,8 @@ export interface User {
   username: string
   isVerified: boolean
   password: string
-  firstname: string
-  lastname: string
+  firstname: string | null
+  lastname: string | null
   verification_code: number
   reset_password_token: number
   badges: string[]
