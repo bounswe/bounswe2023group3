@@ -24,6 +24,13 @@ body {
   text-decoration: underline;
 }
 
+.poll-image {
+  max-width: 100%; /* Ensures the image is responsive */
+  height: auto;    /* Maintains the aspect ratio */
+  border-radius: 10px; /* Optional, for rounded corners */
+  margin-bottom: 10px; /* Spacing below the image */
+}
+
 .heart-image {
   padding: 2px;
   vertical-align: middle;

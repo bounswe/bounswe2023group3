@@ -17,6 +17,7 @@ import { User } from '../user-profile/user.model'
 })
 export class PollComponent {
   @Input() pollId!: string
+  image_urls: string[] = []
   selectedButton: HTMLButtonElement | null = null
   question!: string
   tags!: any[]
@@ -114,11 +115,25 @@ export class PollComponent {
     const year = date.getFullYear();
     const hours = date.getHours().toString().padStart(2, '0');
     const minutes = date.getMinutes().toString().padStart(2, '0');
-  
+
     return `${day}.${month}.${year} ${hours}:${minutes}`;
   }
 
   ngOnInit() {
+    this.http.get(`http://34.105.66.254:1923/poll/${this.pollId}`).subscribe(
+    (response: any) => {
+      this.question = response.question;
+      this.tags = response.tags;
+      this.options = response.options;
+      this.due_date = this.formatDateTime(new Date(response.due_date));
+      this.vote_count = response.vote_count;
+      this.creator = response.creator;
+      this.image_urls = response.image_urls;
+    },
+    (error) => {
+      console.error('Error fetching poll:', error);
+    }
+  );
     this.userId = localStorage.getItem('user_id')
     if (this.userId) {
       this.isAuthenticated = true
@@ -128,12 +143,12 @@ export class PollComponent {
         this.question = response.question
         this.tags = response.tags
         this.options = response.options
-        
+
         this.due_date = this.formatDateTime(new Date(response.due_date))
         this.vote_count = response.vote_count
 
         this.creator = response.creator
-        
+
           if(!this.creator.firstname) this.creator.firstname=""
           if(!this.creator.lastname) this.creator.lastname=""
 
@@ -289,7 +304,7 @@ export class PollComponent {
         },
       )
   }
-  
+
   sendUserReport(rsn : string) {
     const body = {
       'reason': rsn,
