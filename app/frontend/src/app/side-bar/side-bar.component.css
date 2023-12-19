@@ -19,18 +19,36 @@
 }
 
 .button {
-  display: block;
+  display: flex;
   width: 180px;
   padding: 10px;
   margin-bottom: 10px;
   background-color: #63989f;
-  text-align: center;
+  text-align: left;
   cursor: pointer;
   border-radius: 15px;
   border: none;
+  align-items: center;
+  transition: background-color 0.2s; 
+}
+
+.button:hover {
+  background-color: #486c73; /* Change the background color on hover */
 }
 
 /* Add a margin to the main content area to make space for the fixed sidebar */
 .main-content {
   margin-left: 220px; /* Adjust based on the width of your sidebar */
+}
+
+.logo-image {
+  margin-left: 3px;
+  width: 25px;
+  height: 25px;
+}
+
+.button-text {
+  display: flex;
+  align-items: center;
+  margin-left: 18px;
 }
