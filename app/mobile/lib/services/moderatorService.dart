@@ -7,10 +7,7 @@ import 'package:mobile_app/services/apiService.dart';
 import '../view/moderatorHomePage/requestViewHome.dart';
 import '../view/moderatorHomePage/settleViewHome.dart';
 
-
 class ModeratorService {
-
-
   static Future<List<RequestViewHome>> getPollRequests() async {
     const String getPollsEndpoint = '/moderator/polls';
     try {
@@ -28,7 +25,8 @@ class ModeratorService {
 
         for (var tag in tagsJson) {
           tagsList.add(tag['name']);
-          tagColorsList.add(Colors.blue); // You might want to generate colors dynamically
+          tagColorsList.add(
+              Colors.blue); // You might want to generate colors dynamically
         }
 
         List<String> optionsList = [];
@@ -37,9 +35,13 @@ class ModeratorService {
         }
 
         posts.add(RequestViewHome(
-          userName: creator['username'],
+          userName: creator['firstname'] != null || creator['lastname'] != null
+              ? ((creator['firstname'] ?? "") +
+                  " " +
+                  (creator["lastname"] ?? ""))
+              : creator['username'],
           userUsername: creator['username'],
-          profilePictureUrl: "", // Replace with the actual key
+          profilePictureUrl: creator['profile_picture'] ?? "",
           postTitle: post['question'],
           tags: tagsList,
           tagColors: tagColorsList,
@@ -53,7 +55,6 @@ class ModeratorService {
     } catch (e) {
       rethrow;
     }
-
   }
 
   static Future<List<SettleViewHome>> getSettleRequests() async {
@@ -73,7 +74,8 @@ class ModeratorService {
 
         for (var tag in tagsJson) {
           tagsList.add(tag['name']);
-          tagColorsList.add(Colors.blue); // You might want to generate colors dynamically
+          tagColorsList.add(
+              Colors.blue); // You might want to generate colors dynamically
         }
 
         List<String> optionsList = [];
@@ -82,9 +84,13 @@ class ModeratorService {
         }
 
         posts.add(SettleViewHome(
-          userName: creator['username'],
+          userName: creator['firstname'] != null || creator['lastname'] != null
+              ? ((creator['firstname'] ?? "") +
+                  " " +
+                  (creator["lastname"] ?? ""))
+              : creator['username'],
           userUsername: creator['username'],
-          profilePictureUrl: "", // Replace with the actual key
+          profilePictureUrl: creator['profile_picture'] ?? "",
           postTitle: post['question'],
           tags: tagsList,
           tagColors: tagColorsList,
@@ -100,6 +106,5 @@ class ModeratorService {
     } catch (e) {
       rethrow;
     }
-
   }
 }
