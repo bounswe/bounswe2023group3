@@ -4,11 +4,11 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   </head>
-  <body>
+  <body style="padding-top: 80px;">
     <app-header></app-header>
     <div class="page-layout">
       <app-side-bar></app-side-bar>
-      <div class="poll-container">
+      <div class="poll-container" style="padding: 40px; justify-self: center; margin-left: 240px;">
 
         <ng-container *ngIf="!isSettled; else settledPoll">
           <app-poll [pollId]="pollId"></app-poll>
@@ -61,6 +61,7 @@
                     height: 30%;
                     cursor: pointer;
                     background-color: #e1e8ed;
+                    transition: background-color 0.2s;
                   "
                   src="assets/three-dots.png"
                   (click)="openPopup(comment.id)"
@@ -68,7 +69,7 @@
                 <div
                   class="popup"
                   *ngIf="isPopupOpen(comment.id)"
-                  style="background-color: #c8d5de"
+                  style="background-color: #c8d5de; right: 41px; top: 12px"
                 >
                   <div class="popuptext" (click)="deleteComment(comment.id)">
                     Delete Comment

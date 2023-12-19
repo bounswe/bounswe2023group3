@@ -38,11 +38,17 @@ export class PollComponent {
     '#AEEEEE',
     '#FFDAB9',
     '#E6E6FA',
-    '#98FB98',
     '#FADADD',
     '#F08080',
     '#B0C4DE',
     '#FFB6C1',
+    '#D7907B',
+    '#DECBB7',
+    '#C1EEFF',
+    '#EDDEA4',
+    '#F7A072',
+    '#9BA0BC',
+    '#F88DAD'
   ]
 
   constructor(

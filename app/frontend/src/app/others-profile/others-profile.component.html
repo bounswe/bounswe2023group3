@@ -56,6 +56,7 @@
         <div>
           <app-poll *ngFor="let poll of polls" [pollId]="poll.id"></app-poll>
         </div>
+        <app-scroll-to-top-button></app-scroll-to-top-button>
       </div>
       <div class="fixed-elements flex-column">
         <app-ranks-bar [class.blurred]="!isAuthenticated"></app-ranks-bar>

@@ -14,11 +14,11 @@
       <img
         [class.blurred]="!isAuthenticated"
         class="popup-options"
-        style="float: right; width: 4%; height: 100%; cursor: pointer"
+        style="float: right; width: 4%;border-radius: 50%; height: 30%; cursor: pointer; background-color: #63989f ; transition: background-color 0.2s;"
         src="assets/three-dots.png"
         (click)="openPopup()"
       />
-      <div class="popup" *ngIf="showPopup" >
+      <div class="popup" *ngIf="showPopup">
         <div class="popuptext" (click)="openConfirmationDialog()">
           Delete Poll
         </div>
