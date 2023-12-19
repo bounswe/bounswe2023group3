@@ -23,6 +23,8 @@ export class UserProfileComponent {
   isEditing: boolean = false
   editedFirstname!: string
   editedLastname!: string
+  originalFirstname: string = '';
+  originalLastname: string = '';
   options!: any
   shortLink: string = "";
 
@@ -115,7 +117,15 @@ export class UserProfileComponent {
   }
 
   toggleEdit(){
-    this.isEditing=true
+    this.isEditing=true;
+    this.originalFirstname = this.firstname;
+    this.originalLastname = this.lastname;
+  }
+
+  cancelEdit() {
+    this.isEditing=false;
+    this.editedFirstname = this.originalFirstname;
+    this.editedLastname = this.originalLastname;
   }
 
   editProfile() {
