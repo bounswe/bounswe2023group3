@@ -46,6 +46,9 @@ import { ReportRequestsComponent } from './report-requests/report-requests.compo
 import { ModeratorApplyComponent } from './moderator-apply/moderator-apply.component';
 import { ScrollToTopButtonComponent } from './scroll-to-top-button/scroll-to-top-button.component';
 import { UserPendingRequestsComponent } from './user-pending-requests/user-pending-requests.component'
+import { FollowListComponent } from './follow-list/follow-list.component'
+import { MatInputModule } from '@angular/material/input';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -86,6 +89,7 @@ import { UserPendingRequestsComponent } from './user-pending-requests/user-pendi
     ModeratorApplyComponent,
     ScrollToTopButtonComponent,
     UserPendingRequestsComponent,
+    FollowListComponent,
   ],
   imports: [
     BrowserModule,
@@ -96,6 +100,7 @@ import { UserPendingRequestsComponent } from './user-pending-requests/user-pendi
     BrowserAnimationsModule,
     MatDialogModule,
     MatFormFieldModule,
+    MatInputModule
   ],
   providers: [AuthService],
   bootstrap: [AppComponent],

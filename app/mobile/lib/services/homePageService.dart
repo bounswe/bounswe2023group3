@@ -35,9 +35,13 @@ class HomePageService {
 
         posts.add(PollViewHomePage(
           pollId: post['id'],
-          userName: creator['username'],
+          userName: creator['firstname'] != null || creator['lastname'] != null
+              ? ((creator['firstname'] ?? "") +
+                  " " +
+                  (creator["lastname"] ?? ""))
+              : creator['username'],
           userUsername: creator['username'],
-          profilePictureUrl: "", // Replace with the actual key
+          profilePictureUrl: creator['profile_picture'] ?? "",
           postTitle: post['question'],
           tags: tagsList,
           tagColors: tagColorsList,
@@ -50,6 +54,7 @@ class HomePageService {
           approvedStatus: post['approveStatus'],
           didLike: post['didLike'], // You might want to format the date
           chosenVoteIndex: -1, //it will be post['chosenVoteIndex']
+          annotationIndices: [[2,5], [7,10]],
         ));
       }
       print(posts);

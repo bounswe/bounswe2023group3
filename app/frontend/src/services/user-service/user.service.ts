@@ -88,4 +88,16 @@ export class UserService {
       throw error;
     }
   }
+
+  vote(optionId: string): Promise<any> {
+    const payload = { option_id: optionId };
+    try {
+      return this.httpClient
+        .post<any>(`${environment.apiBaseUrl}/vote/`, payload, this.options)
+        .toPromise();
+    } catch (error) {
+      console.log('Error voting:', error);
+      throw error;
+    }
+  } 
 }

@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Component } from '@angular/core'
 import { ActivatedRoute } from '@angular/router';
 import { AuthService } from '../auth.service';
@@ -17,13 +17,18 @@ export class ModeratorPollReviewComponent {
   due_date!: any
   options: any[] = [];
   tags: any[] = [];
+  is_settled!: number
+  outcome!: any
 
   constructor(
     private http: HttpClient,
     private route: ActivatedRoute,
     private authService: AuthService,
   ) { 
-    this.token=this.authService.getHeaders()
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${localStorage.getItem('authToken')}`,
+    })
+    this.token={ headers }
   }
     
     ngOnInit() {
@@ -39,6 +44,8 @@ export class ModeratorPollReviewComponent {
         this.options = response.options
         this.tags = response.tags
         this.due_date = this.formatDateTime(new Date(response.due_date))
+        this.is_settled = response.is_settled
+        this.outcome = response.outcome
       },
       (error) => {
         console.error('Error fetching poll:', error)
@@ -47,16 +54,45 @@ export class ModeratorPollReviewComponent {
     }
 
     onApprove(){
-      this.http.post('http://34.105.66.254:1923/moderator/approve'+this.pollId,{'approveStatus': true},this.token).subscribe(
+      if(this.is_settled==1){
+          this.http.post('http://34.105.66.254:1923/poll/settle/'+this.pollId,{'decision': true,
+        'settle_poll_request_feedback': "xx"},this.token).subscribe(
+          (response: any) => {
+          },
+          (error) => {
+            console.error('Error approving poll:', error)
+          },
+        )
+        return
+      }
+
+      this.http.post('http://34.105.66.254:1923/moderator/approve/'+this.pollId,{'approveStatus': true},this.token).subscribe(
+        (response: any) => {
+        },
+        (error) => {
+          console.error('Error approving poll:', error)
+        },
+      )
+    }
+    onReject(){
+      
+    if(this.is_settled==1){
+      this.http.post('http://34.105.66.254:1923/poll/settle/'+this.pollId,
+      {
+        "decision": false,
+        "settle_poll_request_feedback": "not a good to time to settle it"
+      },this.token).subscribe(
         (response: any) => {
         },
         (error) => {
           console.error('Error deleting poll:', error)
         },
       )
+      window.location.reload()
+      return
     }
-    onReject(){
-      this.http.post('http://34.105.66.254:1923/moderator/approve'+this.pollId,{'approveStatus': false, 
+
+      this.http.post('http://34.105.66.254:1923/moderator/approve/'+this.pollId,{'approveStatus': false, 
       "poll_request_rejection_feedback": "not a precise poll"}, this.token).subscribe(
         (response: any) => {
         },

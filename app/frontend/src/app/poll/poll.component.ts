@@ -7,6 +7,8 @@ import { ConfirmModelComponent } from '../confirm-model/confirm-model.component'
 import { UserSettleRequestComponent } from '../user-settle-request/user-settle-request.component'
 import { MatFormFieldModule } from '@angular/material/form-field'
 import { ReportUserComponent } from '../report-user/report-user.component'
+import { AuthService } from '../auth.service'
+import { User } from '../user-profile/user.model'
 
 @Component({
   selector: 'app-poll',
@@ -23,10 +25,14 @@ export class PollComponent {
   comment_count!: number
   creation_time!: string
   vote_count!: number
-  creator!: any
+  creator!: User
   isLikedBy!: boolean
   nofLikes: number = 0
   userId!: string | null
+
+  //TODO: retrieve user vote & show in html
+  userVoted!: boolean 
+  user_vote_id !: string
 
   showPopup = false
   isAuthenticated: boolean = false
@@ -56,6 +62,7 @@ export class PollComponent {
     private router: Router,
     private userService: UserService,
     public dialog: MatDialog,
+    private authService: AuthService,
   ) {}
 
   openConfirmationDialog(): void {
@@ -124,7 +131,11 @@ export class PollComponent {
         
         this.due_date = this.formatDateTime(new Date(response.due_date))
         this.vote_count = response.vote_count
+
         this.creator = response.creator
+        
+          if(!this.creator.firstname) this.creator.firstname=""
+          if(!this.creator.lastname) this.creator.lastname=""
 
         const time_dif =
           (new Date().valueOf() - new Date(response.creation_date).valueOf()) /
@@ -166,6 +177,7 @@ export class PollComponent {
       },
     )
 
+    /*
     const selectedButtonId = localStorage.getItem('selectedButtonId')
     if (selectedButtonId) {
       this.selectedButton = document.getElementById(
@@ -175,10 +187,30 @@ export class PollComponent {
         this.selectedButton.classList.add('clicked')
       }
     }
+    */
 
   }
 
+  castVote(optionId: string, buttonRef: HTMLButtonElement) {
+    if (!this.userVoted)
+    {
+      this.toggleButton(buttonRef);  // Handle UI change
+    this.userService.vote(optionId)            // Submit the vote
+      .then(response => {
+        // Handle the response
+        console.log('Vote cast for option ID:', optionId);
+      })
+      .catch(error => {
+        // Handle any errors
+        console.error('Error casting vote:', error);
+      });
+    }
+    this.userVoted = true;   
+  }
+
   toggleButton(button: HTMLButtonElement) {
+    button.classList.add('clicked');
+    /*
     if (this.selectedButton === button) {
       this.selectedButton.classList.remove('clicked')
       this.selectedButton = null
@@ -193,6 +225,7 @@ export class PollComponent {
 
       localStorage.setItem('selectedButtonId', button.id)
     }
+    */
   }
 
   toggleLike(): void {
@@ -262,11 +295,13 @@ export class PollComponent {
       'reason': rsn,
     }
 
+    console.log(rsn)
+
     this.http
-      .post('http://34.105.66.254:1923/user/report' + this.creator.id, body)
+      .post('http://34.105.66.254:1923/user/report/' + this.creator.id, body, this.authService.getHeaders())
       .subscribe(
         () => {
-          console.log(`Request sent ccessfully.`)
+          console.log(`Request sent successfully.`)
         },
         (error) => {
           console.error('Error sending request:', error)

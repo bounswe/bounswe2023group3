@@ -9,7 +9,6 @@
     <div class="page-layout">
       <app-side-bar></app-side-bar>
       <div class="poll-container" style="padding: 40px; justify-self: center; margin-left: 240px;">
-
         <ng-container *ngIf="!isSettled; else settledPoll">
           <app-poll [pollId]="pollId"></app-poll>
         </ng-container>

@@ -45,7 +45,7 @@ export class HomeComponent {
             this.polls.push(r)
             this.settledMode = false
           }
-          if (r.is_settled && isSettled) {
+          if (r.is_settled==2 && isSettled) {
             this.polls.push(r)
             this.settledMode = true
           }

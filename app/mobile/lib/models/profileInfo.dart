@@ -44,15 +44,16 @@ class ProfileInfo {
     List<dynamic> followers = json['followers'];
     List<dynamic> followings = json['followings'];
     List<dynamic> badges = json['badges'];
-
+    var followingList = followings.map((e) => e['id'] as String).toList();
+    var followerList = followers.map((e) => e['id'] as String).toList();
     return ProfileInfo(
       id: json['id'],
       profilePictureUrl: json['profile_picture'] ?? '',
       username: json['username'],
       firstname: json['firstname'] ?? '',
       lastname: json['lastname'] ?? '',
-      followingCount: json['followingCount'] ?? 0,
-      followersCount: json['followersCount'] ?? 0,
+      followingCount: followingList.length,
+      followersCount: followerList.length,
       isFollowingVisible: json['isFollowingVisible'] ?? true,
       isFollowersVisible: json['isFollowersVisible'] ?? true,
       isCreatedPollsVisible: json['isCreatedPollsVisible'] ?? true,
@@ -61,8 +62,8 @@ class ProfileInfo {
       ranks: List<String>.from(json['ranks'] ?? []),
       badges: badges.map((e) => e['name'] as String).toList(),
       isLoggedInUser: json['id'] == AppState.loggedInUserId,
-      followerIds: followers.map((e) => e['id'] as String).toList(),
-      followingIds: followings.map((e) => e['id'] as String).toList(),
+      followerIds: followerList,
+      followingIds: followingList,
     );
   }
 
