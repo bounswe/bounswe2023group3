@@ -43,7 +43,9 @@ import { ModeratorPollReviewComponent } from './moderator-poll-review/moderator-
 import { FileUploadComponent } from './file-upload/file-upload.component';
 import { ReportUserComponent } from './report-user/report-user.component';
 import { ReportRequestsComponent } from './report-requests/report-requests.component';
-import { ModeratorApplyComponent } from './moderator-apply/moderator-apply.component'
+import { ModeratorApplyComponent } from './moderator-apply/moderator-apply.component';
+import { ScrollToTopButtonComponent } from './scroll-to-top-button/scroll-to-top-button.component';
+import { UserPendingRequestsComponent } from './user-pending-requests/user-pending-requests.component'
 @NgModule({
   declarations: [
     AppComponent,
@@ -82,6 +84,8 @@ import { ModeratorApplyComponent } from './moderator-apply/moderator-apply.compo
     ReportUserComponent,
     ReportRequestsComponent,
     ModeratorApplyComponent,
+    ScrollToTopButtonComponent,
+    UserPendingRequestsComponent,
   ],
   imports: [
     BrowserModule,
