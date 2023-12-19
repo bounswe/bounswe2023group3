@@ -41,7 +41,7 @@
             margin-top: 5px;
           "
         />
-        <div 
+        <div
           (click)="navigateToProfile(creator.username)"
           class="post-content"
           style="
@@ -63,6 +63,12 @@
       <h3 class="question" style="cursor: pointer" (click)="navigateToPoll()">
         {{ question }}
       </h3>
+      <img
+        [src]="'assets/path_to_the_placeholder.png'"
+        alt="Poll Image"
+        class="poll-image"
+        style="width: 100%; height: auto; margin-top: 10px;" />
+
       <div style="display: flex; justify-content: space-between">
         <div>
           <!-- The algorithm written below will be changed later  -->
