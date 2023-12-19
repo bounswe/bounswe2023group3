@@ -13,14 +13,17 @@ export class ModeratorPollReviewComponent {
   pollId!: any
   username!: string
   question!: string
-  options!: any
+  token!: any
+  due_date!: any
+  options: any[] = [];
+  tags: any[] = [];
 
   constructor(
     private http: HttpClient,
     private route: ActivatedRoute,
     private authService: AuthService,
   ) { 
-    this.options=this.authService.getHeaders()
+    this.token=this.authService.getHeaders()
   }
     
     ngOnInit() {
@@ -33,6 +36,9 @@ export class ModeratorPollReviewComponent {
       (response: any) => {
         this.username = response.creator.username
         this.question = response.question
+        this.options = response.options
+        this.tags = response.tags
+        this.due_date = this.formatDateTime(new Date(response.due_date))
       },
       (error) => {
         console.error('Error fetching poll:', error)
@@ -41,7 +47,7 @@ export class ModeratorPollReviewComponent {
     }
 
     onApprove(){
-      this.http.post('http://34.105.66.254:1923/moderator/approve'+this.pollId,{'approveStatus': true},this.options).subscribe(
+      this.http.post('http://34.105.66.254:1923/moderator/approve'+this.pollId,{'approveStatus': true},this.token).subscribe(
         (response: any) => {
         },
         (error) => {
@@ -51,7 +57,7 @@ export class ModeratorPollReviewComponent {
     }
     onReject(){
       this.http.post('http://34.105.66.254:1923/moderator/approve'+this.pollId,{'approveStatus': false, 
-      "poll_request_rejection_feedback": "not a precise poll"}, this.options).subscribe(
+      "poll_request_rejection_feedback": "not a precise poll"}, this.token).subscribe(
         (response: any) => {
         },
         (error) => {
@@ -59,12 +65,22 @@ export class ModeratorPollReviewComponent {
         },
       )
 
-      this.http.delete('http://34.105.66.254:1923/poll/'+this.pollId,this.options).subscribe(
+      this.http.delete('http://34.105.66.254:1923/poll/'+this.pollId,this.token).subscribe(
         (response: any) => {
         },
         (error) => {
           console.error('Error deleting poll:', error)
         },
       )
+    }
+    
+    formatDateTime(date: Date): string {
+      const day = date.getDate().toString().padStart(2, '0');
+      const month = (date.getMonth() + 1).toString().padStart(2, '0');
+      const year = date.getFullYear();
+      const hours = date.getHours().toString().padStart(2, '0');
+      const minutes = date.getMinutes().toString().padStart(2, '0');
+    
+      return `${day}.${month}.${year} ${hours}:${minutes}`;
     }
 }

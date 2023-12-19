@@ -1,11 +1,12 @@
 <html lang="en">
-  <body>
+  <body style="padding-top: 100px">
     <app-moderator-header></app-moderator-header>
 
-    <div class="page-layout" style="padding-top: 80px;">
+    <div class="page-layout">
       <app-moderator-side-bar></app-moderator-side-bar>
 
-      <div class="review-section">
+      <div class="review-container" style="padding: 40px; justify-self: center; margin-left: 240px;">
+        <h3>Detailed Poll Request View</h3>
         <div class="poll-item">
           <span class="label">Submitted by:</span>
           <p class="info-text">{{username}}</p>
@@ -14,8 +15,26 @@
           <span class="label">Poll Question:</span>
           <p class="info-text">{{question}}</p>
         </div>
+        <div *ngIf="options && options.length > 0">
+          <div class="poll-item" *ngFor="let option of options; let i = index">
+            <span class="label">Option #{{ i + 1 }}:</span>
+            <p class="info-text">{{ option?.answer }}</p>
+          </div>
+        </div>
 
-        <div class="action-buttons">
+        <div *ngIf="options && options.length > 0">
+          <div class="poll-item" *ngFor="let tag of tags; let i = index">
+            <span class="label">Tag #{{ i + 1 }}:</span>
+            <p class="info-text">{{ tag?.name }}</p>
+          </div>
+        </div>
+
+        <div class="poll-item">
+          <span class="label">Due Date:</span>
+          <p class="info-text">{{due_date}}</p>
+        </div>
+
+        <div class="action-button" style="margin-top: 20px;">
           <button class="action-button approve-button" (click)="onApprove()">Approve</button>
           <button class="action-button reject-button" (click)="onReject()">Reject</button>
         </div>
