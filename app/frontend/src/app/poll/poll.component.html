@@ -97,7 +97,7 @@
           class="button"
           #buttonRef
           id="'button' + i"
-          (click)="toggleButton(buttonRef)"
+          (click)="!userVoted && castVote(option.id, buttonRef)"
           [disabled]="selectedButton != buttonRef && selectedButton != null"
         >
           {{ option.answer }}
