@@ -16,6 +16,7 @@
             border-radius: 50%;
             margin-right: 5px;
             margin-top: 5px;
+            margin-bottom: 20px;
           "
         />
         <div
@@ -33,14 +34,21 @@
       </div>
       <div class="buttons">
         <button class="button" routerLink="/app-moderator-requests">
-          Poll Requests
+          <img src="assets/participate-icon.png" alt="Logo" class="logo-image" />
+          <span class="button-text">Poll Requests</span>
+        
         </button>
         <button class="button" routerLink="/app-report-requests">
-          Report Requests
+          <img src="assets/report.png" alt="Logo" class="logo-image" />
+          <span class="button-text">Report Requests</span>
         </button>
-        <button class="button">Settings</button>
+        <button class="button">
+          <img src="assets/settings.png" alt="Logo" class="logo-image" />
+          <span class="button-text">Settings</span>
+        </button>
         <button class="button" (click)="logOut()" style="margin-bottom: 20px">
-          Log out
+          <img src="assets/logout.png" alt="Logo" class="logo-image" />
+          <span class="button-text">Log out</span>
         </button>
       </div>
     </div>

@@ -92,7 +92,7 @@ button[type='submit'] {
 }
 
 button[type='submit']:hover {
-  background-color: #c1666b;
+  background-color: #1e416f;
 }
 
 .login-container a {
@@ -120,7 +120,8 @@ button[type='submit']:hover {
 .custom-file-input-label {
   display: inline-block;
   padding: 10px;
-  height: 18px;
+  min-height: 18px;
+  height: auto;
   background-color: #89b1b6;
   color: white;
   cursor: pointer;

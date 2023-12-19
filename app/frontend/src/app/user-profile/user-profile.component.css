@@ -2,16 +2,61 @@
   width: 100%;
 }
 
+.underlined {
+  text-decoration: underline;
+}
+
+/* Add or modify styles for the edit mode */
+.edit-container {
+  display: flex;
+  align-items: center;
+  margin-right: 10px;
+}
+
+.edit-input {
+  border-radius: 10px;
+  background-color: #79abb1;
+  border: none;
+  height: 30px;
+  color: #fff;
+  margin-bottom: 10px;
+  margin-right: 10px;
+  padding: 5px 10px; /* Adjust padding for better appearance */
+  width: 150px; /* Adjust the width based on your design */
+}
+
 .edit-button {
+  background-color: #63989f;
+  border: none;
+  color: #fff;
+  padding: 8px 12px; /* Adjust padding for better appearance */
+  cursor: pointer;
   width: 100px;
   padding: 8px;
   margin-top: 10px;
   margin-right: 10px;
-  cursor: pointer;
   border-radius: 15px;
   margin-left: auto;
 }
 
-.underlined {
-  text-decoration: underline;
+.edit-button:hover {
+  background-color: #4a7580; /* Add a darker shade on hover */
+}
+
+.cancel-button {
+  background-color: #4a7580;
+  border: none;
+  color: #fff;
+  padding: 8px 12px; /* Adjust padding for better appearance */
+  cursor: pointer;
+  width: 100px;
+  padding: 8px;
+  margin-top: 10px;
+  margin-right: 10px;
+  border-radius: 15px;
+  margin-left: auto;
+}
+
+.cancel-button:hover {
+  background-color: #4a7580; /* Add a darker shade on hover */
 }

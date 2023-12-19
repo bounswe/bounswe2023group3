@@ -1,0 +1,28 @@
+.custom-file-input {
+    position: relative;
+    overflow: hidden;
+    display: inline-block;
+  }
+  
+  .custom-file-input input[type="file"] {
+    font-size: 100px;
+    position: absolute;
+    left: 0;
+    top: 0;
+    opacity: 0;
+  }
+  
+  .custom-file-label {
+    margin-top: 10px;
+    display: inline-block;
+    cursor: pointer;
+    background-color: #4285f4;
+    color: white;
+    padding: 8px 12px;
+    border-radius: 4px;
+  }
+  
+  .custom-file-label:hover {
+    background-color: #3276b1;
+  }
+  

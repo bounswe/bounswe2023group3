@@ -88,10 +88,11 @@ button[type='submit'] {
   margin-bottom: 5px;
   cursor: pointer;
   font-size: 16px;
+  transition: background-color 0.2s;
 }
 
 button[type='submit']:hover {
-  background-color: #232f44;
+  background-color: #1e416f;
 }
 
 button[type='submit']:disabled {

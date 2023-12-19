@@ -63,6 +63,7 @@ body {
   cursor: pointer;
   border-radius: 15px;
   border: none;
+  transition: background-color 0.2s; 
 }
 
 .page-layout {
@@ -172,18 +173,17 @@ body {
 }
 
 .popup-options:hover {
-  background-color: #96b7bb;
-  border-radius: 50%;
+  background-color: #96b7bb !important;
+  border-radius: 50% !important; 
 }
 
 .popup {
   position: absolute;
   top: 20px;
   right: 50px;
-  z-index: 1000;
+  z-index: 900;
   float: right;
   cursor: pointer;
-  margin-right: px;
   background-color: #9dc0c4;
   border-radius: 5px;
   padding: 8px;
@@ -199,6 +199,7 @@ body {
   border-radius: 8px;
   padding: 8px;
   z-index: 1;
+  transition: background-color 0.2s; 
 }
 
 .popup .popuptext:hover {

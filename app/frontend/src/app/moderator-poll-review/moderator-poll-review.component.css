@@ -3,66 +3,75 @@ body {
   background-color: #89b1b6;
 }
 
-/* Container for the entire component */
-.moderator-review-container {
-  background-color: #202a40;
-  padding: 20px;
-  border-radius: 20px;
-  margin: 20px auto;
-  max-width: 800px;
-  color: #202a40;
-}
-
-/* Style for headings */
-.moderator-review-heading {
-  text-align: center;
-  font-size: 24px;
-  margin-bottom: 20px;
-  color: #202a40;
+.page-layout {
+  display: flex;
 }
 
 /* Style for review sections */
-.review-section {
+.review-container {
+  position: relative;
   background-color: #202a40;
-  padding: 15px;
-  border-radius: 10px;
+  border-radius: 20px;
   margin-bottom: 15px;
   display: flex;
   flex-direction: column;
   width: calc(80% - 300px);
-  display: flex;
-  flex-direction: column;
   align-items: left;
-  padding: 25px;
+}
+
+.review-container h3 { 
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+  font-size: 24px;
+  color: #f4eae6;
+  align-self: center;
+  padding-bottom: 10px;
+}
+
+.review-container p { 
+  margin-left: 20px;
+  font-size: 16px;
 }
 
 /* Style for individual poll items */
 .poll-item {
-  background-color: #fff;
+  background-color: #f4eae6;
   padding: 10px;
-  border-radius: 5px;
-  margin-bottom: 10px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  margin-bottom: 14px;
 }
 
 /* Buttons for actions like approve or reject */
 .action-button {
   padding: 10px 15px;
   margin-right: 10px;
-  border-radius: 5px;
+  border-radius: 18px;
   border: none;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  display: flex;
+  justify-content: center;
 }
 
 .approve-button {
-  background-color: #4caf50;
+  width: 100px;
+  background-color: #63989f;
   color: white;
+  transition: background-color 0.2s;
+  margin-right: 20px;
+}
+
+.approve-button:hover {
+  background-color: #486c73;
 }
 
 .reject-button {
-  background-color: #f44336;
+  width: 100px;
+  background-color: #E57F84;
   color: white;
+  transition: background-color 0.2s;
+}
+
+.reject-button:hover {
+  background-color: #c55d63;
 }
 
 /* Style for informational text */
@@ -77,12 +86,3 @@ body {
   margin-bottom: 5px;
 }
 
-/* Responsive adjustments */
-@media (max-width: 600px) {
-  .moderator-review-container {
-    padding: 10px;
-  }
-  .review-section {
-    flex-direction: column;
-  }
-}

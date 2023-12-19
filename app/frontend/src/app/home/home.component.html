@@ -14,8 +14,12 @@
               border: none;
               background-color: #63989f;
               color: #fff;
+              transition: background-color 0.2s;
+              cursor: pointer;
             "
             (click)="settledPolls(false)"
+            onmouseover="this.style.backgroundColor='#486c73';"
+            onmouseout="this.style.backgroundColor='#63989f';"
           >
             Ongoing
           </button>
@@ -27,8 +31,12 @@
               background-color: #374968;
               border: none;
               color: #fff;
+              transition: background-color 0.2s;
+              cursor: pointer;
             "
             (click)="settledPolls(true)"
+            onmouseover="this.style.backgroundColor='#202A40';"
+            onmouseout="this.style.backgroundColor='#374968';"
           >
             Settled
           </button>
@@ -54,7 +62,7 @@
             />
             <input
               id="searchInput"
-              style="border-radius: 15px; text-align: left; padding-left: 30px"
+              style="border-radius: 15px; text-align: left; padding-left: 30px; cursor: pointer;"
               placeholder="What are you looking for?"
             />
           </div>
@@ -89,6 +97,7 @@
             </ng-template>
           </ng-container>
         </div>
+        <app-scroll-to-top-button></app-scroll-to-top-button>
       </div>
       <div class="fixed-elements">
         <app-tags-bar></app-tags-bar>

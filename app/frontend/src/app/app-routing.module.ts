@@ -23,6 +23,7 @@ import { ChangePasswordComponent } from './change-password/change-password.compo
 import { SettledPollComponent } from './settled-poll/settled-poll.component'
 import { ReportRequestsComponent } from './report-requests/report-requests.component'
 import { ModeratorApplyComponent } from './moderator-apply/moderator-apply.component'
+import { UserPendingRequestsComponent } from './user-pending-requests/user-pending-requests.component'
 
 const routes: Routes = [
   { path: '', component: WelcomeComponent },
@@ -31,6 +32,7 @@ const routes: Routes = [
   { path: 'app-verify', component: VerifyComponent },
   { path: 'app-change-password', component: ChangePasswordComponent },
   { path: 'app-settled-poll', component: SettledPollComponent },
+  { path: 'app-pending-requests', component: UserPendingRequestsComponent },
   {
     path: 'app-moderator-requests',
     component: ModeratorRequestsComponent,
@@ -79,6 +81,7 @@ const routes: Routes = [
     component: ModeratorPollReviewComponent,
     canActivate: [ModeratorAuthGuard],
   },
+  { path: '**', redirectTo: '' },
 ]
 
 @NgModule({

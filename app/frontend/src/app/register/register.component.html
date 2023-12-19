@@ -26,7 +26,7 @@
       <h2>Sign Up</h2>
       <form [formGroup]="registrationForm" (ngSubmit)="onSubmit()">
         <div class="form-group">
-          <label for="firstname">Name:</label>
+          <label for="firstname">Name</label>
           <input
             type="text"
             id="firstname"
@@ -35,7 +35,7 @@
           />
         </div>
         <div class="form-group">
-          <label for="lastname">Surname:</label>
+          <label for="lastname">Surname</label>
           <input
             type="text"
             id="lastname"
@@ -44,7 +44,7 @@
           />
         </div>
         <div class="form-group">
-          <label for="username">Username:</label>
+          <label for="username">Username</label>
           <input
             type="text"
             id="username"
@@ -59,7 +59,7 @@
         </div>
 
         <div class="form-group">
-          <label for="email">Email address:</label>
+          <label for="email">Email address</label>
           <input type="text" id="email" formControlName="email" required />
           <div *ngIf="registrationForm.get('email')?.hasError('email')">
             <p class="error-message">Please provide a valid email</p>
@@ -67,7 +67,7 @@
         </div>
 
         <div class="form-group">
-          <label for="password">Password:</label>
+          <label for="password">Password</label>
           <input
             type="password"
             id="password"
