@@ -20,7 +20,7 @@ body {
   border-radius: 15px;
   border: none;
 }
-.question:hover {
+.comment:hover {
   text-decoration: underline;
 }
 
@@ -34,4 +34,23 @@ body {
 .heart-image {
   padding: 2px;
   vertical-align: middle;
+}
+
+
+.annotation {
+  margin-bottom: 10px;
+}
+
+.underline {
+  border-bottom: 1px dotted blue;
+  cursor: pointer;
+}
+
+.underline:hover + .annotation-text {
+  display: inline;
+}
+
+::ng-deep .my-annotation .annotation-parent,
+::ng-deep .my-annotation .annotation-content {
+  border-radius: 0rem !important;
 }

@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http'
-import { Component, Input, NgModule } from '@angular/core'
+import { Component, Input, NgModule, ViewChild } from '@angular/core'
 import { Router } from '@angular/router'
 import { UserService } from 'src/services/user-service/user.service'
 import { MatDialog, MatDialogModule } from '@angular/material/dialog'
@@ -10,6 +10,8 @@ import { ReportUserComponent } from '../report-user/report-user.component'
 import { AuthService } from '../auth.service'
 import { User } from '../user-profile/user.model'
 
+import { Annotation, NgxAnnotateTextComponent } from "ngx-annotate-text";
+
 @Component({
   selector: 'app-poll',
   templateUrl: './poll.component.html',
@@ -17,9 +19,11 @@ import { User } from '../user-profile/user.model'
 })
 export class PollComponent {
   @Input() pollId!: string
+
+  question!: string
+
   image_urls: string[] = []
   selectedButton: HTMLButtonElement | null = null
-  question!: string
   tags!: any[]
   options!: any[]
   due_date!: string
@@ -40,6 +44,9 @@ export class PollComponent {
 
   outcome: string = ''
   outcomeSource: string = ''
+
+
+
 
   colors: string[] = [
     '#AEEEEE',
@@ -65,6 +72,8 @@ export class PollComponent {
     public dialog: MatDialog,
     private authService: AuthService,
   ) {}
+
+
 
   openConfirmationDialog(): void {
     const dialogRef = this.dialog.open(ConfirmModelComponent, {
@@ -119,7 +128,11 @@ export class PollComponent {
     return `${day}.${month}.${year} ${hours}:${minutes}`;
   }
 
+  
+
   ngOnInit() {
+
+
     this.http.get(`http://34.105.66.254:1923/poll/${this.pollId}`).subscribe(
     (response: any) => {
       this.question = response.question;
@@ -134,6 +147,15 @@ export class PollComponent {
       console.error('Error fetching poll:', error);
     }
   );
+
+
+  ///////////////////////////////////////
+  /*
+
+ 
+
+*/
+
     this.userId = localStorage.getItem('user_id')
     if (this.userId) {
       this.isAuthenticated = true
@@ -192,17 +214,8 @@ export class PollComponent {
       },
     )
 
-    /*
-    const selectedButtonId = localStorage.getItem('selectedButtonId')
-    if (selectedButtonId) {
-      this.selectedButton = document.getElementById(
-        selectedButtonId,
-      ) as HTMLButtonElement
-      if (this.selectedButton) {
-        this.selectedButton.classList.add('clicked')
-      }
-    }
-    */
+    ///
+    
 
   }
 

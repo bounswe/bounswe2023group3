@@ -1,0 +1,16 @@
+<ngx-annotate-text
+  [(annotations)]="Annotations"
+  [removable]="false"
+  [text]="question"
+  annotationClass="poll-question"
+  (clickAnnotation)="onClickPollQuestion($event)"
+  #pollQuestionText
+>
+</ngx-annotate-text>
+<ng-template #tooltip let-tooltip="tooltip">
+    <div class="tooltip" role="tooltip">
+      <div class="tooltip-inner">
+        {{ tooltip?.content }}
+      </div>
+    </div>
+  </ng-template>
