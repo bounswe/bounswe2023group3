@@ -222,7 +222,7 @@ export class PollService {
   }
 
   public async findMyVotedPolls(voterId: string) {
-    return await this.pollRepository.find({
+    const polls = await this.pollRepository.find({
       where: {
         votes: {
           user: {
@@ -230,8 +230,34 @@ export class PollService {
           },
         },
       },
-      relations: ['options', 'tags', 'creator', 'votes'],
+      relations: [
+        'options',
+        'tags',
+        'creator',
+        'votes',
+        'votes.user',
+        'votes.option',
+        'likes',
+        'likes.user',
+        'comments',
+      ],
     });
+
+    const extendedPolls = polls.map((poll) => {
+      return {
+        ...poll,
+        votedOption: poll.votes
+          .filter((vote) => vote.user && vote.user.id == voterId)
+          .map((vote) => vote.option.id)[0],
+        didLike: poll.likes.some(
+          (like) => like.user && like.user.id == voterId,
+        ),
+        likeCount: poll.likes.length,
+        commentCount: poll.comments.length,
+      };
+    });
+
+    return extendedPolls;
   }
 
   public async findPollById(pollId, userId?) {
