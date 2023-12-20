@@ -25,6 +25,12 @@ export class TagService {
     });
   }
 
+  public async findOneByName(name: string): Promise<Tag> {
+    return await this.tagRepository.findOne({
+      where: { name: name },
+    });
+  }
+
   public async remove(id: string): Promise<void> {
     await this.tagRepository.delete(id);
   }
@@ -37,5 +43,13 @@ export class TagService {
     // Extract the ids from the tags array
     const tagIds = tags.map((tag) => tag.id);
     return tagIds;
+  }
+
+  public async findByNames(tagNames): Promise<Tag[]> {
+    console.log(tagNames);
+    const promises = tagNames.map((tagName) => this.findOneByName(tagName));
+    const tags = await Promise.all(promises);
+
+    return tags;
   }
 }
