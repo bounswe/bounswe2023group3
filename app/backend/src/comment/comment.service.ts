@@ -17,6 +17,9 @@ export class CommentService {
     return await this.commentRepository.find({
       where: { poll: { id: pollID } },
       relations: ['user'],
+      order: {
+        created_date: 'DESC', // or 'ASC' for ascending order
+      },
     });
   }
 
