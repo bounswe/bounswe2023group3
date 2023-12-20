@@ -10,39 +10,48 @@ export class CommentService {
   constructor(
     @InjectRepository(Comment)
     private readonly commentRepository: Repository<Comment>,
-    private pollService: PollService
+    private pollService: PollService,
   ) {}
 
-  async fetchComments(pollID: string){
-    return await this.commentRepository.find({where : {poll:{id:pollID}}, relations:['user'] })
+  async fetchComments(pollID: string) {
+    return await this.commentRepository.find({
+      where: { poll: { id: pollID } },
+      relations: ['user'],
+    });
   }
 
-  async create(createCommentDto: CreateCommentDto, pollID: string, userID: string) {
-    const poll = await this.pollService.findPollById(pollID)
-    
-    if (!poll){
+  async create(
+    createCommentDto: CreateCommentDto,
+    pollID: string,
+    userID: string,
+  ) {
+    const poll = await this.pollService.findPollById(pollID);
+
+    if (!poll) {
       throw new ConflictException('There is no poll with this id');
     }
 
     const newLike = this.commentRepository.create({
       description: createCommentDto.description,
-      poll: { id: pollID},
-      user: { id: userID}
-  });
+      poll: { id: pollID },
+      user: { id: userID },
+    });
 
     return await this.commentRepository.save(newLike);
   }
 
-  async remove(pollID: string, userID:string) {
-    const poll = this.pollService.findPollById(pollID)
-    
-    if (!poll){
+  async remove(pollID: string, userID: string) {
+    const poll = this.pollService.findPollById(pollID);
+
+    if (!poll) {
       throw new ConflictException('There is no poll with this id');
     }
 
-    const commentToBeDeleted = await this.commentRepository.findOne({where: {poll: {id: pollID} , user : {id:userID}}})
+    const commentToBeDeleted = await this.commentRepository.findOne({
+      where: { poll: { id: pollID }, user: { id: userID } },
+    });
 
-    if (!commentToBeDeleted){
+    if (!commentToBeDeleted) {
       throw new ConflictException('User has not commented on this poll');
     }
 
