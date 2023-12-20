@@ -2,6 +2,7 @@ import {
   Controller,
   Get,
   Post,
+  Patch,
   Body,
   Param,
   Delete,
@@ -20,6 +21,7 @@ import { AuthGuard } from '../auth/guards/auth.guard';
 import { VerificationGuard } from '../auth/guards/verification.guard';
 import { CreatePollResponseDto } from './dto/responses/create-poll-response.dto';
 import { GetPollResponseDto } from './dto/responses/get-poll-response.dto';
+import { UpdateTagsDto } from './dto/update-tags.dto';
 import {
   SettlePollDto,
   SettlePollRequestDto,
@@ -59,7 +61,9 @@ export class PollController {
     description: 'Internal server error, contact with backend team.',
   })
   @Post('pinecone/search')
-  public async pineconeSearch(@Query('searchQuery') searchQuery: string): Promise<Poll[]> {
+  public async pineconeSearch(
+    @Query('searchQuery') searchQuery: string,
+  ): Promise<Poll[]> {
     return await this.pollService.searchSemanticPolls(searchQuery);
   }
 
@@ -109,6 +113,25 @@ export class PollController {
   }
 
   @UseGuards(ModeratorGuard, VerificationModeratorGuard)
+  @Patch(':id/update-tag')
+  @ApiResponse({ status: 200, description: 'Tags are updated successfully.' })
+  @ApiResponse({
+    status: 401,
+    description: 'You need to login as moderator. Unauthorized.',
+  })
+  @ApiResponse({ status: 404, description: 'Poll not found.' })
+  @ApiResponse({
+    status: 500,
+    description: 'Internal server error, contact with backend team.',
+  })
+  public async updateTags(
+    @Param('id', ParseUUIDPipe) id: string,
+    @Body() updateTagsDto: UpdateTagsDto,
+  ): Promise<void> {
+    return await this.pollService.updatePollTags(id, updateTagsDto);
+  }
+
+  @UseGuards(ModeratorGuard, VerificationModeratorGuard)
   @Post('settle/:id')
   @ApiResponse({ status: 200, description: 'Poll is settled successfully.' })
   @ApiResponse({ status: 404, description: 'Poll not found.' })
@@ -120,7 +143,11 @@ export class PollController {
     @Param('id', ParseUUIDPipe) id: string,
     @Body() settlePollDto: SettlePollDto,
   ): Promise<void> {
-    return await this.pollService.settlePoll(id, settlePollDto.decision,settlePollDto.settle_poll_request_feedback);
+    return await this.pollService.settlePoll(
+      id,
+      settlePollDto.decision,
+      settlePollDto.settle_poll_request_feedback,
+    );
   }
 
   @ApiQuery({ name: 'creatorId', required: false })
