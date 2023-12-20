@@ -49,8 +49,8 @@ router.get(
  *    summary: Get all annotations with query parameter
  *    parameters:
  *    - in: query
- *      name: pollId
- *      description: Get annotations for a specific poll
+ *      name: pollIDs
+ *      description: Get annotations for a specific set of polls
  *      required: false
  *      schema:
  *        type: string
