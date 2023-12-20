@@ -221,6 +221,19 @@ export class PollService {
     });
   }
 
+  public async findMyVotedPolls(voterId: string) {
+    return await this.pollRepository.find({
+      where: {
+        votes: {
+          user: {
+            id: voterId,
+          },
+        },
+      },
+      relations: ['options', 'tags', 'creator', 'votes'],
+    });
+  }
+
   public async findPollById(pollId, userId?) {
     const poll = await this.pollRepository.findOne({
       where: { id: pollId },

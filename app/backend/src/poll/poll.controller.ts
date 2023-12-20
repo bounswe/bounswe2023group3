@@ -127,7 +127,7 @@ export class PollController {
   public async updateTags(
     @Param('id', ParseUUIDPipe) id: string,
     @Body() updateTagsDto: UpdateTagsDto,
-  ): Promise<void> {
+  ): Promise<Poll> {
     return await this.pollService.updatePollTags(id, updateTagsDto);
   }
 
@@ -266,6 +266,22 @@ export class PollController {
       tags: null,
       userId,
     });
+  }
+
+  @UseGuards(AuthGuard, VerificationGuard)
+  @ApiResponse({
+    status: 200,
+    description: 'Polls are fetched successfully.',
+    type: [GetPollResponseDto],
+  })
+  @ApiResponse({
+    status: 500,
+    description: 'Internal server error, contact with backend team.',
+  })
+  @Get('voted-by-me')
+  public async findPollsIVoted(@Req() req: any): Promise<any> {
+    const userId = req.user.id;
+    return await this.pollService.findMyVotedPolls(userId);
   }
 
   @UseGuards(AuthGuard, VerificationGuard)
