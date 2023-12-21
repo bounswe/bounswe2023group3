@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsArray, IsNotEmpty, IsOptional, IsString } from 'class-validator';
+import { ArrayNotEmpty, IsArray, IsLowercase, IsNotEmpty, IsOptional, IsString } from 'class-validator';
 
 export class CreatePollDto {
   @ApiProperty({
@@ -21,12 +21,15 @@ export class CreatePollDto {
     example: ['soccer', 'champions league'],
   })
   @IsArray()
+  @ArrayNotEmpty()
+  @IsLowercase({ each: true })
   tags: Array<string>;
 
   @ApiProperty({
     example: ['Fenerbahçe', 'Galatasaray', 'Beşiktaş', 'Another Team'],
   })
   @IsArray()
+  @ArrayNotEmpty()
   options: Array<string>;
 
   @ApiProperty({
