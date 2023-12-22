@@ -42,7 +42,7 @@ import { Vote } from '../vote/entities/vote.entity';
       Comment,
       Report,
       Ranking,
-      Vote
+      Vote,
     ]),
     TagModule,
   ],
@@ -56,7 +56,7 @@ import { Vote } from '../vote/entities/vote.entity';
     TagService,
     Pinecone,
     GoogleGenerativeAIEmbeddings,
-    RankingService
+    RankingService,
   ],
   exports: [PollService],
 })

@@ -16,6 +16,7 @@ import { Like } from '../like/entities/like.entity';
 import { Comment } from '../comment/entities/comment.entity';
 import { Sort } from './enums/sort.enum';
 import { TagService } from '../tag/tag.service';
+import { UserService } from '../user/user.service';
 import { Document } from 'langchain/document';
 import { Pinecone } from '@pinecone-database/pinecone';
 import { PineconeStore } from 'langchain/vectorstores/pinecone';
@@ -38,6 +39,7 @@ export class PollService {
     private readonly likeRepository: Repository<Like>,
     @InjectRepository(Comment)
     private readonly commentRepository: Repository<Comment>,
+    private readonly userService: UserService,
     private readonly tagService: TagService,
     private readonly pinecone: Pinecone,
     private readonly rankingService: RankingService,
@@ -179,36 +181,6 @@ export class PollService {
     await this.pollRepository.save(poll);
   }
 
-  public async findAll({
-    creatorId,
-    approveStatus,
-    likedById,
-    followedById,
-    sortString,
-    tags,
-    userId,
-  }): Promise<Poll[]> {
-    if (sortString) {
-      if (!Object.values(Sort).includes(sortString)) {
-        throw new BadRequestException("Sort should be 'ASC' or 'DESC'");
-      }
-    }
-
-    if (tags) {
-      tags = await this.tagService.getTagIdsFromTagNames(tags);
-    }
-
-    return await this.pollRepository.findAll({
-      creatorId,
-      approveStatus,
-      likedById,
-      followedById,
-      sortString,
-      tags,
-      userId,
-    });
-  }
-
   public async findPolls(creatorId: string, approveStatus: boolean) {
     return await this.pollRepository.find({
       where: {
@@ -221,15 +193,134 @@ export class PollService {
     });
   }
 
-  public async findMyVotedPolls(voterId: string) {
+  public async findAll({
+    creatorId,
+    approveStatus,
+    likedById,
+    votedById,
+    followedById,
+    tags,
+    sortString,
+    userId,
+  }) {
+    const whereClause: any = {};
+
+    if (creatorId) {
+      whereClause.creator = {
+        id: creatorId,
+      };
+    }
+
+    if (approveStatus != null) {
+      whereClause.approveStatus = approveStatus;
+    }
+
+    if (likedById) {
+      whereClause.likes = {
+        user: {
+          id: likedById,
+        },
+      };
+    }
+
+    if (followedById) {
+      const followings =
+        await this.userService.getUsersFollowedById(followedById);
+      const followingIds = followings.map((obj) => obj.id);
+      console.log(followingIds);
+      whereClause.creator = {
+        id: In([...followingIds]),
+      };
+    }
+
+    if (votedById) {
+      whereClause.votes = {
+        user: {
+          id: votedById,
+        },
+      };
+    }
+
+    if (sortString) {
+      if (!Object.values(Sort).includes(sortString)) {
+        throw new BadRequestException("Sort should be 'ASC' or 'DESC'");
+      }
+    }
+
+    let polls = await this.pollRepository.find({
+      where: whereClause,
+      relations: [
+        'options',
+        'tags',
+        'creator',
+        'votes',
+        'votes.user',
+        'votes.option',
+        'likes',
+        'likes.user',
+        'comments',
+      ],
+      order: {
+        creation_date: sortString || 'DESC',
+      },
+    });
+
+    if (tags && tags.length > 0) {
+      polls = polls.filter((poll) =>
+        tags.every((tag) => poll.tags.some((tagItem) => tagItem.name === tag)),
+      );
+    }
+
+    let extendedPolls = [];
+    if (!userId) {
+      extendedPolls = polls.map((poll) => {
+        return {
+          ...poll,
+          votedOption: null,
+          didLike: false,
+          likeCount: poll.likes.length,
+          commentCount: poll.comments.length,
+        };
+      });
+    } else {
+      extendedPolls = polls.map((poll) => {
+        return {
+          ...poll,
+          votedOption:
+            poll.votes
+              .filter((vote) => vote.user && vote.user.id == userId)
+              .map((vote) => vote.option.id)[0] || null,
+          didLike: poll.likes.some(
+            (like) => like.user && like.user.id == userId,
+          ),
+          voteCount: poll.votes.length,
+          likeCount: poll.likes.length,
+          commentCount: poll.comments.length,
+        };
+      });
+    }
+
+    return extendedPolls;
+  }
+
+  public async findPollsUserdidNotVote(voterId: string) {
     const polls = await this.pollRepository.find({
-      where: {
-        votes: {
-          user: {
-            id: voterId,
+      where: [
+        {
+          votes: {
+            user: {
+              id: Not(voterId),
+            },
           },
         },
-      },
+        {
+          votes: {
+            user: {
+              id: IsNull(),
+            },
+          },
+        },
+      ],
       relations: [
         'options',
         'tags',
@@ -246,12 +337,14 @@ export class PollService {
     const extendedPolls = polls.map((poll) => {
       return {
         ...poll,
-        votedOption: poll.votes
-          .filter((vote) => vote.user && vote.user.id == voterId)
-          .map((vote) => vote.option.id)[0],
+        votedOption:
+          poll.votes
+            .filter((vote) => vote.user && vote.user.id == voterId)
+            .map((vote) => vote.option.id)[0] || null,
         didLike: poll.likes.some(
           (like) => like.user && like.user.id == voterId,
         ),
+        voteCount: poll.votes.length,
         likeCount: poll.likes.length,
         commentCount: poll.comments.length,
       };
@@ -263,26 +356,33 @@ export class PollService {
   public async findPollById(pollId, userId?) {
     const poll = await this.pollRepository.findOne({
       where: { id: pollId },
-      relations: ['options', 'tags', 'creator'],
+      relations: [
+        'options',
+        'tags',
+        'creator',
+        'votes',
+        'votes.user',
+        'votes.option',
+        'likes',
+        'likes.user',
+        'comments',
+      ],
     });
 
     if (!poll) {
       throw new NotFoundException('Poll not found');
     }
 
-    let like = false;
-    if (userId) {
-      like = await this.likeRepository.exist({
-        where: { poll: { id: pollId }, user: { id: userId } },
-        relations: ['user', 'poll'],
-      });
-    }
-
     return {
       ...poll,
-      likeCount: await this.findLikeCount(pollId),
-      commentCount: await this.findCommentCount(pollId),
-      didLike: like,
+      votedOption:
+        poll.votes
+          .filter((vote) => vote.user && vote.user.id == userId)
+          .map((vote) => vote.option.id)[0] || null,
+      didLike: poll.likes.some((like) => like.user && like.user.id == userId),
+      voteCount: poll.votes.length,
+      likeCount: poll.likes.length,
+      commentCount: poll.comments.length,
     };
   }
 
