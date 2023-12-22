@@ -18,7 +18,7 @@ export class UserProfileComponent {
   profile_picture!: any 
   nofFollowers: number = 0
   nofFollowees: number = 0
-  clickedButton: string = '';
+  clickedButton: string = 'liked';
 
   isEditing: boolean = false
   showFollowees: boolean = false

@@ -11,7 +11,7 @@ export class HomeComponent {
   polls!: any[]
   following!: any[]
   isAuthenticated: boolean = false
-  clickedButton: string = '';
+  clickedButton: string = 'following';
   settledMode!: boolean
   options!: any
 

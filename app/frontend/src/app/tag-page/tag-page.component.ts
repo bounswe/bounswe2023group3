@@ -21,7 +21,7 @@ export class TagPageComponent {
   ngOnInit() {
     this.route.params.subscribe((params) => {
       this.tagName = params['tagName']
-      this.http.get('http://34.105.66.254:1923/poll/?tags=' + [String(this.tagName)]+"&?approveStatus=true").subscribe(
+      this.http.get('http://34.105.66.254:1923/poll/?tags=' + [(String(this.tagName)).toLowerCase()]+"&?approveStatus=true").subscribe(
         (response: any) => {
           this.polls = response
         },
