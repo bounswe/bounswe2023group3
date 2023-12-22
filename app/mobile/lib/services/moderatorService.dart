@@ -58,10 +58,13 @@ class ModeratorService {
   }
 
   static Future<List<SettleViewHome>> getSettleRequests() async {
-    const String getPollsEndpoint = '/moderator/polls';
+    const String getPollsEndpoint = '/moderator/polls/query';
     try {
       final Response response = await ApiService.dio.get(
         getPollsEndpoint,
+        queryParameters: {
+          "is_settled": 1,
+        },
       );
       final List<dynamic> postsJson = response.data;
       List<SettleViewHome> posts = [];
