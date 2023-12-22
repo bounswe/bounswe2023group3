@@ -10,6 +10,7 @@ import {
   Req,
   Put,
   NotFoundException,
+  Query,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 
@@ -38,6 +39,16 @@ export class UserController {
   @Get()
   public async findAll(): Promise<GetUserResponseDto[]> {
     return await this.userService.findAll();
+  }
+
+  @Get('search/:username')
+  @ApiResponse({ status: 200, description: 'Users are fetched successfully.', type: [GetUserResponseDto] })
+  @ApiResponse({
+    status: 500,
+    description: 'Internal server error, contact with backend team.',
+  })
+  public async searchUsernames(@Query('username') username: string): Promise<GetUserResponseDto[]> {
+    return await this.userService.searchUsernames(username);
   }
 
   @ApiResponse({ status: 200, description: 'User is fetched successfully.', type: GetUserResponseDto })
