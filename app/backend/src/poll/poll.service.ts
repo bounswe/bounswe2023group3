@@ -433,10 +433,6 @@ export class PollService {
     await this.pollRepository.delete(id);
   }
 
-  public async removeAll(): Promise<void> {
-    await this.pollRepository.delete({});
-  }
-
   public async pineconeTest(): Promise<any> {
     return this.pineconeStore.pineconeIndex;
   }

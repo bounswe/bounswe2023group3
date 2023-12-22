@@ -359,21 +359,6 @@ export class PollController {
     return await this.pollService.findPollById(pollId, userId);
   }
 
-  @UseGuards(AuthGuard, VerificationGuard)
-  @ApiResponse({
-    status: 200,
-    description: 'Polls are removed successfully.',
-  })
-  @ApiResponse({ status: 404, description: 'Poll not found.' })
-  @ApiResponse({
-    status: 500,
-    description: 'Internal server error, contact with backend team.',
-  })
-  @Delete()
-  public async removeAll() {
-    return await this.pollService.removeAll();
-  }
-
   @ApiResponse({ status: 200, description: 'Poll deleted successfully.' })
   @ApiResponse({ status: 404, description: 'Poll not found.' })
   @ApiResponse({
