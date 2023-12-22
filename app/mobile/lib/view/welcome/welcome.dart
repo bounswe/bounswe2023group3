@@ -107,8 +107,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
             TextButton(
               onPressed: () {
                 // Continue as Guest
-                print("welcome.WelcomeScreen.build.Scaffold.Center.Column."
-                    "TextButton: Continue as guest");
+                Navigator.pushNamed(context, "/guest");
               },
               child: const Text('Continue as Guest',
                 style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),),
