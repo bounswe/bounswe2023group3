@@ -148,18 +148,20 @@ class Sidebar extends StatelessWidget {
                 children: [
                   Column(
                     children: [
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(0, 13, 0, 0),
-                        child: Image.asset(
-                          "assets/app-logo-white.png",
-                          scale: 8,
+                      Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.fromLTRB(0, 13, 0, 0),
+                          child: Image.asset(
+                            "assets/app-logo-white.png",
+                            scale: 10,
+                          ),
                         ),
                       ),
                       Text(
                         "'Poll'Up",
                         style: TextStyle(
                           color: whitish,
-                          fontSize: 12,
+                          fontSize: 16,
                         ),
                       ),
                     ],
