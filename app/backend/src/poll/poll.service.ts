@@ -77,9 +77,7 @@ export class PollService {
         let tag = await this.tagRepository.findOneBy({ name: tagName });
 
         if (!tag) {
-          tag = new Tag();
-          tag.name = tagName;
-          await this.tagRepository.save(tag);
+          throw new NotFoundException('Tag is not found.');
         }
 
         return tag;

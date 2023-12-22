@@ -260,6 +260,12 @@ export class UserService {
         'rankings',
       ],
     });
+
+  public async searchUsernames(query: string): Promise<User[]> {
+    return this.userRepository
+      .createQueryBuilder('user')
+      .where('user.username ILIKE :query', { query: `%${query}%` })
+      .getMany();
   }
 
   public generateCode(): number {

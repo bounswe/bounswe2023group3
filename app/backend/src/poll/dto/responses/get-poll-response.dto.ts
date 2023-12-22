@@ -62,7 +62,7 @@ export class GetPollResponseDto {
     example: [
       {
         id: '1a1b47e8-5c4e-4c93-a63a-5f7c9843b03d',
-        name: 'Besiktas',
+        answer: 'Besiktas',
       },
     ],
   })
