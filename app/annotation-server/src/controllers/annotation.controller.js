@@ -2,9 +2,18 @@ const annotationService = require("../services/annotation.service");
 
 async function getAnnotations(req, res) {
   try {
-    const { pollId } = req.query;
-    const annotations = await annotationService.getAnnotations(pollId);
-    return res.status(200).json({ annotations: annotations });
+    let { pollIDs } = req.query;
+    if (pollIDs) {
+      pollIDs = pollIDs.split(",");
+      const promises = pollIDs.map((pollId) =>
+        annotationService.getAnnotations(pollId)
+      );
+      const responses = await Promise.all(promises);
+      return res.status(200).json({ annotations: [].concat(...responses) });
+    } else {
+      const annotations = await annotationService.getAnnotations(pollIDs);
+      return res.status(200).json({ annotations: annotations });
+    }
   } catch (e) {
     console.error("Error getting annotations", e);
     res.status(500).json({ error: "An internal server error occurred." });

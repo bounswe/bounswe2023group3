@@ -89,11 +89,19 @@ button[type='submit'] {
   margin-bottom: 5px;
   cursor: pointer;
   font-size: 16px;
+  transition: background-color 0.2s;
 }
 
 button[type='submit']:hover {
-  background-color: #c1666b;
+  background-color: #1e416f;
 }
+
+button[type='submit']:disabled {
+  background-color: #9a9a9a;
+  color: #202a40;
+  cursor: not-allowed;
+}
+
 
 .login-container a {
   color: #fff;

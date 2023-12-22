@@ -36,7 +36,7 @@ class UserInformationWidget extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           ClickableUsername(
-            username: userName,
+            username: userUsername,
             textStyle: const TextStyle(fontWeight: FontWeight.bold),
           ),
           Text(userUsername),

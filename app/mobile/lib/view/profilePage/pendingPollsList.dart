@@ -21,7 +21,19 @@ class _PendingPollListState extends State<PendingPollList> {
         } else if (snapshot.hasError) {
           return Center(child: Text('Error: ${snapshot.error}'));
         } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-          return const Center(child: Text('No pending polls'));
+          return Scaffold(
+            appBar: AppBar(
+              title: const Text('Pending Polls'),
+            ),
+            body: const Center(
+              child: Text(
+                'No pending polls',
+                style: TextStyle(
+                  fontSize: 18,
+                ),
+              ),
+            ),
+          );
         } else {
           List<PollInfo> polls = snapshot.data!;
           return Scaffold(

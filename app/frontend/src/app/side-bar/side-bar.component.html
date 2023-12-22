@@ -20,6 +20,7 @@
             border-radius: 50%;
             margin-right: 5px;
             margin-top: 5px;
+            margin-bottom: 20px;
           "
         />
         <div
@@ -40,19 +41,31 @@
         </div>
       </div>
       <div class="buttons" style="position: relative;">
-        <button
-          class="button"
-          routerLink="/app-user-profile"
-          [class.blurred]="!isAuthenticated"
-        >
-          My Profile
+        <button 
+        class="button"
+        routerLink="/app-user-profile"
+        [class.blurred]="!isAuthenticated">
+          <img src="assets/profile.png" alt="Logo" class="logo-image" />
+          <span class="button-text">My Profile</span>
         </button>
-        <button class="button" routerLink="/app-home">Homepage</button>
+
+        <button class="button" routerLink="/app-home">
+          <img src="assets/homepage.png" alt="Logo" class="logo-image" />
+          <span class="button-text">Homepage</span>
+        </button>
+        <button class="button" [class.blurred]="!isAuthenticated" routerLink="/app-pending-requests">
+          <img src="assets/sent-request.png" alt="Logo" class="logo-image" />
+          <span class="button-text">My Requests</span>
+        </button>
+
         <button class="button" [class.blurred]="!isAuthenticated">
-          Notifications
+          <img src="assets/notification.png" alt="Logo" class="logo-image" />
+          <span class="button-text">Notifications</span>
         </button>
+
         <button class="button" [class.blurred]="!isAuthenticated" (click)="goToSettings()">
-          Settings
+          <img src="assets/settings.png" alt="Logo" class="logo-image" />
+          <span class="button-text">Settings</span>
         </button>
 
         <div style="position: absolute; z-index: 10;">
@@ -66,17 +79,21 @@
           class="button"
           [class.blurred]="!isAuthenticated"
           (click)="logOut()"
-          style="margin-bottom: 40px"
+          style="margin-bottom: 50px"
         >
-          Log out
+        <img src="assets/logout.png" alt="Logo" class="logo-image" />
+        <span class="button-text">Log out</span>
         </button>
         <button
           class="button"
           routerLink="/app-poll-request"
-          style="background-color: #e57f84; color: #fff"
+          style="background-color: #e57f84; color: #FFF; transition: background-color 0.2s;"
           [class.blurred]="!isAuthenticated"
+          onmouseover="this.style.backgroundColor='#c55d63';"
+          onmouseout="this.style.backgroundColor='#e57f84';"
         >
-          Create a poll request
+        <img src="assets/create-poll-request.png" alt="Logo" class="logo-image" />
+        <span class="button-text">New Poll Request</span>
         </button>
       </div>
     </div>

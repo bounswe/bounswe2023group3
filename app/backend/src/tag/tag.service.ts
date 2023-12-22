@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { CreateTagDto } from './dto/create-tag.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Tag } from './entities/tag.entity';
@@ -11,6 +11,10 @@ export class TagService {
   ) {}
 
   public async create(createTagDto: CreateTagDto): Promise<Tag> {
+    createTagDto.name = createTagDto.name.toLowerCase();
+    if (await this.tagRepository.findOneBy({ name: createTagDto.name })) {
+      throw new BadRequestException('Tag must be unique.');
+    }
     const createdTag = this.tagRepository.create(createTagDto);
     return await this.tagRepository.save(createdTag);
   }
@@ -22,6 +26,12 @@ export class TagService {
   public async findOne(id: string): Promise<Tag> {
     return await this.tagRepository.findOne({
       where: { id: id },
+    });
+  }
+
+  public async findOneByName(name: string): Promise<Tag> {
+    return await this.tagRepository.findOne({
+      where: { name: name },
     });
   }
 
@@ -38,4 +48,17 @@ export class TagService {
     const tagIds = tags.map((tag) => tag.id);
     return tagIds;
   }
+
+  public async findByNames(tagNames): Promise<Tag[]> {
+    console.log(tagNames);
+    const promises = tagNames.map((tagName) => this.findOneByName(tagName));
+    const tags = await Promise.all(promises);
+
+    return tags;
+  }
+
+  public async removeAll(): Promise<void> {
+    await this.tagRepository.delete({});
+  }
+
 }

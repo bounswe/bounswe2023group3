@@ -13,7 +13,10 @@ export class ModeratorPollReviewComponent {
   pollId!: any
   username!: string
   question!: string
-  options!: any
+  token!: any
+  due_date!: any
+  options: any[] = [];
+  tags: any[] = [];
   is_settled!: number
   outcome!: any
 
@@ -25,7 +28,7 @@ export class ModeratorPollReviewComponent {
     const headers = new HttpHeaders({
       Authorization: `Bearer ${localStorage.getItem('authToken')}`,
     })
-    this.options={ headers }
+    this.token={ headers }
   }
     
     ngOnInit() {
@@ -38,6 +41,9 @@ export class ModeratorPollReviewComponent {
       (response: any) => {
         this.username = response.creator.username
         this.question = response.question
+        this.options = response.options
+        this.tags = response.tags
+        this.due_date = this.formatDateTime(new Date(response.due_date))
         this.is_settled = response.is_settled
         this.outcome = response.outcome
       },
@@ -50,7 +56,7 @@ export class ModeratorPollReviewComponent {
     onApprove(){
       if(this.is_settled==1){
           this.http.post('http://34.105.66.254:1923/poll/settle/'+this.pollId,{'decision': true,
-        'settle_poll_request_feedback': "xx"},this.options).subscribe(
+        'settle_poll_request_feedback': "xx"},this.token).subscribe(
           (response: any) => {
           },
           (error) => {
@@ -60,7 +66,7 @@ export class ModeratorPollReviewComponent {
         return
       }
 
-      this.http.post('http://34.105.66.254:1923/moderator/approve/'+this.pollId,{'approveStatus': true},this.options).subscribe(
+      this.http.post('http://34.105.66.254:1923/moderator/approve/'+this.pollId,{'approveStatus': true},this.token).subscribe(
         (response: any) => {
         },
         (error) => {
@@ -75,7 +81,7 @@ export class ModeratorPollReviewComponent {
       {
         "decision": false,
         "settle_poll_request_feedback": "not a good to time to settle it"
-      },this.options).subscribe(
+      },this.token).subscribe(
         (response: any) => {
         },
         (error) => {
@@ -87,7 +93,7 @@ export class ModeratorPollReviewComponent {
     }
 
       this.http.post('http://34.105.66.254:1923/moderator/approve/'+this.pollId,{'approveStatus': false, 
-      "poll_request_rejection_feedback": "not a precise poll"}, this.options).subscribe(
+      "poll_request_rejection_feedback": "not a precise poll"}, this.token).subscribe(
         (response: any) => {
         },
         (error) => {
@@ -95,12 +101,22 @@ export class ModeratorPollReviewComponent {
         },
       )
 
-      this.http.delete('http://34.105.66.254:1923/poll/'+this.pollId,this.options).subscribe(
+      this.http.delete('http://34.105.66.254:1923/poll/'+this.pollId,this.token).subscribe(
         (response: any) => {
         },
         (error) => {
           console.error('Error deleting poll:', error)
         },
       )
+    }
+    
+    formatDateTime(date: Date): string {
+      const day = date.getDate().toString().padStart(2, '0');
+      const month = (date.getMonth() + 1).toString().padStart(2, '0');
+      const year = date.getFullYear();
+      const hours = date.getHours().toString().padStart(2, '0');
+      const minutes = date.getMinutes().toString().padStart(2, '0');
+    
+      return `${day}.${month}.${year} ${hours}:${minutes}`;
     }
 }

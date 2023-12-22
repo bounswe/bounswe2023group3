@@ -6,7 +6,7 @@ export class Tag {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column({ nullable: false })
+  @Column({ nullable: false, unique: true })
   name: string;
 
   @OneToMany(() => Ranking, (ranking) => ranking.user, { cascade: true })

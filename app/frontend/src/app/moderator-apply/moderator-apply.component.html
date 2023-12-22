@@ -12,16 +12,16 @@
       <h2>Apply to be a Moderator</h2>
       <form class="apply-form" #form="ngForm" (ngSubmit)="onSubmit(form)" novalidate>
         <div class="form-group">
-          <label for="name">Name:</label>
+          <label for="name">Name</label>
           <input type="text" id="name" [(ngModel)]="application.name" required>
     
-          <label for="surname">Surname:</label>
+          <label for="surname">Surname</label>
           <input type="text" id="surname" [(ngModel)]="application.surname" required>
     
-          <label for="email">Email address:</label>
+          <label for="email">Email address</label>
           <input type="text" id="email" name="email" [(ngModel)]="email" required>
         
-          <label for="cv">CV (PDF only):</label>
+          <label for="cv">CV (PDF only)</label>
           <label for="cv" class="custom-file-input-label">
             {{ getLabel() || "Choose a file" }}
             <input type="file" id="cv" [(ngModel)]="application.cv" accept=".pdf" (change)="onFileSelected($event)" class="custom-file-input">

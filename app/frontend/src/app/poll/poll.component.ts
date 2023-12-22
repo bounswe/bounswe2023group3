@@ -17,6 +17,7 @@ import { User } from '../user-profile/user.model'
 })
 export class PollComponent {
   @Input() pollId!: string
+  image_urls: string[] = []
   selectedButton: HTMLButtonElement | null = null
   question!: string
   tags!: any[]
@@ -30,6 +31,10 @@ export class PollComponent {
   nofLikes: number = 0
   userId!: string | null
 
+  //TODO: retrieve user vote & show in html
+  userVoted!: boolean 
+  user_vote_id !: string
+
   showPopup = false
   isAuthenticated: boolean = false
 
@@ -40,11 +45,17 @@ export class PollComponent {
     '#AEEEEE',
     '#FFDAB9',
     '#E6E6FA',
-    '#98FB98',
     '#FADADD',
     '#F08080',
     '#B0C4DE',
     '#FFB6C1',
+    '#D7907B',
+    '#DECBB7',
+    '#C1EEFF',
+    '#EDDEA4',
+    '#F7A072',
+    '#9BA0BC',
+    '#F88DAD'
   ]
 
   constructor(
@@ -104,11 +115,25 @@ export class PollComponent {
     const year = date.getFullYear();
     const hours = date.getHours().toString().padStart(2, '0');
     const minutes = date.getMinutes().toString().padStart(2, '0');
-  
+
     return `${day}.${month}.${year} ${hours}:${minutes}`;
   }
 
   ngOnInit() {
+    this.http.get(`http://34.105.66.254:1923/poll/${this.pollId}`).subscribe(
+    (response: any) => {
+      this.question = response.question;
+      this.tags = response.tags;
+      this.options = response.options;
+      this.due_date = this.formatDateTime(new Date(response.due_date));
+      this.vote_count = response.vote_count;
+      this.creator = response.creator;
+      this.image_urls = response.image_urls;
+    },
+    (error) => {
+      console.error('Error fetching poll:', error);
+    }
+  );
     this.userId = localStorage.getItem('user_id')
     if (this.userId) {
       this.isAuthenticated = true
@@ -118,11 +143,12 @@ export class PollComponent {
         this.question = response.question
         this.tags = response.tags
         this.options = response.options
-        
+
         this.due_date = this.formatDateTime(new Date(response.due_date))
         this.vote_count = response.vote_count
+
         this.creator = response.creator
-        
+
           if(!this.creator.firstname) this.creator.firstname=""
           if(!this.creator.lastname) this.creator.lastname=""
 
@@ -166,6 +192,7 @@ export class PollComponent {
       },
     )
 
+    /*
     const selectedButtonId = localStorage.getItem('selectedButtonId')
     if (selectedButtonId) {
       this.selectedButton = document.getElementById(
@@ -175,10 +202,30 @@ export class PollComponent {
         this.selectedButton.classList.add('clicked')
       }
     }
+    */
 
   }
 
+  castVote(optionId: string, buttonRef: HTMLButtonElement) {
+    if (!this.userVoted)
+    {
+      this.toggleButton(buttonRef);  // Handle UI change
+    this.userService.vote(optionId)            // Submit the vote
+      .then(response => {
+        // Handle the response
+        console.log('Vote cast for option ID:', optionId);
+      })
+      .catch(error => {
+        // Handle any errors
+        console.error('Error casting vote:', error);
+      });
+    }
+    this.userVoted = true;   
+  }
+
   toggleButton(button: HTMLButtonElement) {
+    button.classList.add('clicked');
+    /*
     if (this.selectedButton === button) {
       this.selectedButton.classList.remove('clicked')
       this.selectedButton = null
@@ -193,6 +240,7 @@ export class PollComponent {
 
       localStorage.setItem('selectedButtonId', button.id)
     }
+    */
   }
 
   toggleLike(): void {
@@ -256,7 +304,7 @@ export class PollComponent {
         },
       )
   }
-  
+
   sendUserReport(rsn : string) {
     const body = {
       'reason': rsn,

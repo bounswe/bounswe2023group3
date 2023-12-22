@@ -40,7 +40,6 @@ body {
   padding-left: 40px;
   padding-bottom: 40px;
   border-radius: 20px;
-
   margin-top: 20px;
 }
 
@@ -77,10 +76,11 @@ button[type='submit'] {
   margin-bottom: 15px;
   cursor: pointer;
   font-size: 12px;
+  transition: background-color 0.2s;
 }
 
 button[type='submit']:hover {
-  background-color: #232f44;
+  background-color: #1e416f;
 }
 
 .all-comments-container {

@@ -125,7 +125,7 @@ button[type='submit'] {
 }
 
 button[type='submit']:hover {
-  background-color: #232f44;
+  background-color: #1e416f;
 }
 
 button[type='submit']:disabled {
