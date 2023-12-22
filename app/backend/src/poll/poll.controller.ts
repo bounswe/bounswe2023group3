@@ -50,7 +50,6 @@ export class PollController {
     return await this.pollService.syncVectorStore();
   }
 
-  @UseGuards(AuthGuard, VerificationGuard)
   @ApiResponse({
     status: 200,
     description: 'Polls are searched successfully.',

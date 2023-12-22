@@ -226,6 +226,13 @@ export class UserService {
     await this.userRepository.save(user);
   }
 
+  public async searchUsernames(query: string): Promise<User[]> {
+    return this.userRepository
+      .createQueryBuilder('user')
+      .where('user.username ILIKE :query', { query: `%${query}%` })
+      .getMany();
+  }
+
   public generateCode(): number {
     return Math.floor(Math.random() * 9000 + 1000);
   }
