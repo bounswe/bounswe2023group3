@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http'
-import { Component, Input } from '@angular/core'
+import { Component, Input, EventEmitter, Output } from '@angular/core'
 import { AuthService } from '../auth.service'
 
 @Component({
@@ -30,6 +30,15 @@ export class HomeComponent {
     )
   }
 
+  @Output() toggleChange = new EventEmitter<boolean>();
+  isChecked = false;
+
+  onToggleChange(): void {
+    this.settledPolls(this.settledMode)
+    this.isChecked = !this.settledMode;
+    this.toggleChange.emit(this.isChecked);
+   
+  }
   ngOnInit() {
     this.settledMode = false
     if (localStorage.getItem('user_id')) {
@@ -69,6 +78,9 @@ export class HomeComponent {
         console.error('Error fetching polls:', error)
       },
     )
+    
+    this.isChecked = this.settledMode;
+    this.toggleChange.emit(this.isChecked);
   }
 
   followingPolls() {
@@ -82,6 +94,9 @@ export class HomeComponent {
         console.error('Error fetching polls:', error)
       },
     )
+    
+    this.isChecked = this.settledMode;
+    this.toggleChange.emit(this.isChecked);
   }
 
   semanticSearchPolls(query: string){

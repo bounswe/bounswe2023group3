@@ -19,11 +19,11 @@
         (click)="openPopup()"
       />
       <div class="popup" *ngIf="showPopup">
-        <div class="popuptext" (click)="openConfirmationDialog()">
+        <div class="popuptext" *ngIf="isCurrentUserCreator()" (click)="openConfirmationDialog()">
           Delete Poll
         </div>
-        <div class="popuptext" (click)="reportUser()">Report User</div>
-        <div class="popuptext" (click)="settleRequestForm()">
+        <div class="popuptext" *ngIf="!isCurrentUserCreator()" (click)="reportUser()">Report User</div>
+        <div class="popuptext" *ngIf="isCurrentUserCreator()" (click)="settleRequestForm()">
           Settle Outcome
         </div>
       </div>
@@ -65,6 +65,7 @@
 
       <img *ngIf="image_urls && image_urls.length > 0" [src]="image_urls[0]" alt="Poll Image" class="poll-image" style="width: 100%; height: auto; margin-top: 10px;" />
 
+
       <div style="display: flex; justify-content: space-between">
         <div>
           <!-- The algorithm written below will be changed later  -->
@@ -92,6 +93,8 @@
           {{ vote_count }} Vote(s)
         </p>
       </div>
+      <img [src]="image_urls && image_urls.length > 0 ? image_urls[0] : 'assets/path_to_the_placeholder.png'" alt="Poll Image" class="poll-image" style="width: 100%; height: auto; margin-top: 5px;" />
+
 
       <div>
         <button

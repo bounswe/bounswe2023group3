@@ -31,30 +31,28 @@
 
           <button
             class="edit-button"
-            style="
-              background-color: #63989f;
-              border: none;
-              width: 100px;
-              color: #fff;
-            "
             (click) = "toggleEdit()"
           > Edit Profile </button>
           </ng-container>
           <ng-template #editMode>
-            <app-file-upload (shortLinkEmitter)="receiveShortLink($event)"></app-file-upload>
-            <div style="margin-right: 10px;">
-              <input [(ngModel)]="editedFirstname" type="text" class="edit-username" 
-              style="border-radius: 10px;background-color: #79abb1; border: none; height: 30px;color: #fff; margin-bottom: 10px;" placeholder="Enter your first name"/>
-              <br>
-              <input [(ngModel)]="editedLastname" type="text" class="edit-username" 
-              style="border-radius: 10px;background-color: #79abb1; border: none; height: 30px;color: #fff;" placeholder="Enter your last name"/>
-            </div>
-            <div style="display: flex;">
-              <button class="edit-button" style="background-color: #63989f; border: none; color: #fff;" (click)="editProfile()">Save</button>
-              <button class="cancel-button" style="background-color: #63989f; border: none; color: #fff;" (click)="cancelEdit()">Cancel</button>
+            <div style="display: flex; align-items: flex-start;">
+              <div style="margin-right: 20px;">
+                <app-file-upload (shortLinkEmitter)="receiveShortLink($event)"></app-file-upload>
+              </div>
+              <div style="display: flex; flex-direction: row; justify-content: flex-start;">
+                <div style="margin-top: 10px;margin-left: 20px; margin-right: 120px; display: flex; flex-direction: row;">
+                  <input [(ngModel)]="editedFirstname" type="text" class="edit-username" placeholder="Enter your first name"/>
+                  <br>
+                  <input [(ngModel)]="editedLastname" type="text" class="edit-username" placeholder="Enter your last name"/>
+                </div>
+                <div style="display: flex; flex-direction: column; align-items: flex-end;">
+                  <button class="edit-button" (click)="editProfile()">Save</button>
+                  <button class="cancel-button" (click)="cancelEdit()">Cancel</button>
+                </div>
+              </div>
             </div>
           </ng-template>
-
+          
 
 
         </div>
@@ -64,8 +62,8 @@
             <b>{{ this.nofFollowees }}</b> followings
           </p>
           <div style="position: absolute; z-index: 10;">
-            <div class="popup" *ngIf="showFollowees" style="position: relative; top:0px; left:170px;
-             background-color: #80bbc4; border: 1px solid black;">
+            <div class="popup" *ngIf="showFollowees" style="position: relative; top:0px; left:235px;
+              border: 1px solid #232F44;">
               <app-follow-list  [followList]="followList" [title]="'Following'"></app-follow-list>
             </div>
           </div>
@@ -75,20 +73,20 @@
           </p>
         </div>
         <div style="position: absolute; z-index: 10;">
-          <div class="popup" *ngIf="showFollowers" style="position: relative; top:-15px; left:350px;
-           background-color: #80bbc4; border: 1px solid black; ">
+          <div class="popup" *ngIf="showFollowers" style="position: relative; top:-15px; left:415px;
+           border: 1px solid #232F44;">
             <app-follow-list [followList]="followList" [title]="'My Followers'"></app-follow-list>
           </div>
         </div>
 
         <div class="user-polls">
-          <button class="user-polls-column" [class.underlined]="clickedButton === 'created'" (click)="createdPolls()">
+          <button class="user-polls-column" [class.active]="clickedButton === 'created'" (click)="createdPolls()">
             Created
           </button>
-          <button class="user-polls-column" [class.underlined]="clickedButton === 'liked'" (click)="likedPolls()">
+          <button class="user-polls-column" [class.active]="clickedButton === 'liked'" (click)="likedPolls()">
             Liked
           </button>
-          <button class="user-polls-column" [class.underlined]="clickedButton === 'voted'" (click)="votedPolls()">
+          <button class="user-polls-column" [class.active]="clickedButton === 'voted'" (click)="votedPolls()">
             Voted
           </button>
         </div>

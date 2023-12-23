@@ -16,7 +16,7 @@ export class PollViewComponent {
   description!: string
   isAuthenticated: boolean = false
   showPopup = false
-
+  userId: string | null = localStorage.getItem('user_id');
   isSettled!: boolean
   comment_time!: string
 
@@ -186,5 +186,9 @@ export class PollViewComponent {
 
   isPopupOpen(commentId: string): boolean {
     return this.showPopup && this.selectedCommentId === commentId
+  }
+
+  isCommentOwner(commentUserId: string): boolean {
+    return this.userId === String(commentUserId);
   }
 }

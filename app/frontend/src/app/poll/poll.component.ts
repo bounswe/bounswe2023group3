@@ -339,4 +339,9 @@ export class PollComponent {
       )
   }
 
+  isCurrentUserCreator(): boolean {
+    // Check if there is a valid userId and creator, and if their ids match
+    return this.userId === this.creator.id;
+  }
+
 }
