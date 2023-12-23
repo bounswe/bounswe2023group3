@@ -3,15 +3,15 @@ import 'package:mobile_app/services/apiService.dart';
 
 class AccountClosingService {
 
-  Future<Response> closeAccount() async {
-    const String closeAccountEndpoint =
-        '/user/close-account';  //if exists
+  Future<Response> closeAccount(String userID) async {
+    String closeAccountEndpoint =
+        '/user/$userID';  //if exists
 
     final Map<String, String> data = {};
 
-
+    print(closeAccountEndpoint);
     try {
-      final Response response = await ApiService.dio.post(
+      final Response response = await ApiService.dio.delete(
         closeAccountEndpoint,
         data: data,
       );
