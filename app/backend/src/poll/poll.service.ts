@@ -24,6 +24,7 @@ import { GoogleGenerativeAIEmbeddings } from '@langchain/google-genai';
 import { TaskType } from '@google/generative-ai';
 import { RankingService } from '../ranking/ranking.service';
 import { UpdateTagsDto } from './dto/update-tags.dto';
+import { VoteService } from '../vote/vote.service';
 
 @Injectable()
 export class PollService {
@@ -43,6 +44,7 @@ export class PollService {
     private readonly tagService: TagService,
     private readonly pinecone: Pinecone,
     private readonly rankingService: RankingService,
+    private readonly voteService: VoteService,
   ) {
     this.embeddings = new GoogleGenerativeAIEmbeddings({
       modelName: 'embedding-001', // 768 dimensions
@@ -358,9 +360,6 @@ export class PollService {
         'options',
         'tags',
         'creator',
-        'votes',
-        'votes.user',
-        'votes.option',
         'likes',
         'likes.user',
         'comments',
@@ -370,15 +369,21 @@ export class PollService {
     if (!poll) {
       throw new NotFoundException('Poll not found');
     }
+    const votedOption = await this.voteService.findOne(pollId,userId);
+  
+    let voteDistribution = null;
+    if(votedOption){
+      voteDistribution = await this.voteService.getVoteRate(pollId)
+    }
+
+    const pollCount = await this.voteService.getVoteCount(pollId);
+
 
     return {
       ...poll,
-      votedOption:
-        poll.votes
-          .filter((vote) => vote.user && vote.user.id == userId)
-          .map((vote) => vote.option.id)[0] || null,
-      didLike: poll.likes.some((like) => like.user && like.user.id == userId),
-      voteCount: poll.votes.length,
+      votedOption: votedOption,
+      voteDistribution: voteDistribution,
+      voteCount: pollCount,
       likeCount: poll.likes.length,
       commentCount: poll.comments.length,
     };

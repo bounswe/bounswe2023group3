@@ -5,6 +5,7 @@ import 'package:mobile_app/services/apiService.dart';
 import 'package:mobile_app/view/leaderboard/leaderboardPage.dart';
 import 'package:mobile_app/view/moderatorHomePage/moderatorHomePage.dart';
 import 'package:mobile_app/view/profilePage/profilePage.dart';
+import 'package:mobile_app/view/settings/settingsPage.dart';
 import 'package:mobile_app/view/state.dart';
 
 import '../constants.dart';
@@ -181,18 +182,6 @@ class Sidebar extends StatelessWidget {
                 );
               },
             ),
-            ListTile(
-              leading: const Icon(Icons.leaderboard),
-              title: const Text('Leaderboard'),
-              onTap: () {
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => LeaderboardPage(selectedTagName: '',selectedTagID: '',),
-                  ),
-                );
-              },
-            ),
             const SizedBox(
               height: 6.0,
             ),
@@ -345,6 +334,12 @@ class Sidebar extends StatelessWidget {
             title: const Text('Settings'),
             onTap: () {
               // Navigate to the settings page or perform other actions
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => SettingsPage(),
+                ),
+              );
             },
           ),
           const SizedBox(

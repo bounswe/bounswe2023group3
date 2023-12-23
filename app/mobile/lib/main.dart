@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mobile_app/view/constants.dart';
 import 'package:mobile_app/view/guestFeed/guestFeed.dart';
+import 'package:mobile_app/view/moderatorApply/moderatorApplyScreen.dart';
 import 'package:mobile_app/view/moderatorLogin/moderatorLoginScreen.dart';
 import 'package:mobile_app/view/signup/signVerifyScreen.dart';
 import 'package:mobile_app/view/welcome/welcome.dart';
@@ -13,12 +14,12 @@ import 'package:mobile_app/view/moderatorHomePage/moderatorHomePage.dart';
 import 'package:mobile_app/services/apiService.dart';
 import 'view/pollRequest/pollRequestScreen.dart';
 import 'view/searchPage/searchPage.dart';
+import 'package:flutter/services.dart';
 
-
-void main() async{
+void main() async {
   ApiService.setup();
   await ApiService.init();
-
+  SystemSound.play(SystemSoundType.click);
   runApp(MaterialApp(
     debugShowCheckedModeBanner: false,
     theme: ThemeData(
@@ -44,10 +45,11 @@ void main() async{
       ),
       textButtonTheme: TextButtonThemeData(
         style: TextButton.styleFrom(
-          foregroundColor: navy, textStyle: const TextStyle(
-            // fontSize: 15,
-            // fontWeight: FontWeight.bold,
-          ),
+          foregroundColor: navy,
+          textStyle: const TextStyle(
+              // fontSize: 15,
+              // fontWeight: FontWeight.bold,
+              ),
         ),
       ),
       appBarTheme: const AppBarTheme(
@@ -64,19 +66,20 @@ void main() async{
       ),
     ),
     initialRoute: '/welcome',
-      routes: {
-        '/login': (context) => const LoginScreen(),
-        '/welcome': (context) => const WelcomeScreen(),
-        '/sign': (context) => const SignupScreen(),
-        '/home': (context) => HomePage(),
-        '/search': (context) => const SearchPage(),
-        '/fpassinit': (context) => const ForgetPassInitScreen(),
-        '/fpassverify': (context) => const ForgetPassVerifyScreen(),
-        '/pollreq': (context) => const PollRequestPage(),
-        '/signverify': (context) => const SignVerifyScreen(),
-        '/moderatorHome': (context) => const ModeratorHomePage(),
-        '/moderatorLogin': (context) => const ModeratorLoginScreen(),
-        '/guest': (context) => const GuestFeed(),
-      },
+    routes: {
+      '/login': (context) => const LoginScreen(),
+      '/welcome': (context) => const WelcomeScreen(),
+      '/sign': (context) => const SignupScreen(),
+      '/home': (context) => HomePage(),
+      '/search': (context) => const SearchPage(),
+      '/fpassinit': (context) => const ForgetPassInitScreen(),
+      '/fpassverify': (context) => const ForgetPassVerifyScreen(),
+      '/pollreq': (context) => const PollRequestPage(),
+      '/signverify': (context) => const SignVerifyScreen(),
+      '/moderatorHome': (context) => const ModeratorHomePage(),
+      '/moderatorLogin': (context) => const ModeratorLoginScreen(),
+      '/moderatorApply': (context) => const ModeratorApplicationPage(),
+      '/guest': (context) => const GuestFeed(),
+    },
   ));
 }
