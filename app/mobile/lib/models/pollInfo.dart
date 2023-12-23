@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mobile_app/models/annotation.dart';
 import 'package:mobile_app/view/constants.dart';
 
 class PollInfo {
@@ -32,6 +33,9 @@ class PollInfo {
   final bool didlike;
 
   final int chosenVoteIndex;
+
+  List<Annotation> titleAnnotations = [];
+  List<Annotation> descrAnnotations = [];
 
   PollInfo.withoutComments({
     required this.userName,
