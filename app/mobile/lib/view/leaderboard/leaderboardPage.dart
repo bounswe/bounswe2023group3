@@ -9,6 +9,8 @@ import 'package:mobile_app/view/errorWidget/errorWidget.dart';
 import 'package:mobile_app/view/leaderboard/personData.dart';
 import 'package:mobile_app/view/sidebar/sidebar.dart';
 
+import '../waitingScreen/fancyWaitingScreen.dart';
+
 class LeaderboardPage extends StatefulWidget {
   final String selectedTagID; // Currently selected tag
   final String selectedTagName; // Currently selected tag
@@ -58,7 +60,7 @@ class _LeaderboardPageState extends State<LeaderboardPage>
             AsyncSnapshot<List<TagData>> snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             // Show a loading indicator while the data is being fetched
-            return const CircularProgressIndicator();
+            return FancyWaitingScreen();
           } else if (snapshot.hasError) {
             // Show an error message if there is an error
             print(snapshot);
@@ -125,7 +127,7 @@ class _LeaderboardPageState extends State<LeaderboardPage>
   Widget buildLeaderboardSnapshot(AsyncSnapshot<List<PersonData>> snapshot) {
     if (snapshot.connectionState == ConnectionState.waiting) {
       // Show a loading indicator while the data is being fetched
-      return const Center(child: CircularProgressIndicator());
+      return FancyWaitingScreen();
     } else if (snapshot.hasError) {
       // Show an error message if there is an error
       if (snapshot.error is DioException) {
@@ -177,7 +179,7 @@ class _LeaderboardPageState extends State<LeaderboardPage>
   Widget buildTagLeaderboardSnapshot(AsyncSnapshot<List<PersonData>> snapshot, List<TagData> tags) {
     if (snapshot.connectionState == ConnectionState.waiting) {
       // Show a loading indicator while the data is being fetched
-      return const Center(child: CircularProgressIndicator());
+      return FancyWaitingScreen();
     } else if (snapshot.hasError) {
       // Show an error message if there is an error
       if (snapshot.error is DioException) {

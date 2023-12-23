@@ -5,6 +5,8 @@ import 'package:mobile_app/services/apiService.dart';
 import 'package:mobile_app/view/login/customTextField.dart';
 import 'package:mobile_app/view/profilePage/profilePictureWidget.dart';
 
+import '../waitingScreen/fancyWaitingScreen.dart';
+
 class EditProfilePage extends StatefulWidget {
   final ProfileInfo profileInfo;
   final void Function() profilePageReload;
@@ -187,7 +189,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                 _saveProfileInfoToRemote();
               },
             ),
-            if (isSaving) const Center(child: CircularProgressIndicator()),
+            if (isSaving) FancyWaitingScreen(),
           ],
         ),
       ),

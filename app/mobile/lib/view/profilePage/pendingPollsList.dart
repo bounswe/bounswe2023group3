@@ -3,6 +3,8 @@ import 'package:mobile_app/models/pollInfo.dart';
 import 'package:mobile_app/services/profilePagePollsService.dart';
 import 'package:mobile_app/view/profilePage/pendingPollView.dart';
 
+import '../waitingScreen/fancyWaitingScreen.dart';
+
 class PendingPollList extends StatefulWidget {
   final String userId;
   const PendingPollList({super.key, required this.userId});
@@ -17,7 +19,7 @@ class _PendingPollListState extends State<PendingPollList> {
       future: ProfilePagePollsService.getPendingPolls(widget.userId),
       builder: (BuildContext context, AsyncSnapshot<List<PollInfo>> snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Center(child: CircularProgressIndicator());
+          return FancyWaitingScreen();
         } else if (snapshot.hasError) {
           return Center(child: Text('Error: ${snapshot.error}'));
         } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
