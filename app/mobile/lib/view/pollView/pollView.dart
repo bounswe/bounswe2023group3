@@ -11,6 +11,7 @@ import 'package:mobile_app/view/pollView/userInformationWidget.dart';
 import 'package:mobile_app/services/pollViewHomePageLike.dart';
 
 import '../constants.dart';
+import '../waitingScreen/fancyWaitingScreen.dart';
 
 class PollPage extends StatefulWidget {
   final String pollId;
@@ -129,7 +130,7 @@ class _PollPageState extends State<PollPage> {
                   AsyncSnapshot<List<CommentData>> snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   // Show a loading indicator while waiting for the comments to load
-                  return const Center(child: CircularProgressIndicator());
+                  return FancyWaitingScreen();
                 } else if (snapshot.hasError) {
                   // If we run into an error, display it to the user
                   return Text('Error: ${snapshot.error}');

@@ -11,6 +11,8 @@ import 'package:mobile_app/view/profilePage/userInfoSection.dart';
 import 'package:mobile_app/view/sidebar/sidebar.dart';
 import 'package:mobile_app/view/state.dart';
 
+import '../waitingScreen/fancyWaitingScreen.dart';
+
 enum ProfilePagePollType { Created, Liked, Voted }
 
 class ProfilePage extends StatefulWidget {
@@ -124,7 +126,7 @@ class _ProfilePageState extends State<ProfilePage> {
         slivers: <Widget>[
           SliverToBoxAdapter(
             child: profileInfo == null
-                ? const CircularProgressIndicator()
+                ? FancyWaitingScreen()
                 : UserInfoSection(
                     profileInfo: profileInfo!,
                     profilePageReload: () {
