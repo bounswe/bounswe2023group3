@@ -57,8 +57,14 @@ export class VoteService {
 
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} vote`;
+  async findOne(pollID: string,userID: string) {
+    return await this.voteReposityory.findOne({where:{poll:{id:pollID},user:{id:userID}}})
+  }
+
+  async getVoteCount(pollID: string) {
+    return await this.voteReposityory.createQueryBuilder("vote")
+    .where("vote.poll.id = :pollID", { pollID: pollID })
+    .getCount()
   }
 
 
