@@ -453,6 +453,7 @@ class _PollRequestPageState extends State<PollRequestPage> {
                     onPressed: sendForApproval,
                     child: const Text('Send for Approval'),
                   ),
+                  const SizedBox(width: 20),
                   ElevatedButton(
                     onPressed: () {
                       Navigator.of(context)
@@ -461,7 +462,15 @@ class _PollRequestPageState extends State<PollRequestPage> {
                       }));
                       // Handle the Cancel action here
                     },
-                    child: const Text('Add Annotation'),
+                    child: const Text('Annotate'),
+                  ),
+                  IconButton(
+                    icon: const Icon(Icons.info_outline),
+                    onPressed: () => _showAlert(
+                        "You can select the parts of your"
+                        " poll title and description "
+                        "and add explanations about them.",
+                        () {}),
                   ),
                 ],
               ),
