@@ -6,7 +6,7 @@ import {Observable} from 'rxjs';
 }) 
 export class FileUploadService { 
 	
-  baseApiUrl = "https://file.io" //// the url will be changed 
+  baseApiUrl = "https://hizliresim.com/" //// the url will be changed 
 
   constructor(private http:HttpClient) { } 
 

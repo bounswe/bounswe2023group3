@@ -253,9 +253,6 @@ export class PollService {
         'options',
         'tags',
         'creator',
-        'votes',
-        'votes.user',
-        'votes.option',
         'likes',
         'likes.user',
         'comments',
@@ -270,35 +267,39 @@ export class PollService {
         tags.every((tag) => poll.tags.some((tagItem) => tagItem.name === tag)),
       );
     }
-
-    let extendedPolls = [];
-    if (!userId) {
-      extendedPolls = polls.map((poll) => {
+    
+    let extendedPolls = await Promise.all(
+      polls.map(async (poll) => {
         return {
           ...poll,
+          likeCount: poll.likes.length,
+          commentCount: poll.comments.length,
+          vote_count: await this.voteService.getVoteCount(poll.id),
           votedOption: null,
-          didLike: false,
-          likeCount: poll.likes.length,
-          commentCount: poll.comments.length,
+          didLike: null,
+          vote_distribution: poll.is_settled === Settle.SETTLED ? await this.voteService.getVoteRate(poll.id) : null
         };
-      });
-    } else {
-      extendedPolls = polls.map((poll) => {
-        return {
-          ...poll,
-          votedOption:
-            poll.votes
-              .filter((vote) => vote.user && vote.user.id == userId)
-              .map((vote) => vote.option.id)[0] || null,
-          didLike: poll.likes.some(
-            (like) => like.user && like.user.id == userId,
-          ),
-          voteCount: poll.votes.length,
-          likeCount: poll.likes.length,
-          commentCount: poll.comments.length,
-        };
-      });
+      })
+    );
+
+    if(userId){
+      extendedPolls = await Promise.all(
+        extendedPolls.map(async (poll) => {
+          const votedOption = (await this.voteService.findOne(poll.id, userId))?.option ?? null;
+          if (!poll.vote_distribution && votedOption) {
+            poll.vote_distribution = await this.voteService.getVoteRate(poll.id);
+          }
+          return {
+            ...poll,
+            votedOption:votedOption,
+            didLike: poll.likes.some((like) => like.user?.id === userId),
+          };
+        })
+      );      
     }
+
+
+
 
     return extendedPolls;
   }
@@ -539,8 +540,9 @@ export class PollService {
     if (!poll) {
       throw new NotFoundException('Poll not found');
     }
-    const votedOption = await this.voteService.findOne(pollId, userId);
 
+    const votedOption = (await this.voteService.findOne(poll.id, userId))?.option || null;
+  
     let voteDistribution = null;
     if (votedOption) {
       voteDistribution = await this.voteService.getVoteRate(pollId);

@@ -48,6 +48,8 @@ import { ScrollToTopButtonComponent } from './scroll-to-top-button/scroll-to-top
 import { UserPendingRequestsComponent } from './user-pending-requests/user-pending-requests.component'
 import { FollowListComponent } from './follow-list/follow-list.component'
 import { MatInputModule } from '@angular/material/input';
+import { QtextAnnotationComponent } from './qtext-annotation/qtext-annotation.component';
+import { NgxAnnotateTextModule } from "ngx-annotate-text";
 
 @NgModule({
   declarations: [
@@ -90,6 +92,7 @@ import { MatInputModule } from '@angular/material/input';
     ScrollToTopButtonComponent,
     UserPendingRequestsComponent,
     FollowListComponent,
+    QtextAnnotationComponent,
   ],
   imports: [
     BrowserModule,
@@ -100,7 +103,8 @@ import { MatInputModule } from '@angular/material/input';
     BrowserAnimationsModule,
     MatDialogModule,
     MatFormFieldModule,
-    MatInputModule
+    MatInputModule,
+    NgxAnnotateTextModule
   ],
   providers: [AuthService],
   bootstrap: [AppComponent],

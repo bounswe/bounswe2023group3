@@ -10,6 +10,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http'
 export class PollRequestComponent implements OnInit {
   pollForm: FormGroup
   no_deadline: boolean = false;
+  shortLink!: string;
 
   constructor(
     public fb: FormBuilder, //for testing, should be fixed later
@@ -22,6 +23,11 @@ export class PollRequestComponent implements OnInit {
       options: this.fb.array([this.fb.control('')]),
       due_date: [''],
     })
+  }
+
+  
+  receiveShortLink(shortLink: string) {
+    this.shortLink = shortLink;
   }
 
   getToken(): string | null {
@@ -64,6 +70,7 @@ export class PollRequestComponent implements OnInit {
     })
     const options = { headers }
 
+
     if (
       formValue.tags.length === 0 ||
       formValue.options.length === 0 ||
@@ -76,6 +83,10 @@ export class PollRequestComponent implements OnInit {
 
     if(this.no_deadline){ //internal server error
       formValue.due_date = 'No deadline'
+    }
+
+    if (this.shortLink !== null && this.shortLink !== undefined && this.shortLink.trim() !== '') {
+      formValue.image_urls = [this.shortLink];
     }
 
     this.http

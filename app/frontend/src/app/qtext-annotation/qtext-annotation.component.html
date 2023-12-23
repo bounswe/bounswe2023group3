@@ -1,0 +1,41 @@
+<div class="row mt-5">
+    <div class="col-12">
+  
+      <ngx-annotate-text
+        [(annotations)]="annotations"
+        [removable]="false"
+        [text]="text"
+        annotationClass="my-annotation"
+        (clickAnnotation)="onClickAnnotation($event)"
+        (removeAnnotation)="onRemoveAnnotation($event)"
+        (mouseover)="onMouseOverAnnotation($event)"
+        (mouseout)="onMouseOutAnnotation($event)"
+        #annotateText
+      >
+      </ngx-annotate-text>
+      
+    </div>
+    <button *ngIf="!enterAnnotation"
+    class="button"
+    (click)="showInput()"
+  >
+    Add Annotation
+  </button>
+  </div>
+  
+  <div *ngIf="enterAnnotation">
+    <input
+      type="text"
+      class="form-control"
+      [(ngModel)]="newAnotation"
+      placeholder="Enter annotation"
+    />
+    <button
+    type="button"
+    class="btn btn-primary me-2"
+    (click)="addAnnotation(newAnotation)"
+  >
+    Submit
+  </button>
+  </div>
+  
