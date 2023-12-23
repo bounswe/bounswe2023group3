@@ -10,6 +10,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http'
 export class PollRequestComponent implements OnInit {
   pollForm: FormGroup
   no_deadline: boolean = false;
+  shortLink!: string;
 
   constructor(
     public fb: FormBuilder, //for testing, should be fixed later
@@ -22,6 +23,11 @@ export class PollRequestComponent implements OnInit {
       options: this.fb.array([this.fb.control('')]),
       due_date: [''],
     })
+  }
+
+  
+  receiveShortLink(shortLink: string) {
+    this.shortLink = shortLink;
   }
 
   getToken(): string | null {
@@ -63,7 +69,7 @@ export class PollRequestComponent implements OnInit {
       Authorization: `Bearer ${token}`,
     });
     const options = { headers };
-  
+
     if (
       formValue.tags.length === 0 ||
       formValue.options.length === 0 ||
@@ -77,24 +83,27 @@ export class PollRequestComponent implements OnInit {
     if (this.no_deadline) {
       formValue.due_date = 'No deadline';
     }
-  
-    this.http.post('http://34.105.66.254:1923/poll', formValue, options).subscribe(
-      (response) => {
-        console.log('Poll created', response);
-        window.alert('Poll creation request sent.');
-        // Reload the page after a short delay to allow the request to complete
-        setTimeout(() => {
-          window.location.reload();
-        }, 500); // You can adjust the delay time as needed
-      },
-      (error) => {
-        if (error.status === 401) {
-          window.alert('Error: Unauthorized access. Please verify account.');
-          window.location.reload();
-        }
-        console.error('Error creating poll', error);
-      }
-    );
+
+    if (this.shortLink !== null && this.shortLink !== undefined && this.shortLink.trim() !== '') {
+      formValue.image_urls = [this.shortLink];
+    }
+
+    this.http
+      .post('http://34.105.66.254:1923/poll', formValue, options)
+      .subscribe(
+        (response) => {
+          console.log('Poll created', response)
+          window.location.reload()
+          window.alert('Poll creation request sent.')
+        },
+        (error) => {
+          if (error.status === 401) {
+            window.alert('Error: Unauthorized access. Please verify account.')
+            window.location.reload()
+          }
+          console.error('Error creating poll', error)
+        },
+      )
   }
   
 

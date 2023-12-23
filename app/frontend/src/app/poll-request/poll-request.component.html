@@ -38,6 +38,8 @@
               required
             />
 
+            <app-file-upload (shortLinkEmitter)="receiveShortLink($event)"></app-file-upload>
+
             <!-- Add Tags -->
             <div formArrayName="tags">
               <label for="" style="text-align: left"><b>Poll tags:</b></label>

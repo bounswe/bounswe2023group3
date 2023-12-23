@@ -36,6 +36,8 @@ dependencies:
   curl_logger_dio_interceptor: ^1.0.0
   intl: ^0.18.1
   dropdown_search: ^5.0.6
+  file_picker: ^4.1.4
+  fluttertoast: ^8.0.8
 
   flutter:
     sdk: flutter

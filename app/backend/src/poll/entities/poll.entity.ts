@@ -43,7 +43,7 @@ export class Poll {
   options: Relation<Option[]>;
 
   @Column({ nullable: true })
-  outcome: string
+  outcome: string;
 
   @Column({ nullable: true })
   outcome_source: string;
@@ -61,11 +61,8 @@ export class Poll {
   @OneToMany(() => Comment, (comment) => comment.poll)
   comments: Relation<Comment[]>;
 
-  @OneToMany(() => Vote, (vote) => vote.poll)
+  @OneToMany(() => Vote, (vote) => vote.poll, { cascade: true })
   votes: Relation<Vote[]>;
-
-  @Column({ default: 0 })
-  vote_count: number;
 
   // @Todo Replace with report entity
   //@Column({ nullable: true })
@@ -83,6 +80,6 @@ export class Poll {
   @Column({ nullable: true })
   poll_request_rejection_feedback: string;
 
-  @Column("simple-array",{ nullable: true })
+  @Column('simple-array', { nullable: true })
   image_urls: string[];
 }

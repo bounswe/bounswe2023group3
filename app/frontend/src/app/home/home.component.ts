@@ -14,6 +14,7 @@ export class HomeComponent {
   clickedButton: string = '';
   settledMode!: boolean
   options!: any
+  query!: string
 
   constructor(private http: HttpClient,private authService: AuthService) {
     this.options = this.authService.getHeaders();
@@ -96,5 +97,23 @@ export class HomeComponent {
     
     this.isChecked = this.settledMode;
     this.toggleChange.emit(this.isChecked);
+  }
+
+  semanticSearchPolls(query: string){
+    console.log("Semantic")
+    this.clickedButton = ''
+    const payload = 
+    {
+      query
+    }
+    this.http.post("http://34.105.66.254:1923/poll/pinecone/search", payload,this.options).subscribe(
+      (response: any) => {
+        this.polls = response
+      },
+      (error) => {
+        console.error('Error fetching polls:', error)
+      },
+    )
+
   }
 }

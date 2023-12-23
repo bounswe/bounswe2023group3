@@ -73,7 +73,7 @@ class _ForgetPassInitScreenState extends State<ForgetPassInitScreen> {
   void showErrorMessage(BuildContext context) {
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(
-        content: Text('Email is incorrect'),
+        content: Text('There is a problem with backend connection.'),
       ),
     );
   }

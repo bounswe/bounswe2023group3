@@ -20,7 +20,7 @@ body {
   border-radius: 15px;
   border: none;
 }
-.question:hover {
+.comment:hover {
   text-decoration: underline;
 }
 

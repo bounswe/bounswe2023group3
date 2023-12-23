@@ -1,9 +1,11 @@
+
 import 'package:flutter/material.dart';
 import 'package:mobile_app/view/homePage/homePage.dart';
 import 'package:mobile_app/services/apiService.dart';
 import 'package:mobile_app/view/leaderboard/leaderboardPage.dart';
 import 'package:mobile_app/view/moderatorHomePage/moderatorHomePage.dart';
 import 'package:mobile_app/view/profilePage/profilePage.dart';
+import 'package:mobile_app/view/settings/settingsPage.dart';
 import 'package:mobile_app/view/state.dart';
 
 import '../constants.dart';
@@ -13,7 +15,7 @@ class Sidebar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (AppState.isModerator) {
+    if (AppState.isGuest) {
       return Drawer(
         backgroundColor: lightBlue,
         child: ListView(
@@ -95,6 +97,93 @@ class Sidebar extends StatelessWidget {
                 );
               },
             ),
+            ListTile(
+              leading: const Icon(Icons.logout),
+              title: const Text('Welcome Page'),
+              onTap: () {
+                ApiService.logout();
+                Navigator.pushNamedAndRemoveUntil(
+                  context,
+                  '/welcome',
+                      (Route<dynamic> route) =>
+                  false, // This condition ensures removing all previous routes
+                );
+              },
+            ),
+          ],
+        ),
+      );
+    }
+    if (AppState.isModerator) {
+      return Drawer(
+        backgroundColor: lightBlue,
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: <Widget>[
+            SizedBox(
+              height: 150.0,
+              child: DrawerHeader(
+                decoration: BoxDecoration(
+                  color: navy,
+                ),
+                child: Row(
+                  children: [
+                    Column(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(0, 13, 0, 0),
+                          child: Image.asset(
+                            "assets/app-logo-white.png",
+                            scale: 8,
+                          ),
+                        ),
+                        Text(
+                          "'Poll'Up",
+                          style: TextStyle(
+                            color: whitish,
+                            fontSize: 12,
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(
+                      width: 25.0,
+                    ),
+                    Center(
+                      child: Text(
+                        'Side Menu',
+                        style: TextStyle(
+                          color: whitish,
+                          fontSize: 24,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            ListTile(
+              leading: const Icon(Icons.home),
+              title: const Text('Home'),
+              onTap: () {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ModeratorHomePage(),
+                  ),
+                );
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.search),
+              title: const Text('Search'),
+              onTap: () {
+                Navigator.pushReplacementNamed(
+                  context,
+                  '/search',
+                );
+              },
+            ),
             const SizedBox(
               height: 6.0,
             ),
@@ -148,18 +237,20 @@ class Sidebar extends StatelessWidget {
                 children: [
                   Column(
                     children: [
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(0, 13, 0, 0),
-                        child: Image.asset(
-                          "assets/app-logo-white.png",
-                          scale: 8,
+                      Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.fromLTRB(0, 13, 0, 0),
+                          child: Image.asset(
+                            "assets/app-logo-white.png",
+                            scale: 10,
+                          ),
                         ),
                       ),
                       Text(
                         "'Poll'Up",
                         style: TextStyle(
                           color: whitish,
-                          fontSize: 12,
+                          fontSize: 16,
                         ),
                       ),
                     ],
@@ -245,6 +336,12 @@ class Sidebar extends StatelessWidget {
             title: const Text('Settings'),
             onTap: () {
               // Navigate to the settings page or perform other actions
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => SettingsPage(),
+                ),
+              );
             },
           ),
           const SizedBox(

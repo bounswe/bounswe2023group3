@@ -1,5 +1,7 @@
 import 'package:curl_logger_dio_interceptor/curl_logger_dio_interceptor.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get_it/get_it.dart';
 
 class ApiService {
@@ -33,6 +35,7 @@ class ApiService {
       },
     ));
     dio.interceptors.add(CurlLoggerDioInterceptor(printOnSuccess: true));
+    dio.interceptors.add(DefaultInterceptor());
   }
 
   static void setJwtToken(String token) {
@@ -55,10 +58,40 @@ class ApiService {
       '/auth/forgot-password',
       '/auth/reset-password',
       '/moderator/login',
+      '/poll',
     ];
     // Check if the current URL should be ignored
-    bool shouldIgnore =
-        ignoredEndpoints.any((endpoint) => uri.path.startsWith(endpoint));
+    bool shouldIgnore = ignoredEndpoints.any((endpoint) {
+      if (uri.path.startsWith(endpoint)) {
+        // Exclude '/poll/my-followings' from being ignored
+        if (endpoint == '/poll' && uri.path == '/poll/my-followings') {
+          return false;
+        }
+        return true;
+      }
+      return false;
+    });
     return shouldIgnore;
+  }
+}
+
+class DefaultInterceptor extends Interceptor {
+  @override
+  Future<void> onError(DioException e, ErrorInterceptorHandler handler) async {
+    if (e.response?.statusCode == 401) {
+      // Handle 401 error, for example, show a toast
+      Fluttertoast.showToast(
+        msg: "You must be logged in to perform this action.",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.CENTER,
+        timeInSecForIosWeb: 1,
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+        fontSize: 16.0,
+      );
+    }
+
+    // Continue with the error handling
+    super.onError(e, handler);
   }
 }

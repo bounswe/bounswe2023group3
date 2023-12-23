@@ -41,6 +41,8 @@ export class PollComponent {
   outcome: string = ''
   outcomeSource: string = ''
 
+  annotations: any[] =[]
+
   colors: string[] = [
     '#AEEEEE',
     '#FFDAB9',
@@ -64,63 +66,23 @@ export class PollComponent {
     private userService: UserService,
     public dialog: MatDialog,
     private authService: AuthService,
-  ) {}
-
-  openConfirmationDialog(): void {
-    const dialogRef = this.dialog.open(ConfirmModelComponent, {
-      width: '300px',
-    })
-
-    dialogRef.afterClosed().subscribe((result) => {
-      if (result === true) {
-        console.log('User confirmed deletion')
-        this.deletePoll()
-      } else {
-        console.log('User canceled deletion')
-      }
-    })
+  ) {
   }
 
-  reportUser(): void {
-    const dialogRef = this.dialog.open(ReportUserComponent, {
-      width: '300px',
-    })
-
-    dialogRef.afterClosed().subscribe((result) => {
-      if (result) {
-        this.sendUserReport(result.reason)
-      } else {
-      }
-    })
-  }
-
-  settleRequestForm(): void {
-    const dialogRef = this.dialog.open(UserSettleRequestComponent, {
-      width: '300px',
-    })
-
-    dialogRef.afterClosed().subscribe((result) => {
-      if (result) {
-        this.outcome = result.outcome
-        this.outcomeSource = result.outcomeSource
-        this.settlePollRequest()
-      } else {
-      }
-    })
-  }
-
-  formatDateTime(date: Date): string {
-    const day = date.getDate().toString().padStart(2, '0');
-    const month = (date.getMonth() + 1).toString().padStart(2, '0');
-    const year = date.getFullYear();
-    const hours = date.getHours().toString().padStart(2, '0');
-    const minutes = date.getMinutes().toString().padStart(2, '0');
-
-    return `${day}.${month}.${year} ${hours}:${minutes}`;
-  }
+  
 
   ngOnInit() {
-    this.http.get(`http://34.105.66.254:1923/poll/${this.pollId}`).subscribe(
+
+    this.http.get('http://34.105.66.254:1938/annotation?pollId=http%3A%2F%2F34.105.66.254%3A1923%2F'+this.pollId).subscribe(
+      (response: any) => {
+        this.annotations=response.annotations;
+      },
+      (error) => {
+        console.error('Error fetching poll:', error);
+      }
+    );
+
+    this.http.get('http://34.105.66.254:1923/poll/'+this.pollId).subscribe(
     (response: any) => {
       this.question = response.question;
       this.tags = response.tags;
@@ -204,6 +166,59 @@ export class PollComponent {
     }
     */
 
+  }
+
+  openConfirmationDialog(): void {
+    const dialogRef = this.dialog.open(ConfirmModelComponent, {
+      width: '300px',
+    })
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result === true) {
+        console.log('User confirmed deletion')
+        this.deletePoll()
+      } else {
+        console.log('User canceled deletion')
+      }
+    })
+  }
+
+  reportUser(): void {
+    const dialogRef = this.dialog.open(ReportUserComponent, {
+      width: '300px',
+    })
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.sendUserReport(result.reason)
+      } else {
+      }
+    })
+  }
+
+  settleRequestForm(): void {
+    const dialogRef = this.dialog.open(UserSettleRequestComponent, {
+      width: '300px',
+    })
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.outcome = result.outcome
+        this.outcomeSource = result.outcomeSource
+        this.settlePollRequest()
+      } else {
+      }
+    })
+  }
+
+  formatDateTime(date: Date): string {
+    const day = date.getDate().toString().padStart(2, '0');
+    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+    const year = date.getFullYear();
+    const hours = date.getHours().toString().padStart(2, '0');
+    const minutes = date.getMinutes().toString().padStart(2, '0');
+
+    return `${day}.${month}.${year} ${hours}:${minutes}`;
   }
 
   castVote(optionId: string, buttonRef: HTMLButtonElement) {

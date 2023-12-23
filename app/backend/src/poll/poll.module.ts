@@ -28,6 +28,8 @@ import { GoogleGenerativeAIEmbeddings } from '@langchain/google-genai';
 import { RankingService } from '../ranking/ranking.service';
 import { Ranking } from '../ranking/entities/ranking.entity';
 import { Vote } from '../vote/entities/vote.entity';
+import { VoteService } from '../vote/vote.service';
+import { OptionService } from '../option/option.service';
 
 @Module({
   imports: [
@@ -42,7 +44,7 @@ import { Vote } from '../vote/entities/vote.entity';
       Comment,
       Report,
       Ranking,
-      Vote
+      Vote,
     ]),
     TagModule,
   ],
@@ -56,7 +58,9 @@ import { Vote } from '../vote/entities/vote.entity';
     TagService,
     Pinecone,
     GoogleGenerativeAIEmbeddings,
-    RankingService
+    RankingService,
+    VoteService,
+    OptionService
   ],
   exports: [PollService],
 })

@@ -29,7 +29,7 @@ export class UserService {
   public async searchUserByUsername(username: string): Promise<User> {
     return await this.userRepository.findOne({
       where: { username: username },
-      relations: ['polls', 'badges', 'followings', 'followers','rankings'],
+      relations: ['polls', 'badges', 'followings', 'followers', 'rankings'],
       select: [
         'id',
         'email',
@@ -42,7 +42,7 @@ export class UserService {
         'followings',
         'profile_picture',
         'isBanned',
-        'rankings'
+        'rankings',
       ],
     });
   }
@@ -50,7 +50,7 @@ export class UserService {
   public async findUserById(id: string): Promise<User> {
     return await this.userRepository.findOne({
       where: { id: id },
-      relations: ['polls', 'badges', 'followings', 'followers','rankings'],
+      relations: ['polls', 'badges', 'followings', 'followers', 'rankings'],
       select: [
         'id',
         'email',
@@ -62,7 +62,7 @@ export class UserService {
         'followers',
         'followings',
         'profile_picture',
-        'isBanned'
+        'isBanned',
       ],
     });
   }
@@ -84,7 +84,7 @@ export class UserService {
 
   public async findAll(): Promise<User[]> {
     return await this.userRepository.find({
-      relations: ['polls', 'badges', 'followings', 'followers','rankings'],
+      relations: ['polls', 'badges', 'followings', 'followers', 'rankings'],
       select: [
         'id',
         'email',
@@ -97,7 +97,7 @@ export class UserService {
         'lastname',
         'profile_picture',
         'isBanned',
-        'rankings'
+        'rankings',
       ],
     });
   }
@@ -156,7 +156,10 @@ export class UserService {
     await this.userRepository.save(authUser);
   }
 
-  public async updateById(id: string, updateUserDto: UpdateUserDto): Promise<void> {
+  public async updateById(
+    id: string,
+    updateUserDto: UpdateUserDto,
+  ): Promise<void> {
     await this.userRepository.update(id, updateUserDto);
   }
 
@@ -186,7 +189,11 @@ export class UserService {
     await this.userRepository.save(user);
   }
 
-  public async reportUser(reportedId: string, reportDto: CreateReportDto, reporterId: string) {
+  public async reportUser(
+    reportedId: string,
+    reportDto: CreateReportDto,
+    reporterId: string,
+  ) {
     const reportedUser = await this.userRepository.findOne({
       where: { id: reportedId },
     });
@@ -203,27 +210,62 @@ export class UserService {
     });
 
     return await this.reportRepository.save(report);
-
   }
 
-  public async changePassword(id: string, changePasswordDto: ChangePasswordDto): Promise<void> {
+  public async changePassword(
+    id: string,
+    changePasswordDto: ChangePasswordDto,
+  ): Promise<void> {
     const user = await this.userRepository.findOne({
       where: { id: id },
     });
     if (!user) {
       throw new NotFoundException('User not found');
     }
-    if(!await user.compareEncryptedPassword(changePasswordDto.oldPassword)) {
+    if (!(await user.compareEncryptedPassword(changePasswordDto.oldPassword))) {
       throw new ConflictException('Old password is wrong');
     }
-    if(changePasswordDto.oldPassword === changePasswordDto.password) {
-      throw new ConflictException('New password cannot be same with old password');
+    if (changePasswordDto.oldPassword === changePasswordDto.password) {
+      throw new ConflictException(
+        'New password cannot be same with old password',
+      );
     }
-    if(changePasswordDto.password !== changePasswordDto.passwordConfirm) {
+    if (changePasswordDto.password !== changePasswordDto.passwordConfirm) {
       throw new ConflictException('Passwords do not match');
     }
     user.password = changePasswordDto.password;
     await this.userRepository.save(user);
+  }
+
+  public async getUsersFollowedById(userId: string): Promise<User[]> {
+    return await this.userRepository.find({
+      where: {
+        followers: {
+          id: userId,
+        },
+      },
+      relations: ['polls', 'badges', 'followings', 'followers', 'rankings'],
+      select: [
+        'id',
+        'email',
+        'username',
+        'polls',
+        'badges',
+        'followers',
+        'followings',
+        'firstname',
+        'lastname',
+        'profile_picture',
+        'isBanned',
+        'rankings',
+      ],
+    })};
+
+  public async searchUsernames(query: string): Promise<User[]> {
+    return this.userRepository
+      .createQueryBuilder('user')
+      .where('user.username ILIKE :query', { query: `%${query}%` })
+      .getMany();
   }
 
   public generateCode(): number {

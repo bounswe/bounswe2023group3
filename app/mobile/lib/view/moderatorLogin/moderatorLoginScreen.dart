@@ -72,6 +72,7 @@ class _ModeratorLoginScreenState extends State<ModeratorLoginScreen> {
       if (response.statusCode == 201) {
         moderatorAuthService.saveToken(response.data['access_token']);
         AppState.isModerator=true;
+        AppState.isGuest=false;
         /*try {
           Response loggedInUserData = await ModeratorApiService.dio.get('/auth/me');
           if (loggedInUserData.statusCode == 200) {
@@ -143,6 +144,14 @@ class _ModeratorLoginScreenState extends State<ModeratorLoginScreen> {
                   // onPressed: isEmailValid && isPasswordValid ? login : null,
                   onPressed: login,
                   child: const Text('Login'),
+                ),
+
+                TextButton(
+                  onPressed: () {
+                    // Continue as Guest
+                    Navigator.pushNamed(context, "/moderatorApply");
+                  },
+                  child: const Text('Apply to be a Moderator?'),
                 ),
 
                 Padding(

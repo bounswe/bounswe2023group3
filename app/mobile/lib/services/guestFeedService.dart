@@ -12,7 +12,7 @@ import 'annotationService.dart';
 
 class HomePageService {
   static Future<List<PollViewHomePage>> getPollRequests() async {
-    const String getPollsEndpoint = '/poll/my-followings';
+    const String getPollsEndpoint = '/poll';
     print("bbb");
     try {
       final Response response = await ApiService.dio.get(
@@ -82,8 +82,8 @@ class HomePageService {
           pollId: post['id'],
           userName: creator['firstname'] != null || creator['lastname'] != null
               ? ((creator['firstname'] ?? "") +
-                  " " +
-                  (creator["lastname"] ?? ""))
+              " " +
+              (creator["lastname"] ?? ""))
               : creator['username'],
           userUsername: creator['username'],
           profilePictureUrl: creator['profile_picture'] ?? "",
