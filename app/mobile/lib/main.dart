@@ -19,7 +19,8 @@ import 'package:flutter/services.dart';
 void main() async {
   ApiService.setup();
   await ApiService.init();
-  SystemSound.play(SystemSoundType.click);
+  // TODO uncomment
+  // SystemSound.play(SystemSoundType.click);
   runApp(MaterialApp(
     debugShowCheckedModeBanner: false,
     theme: ThemeData(
