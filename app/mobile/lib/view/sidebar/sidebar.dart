@@ -66,11 +66,9 @@ class Sidebar extends StatelessWidget {
               leading: const Icon(Icons.home),
               title: const Text('Home'),
               onTap: () {
-                Navigator.pushReplacement(
+                Navigator.pushReplacementNamed(
                   context,
-                  MaterialPageRoute(
-                    builder: (context) => ModeratorHomePage(),
-                  ),
+                  '/guest',
                 );
               },
             ),
