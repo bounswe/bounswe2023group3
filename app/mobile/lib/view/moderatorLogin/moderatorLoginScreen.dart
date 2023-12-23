@@ -145,6 +145,14 @@ class _ModeratorLoginScreenState extends State<ModeratorLoginScreen> {
                   child: const Text('Login'),
                 ),
 
+                TextButton(
+                  onPressed: () {
+                    // Continue as Guest
+                    Navigator.pushNamed(context, "/moderatorApply");
+                  },
+                  child: const Text('Apply to be a Moderator?'),
+                ),
+
                 Padding(
                   padding: const EdgeInsets.all(10),
                   child: Column(
