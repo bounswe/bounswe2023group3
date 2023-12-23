@@ -151,7 +151,6 @@ export class PollController {
   }
 
   @ApiQuery({ name: 'creatorId', required: false })
-  @ApiQuery({ name: 'approveStatus', required: false })
   @ApiQuery({ name: 'likedById', required: false })
   @ApiQuery({ name: 'votedById', required: false })
   @ApiQuery({ name: 'followedById', required: false })
@@ -171,8 +170,6 @@ export class PollController {
     @Req() req: any,
     @Query('creatorId', new ParseUUIDPipe({ optional: true }))
     creatorId?: string,
-    @Query('approveStatus', new ParseBoolPipe({ optional: true }))
-    approveStatus?: string,
     @Query('likedById', new ParseUUIDPipe({ optional: true }))
     likedById?: string,
     @Query('votedById', new ParseUUIDPipe({ optional: true }))
@@ -187,7 +184,7 @@ export class PollController {
     const userId = req.user?.sub; // Realize that it is not id instead sub. I do not know why but middleware gives this field.
     return await this.pollService.findAll({
       creatorId,
-      approveStatus,
+      approveStatus: true,
       likedById,
       votedById,
       followedById,
@@ -200,7 +197,6 @@ export class PollController {
   @ApiQuery({ name: 'pageSize', required: true })
   @ApiQuery({ name: 'pageNum', required: true })
   @ApiQuery({ name: 'creatorId', required: false })
-  @ApiQuery({ name: 'approveStatus', required: false })
   @ApiQuery({ name: 'likedById', required: false })
   @ApiQuery({ name: 'votedById', required: false })
   @ApiQuery({ name: 'followedById', required: false })
@@ -224,8 +220,6 @@ export class PollController {
     pageNum: number,
     @Query('creatorId', new ParseUUIDPipe({ optional: true }))
     creatorId?: string,
-    @Query('approveStatus', new ParseBoolPipe({ optional: true }))
-    approveStatus?: string,
     @Query('likedById', new ParseUUIDPipe({ optional: true }))
     likedById?: string,
     @Query('votedById', new ParseUUIDPipe({ optional: true }))
@@ -240,7 +234,7 @@ export class PollController {
     const userId = req.user?.sub; // Realize that it is not id instead sub. I do not know why but middleware gives this field.
     return await this.pollService.findAllWithPagination({
       creatorId,
-      approveStatus,
+      approveStatus: true,
       likedById,
       votedById,
       followedById,
@@ -268,7 +262,7 @@ export class PollController {
     const creatorId = req.user.id;
     return await this.pollService.findAll({
       creatorId,
-      approveStatus: null,
+      approveStatus: true,
       likedById: null,
       votedById: null,
       followedById: null,
@@ -301,7 +295,7 @@ export class PollController {
     const creatorId = req.user.id;
     return await this.pollService.findAllWithPagination({
       creatorId,
-      approveStatus: null,
+      approveStatus: true,
       likedById: null,
       votedById: null,
       followedById: null,
@@ -354,7 +348,7 @@ export class PollController {
     const userId = req.user.id;
     return await this.pollService.findAll({
       creatorId: null,
-      approveStatus: null,
+      approveStatus: true,
       likedById: userId,
       votedById: null,
       followedById: null,
@@ -387,7 +381,7 @@ export class PollController {
     const userId = req.user.id;
     return await this.pollService.findAllWithPagination({
       creatorId: null,
-      approveStatus: null,
+      approveStatus: true,
       likedById: userId,
       votedById: null,
       followedById: null,
@@ -414,7 +408,7 @@ export class PollController {
     const userId = req.user.id;
     return await this.pollService.findAll({
       creatorId: null,
-      approveStatus: null,
+      approveStatus: true,
       likedById: null,
       votedById: userId,
       followedById: null,
@@ -447,7 +441,7 @@ export class PollController {
     const userId = req.user.id;
     return await this.pollService.findAllWithPagination({
       creatorId: null,
-      approveStatus: null,
+      approveStatus: true,
       likedById: null,
       votedById: userId,
       followedById: null,
@@ -518,7 +512,7 @@ export class PollController {
     const userId = req.user.id;
     return await this.pollService.findAll({
       creatorId: null,
-      approveStatus: null,
+      approveStatus: true,
       likedById: null,
       votedById: null,
       followedById: userId,
@@ -551,7 +545,7 @@ export class PollController {
     const userId = req.user.id;
     return await this.pollService.findAllWithPagination({
       creatorId: null,
-      approveStatus: null,
+      approveStatus: true,
       likedById: null,
       votedById: null,
       followedById: userId,
