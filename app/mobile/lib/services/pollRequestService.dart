@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:mobile_app/services/apiService.dart';
-import 'package:mobile_app/view/pollRequest/pollCreationData.dart';
+import 'package:mobile_app/models/pollCreationData.dart';
 
 class PollRequestService {
   static Future<Response> createPoll(PollCreationData pollData) async {
