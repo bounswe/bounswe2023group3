@@ -38,6 +38,7 @@ class UserInformationWidget extends StatelessWidget {
         children: [
           ClickableUsername(
             username: userUsername,
+            displayName: userName,
             textStyle: const TextStyle(fontWeight: FontWeight.bold),
           ),
           Text(userUsername),
@@ -52,24 +53,24 @@ class UserInformationWidget extends StatelessWidget {
       rowChildren.add(
         const Spacer(),
       );
-    if (!AppState.isGuest) {
-    rowChildren.add(
-    ThreeDotsOptions(
-    onSelected: (value) {
-    // Handle the selected option here
-    switch (value) {
-    case "requestToSettle":
-    Navigator.push(
-    context,
-    MaterialPageRoute(
-    builder: (context) => SettleRequestPage(
-    pollId: pollId,
-    )));
-    }
-    },
-    ),
-    );
-    }
+      if (!AppState.isGuest) {
+        rowChildren.add(
+          ThreeDotsOptions(
+            onSelected: (value) {
+              // Handle the selected option here
+              switch (value) {
+                case "requestToSettle":
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => SettleRequestPage(
+                                pollId: pollId,
+                              )));
+              }
+            },
+          ),
+        );
+      }
     }
 
     return Container(
