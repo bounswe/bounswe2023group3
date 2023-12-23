@@ -112,9 +112,9 @@ export class UserProfileComponent {
   }
   votedPolls() {
     this.clickedButton = 'voted';
-    this.http.get('http://34.105.66.254:1923/poll/').subscribe(
+    this.http.get('http://34.105.66.254:1923/poll/voted-by-me',this.options).subscribe(
       (response: any) => {
-        this.polls = []
+        this.polls = response
       },
       (error) => {
         console.error('Error fetching polls:', error)
