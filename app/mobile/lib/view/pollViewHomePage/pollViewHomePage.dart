@@ -96,11 +96,11 @@ class _PollViewHomePageState extends State<PollViewHomePage> {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           UserInformationWidget(
-            userName: widget.userName,
-            userUsername: widget.userUsername,
-            profilePictureUrl: widget.profilePictureUrl,
-            pollId: widget.isSettled == 0 ? widget.pollId : "",
-          ),
+              userName: widget.userName,
+              userUsername: widget.userUsername,
+              profilePictureUrl: widget.profilePictureUrl,
+              pollId: widget.isSettled == 0 ? widget.pollId : "",
+            ),
           Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
               // child: Text(widget.postTitle,
@@ -111,10 +111,6 @@ class _PollViewHomePageState extends State<PollViewHomePage> {
               child: buildRichText(widget.postTitle, widget.annotationIndices, widget.annotationTexts)
           ),
           TagListWidget(tags: widget.tags, tagColors: widget.tagColors),
-          const Padding(
-            padding: EdgeInsets.all(8.0),
-            child: PressableTextWithPopup(),
-          ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16.0),
             child: Text('Vote Count: ${widget.voteCount}',
