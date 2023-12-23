@@ -12,12 +12,13 @@ import 'package:mobile_app/view/moderatorHomePage/moderatorHomePage.dart';
 import 'package:mobile_app/services/apiService.dart';
 import 'view/pollRequest/pollRequestScreen.dart';
 import 'view/searchPage/searchPage.dart';
+import 'package:flutter/services.dart';
 
 
 void main() async{
   ApiService.setup();
   await ApiService.init();
-
+  SystemSound.play(SystemSoundType.click);
   runApp(MaterialApp(
     debugShowCheckedModeBanner: false,
     theme: ThemeData(
