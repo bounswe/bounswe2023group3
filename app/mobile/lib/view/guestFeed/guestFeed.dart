@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mobile_app/models/comment.dart';
+import 'package:mobile_app/services/guestFeedService.dart';
 import 'package:mobile_app/services/homePageService.dart';
 import 'package:mobile_app/services/pollCommentService.dart';
 import 'package:mobile_app/view/sidebar/sidebar.dart'; // Import your custom drawer widget
@@ -71,7 +72,7 @@ class _GuestFeedState extends State<GuestFeed>
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<List<PollViewHomePage>>(
-        future: HomePageService.getPollRequests(),
+        future: GuestFeedService.getPollRequests(),
         builder: (BuildContext context,
             AsyncSnapshot<List<PollViewHomePage>> snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {

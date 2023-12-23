@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mobile_app/view/pollView/clickableUsername.dart';
 import 'package:mobile_app/view/pollView/threeDotsOptions.dart';
 import 'package:mobile_app/view/profilePage/profilePictureWidget.dart';
+import 'package:mobile_app/view/state.dart';
 
 import '../settleRequest/settleRequestPage.dart';
 
@@ -47,22 +48,25 @@ class UserInformationWidget extends StatelessWidget {
       rowChildren.add(const SizedBox(
         width: 180.0,
       ));
-      rowChildren.add(
-        ThreeDotsOptions(
-          onSelected: (value) {
-            // Handle the selected option here
-            switch (value) {
-              case "requestToSettle":
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => SettleRequestPage(
-                              pollId: pollId,
-                            )));
-            }
-          },
-        ),
-      );
+      if (!AppState.isGuest) {
+        rowChildren.add(
+          ThreeDotsOptions(
+            onSelected: (value) {
+              // Handle the selected option here
+              switch (value) {
+                case "requestToSettle":
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => SettleRequestPage(
+                            pollId: pollId,
+                          )));
+              }
+            },
+          ),
+        );
+      }
+
     }
 
     return Container(
