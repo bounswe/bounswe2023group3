@@ -78,7 +78,7 @@ void main() async {
       '/signverify': (context) => const SignVerifyScreen(),
       '/moderatorHome': (context) => const ModeratorHomePage(),
       '/moderatorLogin': (context) => const ModeratorLoginScreen(),
-      '/moderatorApply': (context) => const ModeratorApplyScreen(),
+      '/moderatorApply': (context) => const ModeratorApplicationPage(),
       '/guest': (context) => const GuestFeed(),
     },
   ));
