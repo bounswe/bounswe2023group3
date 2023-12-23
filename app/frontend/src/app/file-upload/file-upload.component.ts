@@ -11,6 +11,8 @@ export class FileUploadComponent implements OnInit {
   shortLink: string = "";
   file: File | null = null;
 
+  base64String: string | null = null;
+
   constructor(private fileUploadService: FileUploadService) { }
 
   ngOnInit(): void {
@@ -18,14 +20,31 @@ export class FileUploadComponent implements OnInit {
 
   onChange(event: any) {
     this.file = event.target.files[0];
+
+    if (this.file) {
+      this.convertFileToBase64(this.file);
+    }
+  }
+
+  private convertFileToBase64(file: File): void {
+    const reader = new FileReader();
+
+    reader.onload = () => {
+      // The result will be the base64-encoded string
+      this.base64String = reader.result as string;
+      console.log(this.base64String);
+    };
+
+    reader.readAsDataURL(file);
   }
 
   onUpload() {
+    console.log(this.file)
     if (this.file) {
       this.fileUploadService.upload(this.file).subscribe(
         (response: any) => {
-          if (response && response.link) {
-            this.shortLink = response.link;
+          if (response) {
+            this.shortLink = response.data.url;
             console.log(this.shortLink);
             this.shortLinkEmitter.emit(this.shortLink);
           } else {

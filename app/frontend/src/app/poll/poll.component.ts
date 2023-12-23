@@ -309,7 +309,7 @@ export class PollComponent {
     }
 
     this.http
-      .post('http://34.105.66.254:1923/poll/settle-request' + this.pollId, body)
+      .post('http://34.105.66.254:1923/poll/settle-request/' + this.pollId, body, this.authService.getHeaders())
       .subscribe(
         () => {
           console.log(`Request sent ccessfully.`)
