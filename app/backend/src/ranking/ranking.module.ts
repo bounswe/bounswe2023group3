@@ -11,15 +11,18 @@ import { Option } from '../option/entities/option.entity';
 import { OptionService } from '../option/option.service';
 import { Poll } from '../poll/entities/poll.entity';
 import { Tag } from '../tag/entities/tag.entity';
+import { Report } from '../user/entities/report.entity';
+import { UserService } from '../user/user.service';
+import { BadgeService } from '../badge/badge.service';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([Ranking,Vote,
       Option,
       User,
-      Badge,Poll,Tag])
+      Badge,Poll,Tag,Report])
   ],
   controllers: [RankingController],
-  providers: [RankingService,VoteService,OptionService],
+  providers: [RankingService,VoteService,OptionService,UserService,BadgeService],
 })
 export class RankingModule {}

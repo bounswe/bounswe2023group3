@@ -19,12 +19,20 @@ export class RankingService {
   ){}
 
 
-  async findAll(id:string) {
-    return await this.rankingRepository.find(
+  async findAll(tagID:string, userID:string) {
+    const currenUser = await this.rankingRepository.findOne({
+      where:{
+        tag:{id:tagID},
+        user: {id:userID}
+      },
+      relations:["user","tag"]
+    })
+
+    const ranking= await this.rankingRepository.find(
       {
         where:
           {tag:{
-            id:id,
+            id:tagID,
           }
         },
         order:{
@@ -33,6 +41,9 @@ export class RankingService {
         relations:["user","tag"]
       }
       )
+    const response = {"ranking": ranking, "currenUser": currenUser}
+
+    return response;
   }
 
 
@@ -47,7 +58,7 @@ export class RankingService {
     }
     )
     const userIds: string[] = votes.map((vote) => vote.user.id);
-    poll.tags.push(await this.tagRepository.findOne({where:{name:"general"}}));
+    poll.tags.push(await this.tagRepository.findOne({where: {name: "general"}}));
 
     poll.tags.forEach( async (tag) => {this.updateScoreByTag(tag.id,userIds)});
 
