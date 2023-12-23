@@ -103,8 +103,8 @@ class _EditPasswordPageState extends State<EditPasswordPage> {
 
     try {
 
-      Response response = await passwordEditService.submitPass(password, oldPassword);
-      if(response.statusCode == 201) {
+      Response response = await passwordEditService.submitPass(password, confirmPassword, oldPassword);
+      if(response.statusCode == 200) {
 
         if(!context.mounted) return;
         Navigator.pop(context,"Password is changed successfully.");

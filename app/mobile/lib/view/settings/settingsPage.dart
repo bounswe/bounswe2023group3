@@ -82,6 +82,7 @@ class _SettingsPageState extends State<SettingsPage> {
         }
       }
       catch (e) {
+        showErrorMessage(context,"Error.");
         print(e);
 
 
@@ -113,6 +114,9 @@ class _SettingsPageState extends State<SettingsPage> {
       ..removeCurrentSnackBar()
       ..showSnackBar(SnackBar(content: Text(resultMessage), duration: const Duration(seconds: 3),));
   }
+
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -160,12 +164,7 @@ class _SettingsPageState extends State<SettingsPage> {
                             // After closing the account, you might want to navigate to the login page
                             Navigator.of(context).pop(); // Close the dialog
                             // Navigator.pushAndRemoveUntil is used to remove all previous routes
-                            Navigator.pushNamedAndRemoveUntil(
-                                context,
-                                '/welcome',
-                                    (Route<dynamic> route) => false, // This condition ensures removing all previous routes
-                                arguments: ScreenArguments("Account is closed successfully!")
-                            );
+                            closeAccount();
 
                           },
                           child: Text('Confirm'),
