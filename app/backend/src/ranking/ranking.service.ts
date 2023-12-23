@@ -1,13 +1,11 @@
 import { Injectable } from '@nestjs/common';
-import { CreateRankingDto } from './dto/create-ranking.dto';
-import { UpdateRankingDto } from './dto/update-ranking.dto';
 import { Poll } from '../poll/entities/poll.entity';
 import { Option } from '../option/entities/option.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Ranking } from './entities/ranking.entity';
 import { Repository } from 'typeorm';
-import { User } from '../user/entities/user.entity';
 import { Vote } from '../vote/entities/vote.entity';
+import { Tag } from '../tag/entities/tag.entity';
 
 @Injectable()
 export class RankingService {
@@ -16,11 +14,8 @@ export class RankingService {
     private readonly rankingRepository: Repository<Ranking>,
     @InjectRepository(Vote)
     private readonly voteRepository: Repository<Vote>,
-    @InjectRepository(User)
-    private readonly userRepository: Repository<User>,
-    @InjectRepository(Poll)
-    private readonly pollRepository: Repository<Poll>,
-
+    @InjectRepository(Tag)
+    private readonly tagRepository: Repository<Tag>,
   ){}
 
 
@@ -46,12 +41,13 @@ export class RankingService {
       relations:["user"],
       where:{
         option:{
-          id:"334483e2-4b39-4c10-896d-47cb1ba1c1e9"
+          id:option.id
         }
       }
     }
     )
     const userIds: string[] = votes.map((vote) => vote.user.id);
+    poll.tags.push(await this.tagRepository.findOne({where:{name:"general"}}));
 
     poll.tags.forEach( async (tag) => {this.updateScoreByTag(tag.id,userIds)});
 
