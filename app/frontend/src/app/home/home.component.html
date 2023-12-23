@@ -4,43 +4,15 @@
     <div class="page-layout">
       <app-side-bar></app-side-bar>
       <div class="container" style="padding: 40px; justify-self: center; margin-left: 240px; margin-right: 260px;">
-        <div style="text-align: right">
-          <button
-            class="button"
-            style="
-              width: 100px;
-              display: inline-block;
-              margin-right: 5px;
-              border: none;
-              background-color: #63989f;
-              color: #fff;
-              transition: background-color 0.2s;
-              cursor: pointer;
-            "
-            (click)="settledPolls(false)"
-            onmouseover="this.style.backgroundColor='#486c73';"
-            onmouseout="this.style.backgroundColor='#63989f';"
-          >
-            Ongoing
-          </button>
-          <button
-            class="button"
-            style="
-              width: 100px;
-              display: inline-block;
-              background-color: #374968;
-              border: none;
-              color: #fff;
-              transition: background-color 0.2s;
-              cursor: pointer;
-            "
-            (click)="settledPolls(true)"
-            onmouseover="this.style.backgroundColor='#202A40';"
-            onmouseout="this.style.backgroundColor='#374968';"
-          >
-            Settled
-          </button>
+        <div style="display: flex; align-items: center; justify-content: flex-end;">
+          <p [class.fade-in]="isChecked" style="margin-right: 10px; position: relative; top: 7px;">{{ settledMode ? 'Settled' : 'Ongoing' }}</p>
+          <label class="switch">
+            <input type="checkbox" [(ngModel)]="isChecked" (change)="settledPolls(isChecked)">
+            <span class="slider"></span>
+          </label>
         </div>
+
+      
 
         <form
           action="/search"
@@ -68,22 +40,24 @@
           </div>
         </form>
 
-        <div class="user-polls">
-          <button
-            class="user-polls-column"
-            [class.blurred]="!isAuthenticated"
-            [class.underlined]="clickedButton === 'following'"
-            (click)="followingPolls()"
-          >
-            Following
-          </button>
-          <button 
-            class="user-polls-column"
-            [class.underlined]="clickedButton === 'trending'"
-            (click)="trendingPolls()"
-          >
-            Trending
-          </button>
+        <div class="user-polls-section">
+          <div class="user-polls">
+            <button
+              class="user-polls-column default"
+              [class.blurred]="!isAuthenticated"
+              [class.active]="clickedButton === 'following'"
+              (click)="followingPolls()"
+            >
+              <span class="button-text">Following</span>
+            </button>
+            <button 
+              class="user-polls-column"
+              [class.active]="clickedButton === 'trending'"
+              (click)="trendingPolls()"
+            >
+              <span class="button-text">Trending</span>
+            </button>
+          </div>
         </div>
         
 

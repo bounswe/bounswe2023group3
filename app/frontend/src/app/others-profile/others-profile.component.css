@@ -37,3 +37,30 @@
   border-radius: 15px;
   margin-left: auto;
 }
+
+.user-polls {
+  display: flex;
+}
+
+.user-polls-column {
+  background-color: #9DC0C4;
+  border: solid #202A40 1px;
+  color: #202A40;
+  padding: 10px 15px;
+  margin: 0;
+  cursor: pointer;
+  outline: none;
+  border-radius: 20px;
+  transition: background-color 0.3s;
+}
+
+.user-polls-column.active {
+  border: solid #202A40 1px;
+  border-bottom: none;
+  border-left: none;
+  border-right: none;
+}
+
+.button-text {
+  font-size: 16px;
+}
