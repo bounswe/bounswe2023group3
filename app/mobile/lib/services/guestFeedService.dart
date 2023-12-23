@@ -89,7 +89,7 @@ class GuestFeedService {
           postTitle: post['question'],
           tags: tagsList,
           tagColors: tagColorsList,
-          voteCount: post['vote_count'],
+          voteCount: post['voteCount'],
           postOptions: optionsJson,
           likeCount: post['likeCount'],
           commentCount: post['commentCount'],
