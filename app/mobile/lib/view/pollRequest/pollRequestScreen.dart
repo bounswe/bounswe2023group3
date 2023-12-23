@@ -3,6 +3,7 @@ import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:mobile_app/services/pollRequestService.dart';
 import 'package:mobile_app/services/tagCompletionService.dart';
 import 'package:mobile_app/view/pollRequest/customTextField.dart';
+import 'package:mobile_app/view/pollRequest/pollCreationAnnotate.dart';
 import 'package:mobile_app/view/pollRequest/pollCreationData.dart';
 import 'package:mobile_app/view/pollRequest/sectionHeader.dart';
 import 'package:mobile_app/view/state.dart';
@@ -454,9 +455,13 @@ class _PollRequestPageState extends State<PollRequestPage> {
                   ),
                   ElevatedButton(
                     onPressed: () {
+                      Navigator.of(context)
+                          .push(MaterialPageRoute(builder: (_) {
+                        return PollCreationAnnotate(pollInfo: pollData);
+                      }));
                       // Handle the Cancel action here
                     },
-                    child: const Text('Cancel'),
+                    child: const Text('Add Annotation'),
                   ),
                 ],
               ),
