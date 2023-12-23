@@ -259,7 +259,7 @@ export class UserService {
         'isBanned',
         'rankings',
       ],
-    });
+    })};
 
   public async searchUsernames(query: string): Promise<User[]> {
     return this.userRepository
