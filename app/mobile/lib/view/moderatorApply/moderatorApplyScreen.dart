@@ -8,11 +8,11 @@ import 'package:mobile_app/services/moderatorApplicationService.dart';
 import 'package:mobile_app/view/moderatorApply/customTextField.dart';
 
 void main() {
-  runApp(const ModeratorApplyScreen());
+  runApp(const MyApp());
 }
 
-class ModeratorApplyScreen extends StatelessWidget {
-  const ModeratorApplyScreen({super.key});
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
