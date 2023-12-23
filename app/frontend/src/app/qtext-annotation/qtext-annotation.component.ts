@@ -1,3 +1,4 @@
+import { HttpClient } from '@angular/common/http';
 import { Component, Input, SimpleChanges, ViewChild } from '@angular/core';
 import { NgxAnnotateTextComponent, Annotation } from 'ngx-annotate-text';
 
@@ -10,6 +11,7 @@ export class QtextAnnotationComponent {
   @ViewChild('annotateText') ngxAnnotateText?: NgxAnnotateTextComponent;
 
   @Input() text!: string
+  @Input() pollId!: string
   @Input() annotationInput!: any[]
 
   enterAnnotation: boolean = false
@@ -20,7 +22,9 @@ export class QtextAnnotationComponent {
   events: string[] = [];
   newAnotation!: string
 
-  constructor(){
+  constructor(
+    private http: HttpClient,
+  ){
   }
 
   ngOnInit(){
@@ -95,6 +99,28 @@ private findAnnotationElement(target: any): HTMLElement | null {
     if (!selection) {
       return;
     }
+
+    this.http.post('http://34.105.66.254:1938/annotation',
+    {"body": {
+      "type": "TextualBody",
+      "value": this.newAnotation,
+      "format": "text/plain"
+    },
+    "target": {
+      "source": "http://34.105.66.254:1923/"+this.pollId,
+      "selector": {
+        "end": selection.endIndex,
+        "type": "TextPositionSelector",
+        "start":  selection.startIndex
+      }},
+      "creator": "x" ////fix by creator id
+    }).subscribe(
+      (response: any) => {
+      },
+      (error) => {
+        console.error('Error creating annotation:', error);
+      }
+    );
 
     const annotation = new Annotation(selection.startIndex, selection.endIndex, label, '#0d6efd');
     this.annotations = this.annotations.concat(annotation);
