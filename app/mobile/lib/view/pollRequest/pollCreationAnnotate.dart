@@ -35,7 +35,11 @@ class _PollCreationAnnotateState extends State<PollCreationAnnotate> {
           title: const Text('Annotate Poll'),
         ),
         body:
-            // !!! modify here to be a stack
+            // !!! modify here to be a stack, bottom element is that padding
+            // top element is a positioned, whose child is a button:
+            // and rendered with condition isSelectionValid
+            // [Annotate]
+            // the behavior of that button is explained below.
             Padding(
           padding: const EdgeInsets.all(16.0),
           child: Column(
@@ -46,8 +50,10 @@ class _PollCreationAnnotateState extends State<PollCreationAnnotate> {
               GestureDetector(
                 onTapUp: (details) {
                   // !!! check the selection
-                  // if selection contains a substring,
-                  // render a floating button button should call a function that
+                  // if selection contains a substring
+                  // isSelectionValid <- true
+                  // adjust the position of the button to the
+                  // details.globalPosition
                   // creates a popup:
                   // adding annotation for "substring"
                   // [--inp-fld--]
