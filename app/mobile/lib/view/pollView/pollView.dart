@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:mobile_app/models/comment.dart';
 import 'package:mobile_app/services/createCommentService.dart';
 import 'package:mobile_app/services/pollViewHomePageVote.dart';
@@ -116,7 +117,7 @@ class _PollPageState extends State<PollPage> {
             Row(
               children: [
                 LikeCountWidget(likeCount: widget.likeCount),
-                DateTimeWidget(dateTime: widget.dateTime),
+                DateTimeWidget(dateTime: DateTime.parse(widget.dateTime), color: blue),
               ],
             ),
             CommentEntryFieldWidget(
@@ -270,24 +271,32 @@ class LikeCountWidget extends StatelessWidget {
 }
 
 class DateTimeWidget extends StatelessWidget {
-  final String dateTime;
+  final DateTime dateTime;
+  final Color color;
 
-  const DateTimeWidget({super.key, required this.dateTime});
+  const DateTimeWidget({Key? key, required this.dateTime, required this.color}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    String formattedDateTime = DateFormat.yMMMMd('en_US').add_jm().format(dateTime);
+
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 16.0),
+      padding: const EdgeInsets.symmetric(horizontal: 25.0),
       child: Row(
         children: [
           Container(
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(20.0),
-              border: Border.all(color: pink),
-              color: pink,
+              border: Border.all(color: color),
+              color: color,
             ),
-            child: Text(dateTime,
-                style: const TextStyle(fontSize: 16.0, color: whitish)),
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(
+                formattedDateTime,
+                style: const TextStyle(fontSize: 16.0, color: Colors.white),
+              ),
+            ),
           ),
         ],
       ),
