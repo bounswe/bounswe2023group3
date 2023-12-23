@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mobile_app/view/constants.dart';
+import 'package:mobile_app/view/guestFeed/guestFeed.dart';
 import 'package:mobile_app/view/moderatorLogin/moderatorLoginScreen.dart';
 import 'package:mobile_app/view/signup/signVerifyScreen.dart';
 import 'package:mobile_app/view/welcome/welcome.dart';
@@ -75,6 +76,7 @@ void main() async{
         '/signverify': (context) => const SignVerifyScreen(),
         '/moderatorHome': (context) => const ModeratorHomePage(),
         '/moderatorLogin': (context) => const ModeratorLoginScreen(),
+        '/guest': (context) => const GuestFeed(),
       },
   ));
 }

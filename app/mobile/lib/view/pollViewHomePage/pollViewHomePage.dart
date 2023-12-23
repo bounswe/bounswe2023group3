@@ -28,6 +28,7 @@ class PollViewHomePage extends StatefulWidget {
   final int chosenVoteIndex;
   final int commentCount;
   final List<List<int>> annotationIndices;
+  final List<String> annotationTexts;
 
   const PollViewHomePage({
     super.key,
@@ -46,7 +47,7 @@ class PollViewHomePage extends StatefulWidget {
     required this.approvedStatus,
     required this.didLike,
     required this.chosenVoteIndex,
-    required this.commentCount, required this.annotationIndices,
+    required this.commentCount, required this.annotationIndices, required this.annotationTexts,
   });
   _PollViewHomePageState createState() => _PollViewHomePageState();
 }
@@ -95,11 +96,11 @@ class _PollViewHomePageState extends State<PollViewHomePage> {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           UserInformationWidget(
-            userName: widget.userName,
-            userUsername: widget.userUsername,
-            profilePictureUrl: widget.profilePictureUrl,
-            pollId: widget.isSettled == 0 ? widget.pollId : "",
-          ),
+              userName: widget.userName,
+              userUsername: widget.userUsername,
+              profilePictureUrl: widget.profilePictureUrl,
+              pollId: widget.isSettled == 0 ? widget.pollId : "",
+            ),
           Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
               // child: Text(widget.postTitle,
@@ -107,13 +108,9 @@ class _PollViewHomePageState extends State<PollViewHomePage> {
               //     maxLines: 3,
               //     style: const TextStyle(
               //         fontSize: 18.0, fontWeight: FontWeight.bold)),
-              child: buildRichText(widget.postTitle, widget.annotationIndices)
+              child: buildRichText(widget.postTitle, widget.annotationIndices, widget.annotationTexts)
           ),
           TagListWidget(tags: widget.tags, tagColors: widget.tagColors),
-          const Padding(
-            padding: EdgeInsets.all(8.0),
-            child: PressableTextWithPopup(),
-          ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16.0),
             child: Text('Vote Count: ${widget.voteCount}',
@@ -159,16 +156,17 @@ class _PollViewHomePageState extends State<PollViewHomePage> {
   }
 
 
-  RichText buildRichText(String fullText, List<List<int>> indices) {
+  RichText buildRichText(String fullText, List<List<int>> indices, List<String> annotationTexts) {
 
 
     List<TextSpan> textSpans = [];
 
     int previousIndex = 0;
 
-    for (List<int> indexPair in indices) {
-      int startIndex = indexPair[0];
-      int endIndex = indexPair[1];
+    for (int i = 0; i < indices.length; i++) {
+      int startIndex = indices[i][0];
+      int endIndex = indices[i][1];
+      String annotationText = annotationTexts[i];
 
       // Add non-underlined text before the current underlined part
       textSpans.add(
@@ -189,7 +187,7 @@ class _PollViewHomePageState extends State<PollViewHomePage> {
           recognizer: TapGestureRecognizer()
             ..onTap = () {
               // Handle tap on the underlined text
-              _showPopup(context, fullText.substring(startIndex, endIndex));
+              _showPopup(context, annotationText);
               print('Tapped on underlined text from index $startIndex to $endIndex!');
             },
         ),

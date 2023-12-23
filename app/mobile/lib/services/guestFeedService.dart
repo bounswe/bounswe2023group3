@@ -82,8 +82,8 @@ class HomePageService {
           pollId: post['id'],
           userName: creator['firstname'] != null || creator['lastname'] != null
               ? ((creator['firstname'] ?? "") +
-                  " " +
-                  (creator["lastname"] ?? ""))
+              " " +
+              (creator["lastname"] ?? ""))
               : creator['username'],
           userUsername: creator['username'],
           profilePictureUrl: creator['profile_picture'] ?? "",

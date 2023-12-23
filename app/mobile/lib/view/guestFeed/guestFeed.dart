@@ -6,13 +6,13 @@ import 'package:mobile_app/view/sidebar/sidebar.dart'; // Import your custom dra
 import 'package:mobile_app/view/pollViewHomePage/pollViewHomePage.dart';
 import 'package:mobile_app/view/pollView/pollView.dart';
 
-class HomePage extends StatefulWidget {
-  HomePage({super.key});
+class GuestFeed extends StatefulWidget {
+  const GuestFeed({super.key});
   @override
-  State<HomePage> createState() => _HomePageState();
+  State<GuestFeed> createState() => _GuestFeedState();
 }
 
-class _HomePageState extends State<HomePage>
+class _GuestFeedState extends State<GuestFeed>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
 
