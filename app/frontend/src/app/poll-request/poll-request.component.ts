@@ -57,44 +57,46 @@ export class PollRequestComponent implements OnInit {
   ngOnInit(): void {}
 
   onSubmit() {
-    const formValue = this.pollForm.value
-    const token = this.getToken()
+    const formValue = this.pollForm.value;
+    const token = this.getToken();
     const headers = new HttpHeaders({
       Authorization: `Bearer ${token}`,
-    })
-    const options = { headers }
-
+    });
+    const options = { headers };
+  
     if (
       formValue.tags.length === 0 ||
       formValue.options.length === 0 ||
       formValue.question === ''
     ) {
-      window.alert('Error creating poll: Some fields are empty')
-      console.error('Error creating poll: Some fields empty')
-      return
+      window.alert('Error creating poll: Some fields are empty');
+      console.error('Error creating poll: Some fields empty');
+      return;
     }
-
-    if(this.no_deadline){ //internal server error
-      formValue.due_date = 'No deadline'
+  
+    if (this.no_deadline) {
+      formValue.due_date = 'No deadline';
     }
-
-    this.http
-      .post('http://34.105.66.254:1923/poll', formValue, options)
-      .subscribe(
-        (response) => {
-          console.log('Poll created', response)
-          window.location.reload()
-          window.alert('Poll creation request sent.')
-        },
-        (error) => {
-          if (error.status === 401) {
-            window.alert('Error: Unauthorized access. Please verify account.')
-            window.location.reload()
-          }
-          console.error('Error creating poll', error)
-        },
-      )
+  
+    this.http.post('http://34.105.66.254:1923/poll', formValue, options).subscribe(
+      (response) => {
+        console.log('Poll created', response);
+        window.alert('Poll creation request sent.');
+        // Reload the page after a short delay to allow the request to complete
+        setTimeout(() => {
+          window.location.reload();
+        }, 500); // You can adjust the delay time as needed
+      },
+      (error) => {
+        if (error.status === 401) {
+          window.alert('Error: Unauthorized access. Please verify account.');
+          window.location.reload();
+        }
+        console.error('Error creating poll', error);
+      }
+    );
   }
+  
 
   handleCheckboxChange(){
     this.no_deadline = !this.no_deadline

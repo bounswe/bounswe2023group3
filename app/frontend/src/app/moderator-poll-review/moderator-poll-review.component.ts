@@ -2,6 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Component } from '@angular/core'
 import { ActivatedRoute } from '@angular/router';
 import { AuthService } from '../auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-moderator-poll-review',
@@ -24,6 +25,7 @@ export class ModeratorPollReviewComponent {
     private http: HttpClient,
     private route: ActivatedRoute,
     private authService: AuthService,
+    private router: Router, 
   ) { 
     const headers = new HttpHeaders({
       Authorization: `Bearer ${localStorage.getItem('authToken')}`,
@@ -107,6 +109,10 @@ export class ModeratorPollReviewComponent {
         (error) => {
           console.error('Error deleting poll:', error)
         },
+        () => {
+          // Redirect after completing the request
+          this.router.navigate(['/app-moderator-requests']);
+        }
       )
     }
     

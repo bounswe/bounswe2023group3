@@ -13,16 +13,22 @@
   }
   
   .custom-file-label {
-    margin-top: 10px;
-    display: inline-block;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     cursor: pointer;
-    background-color: #4285f4;
+    background-color: #E57F84;
     color: white;
-    padding: 8px 12px;
-    border-radius: 4px;
+    padding: 10px;
+    height: 70px;
+    width: 70px;
+    border-radius: 50%;
+    
   }
   
   .custom-file-label:hover {
-    background-color: #3276b1;
+    background-color: #c55d63;
   }
+  
+
   

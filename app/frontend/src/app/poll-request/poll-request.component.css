@@ -20,11 +20,13 @@
   color: #fff;
   border-radius: 18px;
   border: none;
+  transition: background-color 0.2s;
 }
+
 
 button[disabled] {
   background-color: #9a9a9a;
-  color: #202a40;
+  color: #9a9a9a;
   cursor: not-allowed;
 }
 
@@ -137,8 +139,8 @@ label {
 }
 
 .info-container p {
-  margin-left: 20px;
-  margin-right: 20px;
+  margin-left: 10px;
+  margin-right: 10px;
   color: #202a40;
   font-size: 16px;
 }
