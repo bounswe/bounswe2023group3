@@ -43,8 +43,8 @@ class _UserInfoSectionState extends State<UserInfoSection> {
         await FollowService.unfollow(
             AppState.loggedInUserId, widget.profileInfo.id);
       } catch (e) {
-        if (!context.mounted) return;
-        _showAllert("unfollow operation is unsuccessful $e");
+        // if (!context.mounted) return;
+        // _showAllert("unfollow operation is unsuccessful $e");
       }
     } else {
       try {
@@ -52,8 +52,8 @@ class _UserInfoSectionState extends State<UserInfoSection> {
             AppState.loggedInUserId, widget.profileInfo.id);
         print("after awaiting follow request");
       } catch (e) {
-        if (!context.mounted) return;
-        _showAllert("follow operation is unsuccesful $e");
+        // if (!context.mounted) return;
+        // _showAllert("follow operation is unsuccesful $e");
       }
     }
     await _learnIsFollowing();

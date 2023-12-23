@@ -3,6 +3,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get_it/get_it.dart';
+import 'package:mobile_app/view/state.dart';
 
 class ApiService {
   static final Dio _dio = Dio();
@@ -48,6 +49,7 @@ class ApiService {
 
   static void logout() {
     setJwtToken('');
+    AppState.logout();
   }
 
   static bool shouldIgnoreInterceptor(Uri uri) {
