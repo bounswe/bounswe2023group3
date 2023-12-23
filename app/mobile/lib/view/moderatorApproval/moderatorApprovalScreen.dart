@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mobile_app/services/moderatorPollDecision.dart';
 import 'package:mobile_app/view/moderatorApproval/pollData.dart';
 import 'package:mobile_app/view/moderatorApproval/sectionHeader.dart';
+import 'package:mobile_app/view/pollView/pollView.dart';
 import 'readOnlyTextField.dart';
 import 'package:dio/dio.dart';
 import 'package:mobile_app/view/constants.dart';
@@ -69,6 +70,10 @@ class ModeratorApprovalScreen extends StatelessWidget {
             ReadOnlyTextField(
               text: pollData.pollTitle,
             ),
+            const SizedBox(height: 4),
+            const SectionHeader(headerText: "Due Date"),
+            const SizedBox(height: 4),
+            DateTimeWidget(dateTime: DateTime.parse(pollData.dueDate), color: Colors.red),
 
 
             // added tags
