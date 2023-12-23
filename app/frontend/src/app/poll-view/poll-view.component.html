@@ -70,10 +70,10 @@
                   *ngIf="isPopupOpen(comment.id)"
                   style="background-color: #c8d5de; right: 41px; top: 12px"
                 >
-                  <div class="popuptext" *ngIf="!isCommentOwner(comment.user_id)" (click)="deleteComment(comment.id)">
+                  <div class="popuptext" *ngIf="isCommentOwner(comment.user.id)" (click)="deleteComment(comment.id)">
                     Delete Comment
                   </div>
-                  <div class="popuptext" (click)="reportUser()">Report Comment</div>
+                  <div class="popuptext" *ngIf="!isCommentOwner(comment.user.id)" (click)="reportUser()">Report Comment</div>
                 </div>
               </div>
               <p>{{ comment.description }}</p>

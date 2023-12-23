@@ -53,6 +53,10 @@ export class QtextAnnotationComponent {
     this.enterAnnotation=true
   }
 
+  closeInput(){
+    this.enterAnnotation=false
+  }
+
   onMouseOverAnnotation(event: any) {
     const annotationElement = this.findAnnotationElement(event.target);
     if (annotationElement) {
