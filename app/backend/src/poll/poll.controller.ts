@@ -50,7 +50,6 @@ export class PollController {
     return await this.pollService.syncVectorStore();
   }
 
-  @UseGuards(AuthGuard, VerificationGuard)
   @ApiResponse({
     status: 200,
     description: 'Polls are searched successfully.',
@@ -127,7 +126,7 @@ export class PollController {
   public async updateTags(
     @Param('id', ParseUUIDPipe) id: string,
     @Body() updateTagsDto: UpdateTagsDto,
-  ): Promise<void> {
+  ): Promise<Poll> {
     return await this.pollService.updatePollTags(id, updateTagsDto);
   }
 
@@ -153,6 +152,7 @@ export class PollController {
   @ApiQuery({ name: 'creatorId', required: false })
   @ApiQuery({ name: 'approveStatus', required: false })
   @ApiQuery({ name: 'likedById', required: false })
+  @ApiQuery({ name: 'votedById', required: false })
   @ApiQuery({ name: 'followedById', required: false })
   @ApiQuery({ name: 'sort', required: false })
   @ApiQuery({ name: 'tags', required: false })
@@ -174,6 +174,8 @@ export class PollController {
     approveStatus?: string,
     @Query('likedById', new ParseUUIDPipe({ optional: true }))
     likedById?: string,
+    @Query('votedById', new ParseUUIDPipe({ optional: true }))
+    votedById?: string,
     @Query('followedById', new ParseUUIDPipe({ optional: true }))
     followedById?: string,
     @Query('sort')
@@ -186,6 +188,7 @@ export class PollController {
       creatorId,
       approveStatus,
       likedById,
+      votedById,
       followedById,
       sortString,
       tags,
@@ -211,6 +214,7 @@ export class PollController {
       creatorId,
       approveStatus: null,
       likedById: null,
+      votedById: null,
       followedById: null,
       sortString: null,
       tags: null,
@@ -261,11 +265,53 @@ export class PollController {
       creatorId: null,
       approveStatus: null,
       likedById: userId,
+      votedById: null,
       followedById: null,
       sortString: null,
       tags: null,
       userId,
     });
+  }
+
+  @UseGuards(AuthGuard, VerificationGuard)
+  @ApiResponse({
+    status: 200,
+    description: 'Polls are fetched successfully.',
+    type: [GetPollResponseDto],
+  })
+  @ApiResponse({
+    status: 500,
+    description: 'Internal server error, contact with backend team.',
+  })
+  @Get('voted-by-me')
+  public async findPollsIVoted(@Req() req: any): Promise<any> {
+    const userId = req.user.id;
+    return await this.pollService.findAll({
+      creatorId: null,
+      approveStatus: null,
+      likedById: null,
+      votedById: userId,
+      followedById: null,
+      sortString: null,
+      tags: null,
+      userId,
+    });
+  }
+
+  @UseGuards(AuthGuard, VerificationGuard)
+  @ApiResponse({
+    status: 200,
+    description: 'Polls are fetched successfully.',
+    type: [GetPollResponseDto],
+  })
+  @ApiResponse({
+    status: 500,
+    description: 'Internal server error, contact with backend team.',
+  })
+  @Get('not-voted-by-me')
+  public async findPollsIdidNoteVote(@Req() req: any): Promise<any> {
+    const userId = req.user.id;
+    return await this.pollService.findPollsUserdidNotVote(userId);
   }
 
   @UseGuards(AuthGuard, VerificationGuard)
@@ -285,6 +331,7 @@ export class PollController {
       creatorId: null,
       approveStatus: null,
       likedById: null,
+      votedById: null,
       followedById: userId,
       sortString: null,
       tags: null,
@@ -309,21 +356,6 @@ export class PollController {
   ): Promise<any> {
     const userId = req.user?.sub; // Realize that it is not id instead sub. I do not know why but middleware gives this field.
     return await this.pollService.findPollById(pollId, userId);
-  }
-
-  @UseGuards(AuthGuard, VerificationGuard)
-  @ApiResponse({
-    status: 200,
-    description: 'Polls are removed successfully.',
-  })
-  @ApiResponse({ status: 404, description: 'Poll not found.' })
-  @ApiResponse({
-    status: 500,
-    description: 'Internal server error, contact with backend team.',
-  })
-  @Delete()
-  public async removeAll() {
-    return await this.pollService.removeAll();
   }
 
   @ApiResponse({ status: 200, description: 'Poll deleted successfully.' })

@@ -48,25 +48,28 @@ class UserInformationWidget extends StatelessWidget {
       rowChildren.add(const SizedBox(
         width: 180.0,
       ));
-      if (!AppState.isGuest) {
-        rowChildren.add(
-          ThreeDotsOptions(
-            onSelected: (value) {
-              // Handle the selected option here
-              switch (value) {
-                case "requestToSettle":
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => SettleRequestPage(
-                            pollId: pollId,
-                          )));
-              }
-            },
-          ),
-        );
-      }
 
+      rowChildren.add(
+        const Spacer(),
+      );
+    if (!AppState.isGuest) {
+    rowChildren.add(
+    ThreeDotsOptions(
+    onSelected: (value) {
+    // Handle the selected option here
+    switch (value) {
+    case "requestToSettle":
+    Navigator.push(
+    context,
+    MaterialPageRoute(
+    builder: (context) => SettleRequestPage(
+    pollId: pollId,
+    )));
+    }
+    },
+    ),
+    );
+    }
     }
 
     return Container(

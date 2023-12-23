@@ -96,11 +96,11 @@ class _PollViewHomePageState extends State<PollViewHomePage> {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           UserInformationWidget(
-            userName: widget.userName,
-            userUsername: widget.userUsername,
-            profilePictureUrl: widget.profilePictureUrl,
-            pollId: widget.isSettled == 0 ? widget.pollId : "",
-          ),
+              userName: widget.userName,
+              userUsername: widget.userUsername,
+              profilePictureUrl: widget.profilePictureUrl,
+              pollId: widget.isSettled == 0 ? widget.pollId : "",
+            ),
           Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
               // child: Text(widget.postTitle,
