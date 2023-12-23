@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mobile_app/view/sidebar/sidebar.dart';
+import 'package:mobile_app/services/searchUserService.dart';
 
 class SearchPage extends StatefulWidget {
   const SearchPage({Key? key}) : super(key: key);
@@ -10,14 +11,19 @@ class SearchPage extends StatefulWidget {
 
 class _SearchPageState extends State<SearchPage> {
   final TextEditingController _searchController = TextEditingController();
-  List<String> _searchResults = [];
+  List<User> _searchResults = [];
 
-  void _searchUsers(String query) {
-    // Perform the search logic here (e.g., query a database or API)
-    // For now, let's simulate the search results with a simple list
-    setState(() {
-      _searchResults = _fakeUserList.where((user) => user.contains(query)).toList();
-    });
+  final SearchUser _searchUser = SearchUser(); // Instantiate the SearchUser class
+
+  void _searchUsers(String query) async {
+    try {
+      List<User> users = await _searchUser.search(query); // Use the search method from the service
+      setState(() {
+        _searchResults = users;
+      });
+    } catch (e) {
+      print('Error searching users: $e');
+    }
   }
 
   @override
@@ -56,20 +62,13 @@ class _SearchPageState extends State<SearchPage> {
       itemCount: _searchResults.length,
       itemBuilder: (context, index) {
         return ListTile(
-          title: Text(_searchResults[index]),
-          // Add more details if needed
+          leading: CircleAvatar(
+            backgroundImage: NetworkImage(_searchResults[index].profilePicture),
+          ),
+          title: Text(_searchResults[index].username),
+          // Display more user details if needed
         );
       },
     );
   }
-
-  // Simulated user data for demonstration purposes
-  final List<String> _fakeUserList = [
-    'John Doe',
-    'Jane Doe',
-    'Alice Smith',
-    'Bob Johnson',
-    'Charlie Brown',
-    'David Wilson',
-  ];
 }
