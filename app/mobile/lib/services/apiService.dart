@@ -63,16 +63,7 @@ class ApiService {
       '/poll',
     ];
     // Check if the current URL should be ignored
-    bool shouldIgnore = ignoredEndpoints.any((endpoint) {
-      if (uri.path.startsWith(endpoint)) {
-        // Exclude '/poll/my-followings' from being ignored
-        if (endpoint == '/poll' && uri.path == '/poll/my-followings') {
-          return false;
-        }
-        return true;
-      }
-      return false;
-    });
+    bool shouldIgnore = ignoredEndpoints.any((endpoint) => uri.path == endpoint);
     return shouldIgnore;
   }
 }

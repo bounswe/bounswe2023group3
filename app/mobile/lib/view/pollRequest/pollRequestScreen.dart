@@ -3,7 +3,8 @@ import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:mobile_app/services/pollRequestService.dart';
 import 'package:mobile_app/services/tagCompletionService.dart';
 import 'package:mobile_app/view/pollRequest/customTextField.dart';
-import 'package:mobile_app/view/pollRequest/pollCreationData.dart';
+import 'package:mobile_app/view/pollRequest/pollCreationAnnotate.dart';
+import 'package:mobile_app/models/pollCreationData.dart';
 import 'package:mobile_app/view/pollRequest/sectionHeader.dart';
 import 'package:mobile_app/view/state.dart';
 
@@ -452,11 +453,24 @@ class _PollRequestPageState extends State<PollRequestPage> {
                     onPressed: sendForApproval,
                     child: const Text('Send for Approval'),
                   ),
+                  const SizedBox(width: 20),
                   ElevatedButton(
                     onPressed: () {
+                      Navigator.of(context)
+                          .push(MaterialPageRoute(builder: (_) {
+                        return PollCreationAnnotate(pollInfo: pollData);
+                      }));
                       // Handle the Cancel action here
                     },
-                    child: const Text('Cancel'),
+                    child: const Text('Annotate'),
+                  ),
+                  IconButton(
+                    icon: const Icon(Icons.info_outline),
+                    onPressed: () => _showAlert(
+                        "You can select the parts of your"
+                        " poll title and description "
+                        "and add explanations about them.",
+                        () {}),
                   ),
                 ],
               ),
