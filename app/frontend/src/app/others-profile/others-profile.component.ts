@@ -25,6 +25,8 @@ export class OthersProfileComponent implements OnInit {
   showFollowees: boolean = false
   followList!: any[]
 
+  clickedButton: string = '';
+
   constructor(
     private http: HttpClient,
     private _userService: UserService,
@@ -97,6 +99,7 @@ export class OthersProfileComponent implements OnInit {
     }
   }
   createdPolls() {
+    this.clickedButton = 'created';
     this.http.get('http://34.105.66.254:1923/poll/?creatorId='+this.user.id+"&?approveStatus=true").subscribe(
       (response: any) => {
         this.polls = response
@@ -108,6 +111,7 @@ export class OthersProfileComponent implements OnInit {
   }
 
   likedPolls() {
+    this.clickedButton = 'liked';
     this.http
       .get('http://34.105.66.254:1923/poll/?likedById=' + this.user.id+"&?approveStatus=true")
       .subscribe(

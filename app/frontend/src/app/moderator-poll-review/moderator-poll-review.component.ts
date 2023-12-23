@@ -2,6 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Component } from '@angular/core'
 import { ActivatedRoute } from '@angular/router';
 import { AuthService } from '../auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-moderator-poll-review',
@@ -24,6 +25,7 @@ export class ModeratorPollReviewComponent {
     private http: HttpClient,
     private route: ActivatedRoute,
     private authService: AuthService,
+    private router: Router, 
   ) { 
     const headers = new HttpHeaders({
       Authorization: `Bearer ${localStorage.getItem('authToken')}`,
@@ -45,7 +47,17 @@ export class ModeratorPollReviewComponent {
         this.tags = response.tags
         this.due_date = this.formatDateTime(new Date(response.due_date))
         this.is_settled = response.is_settled
-        this.outcome = response.outcome
+        this.outcome = response.outcome 
+        if(this.is_settled){
+          this.http.get('http://34.105.66.254:1923/options/' + this.outcome).subscribe(
+            (response: any) => {
+                  this.outcome = response.answer 
+            },
+            (error) => {
+              console.error('Error fetching poll:', error)
+            },
+          )
+        }
       },
       (error) => {
         console.error('Error fetching poll:', error)
@@ -107,6 +119,10 @@ export class ModeratorPollReviewComponent {
         (error) => {
           console.error('Error deleting poll:', error)
         },
+        () => {
+          // Redirect after completing the request
+          this.router.navigate(['/app-moderator-requests']);
+        }
       )
     }
     

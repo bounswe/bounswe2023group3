@@ -74,9 +74,12 @@ class _ModeratorHomePageState extends State<ModeratorHomePage>
     setState(() {
       // Refresh the page
     });
-    ScaffoldMessenger.of(context)
-      ..removeCurrentSnackBar()
-      ..showSnackBar(SnackBar(content: Text(resultMessage), duration: const Duration(seconds: 3),));
+    if(resultMessage!= null){
+      ScaffoldMessenger.of(context)
+        ..removeCurrentSnackBar()
+        ..showSnackBar(SnackBar(content: Text(resultMessage), duration: const Duration(seconds: 3),));
+    }
+
   }
   Future<void> tapOnSettle(
       BuildContext context,
@@ -117,9 +120,11 @@ class _ModeratorHomePageState extends State<ModeratorHomePage>
     setState(() {
       // Refresh the page
     });
-    ScaffoldMessenger.of(context)
-      ..removeCurrentSnackBar()
-      ..showSnackBar(SnackBar(content: Text(resultMessage), duration: const Duration(seconds: 3),));
+    if(resultMessage!= null){
+      ScaffoldMessenger.of(context)
+        ..removeCurrentSnackBar()
+        ..showSnackBar(SnackBar(content: Text(resultMessage), duration: const Duration(seconds: 3),));
+    }
   }
 
   @override

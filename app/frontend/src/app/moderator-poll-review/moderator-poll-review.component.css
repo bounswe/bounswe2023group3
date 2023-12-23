@@ -1,7 +1,12 @@
 html,
 body {
   background-color: #89b1b6;
+ display: flex;
+ flex-direction: column;
+ height: 100%;
+ overflow: auto;
 }
+
 
 .page-layout {
   display: flex;

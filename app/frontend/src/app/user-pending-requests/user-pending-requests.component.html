@@ -6,7 +6,7 @@
       <app-side-bar></app-side-bar>
       <div class="container" style="padding: 40px; justify-self: center; margin-left: 240px;">
         <div class="moderator-requests">
-          <button class="moderator-requests-column">
+          <button class="moderator-requests-column" style="border: solid 1px #89B1B6; transition: background-color 0.2s;">
             Poll Creation Requests
           </button>
           
@@ -14,7 +14,6 @@
         <div *ngFor="let poll of polls" class="poll-notification">
             <div class="question">{{ poll.question }}</div>
             <div class="date">{{ poll.creation_date }}</div>
-            <button class="details-button">See Details</button>
             <button class="disapprove-button" (click) = "deletePoll(poll.id)">Cancel Request</button>
           </div>
     

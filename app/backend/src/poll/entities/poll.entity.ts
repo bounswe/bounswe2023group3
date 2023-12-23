@@ -64,9 +64,6 @@ export class Poll {
   @OneToMany(() => Vote, (vote) => vote.poll, { cascade: true })
   votes: Relation<Vote[]>;
 
-  @Column({ default: 0 })
-  vote_count: number;
-
   // @Todo Replace with report entity
   //@Column({ nullable: true })
   //report_list: Array<any>;

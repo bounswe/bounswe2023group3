@@ -28,6 +28,7 @@ body {
 header {
   background-color: #232f44;
   color: #fff;
+  height: 45px;
   text-align: center;
   padding: 10px 0;
   display: flex;
@@ -296,7 +297,7 @@ ul li a {
 }
 
 /* Responsive Layout */
-@media (max-width: 768px) {
+@media (max-width: 700px) {
   header,
   footer,
   .user-profile {
@@ -310,18 +311,29 @@ ul li a {
 }
 
 @media screen and (max-width: 700px) {
+  .header {
+    height: 65px;
+  }
   .about-app {
     flex-direction: column;
     align-items: center;
   }
 
-  .about-app-content,
-  .about-app-image {
+  .about-app-content {
     width: 100%;
+  }
+
+  .about-app-image {
+    display: none;
   }
 
   .features {
     align-items: center;
     flex-direction: column;
+  }
+
+  .header-links a, .header-links .download-button,
+  .header-links .moderator-button {
+    display: none;
   }
 }

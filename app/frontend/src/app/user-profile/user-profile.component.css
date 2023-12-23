@@ -9,24 +9,23 @@
 /* Add or modify styles for the edit mode */
 .edit-container {
   display: flex;
-  align-items: center;
+  justify-content: center;
   margin-right: 10px;
 }
 
-.edit-input {
-  border-radius: 10px;
-  background-color: #79abb1;
+.edit-username {
+  border-radius: 16px;
+  background-color: #F4EAE6;
   border: none;
-  height: 30px;
-  color: #fff;
-  margin-bottom: 10px;
+  height: 16px;
+  color: #202A40;
   margin-right: 10px;
-  padding: 5px 10px; /* Adjust padding for better appearance */
-  width: 150px; /* Adjust the width based on your design */
+  padding: 10px; /* Adjust padding for better appearance */
+  width: 200px; /* Adjust the width based on your design */
 }
 
 .edit-button {
-  background-color: #63989f;
+  background-color: #202A40;
   border: none;
   color: #fff;
   padding: 8px 12px; /* Adjust padding for better appearance */
@@ -37,14 +36,19 @@
   margin-right: 10px;
   border-radius: 15px;
   margin-left: auto;
+  transition: background-color 0.2s;
 }
 
 .edit-button:hover {
-  background-color: #4a7580; /* Add a darker shade on hover */
+  background-color: #34495e; /* Add a darker shade on hover */
+}
+
+.edit-username::placeholder {
+  color: #444; /* Change this to the desired color */
 }
 
 .cancel-button {
-  background-color: #4a7580;
+  background-color: #E57F84;
   border: none;
   color: #fff;
   padding: 8px 12px; /* Adjust padding for better appearance */
@@ -58,5 +62,32 @@
 }
 
 .cancel-button:hover {
-  background-color: #4a7580; /* Add a darker shade on hover */
+  background-color: #c55d63; /* Add a darker shade on hover */
+}
+
+.user-polls {
+  display: flex;
+}
+
+.user-polls-column {
+  background-color: #9DC0C4;
+  border: solid #202A40 1px;
+  color: #202A40;
+  padding: 10px 15px;
+  margin: 0;
+  cursor: pointer;
+  outline: none;
+  border-radius: 20px;
+  transition: background-color 0.3s;
+}
+
+.user-polls-column.active {
+  border: solid #202A40 1px;
+  border-bottom: none;
+  border-left: none;
+  border-right: none;
+}
+
+.button-text {
+  font-size: 16px;
 }

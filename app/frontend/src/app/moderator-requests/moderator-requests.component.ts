@@ -52,6 +52,9 @@ export class ModeratorRequestsComponent {
     this.http.get('http://34.105.66.254:1923/moderator/polls/',this.options).subscribe(
       (response: any) => {
         this.polls = response
+        this.polls.forEach(poll => {
+          poll.creation_date = this.formatDateTime(new Date(poll.creation_date))
+        });
         console.log('Fetched polls:', this.polls)
       },
       (error) => {
@@ -73,8 +76,12 @@ export class ModeratorRequestsComponent {
         (error) => {
           console.error('Error deleting poll:', error)
         },
+        () => {
+          // Reload after settling the poll
+          window.location.reload();
+        }
       )
-      window.location.reload()
+      
       return
     }
 
@@ -84,8 +91,12 @@ export class ModeratorRequestsComponent {
       (error) => {
         console.error('Error deleting poll:', error)
       },
+      () => {
+        // Reload after settling the poll
+        window.location.reload();
+      }
     )
-    window.location.reload()
+    
   }
 
   onOutcomeVerifiationReq(){
@@ -96,6 +107,7 @@ export class ModeratorRequestsComponent {
         this.polls = []
         for (const r of response) { 
           if (r.is_settled === 1) {
+            r.creation_date = this.formatDateTime(new Date(r.creation_date))
             this.polls.push(r); 
           }
         }
@@ -105,6 +117,8 @@ export class ModeratorRequestsComponent {
       },
     )
   }
+
+  
 
   navigateToDetailedView(pollId: any) {
     this.router.navigate(['/app-moderator-poll-review', pollId])

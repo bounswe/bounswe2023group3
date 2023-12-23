@@ -13,6 +13,7 @@ import {
   ParseArrayPipe,
   ConflictException,
   ParseBoolPipe,
+  ParseIntPipe,
 } from '@nestjs/common';
 import { PollService } from './poll.service';
 import { CreatePollDto } from './dto/create-poll.dto';
@@ -150,7 +151,6 @@ export class PollController {
   }
 
   @ApiQuery({ name: 'creatorId', required: false })
-  @ApiQuery({ name: 'approveStatus', required: false })
   @ApiQuery({ name: 'likedById', required: false })
   @ApiQuery({ name: 'votedById', required: false })
   @ApiQuery({ name: 'followedById', required: false })
@@ -170,8 +170,54 @@ export class PollController {
     @Req() req: any,
     @Query('creatorId', new ParseUUIDPipe({ optional: true }))
     creatorId?: string,
-    @Query('approveStatus', new ParseBoolPipe({ optional: true }))
-    approveStatus?: string,
+    @Query('likedById', new ParseUUIDPipe({ optional: true }))
+    likedById?: string,
+    @Query('followedById', new ParseUUIDPipe({ optional: true }))
+    followedById?: string,
+    @Query('sort')
+    sortString?: string,
+    @Query('tags', new ParseArrayPipe({ optional: true }))
+    tags?: Array<string>,
+  ): Promise<any> {
+    const userId = req.user?.sub; // Realize that it is not id instead sub. I do not know why but middleware gives this field.
+    return await this.pollService.findAll({
+      creatorId,
+      approveStatus: true,
+      likedById,
+      votedById: null,
+      followedById,
+      sortString,
+      tags,
+      userId,
+    });
+  }
+
+  @ApiQuery({ name: 'pageSize', required: true })
+  @ApiQuery({ name: 'pageNum', required: true })
+  @ApiQuery({ name: 'creatorId', required: false })
+  @ApiQuery({ name: 'likedById', required: false })
+  @ApiQuery({ name: 'votedById', required: false })
+  @ApiQuery({ name: 'followedById', required: false })
+  @ApiQuery({ name: 'sort', required: false })
+  @ApiQuery({ name: 'tags', required: false })
+  @ApiResponse({
+    status: 200,
+    description: 'Polls are fetched successfully.',
+    type: [GetPollResponseDto],
+  })
+  @ApiResponse({
+    status: 500,
+    description: 'Internal server error, contact with backend team.',
+  })
+  @Get('/with-pagination')
+  public async findAllWithPagination(
+    @Req() req: any,
+    @Query('pageSize', ParseIntPipe)
+    pageSize: number,
+    @Query('pageNum', ParseIntPipe)
+    pageNum: number,
+    @Query('creatorId', new ParseUUIDPipe({ optional: true }))
+    creatorId?: string,
     @Query('likedById', new ParseUUIDPipe({ optional: true }))
     likedById?: string,
     @Query('votedById', new ParseUUIDPipe({ optional: true }))
@@ -184,15 +230,17 @@ export class PollController {
     tags?: Array<string>,
   ): Promise<any> {
     const userId = req.user?.sub; // Realize that it is not id instead sub. I do not know why but middleware gives this field.
-    return await this.pollService.findAll({
+    return await this.pollService.findAllWithPagination({
       creatorId,
-      approveStatus,
+      approveStatus: true,
       likedById,
       votedById,
       followedById,
       sortString,
       tags,
       userId,
+      pageSize,
+      pageNum,
     });
   }
 
@@ -212,13 +260,48 @@ export class PollController {
     const creatorId = req.user.id;
     return await this.pollService.findAll({
       creatorId,
-      approveStatus: null,
+      approveStatus: true,
       likedById: null,
       votedById: null,
       followedById: null,
       sortString: null,
       tags: null,
       userId: creatorId,
+    });
+  }
+
+  @UseGuards(AuthGuard, VerificationGuard)
+  @ApiQuery({ name: 'pageSize', required: true })
+  @ApiQuery({ name: 'pageNum', required: true })
+  @ApiResponse({
+    status: 200,
+    description: 'Polls are fetched successfully.',
+    type: [GetPollResponseDto],
+  })
+  @ApiResponse({
+    status: 500,
+    description: 'Internal server error, contact with backend team.',
+  })
+  @Get('my-polls-with-pagination')
+  public async findMyPollsWithPagination(
+    @Req() req: any,
+    @Query('pageSize', ParseIntPipe)
+    pageSize: number,
+    @Query('pageNum', ParseIntPipe)
+    pageNum: number,
+  ): Promise<any> {
+    const creatorId = req.user.id;
+    return await this.pollService.findAllWithPagination({
+      creatorId,
+      approveStatus: true,
+      likedById: null,
+      votedById: null,
+      followedById: null,
+      sortString: null,
+      tags: null,
+      userId: creatorId,
+      pageSize,
+      pageNum,
     });
   }
 
@@ -263,13 +346,48 @@ export class PollController {
     const userId = req.user.id;
     return await this.pollService.findAll({
       creatorId: null,
-      approveStatus: null,
+      approveStatus: true,
       likedById: userId,
       votedById: null,
       followedById: null,
       sortString: null,
       tags: null,
       userId,
+    });
+  }
+
+  @UseGuards(AuthGuard, VerificationGuard)
+  @ApiQuery({ name: 'pageSize', required: true })
+  @ApiQuery({ name: 'pageNum', required: true })
+  @ApiResponse({
+    status: 200,
+    description: 'Polls are fetched successfully.',
+    type: [GetPollResponseDto],
+  })
+  @ApiResponse({
+    status: 500,
+    description: 'Internal server error, contact with backend team.',
+  })
+  @Get('liked-by-me-with-pagination')
+  public async findPollsILikedWithPagination(
+    @Req() req: any,
+    @Query('pageSize', ParseIntPipe)
+    pageSize: number,
+    @Query('pageNum', ParseIntPipe)
+    pageNum: number,
+  ): Promise<any> {
+    const userId = req.user.id;
+    return await this.pollService.findAllWithPagination({
+      creatorId: null,
+      approveStatus: true,
+      likedById: userId,
+      votedById: null,
+      followedById: null,
+      sortString: null,
+      tags: null,
+      userId,
+      pageSize,
+      pageNum,
     });
   }
 
@@ -288,13 +406,48 @@ export class PollController {
     const userId = req.user.id;
     return await this.pollService.findAll({
       creatorId: null,
-      approveStatus: null,
+      approveStatus: true,
       likedById: null,
       votedById: userId,
       followedById: null,
       sortString: null,
       tags: null,
       userId,
+    });
+  }
+
+  @UseGuards(AuthGuard, VerificationGuard)
+  @ApiQuery({ name: 'pageSize', required: true })
+  @ApiQuery({ name: 'pageNum', required: true })
+  @ApiResponse({
+    status: 200,
+    description: 'Polls are fetched successfully.',
+    type: [GetPollResponseDto],
+  })
+  @ApiResponse({
+    status: 500,
+    description: 'Internal server error, contact with backend team.',
+  })
+  @Get('voted-by-me-with-pagination')
+  public async findPollsIVotedWithPagination(
+    @Req() req: any,
+    @Query('pageSize', ParseIntPipe)
+    pageSize: number,
+    @Query('pageNum', ParseIntPipe)
+    pageNum: number,
+  ): Promise<any> {
+    const userId = req.user.id;
+    return await this.pollService.findAllWithPagination({
+      creatorId: null,
+      approveStatus: true,
+      likedById: null,
+      votedById: userId,
+      followedById: null,
+      sortString: null,
+      tags: null,
+      userId,
+      pageSize,
+      pageNum,
     });
   }
 
@@ -315,6 +468,34 @@ export class PollController {
   }
 
   @UseGuards(AuthGuard, VerificationGuard)
+  @ApiQuery({ name: 'pageSize', required: true })
+  @ApiQuery({ name: 'pageNum', required: true })
+  @ApiResponse({
+    status: 200,
+    description: 'Polls are fetched successfully.',
+    type: [GetPollResponseDto],
+  })
+  @ApiResponse({
+    status: 500,
+    description: 'Internal server error, contact with backend team.',
+  })
+  @Get('not-voted-by-me-with-pagination')
+  public async findPollsIdidNoteVoteWithPagination(
+    @Req() req: any,
+    @Query('pageSize', ParseIntPipe)
+    pageSize: number,
+    @Query('pageNum', ParseIntPipe)
+    pageNum: number,
+  ): Promise<any> {
+    const userId = req.user.id;
+    return await this.pollService.findPollsUserdidNotVoteWithPagination(
+      userId,
+      pageSize,
+      pageNum,
+    );
+  }
+
+  @UseGuards(AuthGuard, VerificationGuard)
   @ApiResponse({
     status: 200,
     description: 'Polls are fetched successfully.',
@@ -329,13 +510,48 @@ export class PollController {
     const userId = req.user.id;
     return await this.pollService.findAll({
       creatorId: null,
-      approveStatus: null,
+      approveStatus: true,
       likedById: null,
       votedById: null,
       followedById: userId,
       sortString: null,
       tags: null,
       userId,
+    });
+  }
+
+  @UseGuards(AuthGuard, VerificationGuard)
+  @ApiQuery({ name: 'pageSize', required: true })
+  @ApiQuery({ name: 'pageNum', required: true })
+  @ApiResponse({
+    status: 200,
+    description: 'Polls are fetched successfully.',
+    type: [GetPollResponseDto],
+  })
+  @ApiResponse({
+    status: 500,
+    description: 'Internal server error, contact with backend team.',
+  })
+  @Get('my-followings-with-pagination')
+  public async findPollsOfUsersIFollowWithPagination(
+    @Req() req: any,
+    @Query('pageSize', ParseIntPipe)
+    pageSize: number,
+    @Query('pageNum', ParseIntPipe)
+    pageNum: number,
+  ): Promise<any> {
+    const userId = req.user.id;
+    return await this.pollService.findAllWithPagination({
+      creatorId: null,
+      approveStatus: true,
+      likedById: null,
+      votedById: null,
+      followedById: userId,
+      sortString: null,
+      tags: null,
+      userId,
+      pageSize,
+      pageNum,
     });
   }
 
