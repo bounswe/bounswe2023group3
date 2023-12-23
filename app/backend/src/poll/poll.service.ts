@@ -274,10 +274,10 @@ export class PollService {
           ...poll,
           likeCount: poll.likes.length,
           commentCount: poll.comments.length,
-          vote_count: await this.voteService.getVoteCount(poll.id),
+          voteCount: await this.voteService.getVoteCount(poll.id),
           votedOption: null,
           didLike: null,
-          vote_distribution: poll.is_settled === Settle.SETTLED ? await this.voteService.getVoteRate(poll.id) : null
+          voteDistribution: poll.is_settled === Settle.SETTLED ? await this.voteService.getVoteRate(poll.id) : null
         };
       })
     );
@@ -286,8 +286,8 @@ export class PollService {
       extendedPolls = await Promise.all(
         extendedPolls.map(async (poll) => {
           const votedOption = (await this.voteService.findOne(poll.id, userId))?.option ?? null;
-          if (!poll.vote_distribution && votedOption) {
-            poll.vote_distribution = await this.voteService.getVoteRate(poll.id);
+          if (!poll.voteDistribution && votedOption) {
+            poll.voteDistribution = await this.voteService.getVoteRate(poll.id);
           }
           return {
             ...poll,
