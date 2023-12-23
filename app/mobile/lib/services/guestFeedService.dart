@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:ui';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
@@ -10,7 +9,7 @@ import 'package:mobile_app/services/apiService.dart';
 import '../view/pollViewHomePage/pollViewHomePage.dart';
 import 'annotationService.dart';
 
-class HomePageService {
+class GuestFeedService {
   static Future<List<PollViewHomePage>> getPollRequests() async {
     const String getPollsEndpoint = '/poll';
     print("bbb");
