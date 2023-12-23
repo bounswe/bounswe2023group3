@@ -76,7 +76,6 @@ void main() async {
       '/fpassinit': (context) => const ForgetPassInitScreen(),
       '/fpassverify': (context) => const ForgetPassVerifyScreen(),
       '/pollreq': (context) => const PollRequestPage(),
-      '/signverify': (context) => const SignVerifyScreen(),
       '/moderatorHome': (context) => const ModeratorHomePage(),
       '/moderatorLogin': (context) => const ModeratorLoginScreen(),
       '/moderatorApply': (context) => const ModeratorApplicationPage(),
