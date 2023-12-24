@@ -154,6 +154,7 @@ export class PollController {
   @ApiQuery({ name: 'likedById', required: false })
   @ApiQuery({ name: 'votedById', required: false })
   @ApiQuery({ name: 'followedById', required: false })
+  @ApiQuery({ name: 'is_settled', required: false })
   @ApiQuery({ name: 'sort', required: false })
   @ApiQuery({ name: 'tags', required: false })
   @ApiResponse({
@@ -176,6 +177,8 @@ export class PollController {
     votedById?: string,
     @Query('followedById', new ParseUUIDPipe({ optional: true }))
     followedById?: string,
+    @Query('is_settled', new ParseIntPipe({ optional: true }))
+    is_settled?: string,
     @Query('sort')
     sortString?: string,
     @Query('tags', new ParseArrayPipe({ optional: true }))
@@ -190,6 +193,7 @@ export class PollController {
       followedById,
       sortString,
       tags,
+      is_settled,
       userId,
     });
   }
@@ -199,6 +203,7 @@ export class PollController {
   @ApiQuery({ name: 'creatorId', required: false })
   @ApiQuery({ name: 'likedById', required: false })
   @ApiQuery({ name: 'votedById', required: false })
+  @ApiQuery({ name: 'is_settled', required: false })
   @ApiQuery({ name: 'followedById', required: false })
   @ApiQuery({ name: 'sort', required: false })
   @ApiQuery({ name: 'tags', required: false })
@@ -226,6 +231,8 @@ export class PollController {
     votedById?: string,
     @Query('followedById', new ParseUUIDPipe({ optional: true }))
     followedById?: string,
+    @Query('is_settled', new ParseIntPipe({ optional: true }))
+    is_settled?: string,
     @Query('sort')
     sortString?: string,
     @Query('tags', new ParseArrayPipe({ optional: true }))
@@ -240,6 +247,7 @@ export class PollController {
       followedById,
       sortString,
       tags,
+      is_settled,
       userId,
       pageSize,
       pageNum,
@@ -268,6 +276,7 @@ export class PollController {
       followedById: null,
       sortString: null,
       tags: null,
+      is_settled: 0,
       userId: creatorId,
     });
   }
@@ -301,6 +310,7 @@ export class PollController {
       followedById: null,
       sortString: null,
       tags: null,
+      is_settled: 0,
       userId: creatorId,
       pageSize,
       pageNum,
@@ -353,6 +363,7 @@ export class PollController {
       votedById: null,
       followedById: null,
       sortString: null,
+      is_settled: 0,
       tags: null,
       userId,
     });
@@ -387,6 +398,7 @@ export class PollController {
       followedById: null,
       sortString: null,
       tags: null,
+      is_settled: 0,
       userId,
       pageSize,
       pageNum,
@@ -413,6 +425,7 @@ export class PollController {
       votedById: userId,
       followedById: null,
       sortString: null,
+      is_settled: 0,
       tags: null,
       userId,
     });
@@ -447,6 +460,7 @@ export class PollController {
       followedById: null,
       sortString: null,
       tags: null,
+      is_settled: 0,
       userId,
       pageSize,
       pageNum,
@@ -517,6 +531,7 @@ export class PollController {
       votedById: null,
       followedById: userId,
       sortString: null,
+      is_settled: 0,
       tags: null,
       userId,
     });
@@ -551,6 +566,7 @@ export class PollController {
       followedById: userId,
       sortString: null,
       tags: null,
+      is_settled: 0,
       userId,
       pageSize,
       pageNum,
