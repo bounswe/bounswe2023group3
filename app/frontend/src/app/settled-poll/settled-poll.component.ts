@@ -26,6 +26,7 @@ export class SettledPollComponent {
   isLikedBy!: boolean
   nofLikes: number = 0
   userId!: string | null
+  isClickable = false
 
   showPopup = false
   isAuthenticated: boolean = false

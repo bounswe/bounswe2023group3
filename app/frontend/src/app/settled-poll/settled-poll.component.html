@@ -94,7 +94,7 @@
           class="button"
           #buttonRef
           id="'button' + i"
-          (click)="toggleButton(buttonRef)"
+          (click)="isClickable"
           [disabled]="selectedButton != buttonRef && selectedButton != null"
         >
           {{ option.answer }}

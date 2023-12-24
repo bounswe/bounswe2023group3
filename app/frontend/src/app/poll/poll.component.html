@@ -101,7 +101,7 @@
               #buttonRef
               id="'button' + i"
               [attr.data-vote-id]="option.id"
-              (click)="!userVoted && castVote(option.id, buttonRef)"
+              (click)="!userVoted && !isSettled && castVote(option.id, buttonRef)"
               [disabled]="selectedButton != buttonRef && selectedButton != null"
             >
               {{ option.answer }}

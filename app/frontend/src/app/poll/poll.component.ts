@@ -28,6 +28,7 @@ export class PollComponent {
   creation_time!: string
   vote_count!: number
   creator!: User
+  isSettled!: boolean 
   isLikedBy!: boolean
   nofLikes: number = 0
   userId!: string | null
@@ -133,6 +134,7 @@ export class PollComponent {
       this.creator = response.creator;
       this.image_urls = response.image_urls;
       this.user_vote_id = response.votedOption.id;
+      this.isSettled = (response.is_settled != 0);
       this.userVoted = !(!this.user_vote_id);
       this.optionWeights = response.voteDistribution.map((x: {id: string, count: string }) => parseInt(x.count));
       const sum = this.optionWeights.reduce((accumulator, current) => accumulator + current, 0);
