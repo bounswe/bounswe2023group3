@@ -558,6 +558,7 @@ export class PollController {
   }
 
   @Get(':id')
+  @UseGuards(AuthGuard, VerificationGuard)
   @ApiResponse({
     status: 200,
     description: 'Poll is fetched successfully.',
