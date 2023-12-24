@@ -66,20 +66,19 @@ export class UserPendingRequestsComponent {polls!: any[]
   
   // Move the code for fetching data to a separate method
   loadData() {
-    this.http.get('http://34.105.66.254:1923/poll/my-polls/', this.options).subscribe(
-      (response: any) => {
-        this.polls = response;
-  
-        this.polls.forEach(poll => {
-          poll.creation_date = this.formatDateTime(new Date(poll.creation_date));
-        });
-  
-        console.log('Fetched polls:', this.polls);
-      },
-      (error) => {
-        console.error('Error fetching polls:', error);
-      }
-    );
+    this.http.get('http://34.105.66.254:1923/poll/my-polls/pending',this.options).subscribe(
+        (response: any) => {
+          this.polls = []
+          for (const r of response) {
+            if (!r.approveStatus) {
+              this.polls.push(r)
+            }
+          }
+        },
+        (error) => {
+          console.error('Error fetching polls:', error)
+        },
+      )
   }
   
 

@@ -11,6 +11,8 @@ import 'package:mobile_app/view/profilePage/userInfoSection.dart';
 import 'package:mobile_app/view/sidebar/sidebar.dart';
 import 'package:mobile_app/view/state.dart';
 
+import '../waitingScreen/fancyWaitingScreen.dart';
+
 enum ProfilePagePollType { Created, Liked, Voted }
 
 class ProfilePage extends StatefulWidget {
@@ -40,7 +42,7 @@ class _ProfilePageState extends State<ProfilePage> {
   List<PollInfo> createdPolls = [];
   bool isLoadingPolls = false;
   bool isLoadingProfile = false;
-  ProfilePagePollType activeCategory = ProfilePagePollType.Created;
+  ProfilePagePollType activeCategory = ProfilePagePollType.Liked;
   Map<ProfilePagePollType, bool> categoryLocked = {
     ProfilePagePollType.Created: true,
     ProfilePagePollType.Liked: true,
@@ -124,7 +126,7 @@ class _ProfilePageState extends State<ProfilePage> {
         slivers: <Widget>[
           SliverToBoxAdapter(
             child: profileInfo == null
-                ? const CircularProgressIndicator()
+                ? const Center(child: CircularProgressIndicator())
                 : UserInfoSection(
                     profileInfo: profileInfo!,
                     profilePageReload: () {
@@ -257,8 +259,9 @@ class _ProfilePageState extends State<ProfilePage> {
                   didLike: post.didlike,
                   chosenVoteIndex: post.chosenVoteIndex,
                   commentCount: post.commentCount,
-                  annotationIndices: [],
-                  annotationTexts: [],
+                  annotationIndices:
+                      post.annotations.map((e) => e.indices).toList(),
+                  annotationTexts: post.annotations.map((e) => e.body).toList(),
                 ),
               ),
             ),

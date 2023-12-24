@@ -19,7 +19,8 @@ import 'package:flutter/services.dart';
 void main() async {
   ApiService.setup();
   await ApiService.init();
-  SystemSound.play(SystemSoundType.click);
+  // TODO uncomment
+  // SystemSound.play(SystemSoundType.click);
   runApp(MaterialApp(
     debugShowCheckedModeBanner: false,
     theme: ThemeData(
@@ -75,7 +76,6 @@ void main() async {
       '/fpassinit': (context) => const ForgetPassInitScreen(),
       '/fpassverify': (context) => const ForgetPassVerifyScreen(),
       '/pollreq': (context) => const PollRequestPage(),
-      '/signverify': (context) => const SignVerifyScreen(),
       '/moderatorHome': (context) => const ModeratorHomePage(),
       '/moderatorLogin': (context) => const ModeratorLoginScreen(),
       '/moderatorApply': (context) => const ModeratorApplicationPage(),

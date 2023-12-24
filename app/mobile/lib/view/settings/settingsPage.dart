@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile_app/services/accountClosingService.dart';
+import 'package:mobile_app/view/state.dart';
 import 'package:mobile_app/view/welcome/welcome.dart';
 
 import '../../ScreenArguments.dart';
@@ -63,8 +64,8 @@ class _SettingsPageState extends State<SettingsPage> {
 
       try {
 
-        Response response = await accountClosingService.closeAccount();
-        if(response.statusCode == 201) {
+        Response response = await accountClosingService.closeAccount(AppState.loggedInUserId);
+        if(response.statusCode == 200) {
 
           if(!context.mounted) return;
           Navigator.pushNamedAndRemoveUntil(

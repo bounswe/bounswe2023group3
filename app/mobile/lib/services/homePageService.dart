@@ -25,7 +25,8 @@ class HomePageService {
         pollids.add(poll['id']);
       }
       String pollIds = pollids.join(',');
-      const String getAnnotationsEndpoint = 'http://34.105.66.254:1938/annotation';
+      const String getAnnotationsEndpoint =
+          'http://34.105.66.254:1938/annotation';
       Map<String, List<Map<String, dynamic>>> groupedAnnotations = {};
       try {
         Response annotationsResponse = await AnnotationService.dio.get(
@@ -42,7 +43,6 @@ class HomePageService {
 
           // Group annotations by target source
 
-
           // Map each annotation to a Dart object and group by source
           for (var annotation in annotations) {
             String source = annotation['target']['source'];
@@ -55,6 +55,9 @@ class HomePageService {
               'end': annotation['target']['selector']['end'],
             });
           }
+          groupedAnnotations.forEach((source, annotations) {
+            annotations.sort((a, b) => a['start'].compareTo(b['start']));
+          });
         }
       } catch (e) {
         print(e);
@@ -62,9 +65,12 @@ class HomePageService {
       List<PollViewHomePage> posts = [];
       for (var post in postsJson) {
         String pollId = "http://34.105.66.254:1923/${post['id']}";
-        List<Map<String, dynamic>> annotations = groupedAnnotations[pollId] ?? [];
-        List<List<int>> indices = annotations.map<List<int>>((e) => [e['start'], e['end']]).toList();
-        List<String> bodies = annotations.map<String>((e) => e['body']['value']).toList();
+        List<Map<String, dynamic>> annotations =
+            groupedAnnotations[pollId] ?? [];
+        List<List<int>> indices =
+            annotations.map<List<int>>((e) => [e['start'], e['end']]).toList();
+        List<String> bodies =
+            annotations.map<String>((e) => e['body']['value']).toList();
         final creator = post['creator'];
         final List<dynamic> tagsJson = post['tags'];
         final List<dynamic> optionsJson = post['options'];
@@ -90,14 +96,15 @@ class HomePageService {
           postTitle: post['question'],
           tags: tagsList,
           tagColors: tagColorsList,
-          voteCount: post['vote_count'],
+          voteCount: post['voteCount'],
           postOptions: optionsJson,
           likeCount: post['likeCount'],
           commentCount: post['commentCount'],
           dateTime: post['creation_date'],
           isSettled: post['is_settled'],
           approvedStatus: post['approveStatus'],
-          didLike: post['didLike'], // You might want to format the date
+          didLike:
+              post['didLike'] ?? false, // You might want to format the date
           chosenVoteIndex: -1, //it will be post['chosenVoteIndex']
           annotationIndices: indices,
           annotationTexts: bodies,

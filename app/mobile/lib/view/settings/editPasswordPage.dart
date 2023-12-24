@@ -162,6 +162,7 @@ class _EditPasswordPageState extends State<EditPasswordPage> {
                 labelText: 'Old Password',
                 controller: oldPasswordController,
                 errorText: "",
+                obscureText: true,
 
               ),
               const SizedBox(height: 10.0),

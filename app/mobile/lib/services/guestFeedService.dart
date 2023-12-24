@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:ui';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
@@ -10,7 +9,7 @@ import 'package:mobile_app/services/apiService.dart';
 import '../view/pollViewHomePage/pollViewHomePage.dart';
 import 'annotationService.dart';
 
-class HomePageService {
+class GuestFeedService {
   static Future<List<PollViewHomePage>> getPollRequests() async {
     const String getPollsEndpoint = '/poll';
     print("bbb");
@@ -55,6 +54,9 @@ class HomePageService {
               'end': annotation['target']['selector']['end'],
             });
           }
+          groupedAnnotations.forEach((source, annotations) {
+            annotations.sort((a, b) => a['start'].compareTo(b['start']));
+          });
         }
       } catch (e) {
         print(e);
@@ -90,14 +92,14 @@ class HomePageService {
           postTitle: post['question'],
           tags: tagsList,
           tagColors: tagColorsList,
-          voteCount: post['vote_count'],
+          voteCount: post['voteCount'],
           postOptions: optionsJson,
           likeCount: post['likeCount'],
           commentCount: post['commentCount'],
           dateTime: post['creation_date'],
           isSettled: post['is_settled'],
           approvedStatus: post['approveStatus'],
-          didLike: post['didLike'], // You might want to format the date
+          didLike: false, // You might want to format the date
           chosenVoteIndex: -1, //it will be post['chosenVoteIndex']
           annotationIndices: indices,
           annotationTexts: bodies,
