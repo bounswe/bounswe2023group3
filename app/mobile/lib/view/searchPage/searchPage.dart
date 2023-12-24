@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mobile_app/view/sidebar/sidebar.dart';
 import 'package:mobile_app/services/searchUserService.dart';
+import 'package:mobile_app/view/profilePage/profilePage.dart';
 
 class SearchPage extends StatefulWidget {
   const SearchPage({Key? key}) : super(key: key);
@@ -62,8 +63,14 @@ class _SearchPageState extends State<SearchPage> {
       itemCount: _searchResults.length,
       itemBuilder: (context, index) {
         return ListTile(
+          onTap: () {
+            // Action to perform on ListTile tap
+            navigateToProfile(context, _searchResults[index].username);
+          },
           leading: CircleAvatar(
-            backgroundImage: NetworkImage(_searchResults[index].profilePicture),
+              backgroundImage: _searchResults[index].profilePicture.isNotEmpty
+                  ? NetworkImage(_searchResults[index].profilePicture) as ImageProvider // Use NetworkImage
+                  : const AssetImage("assets/def_profile_photo2.jpg")
           ),
           title: Text(_searchResults[index].username),
           // Display more user details if needed
@@ -71,4 +78,14 @@ class _SearchPageState extends State<SearchPage> {
       },
     );
   }
+}
+
+void navigateToProfile(BuildContext context, String username) {
+  // Navigate to the profile page
+  Navigator.push(
+    context,
+    MaterialPageRoute(
+      builder: (context) => ProfilePage.withUsername(username: username),
+    ),
+  );
 }
