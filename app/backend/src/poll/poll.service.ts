@@ -541,7 +541,7 @@ export class PollService {
       throw new NotFoundException('Poll not found');
     }
 
-    const votedOption = (await this.voteService.findOne(poll.id, userId))?.option || null;
+    const votedOption = userId ? (await this.voteService.findOne(poll.id, userId))?.option || null : null;
   
     let voteDistribution = null;
     if (votedOption) {

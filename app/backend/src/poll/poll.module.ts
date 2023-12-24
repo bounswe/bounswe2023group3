@@ -71,6 +71,7 @@ export class PollModule implements NestModule {
       .forRoutes(
         { path: '/poll', method: RequestMethod.GET },
         { path: '/poll/:param', method: RequestMethod.GET },
+        { path: '/poll/:id', method: RequestMethod.GET },
       );
   }
 }
