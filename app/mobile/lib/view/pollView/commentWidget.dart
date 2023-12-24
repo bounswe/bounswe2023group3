@@ -31,9 +31,9 @@ class CommentWidget extends StatefulWidget {
 }
 
 class _CommentWidgetState extends State<CommentWidget> {
-  void deleteComment() async {
-    // TODO delete comment
-    await PostCommentService.deleteComment(widget.commentId);
+  void _deleteComment() async {
+    print(widget.commentId);
+    // await PostCommentService.deleteComment(widget.commentId);
     widget.parentSetState();
   }
 
@@ -131,7 +131,7 @@ class _CommentWidgetState extends State<CommentWidget> {
                   icon: const Icon(Icons.delete),
                   color: Colors.grey.shade700,
                   onPressed: () {
-                    deleteComment();
+                    _deleteComment();
                     print("delete onpressed");
                   },
                 ),
