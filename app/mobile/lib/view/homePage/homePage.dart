@@ -6,6 +6,8 @@ import 'package:mobile_app/view/sidebar/sidebar.dart'; // Import your custom dra
 import 'package:mobile_app/view/pollViewHomePage/pollViewHomePage.dart';
 import 'package:mobile_app/view/pollView/pollView.dart';
 
+import '../waitingScreen/fancyWaitingScreen.dart';
+
 class HomePage extends StatefulWidget {
   HomePage({super.key});
   @override
@@ -76,7 +78,7 @@ class _HomePageState extends State<HomePage>
             AsyncSnapshot<List<PollViewHomePage>> snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             // Show a loading indicator while the data is being fetched
-            return const CircularProgressIndicator();
+            return FancyWaitingScreen();
           } else if (snapshot.hasError) {
             // Show an error message if there is an error
             print(snapshot);

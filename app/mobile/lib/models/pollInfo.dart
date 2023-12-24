@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mobile_app/models/annotation.dart';
 import 'package:mobile_app/view/constants.dart';
 
 class PollInfo {
@@ -32,6 +33,8 @@ class PollInfo {
   final bool didlike;
 
   final int chosenVoteIndex;
+
+  List<Annotation> annotations = [];
 
   PollInfo.withoutComments({
     required this.userName,
@@ -87,12 +90,12 @@ class PollInfo {
       tags: tags.map((e) => e['name'] as String).toList(),
       tagIds: tags.map((e) => e['id'] as String).toList(),
       tagColors: tagColorList,
-      voteCount: json['vote_count'],
+      voteCount: json['voteCount'],
       options: options.map((e) => e['answer'] as String).toList(),
       optionIds: options.map((e) => e['id'] as String).toList(),
       // TODO vote_count field'i kontrol edilecek
       optionsVoteCount:
-          options.map((e) => (e['vote_count'] ?? 0) as int).toList(),
+          options.map((e) => (e['voteCount'] ?? 0) as int).toList(),
       likeCount: json['likeCount'] ?? 0,
       dueDate: DateTime.parse(json['due_date']),
       creationDate: DateTime.parse(json['creation_date']),
@@ -103,7 +106,7 @@ class PollInfo {
       isPending: json['approveStatus'] == null,
       approvedStatus: json['approveStatus'] ?? false,
       isSettled: json['is_settled'] ?? 0,
-      didlike: json['didLike'],
+      didlike: json['didLike'] ?? false,
       chosenVoteIndex: -1, //json['chosenVoteIndex']
     );
   }

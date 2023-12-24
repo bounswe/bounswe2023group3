@@ -51,6 +51,7 @@ import { MatInputModule } from '@angular/material/input';
 import { QtextAnnotationComponent } from './qtext-annotation/qtext-annotation.component';
 import { NgxAnnotateTextModule } from "ngx-annotate-text";
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { DeleteConfirmationComponent } from './delete-confirmation/delete-confirmation.component';
 
 @NgModule({
   declarations: [
@@ -94,6 +95,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     UserPendingRequestsComponent,
     FollowListComponent,
     QtextAnnotationComponent,
+    DeleteConfirmationComponent,
   ],
   imports: [
     BrowserModule,

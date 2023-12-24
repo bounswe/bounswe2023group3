@@ -6,7 +6,9 @@ import 'package:dio/dio.dart';
 import 'package:mobile_app/view/forgetPassword/customTextField.dart';
 
 class SignVerifyScreen extends StatefulWidget {
-  const SignVerifyScreen({super.key});
+
+  final String email;
+  const SignVerifyScreen({super.key, required this.email});
 
   @override
   State<SignVerifyScreen> createState() => _SignVerifyScreen();
@@ -19,20 +21,12 @@ class _SignVerifyScreen extends State<SignVerifyScreen> {
   bool isOTPNumeric = true;
   bool isOTPCorrectLength = true;
 
-  final TextEditingController emailController = TextEditingController();
   final TextEditingController OTPController = TextEditingController();
 
-  void validateEmail(String email) {
-    setState(() {
-      emptyEmail = false;
-      emptyOTP = false;
-      if (email.isEmpty) {
-        isEmailValid = true;
-      } else {
-        isEmailValid = EmailValidator.validate(email);
-      }
-    });
-  }
+
+
+
+
 
   void validateOTP(String OTP) {
     setState(() {
@@ -68,20 +62,15 @@ class _SignVerifyScreen extends State<SignVerifyScreen> {
   }
 
   void verify() async {
-    String email = emailController.text;
     String OTP = OTPController.text;
-    if (email.isEmpty) {
-      setState(() {
-        emptyEmail = true;
-      });
-    }
+
 
     if (OTP.isEmpty) {
       setState(() {
         emptyOTP = true;
       });
     }
-    if (emptyEmail || emptyOTP) {
+    if (emptyOTP) {
       return;
     }
     // Perform email verification and navigate to the next screen if successful
@@ -89,7 +78,7 @@ class _SignVerifyScreen extends State<SignVerifyScreen> {
 
     try {
       Response response =
-          await signUpVerification.submitMailandOTP(email, int.parse(OTP));
+          await signUpVerification.submitMailandOTP(widget.email, int.parse(OTP));
 
       if (response.statusCode == 201) {
         if (!context.mounted) return;
@@ -137,14 +126,6 @@ class _SignVerifyScreen extends State<SignVerifyScreen> {
                 ),
                 const SizedBox(height: 20.0),
                 CustomTextField(
-                  labelText: 'Email',
-                  controller: emailController,
-                  keyboardType: TextInputType.emailAddress,
-                  onChanged: validateEmail,
-                  errorText: isEmailValid ? "" : 'Enter a valid email',
-                ),
-                const SizedBox(height: 20.0),
-                CustomTextField(
                   labelText: 'Verification Code',
                   controller: OTPController,
                   onChanged: validateOTP,
@@ -161,12 +142,6 @@ class _SignVerifyScreen extends State<SignVerifyScreen> {
                   padding: const EdgeInsets.all(10),
                   child: Column(
                     children: [
-                      Text(
-                        emptyEmail ? 'Email cannot be empty' : '',
-                        style: TextStyle(
-                          color: Colors.red[900],
-                        ),
-                      ),
                       Text(
                         emptyOTP ? 'OTP cannot be empty' : '',
                         style: TextStyle(

@@ -172,6 +172,8 @@ export class PollController {
     creatorId?: string,
     @Query('likedById', new ParseUUIDPipe({ optional: true }))
     likedById?: string,
+    @Query('votedById', new ParseUUIDPipe({ optional: true }))
+    votedById?: string,
     @Query('followedById', new ParseUUIDPipe({ optional: true }))
     followedById?: string,
     @Query('sort')
@@ -184,7 +186,7 @@ export class PollController {
       creatorId,
       approveStatus: true,
       likedById,
-      votedById: null,
+      votedById,
       followedById,
       sortString,
       tags,
