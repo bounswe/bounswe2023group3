@@ -201,6 +201,7 @@ export class PollService {
     followedById,
     tags,
     sortString,
+    is_settled,
     userId,
   }) {
     const whereClause: any = {};
@@ -213,6 +214,10 @@ export class PollService {
 
     if (approveStatus != null) {
       whereClause.approveStatus = approveStatus;
+    }
+
+    if (is_settled != null) {
+      whereClause.is_settled = is_settled;
     }
 
     if (likedById) {
@@ -267,7 +272,7 @@ export class PollService {
         tags.every((tag) => poll.tags.some((tagItem) => tagItem.name === tag)),
       );
     }
-    
+
     let extendedPolls = await Promise.all(
       polls.map(async (poll) => {
         return {
@@ -277,29 +282,30 @@ export class PollService {
           voteCount: await this.voteService.getVoteCount(poll.id),
           votedOption: null,
           didLike: null,
-          voteDistribution: poll.is_settled === Settle.SETTLED ? await this.voteService.getVoteRate(poll.id) : null
+          voteDistribution:
+            poll.is_settled === Settle.SETTLED
+              ? await this.voteService.getVoteRate(poll.id)
+              : null,
         };
-      })
+      }),
     );
 
-    if(userId){
+    if (userId) {
       extendedPolls = await Promise.all(
         extendedPolls.map(async (poll) => {
-          const votedOption = (await this.voteService.findOne(poll.id, userId))?.option ?? null;
+          const votedOption =
+            (await this.voteService.findOne(poll.id, userId))?.option ?? null;
           if (!poll.voteDistribution && votedOption) {
             poll.voteDistribution = await this.voteService.getVoteRate(poll.id);
           }
           return {
             ...poll,
-            votedOption:votedOption,
+            votedOption: votedOption,
             didLike: poll.likes.some((like) => like.user?.id === userId),
           };
-        })
-      );      
+        }),
+      );
     }
-
-
-
 
     return extendedPolls;
   }
@@ -308,6 +314,8 @@ export class PollService {
     const polls = await this.pollRepository.find({
       where: [
         {
+          approveStatus: true,
+          is_settled: 0,
           votes: {
             user: {
               id: Not(voterId),
@@ -315,6 +323,8 @@ export class PollService {
           },
         },
         {
+          approveStatus: true,
+          is_settled: 0,
           votes: {
             user: {
               id: IsNull(),
@@ -362,6 +372,7 @@ export class PollService {
     followedById,
     tags,
     sortString,
+    is_settled,
     userId,
     pageSize,
     pageNum,
@@ -376,6 +387,10 @@ export class PollService {
 
     if (approveStatus != null) {
       whereClause.approveStatus = approveStatus;
+    }
+
+    if (is_settled != null) {
+      whereClause.is_settled = is_settled;
     }
 
     if (likedById) {
@@ -541,8 +556,9 @@ export class PollService {
       throw new NotFoundException('Poll not found');
     }
 
+
     const votedOption = userId ? (await this.voteService.findOne(poll.id, userId))?.option || null : null;
-  
+
     let voteDistribution = null;
     if (votedOption) {
       voteDistribution = await this.voteService.getVoteRate(pollId);
