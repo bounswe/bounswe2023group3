@@ -362,7 +362,7 @@ export class PollService {
       };
     });
 
-    return extendedPolls;
+    return extendedPolls.sort((a, b) => b.voteCount - a.voteCount);
   }
 
   public async findAllWithPagination({
