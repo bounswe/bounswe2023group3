@@ -9,12 +9,12 @@ class PollRequestService {
 
     // Convert the dueDate to a string format that the API expects
     String dueDateString = pollData.dueDate.toIso8601String();
-
+    String imageUrlsString = pollData.imageURLs.toString();
     // Prepare the data to send to the API
     final Map<String, dynamic> data = {
       'question': pollData.question,
       'options': pollData.options,
-      'image_urls': pollData.imageURLs,
+      'image_urls': imageUrlsString,
       'tags': pollData.tags,
       'due_date': dueDateString,
     };
