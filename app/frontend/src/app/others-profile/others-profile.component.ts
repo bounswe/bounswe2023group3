@@ -142,6 +142,20 @@ export class OthersProfileComponent implements OnInit {
       )
   }
 
+  votedPolls() {
+    this.clickedButton = 'voted';
+    this.http
+      .get('http://34.105.66.254:1923/poll/?votedById=' + this.user.id+"&?approveStatus=true")
+      .subscribe(
+        (response: any) => {
+          this.polls = response
+        },
+        (error) => {
+          console.error('Error fetching polls:', error)
+        },
+      )
+  }
+
   toggleFollowers(){
     this.showFollowers=!this.showFollowers
     this.showFollowees = false

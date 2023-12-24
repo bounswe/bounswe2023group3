@@ -6,8 +6,12 @@
       <app-side-bar></app-side-bar>
       <div class="container" style="padding: 40px; justify-self: center; margin-left: 240px;">
         <div class="moderator-requests">
-          <button class="moderator-requests-column" style="border: solid 1px #89B1B6; transition: background-color 0.2s;">
+          <button class="moderator-requests-column" (click)="onPollCreationReq()" style="border: solid 1px #598b8f; transition: background-color 0.2s;">
             Poll Creation Requests
+          </button>
+
+          <button class="moderator-requests-column" (click) ="onOutcomeVerifiationReq()" style="border: solid 1px #598b8f; transition: background-color 0.2s;">
+            Poll Outcome Requests
           </button>
           
         </div>

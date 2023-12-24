@@ -92,7 +92,7 @@ export class PollComponent {
       this.tags = response.tags;
       this.options = response.options;
       this.due_date = this.formatDateTime(new Date(response.due_date));
-      this.vote_count = response.vote_count;
+      this.vote_count = response.voteCount;
       this.creator = response.creator;
       this.image_urls = response.image_urls;
       this.user_vote_id = response.votedOption.id;
