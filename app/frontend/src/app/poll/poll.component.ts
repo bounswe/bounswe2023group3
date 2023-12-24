@@ -73,7 +73,7 @@ export class PollComponent {
 
   ngOnInit() {
 
-    this.http.get('http://34.105.66.254:1938/annotation?pollId=http%3A%2F%2F34.105.66.254%3A1923%2F'+this.pollId).subscribe(
+    this.http.get('http://34.105.66.254:1938/annotation?pollIDs=http%3A%2F%2F34.105.66.254%3A1923%2F'+this.pollId).subscribe(
       (response: any) => {
         this.annotations=response.annotations;
       },

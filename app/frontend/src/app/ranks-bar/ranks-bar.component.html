@@ -7,16 +7,17 @@
     <div class="container">
       <h2 style="border-bottom: 2px solid #000; margin-bottom: 5px">Ranks</h2>
       <div class="buttons" style="overflow: auto; max-height: 250px">
-        <button
+          <div  *ngFor="let rank of ranks; let i = index">
+          <button
           class="button"
-          *ngFor="let rank of ranks; let i = index"
           [ngStyle]="{ 'background-color': getColor(i) }"
         >
           {{ rank?.name }}
         </button>
         <div class="rank-info">
-          <b>{{ranks[0]?.id}}</b>
+          <b>{{rank?.id}}</b>
           <p style="margin: 0">(with %55 accuracy)</p>
+        </div>
         </div>
 
         <div

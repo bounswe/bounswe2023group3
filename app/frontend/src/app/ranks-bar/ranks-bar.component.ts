@@ -23,7 +23,7 @@ export class RanksBarComponent {
   ngOnInit() {
     this.http.get('http://34.105.66.254:1923/user/' + this.userId).subscribe(
       (response: any) => {
-        this.ranks = response.badges
+        this.ranks = response.rankings
       },
       (error) => {
         console.error('Error fetching poll:', error)
