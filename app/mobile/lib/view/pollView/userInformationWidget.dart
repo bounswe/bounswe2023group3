@@ -53,29 +53,32 @@ class UserInformationWidget extends StatelessWidget {
       rowChildren.add(
         const Spacer(),
       );
-      if (!AppState.isGuest) {
-        rowChildren.add(
-          ThreeDotsOptions(
-            onSelected: (value) {
-              // Handle the selected option here
-              switch (value) {
-                case "requestToSettle":
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => SettleRequestPage(
-                                pollId: pollId,
-                              )));
-              }
-            },
-          ),
-        );
-      }
     }
 
     return Container(
       padding: const EdgeInsets.all(16.0),
-      child: Row(children: rowChildren),
+      child: Stack(children: [
+        Row(children: rowChildren),
+        if (pollId != "" && !AppState.isGuest)
+          Positioned(
+            right: 0,
+            top: 5,
+            child: ThreeDotsOptions(
+              onSelected: (value) {
+                // Handle the selected option here
+                switch (value) {
+                  case "requestToSettle":
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => SettleRequestPage(
+                                  pollId: pollId,
+                                )));
+                }
+              },
+            ),
+          ),
+      ]),
     );
   }
 }
