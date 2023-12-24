@@ -1,6 +1,8 @@
 import 'package:dio/dio.dart';
 import 'package:mobile_app/services/apiService.dart';
 import 'package:mobile_app/models/pollCreationData.dart';
+import 'annotationService.dart';
+import 'package:mobile_app/models/annotation.dart';
 
 class PollRequestService {
   static Future<Response> createPoll(PollCreationData pollData) async {
@@ -24,6 +26,44 @@ class PollRequestService {
         createPollEndpoint,
         data: data,
       );
+      print(response.data);
+      String creator_id = response.data['creator']['id'];
+      String poll_id = response.data['id'];
+      List<Annotation> annotations = pollData.annotations;
+      const String annotationEndpoint =
+          'http://34.105.66.254:1938/annotation';
+      for (Annotation annotation in annotations) {
+        final Map<String, dynamic> data = {
+          "body": {
+            "type": "TextualBody",
+            "value": annotation.body,
+            "format": "text/plain"
+          },
+          "target": {
+            "source": "http://34.105.66.254:1923/$poll_id",
+            "selector": {
+              "end": annotation.indices[1],
+              "type": "TextPositionSelector",
+              "start": annotation.indices[0]
+            }
+          },
+          "creator": creator_id
+        };
+
+        try {
+          final Response response = await Dio().post(annotationEndpoint, data: data);
+          if (response.statusCode == 201) {
+            // Handle success
+            print('Annotation posted successfully!');
+          } else {
+            // Handle other status codes
+            print('Failed to post annotation. Status code: ${response.statusCode}');
+          }
+        } catch (e) {
+          // Handle exceptions
+          print('Error posting annotation: $e');
+        }
+      }
       return response;
     } catch (e) {
       print('Error: $e');
