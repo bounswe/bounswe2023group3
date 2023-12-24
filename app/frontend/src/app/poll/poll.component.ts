@@ -9,6 +9,7 @@ import { MatFormFieldModule } from '@angular/material/form-field'
 import { ReportUserComponent } from '../report-user/report-user.component'
 import { AuthService } from '../auth.service'
 import { User } from '../user-profile/user.model'
+import {MatProgressBarModule} from '@angular/material/progress-bar';
 
 @Component({
   selector: 'app-poll',
@@ -30,6 +31,8 @@ export class PollComponent {
   isLikedBy!: boolean
   nofLikes: number = 0
   userId!: string | null
+  optionWeights!: number[]
+  optionWeightsScaled!: number[]
 
   //TODO: retrieve user vote & show in html
   userVoted!: boolean 
@@ -131,7 +134,9 @@ export class PollComponent {
       this.image_urls = response.image_urls;
       this.user_vote_id = response.votedOption.id;
       this.userVoted = !(!this.user_vote_id);
-      console.log(this.user_vote_id);
+      this.optionWeights = response.voteDistribution.map((x: {id: string, count: string }) => parseInt(x.count));
+      const sum = this.optionWeights.reduce((accumulator, current) => accumulator + current, 0);
+      this.optionWeightsScaled  = this.optionWeights.map(weight => (weight / sum) * 100);
     },
     (error) => {
       console.error('Error fetching poll:', error);
@@ -204,7 +209,8 @@ export class PollComponent {
       }
     }
     
-
+    //scale votes
+    
   }
   showVote(){
     if (!this.user_vote_id)

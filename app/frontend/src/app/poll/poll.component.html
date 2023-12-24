@@ -94,18 +94,23 @@
       </div>
 
       <div>
-        <button
-          *ngFor="let option of options; let i = index"
-          [ngClass]="user_vote_id === option.id ? 'button clicked' : 'button'"
-          #buttonRef
+        <div
+          *ngFor="let option of options; let i = index">
+            <button
+              [ngClass]="user_vote_id === option.id ? 'button clicked' : 'button'"
+              #buttonRef
+              id="'button' + i"
+              [attr.data-vote-id]="option.id"
+              (click)="!userVoted && castVote(option.id, buttonRef)"
+              [disabled]="selectedButton != buttonRef && selectedButton != null"
+            >
+              {{ option.answer }}
+            </button>
+            <mat-progress-bar mode="determinate" [value]="optionWeightsScaled[i]"></mat-progress-bar>
 
-          id="'button' + i"
-          [attr.data-vote-id]="option.id"
-          (click)="!userVoted && castVote(option.id, buttonRef)"
-          [disabled]="selectedButton != buttonRef && selectedButton != null"
-        >
-          {{ option.answer }}
-        </button>
+      
+        </div>
+
       </div>
 
       <input type="hidden" [(ngModel)]="isLikedBy" name="isLiked" />
