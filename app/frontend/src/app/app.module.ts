@@ -50,6 +50,7 @@ import { FollowListComponent } from './follow-list/follow-list.component'
 import { MatInputModule } from '@angular/material/input';
 import { QtextAnnotationComponent } from './qtext-annotation/qtext-annotation.component';
 import { NgxAnnotateTextModule } from "ngx-annotate-text";
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @NgModule({
   declarations: [
@@ -104,7 +105,8 @@ import { NgxAnnotateTextModule } from "ngx-annotate-text";
     MatDialogModule,
     MatFormFieldModule,
     MatInputModule,
-    NgxAnnotateTextModule
+    NgxAnnotateTextModule,
+    MatTooltipModule
   ],
   providers: [AuthService],
   bootstrap: [AppComponent],
