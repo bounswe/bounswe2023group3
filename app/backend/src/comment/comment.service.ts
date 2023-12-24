@@ -44,7 +44,7 @@ export class CommentService {
   }
 
   async remove(pollID: string, userID: string) {
-    const poll = this.pollService.findPollById(pollID);
+    const poll = await this.pollService.findPollById(pollID);
 
     if (!poll) {
       throw new ConflictException('There is no poll with this id');
