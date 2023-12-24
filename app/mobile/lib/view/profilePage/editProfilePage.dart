@@ -189,7 +189,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                 _saveProfileInfoToRemote();
               },
             ),
-            if (isSaving) FancyWaitingScreen(),
+            if (isSaving) const Center(child: CircularProgressIndicator()),
           ],
         ),
       ),

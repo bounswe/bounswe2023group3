@@ -130,7 +130,7 @@ class _PollPageState extends State<PollPage> {
                   AsyncSnapshot<List<CommentData>> snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   // Show a loading indicator while waiting for the comments to load
-                  return FancyWaitingScreen();
+                  return const Center(child: CircularProgressIndicator());
                 } else if (snapshot.hasError) {
                   // If we run into an error, display it to the user
                   return Text('Error: ${snapshot.error}');
