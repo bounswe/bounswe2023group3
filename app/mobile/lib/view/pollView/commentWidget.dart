@@ -14,12 +14,10 @@ class CommentWidget extends StatefulWidget {
   final String commentText;
   final String commentId;
   final String dateTime;
-  final String pollId;
   final void Function() parentSetState;
 
   const CommentWidget({
     super.key,
-    required this.pollId,
     required this.username,
     required this.commentText,
     required this.commentId,
@@ -34,7 +32,7 @@ class CommentWidget extends StatefulWidget {
 
 class _CommentWidgetState extends State<CommentWidget> {
   void _deleteComment() async {
-    await PostCommentService.deleteComment(widget.commentId, widget.pollId);
+    await PostCommentService.deleteComment(widget.commentId);
     widget.parentSetState();
   }
 

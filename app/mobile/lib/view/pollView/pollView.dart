@@ -50,7 +50,9 @@ class PollPage extends StatefulWidget {
     required this.dateTime,
     required this.isSettled,
     this.approvedStatus,
-    required this.chosenVoteIndex, required this.annotationIndices, required this.annotationTexts,
+    required this.chosenVoteIndex,
+    required this.annotationIndices,
+    required this.annotationTexts,
   });
 
   @override
@@ -89,9 +91,9 @@ class _PollPageState extends State<PollPage> {
               pollId: widget.isSettled == 0 ? widget.pollId : "",
             ),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              child: buildRichText(widget.postTitle, widget.annotationIndices, widget.annotationTexts)
-            ),
+                padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                child: buildRichText(widget.postTitle, widget.annotationIndices,
+                    widget.annotationTexts)),
             TagListWidget(tags: widget.tags, tagColors: widget.tagColors),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -161,7 +163,6 @@ class _PollPageState extends State<PollPage> {
                                   parentSetState: () {
                                     setState(() {});
                                   },
-                                  pollId: widget.pollId,
                                   username: comment.username,
                                   commentText: comment.commentText,
                                   commentId: comment.commentId,
@@ -198,9 +199,8 @@ class _PollPageState extends State<PollPage> {
     print("pressed like");
   }
 
-  RichText buildRichText(String fullText, List<List<int>> indices, List<String> annotationTexts) {
-
-
+  RichText buildRichText(
+      String fullText, List<List<int>> indices, List<String> annotationTexts) {
     List<TextSpan> textSpans = [];
 
     int previousIndex = 0;
@@ -230,7 +230,8 @@ class _PollPageState extends State<PollPage> {
             ..onTap = () {
               // Handle tap on the underlined text
               _showPopup(context, annotationText);
-              print('Tapped on underlined text from index $startIndex to $endIndex!');
+              print(
+                  'Tapped on underlined text from index $startIndex to $endIndex!');
             },
         ),
       );
@@ -329,8 +330,6 @@ class CommentEntryFieldWidget extends StatelessWidget {
     }
   }
 }
-
-
 
 class LikeCountWidget extends StatelessWidget {
   final int likeCount;

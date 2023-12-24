@@ -19,8 +19,7 @@ class PostCommentService {
     }
   }
 
-  static Future<bool> deleteComment(String commentId, String pollId) async {
-    // TODO use pollId if needed
+  static Future<bool> deleteComment(String commentId) async {
     final String commentEndpoint = '/comment/$commentId';
 
     try {
