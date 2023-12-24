@@ -1,6 +1,5 @@
 <div>
     <div>
-  
       <ngx-annotate-text
         [(annotations)]="annotations"
         [removable]="false"
@@ -11,7 +10,7 @@
         (mouseover)="onMouseOverAnnotation($event)"
         (mouseout)="onMouseOutAnnotation($event)"
         #annotateText
-      >
+      > 
       </ngx-annotate-text>
       <button *ngIf="!enterAnnotation"
       class="button"

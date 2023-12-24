@@ -77,6 +77,7 @@ export class SettledPollComponent {
         this.question = response.question
         this.tags = response.tags
         this.options = response.options
+        this.outcome = response.outcome
         this.due_date = response.due_date
         this.vote_count = response.vote_count
         this.creator = response.creator
