@@ -1,7 +1,3 @@
-<div>
-    <div>
-      <ngx-annotate-text
-        [(annotations)]="annotations"
 <div >
     <div #textContainer>
         <h3 *ngIf="!enterAnnotation" (mouseenter)="onMouseEnter($event)" [matTooltip]="hoveredAnnotation?.label">
@@ -13,7 +9,7 @@
         annotationClass="my-annotation"
         (clickAnnotation)="onClickAnnotation($event)"
         #annotateText
-      > 
+      >
       </ngx-annotate-text>
       <button *ngIf="!enterAnnotation"
       class="button"

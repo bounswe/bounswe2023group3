@@ -83,7 +83,7 @@
             "
             (click)="goToTag(tag.name)"
           >
-            {{ tag.name }}
+            {{ tag?.name }}
           </button>
         </div>
         <p style="text-align: right; font-size: smaller">
@@ -103,11 +103,10 @@
               (click)="!userVoted && !isSettled && castVote(option.id, buttonRef)"
               [disabled]="selectedButton != buttonRef && selectedButton != null"
             >
-              {{ option.answer }}
+              {{ option?.answer }}
             </button>
-            <mat-progress-bar mode="determinate" [value]="optionWeightsScaled[i]"></mat-progress-bar>
+            <mat-progress-bar mode="determinate" [value]="optionWeightsScaled[i]" style="margin-bottom: 20px;"></mat-progress-bar>
 
-      
         </div>
 
       </div>

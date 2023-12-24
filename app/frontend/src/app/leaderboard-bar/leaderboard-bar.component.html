@@ -12,12 +12,11 @@
         class="buttons"
         style="margin-top: 0px; overflow: auto; max-height: 250px"
       >
-        <p>1. koksalbaba</p>
-        <p>2. gamer43</p>
-        <p>3. villeva</p>
-        <p>4. harrison</p>
-        <p>5. whitevader</p>
-        <p>6. jennifer495</p>
+
+      <p
+          *ngFor="let leader of leaders; let i = index">
+          {{i + 1}}. {{ leader?.user?.username }}
+    </p>
       </div>
     </div>
   </body>
