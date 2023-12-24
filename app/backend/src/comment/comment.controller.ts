@@ -44,7 +44,7 @@ export class CommentController {
     return this.commentService.create(createCommentDto,id,request.user.id);
   }
 
-  @Delete(':pollID')
+  @Delete(':commentID')
   @UseGuards(AuthGuard, VerificationGuard)
   @ApiResponse({ status: 201, description: 'Comment removed successfully.' })
   @ApiResponse({
@@ -57,7 +57,7 @@ export class CommentController {
     status: 500,
     description: 'Internal server error, contact with backend team.',
   })
-  remove(@Param('pollID') id: string , @Req() request : any) {
+  remove(@Param('commentID') id: string , @Req() request : any) {
     return this.commentService.remove(id,request.user.id);
   }
 }

@@ -46,7 +46,10 @@ class _HomePageState extends State<HomePage>
       isSettled,
       didLike,
       commentCount,
-      chosenVoteIndex) async {
+      chosenVoteIndex,
+      annotationIndices,
+      annotationTexts,
+      ) async {
     if (!mounted) return;
     Navigator.push(
       context,
@@ -65,6 +68,8 @@ class _HomePageState extends State<HomePage>
           dateTime: dateTime,
           isSettled: isSettled,
           chosenVoteIndex: chosenVoteIndex,
+          annotationIndices: annotationIndices,
+          annotationTexts: annotationTexts,
         ),
       ),
     );
@@ -144,7 +149,9 @@ class _HomePageState extends State<HomePage>
                                     post.isSettled,
                                     post.didLike,
                                     post.commentCount,
-                                    post.chosenVoteIndex);
+                                    post.chosenVoteIndex,
+                                post.annotationIndices,
+                                post.annotationTexts);
                               },
                               child: SizedBox(
                                 height: postHeight,
@@ -210,6 +217,8 @@ class _HomePageState extends State<HomePage>
                                     post.didLike,
                                     post.commentCount,
                                     post.chosenVoteIndex,
+                                    post.annotationIndices,
+                                    post.annotationTexts
                                 );
                               },
                               child: SizedBox(

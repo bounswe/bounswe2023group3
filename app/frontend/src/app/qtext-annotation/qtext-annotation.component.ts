@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, Input, SimpleChanges, ViewChild } from '@angular/core';
+import { Component, ElementRef, Input, SimpleChanges, ViewChild } from '@angular/core';
 import { NgxAnnotateTextComponent, Annotation } from 'ngx-annotate-text';
 
 @Component({
@@ -9,6 +9,8 @@ import { NgxAnnotateTextComponent, Annotation } from 'ngx-annotate-text';
 })
 export class QtextAnnotationComponent {
   @ViewChild('annotateText') ngxAnnotateText?: NgxAnnotateTextComponent;
+
+  @ViewChild('textContainer') textContainer?: ElementRef;
 
   @Input() text!: string
   @Input() pollId!: string
@@ -21,6 +23,8 @@ export class QtextAnnotationComponent {
 
   events: string[] = [];
   newAnotation!: string
+
+  hoveredAnnotation!: any
 
   constructor(
     private http: HttpClient,
@@ -49,6 +53,29 @@ export class QtextAnnotationComponent {
     }
   }
   
+  onMouseEnter(event: MouseEvent): void {
+    const index = this.getIndexFromMousePosition(event);
+    this.hoveredAnnotation = this.findAnnotationByIndex(index);
+  }
+
+  getIndexFromMousePosition(event: MouseEvent): number {
+    if (this.textContainer) {
+      const rect = this.textContainer.nativeElement.getBoundingClientRect();
+      const mouseX = event.clientX - rect.left;
+      const charWidth = rect.width / this.text.length;
+      const index = Math.floor(mouseX / charWidth);
+  
+      return index;
+    }
+  
+    return -1; 
+  }
+  
+
+  findAnnotationByIndex(index: number): Annotation | undefined {
+      return this.annotations.find(annotation => annotation.startIndex <= index && annotation.endIndex >= index);
+  }
+
   showInput(){
     this.enterAnnotation=true
   }
@@ -56,43 +83,6 @@ export class QtextAnnotationComponent {
   closeInput(){
     this.enterAnnotation=false
   }
-
-  onMouseOverAnnotation(event: any) {
-    const annotationElement = this.findAnnotationElement(event.target);
-    if (annotationElement) {
-      const annotationText = annotationElement.innerText;
-      const matchingAnnotation = this.annotations_copy.find(annotation => annotation.label === annotationText);
-  
-      if (matchingAnnotation) {
-        this.annotations.push(matchingAnnotation);
-        this.events.push(`Mouse Over - Added '${matchingAnnotation}'`);
-      }
-    }
-  }
-  
-  onMouseOutAnnotation(event: any) {
-    const annotationElement = this.findAnnotationElement(event.target);
-    if (annotationElement) {
-      const annotationText = annotationElement.innerText;
-      const matchingAnnotation = this.annotations_copy.find(annotation => annotation.label === annotationText);
-  
-      if (matchingAnnotation) {
-        const index = this.annotations.findIndex(annotation => annotation === matchingAnnotation);
-        if (index !== -1) {
-          this.annotations.splice(index, 1);
-          this.events.push(`Mouse Out - Removed '${matchingAnnotation}'`);
-        }
-      }
-    }
-  }
-  
-private findAnnotationElement(target: any): HTMLElement | null {
-  while (target && !target.classList.contains('my-annotation')) {
-    target = target.parentElement;
-  }
-
-  return target as HTMLElement;
-}
   
   addAnnotation(label: string): void {
     if (!this.ngxAnnotateText) {
@@ -117,7 +107,7 @@ private findAnnotationElement(target: any): HTMLElement | null {
         "type": "TextPositionSelector",
         "start":  selection.startIndex
       }},
-      "creator": "x" ////fix by creator id
+      "creator": localStorage.getItem('user_id')
     }).subscribe(
       (response: any) => {
       },
@@ -134,9 +124,5 @@ private findAnnotationElement(target: any): HTMLElement | null {
 
   onClickAnnotation(annotation: Annotation) {
     this.events.push(`Clicked on '${annotation}'`);
-  }
-
-  onRemoveAnnotation(annotation: Annotation): void {
-    this.events.push(`Removed '${annotation}'`);
   }
 }

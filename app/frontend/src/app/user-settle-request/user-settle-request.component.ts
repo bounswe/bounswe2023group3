@@ -6,6 +6,7 @@ import { MatFormFieldModule } from '@angular/material/form-field'
 @Component({
   selector: 'app-user-settle-request',
   templateUrl: './user-settle-request.component.html',
+  styleUrls: ['./user-settle-request.component.css']
 })
 export class UserSettleRequestComponent {
   outcome: string = ''
