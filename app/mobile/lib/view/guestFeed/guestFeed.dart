@@ -47,7 +47,9 @@ class _GuestFeedState extends State<GuestFeed>
       isSettled,
       didLike,
       commentCount,
-      chosenVoteIndex) async {
+      chosenVoteIndex,
+      annotationIndices,
+      annotationTexts) async {
     if (!mounted) return;
     Navigator.push(
       context,
@@ -66,6 +68,8 @@ class _GuestFeedState extends State<GuestFeed>
           dateTime: dateTime,
           isSettled: isSettled,
           chosenVoteIndex: chosenVoteIndex,
+          annotationIndices: annotationIndices,
+          annotationTexts: annotationTexts,
         ),
       ),
     );
@@ -145,7 +149,9 @@ class _GuestFeedState extends State<GuestFeed>
                                     post.isSettled,
                                     post.didLike,
                                     post.commentCount,
-                                    post.chosenVoteIndex);
+                                    post.chosenVoteIndex,
+                                    post.annotationIndices,
+                                    post.annotationTexts);
                               },
                               child: SizedBox(
                                 height: postHeight,
@@ -211,6 +217,8 @@ class _GuestFeedState extends State<GuestFeed>
                                     post.didLike,
                                     post.commentCount,
                                     post.chosenVoteIndex,
+                                    post.annotationIndices,
+                                    post.annotationTexts
                                 );
                               },
                               child: SizedBox(
