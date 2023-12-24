@@ -10,11 +10,13 @@ import { AuthService } from '../auth.service'
 export class HomeComponent {
   polls!: any[]
   following!: any[]
+  leaders!: any[]
   isAuthenticated: boolean = false
   clickedButton: string = '';
   settledMode!: boolean
   options!: any
   query!: string
+
 
   constructor(private http: HttpClient,private authService: AuthService) {
     this.options = this.authService.getHeaders();
@@ -28,6 +30,18 @@ export class HomeComponent {
         console.error('Error fetching polls:', error)
       },
     )
+
+    this.http.get('http://34.105.66.254:1923/ranking/0493fe16-9536-46d9-98cd-bbf1c6e8bd12',this.authService.getHeaders()).subscribe(
+      (response: any) => {
+        this.leaders = response.ranking
+        console.log(this.leaders)
+      },
+      (error) => {
+        console.error('Error fetching polls:', error)
+      },
+    )
+
+    
   }
 
   @Output() toggleChange = new EventEmitter<boolean>();

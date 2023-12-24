@@ -33,7 +33,7 @@ export class PollComponent {
   nofLikes: number = 0
   userId!: string | null
   optionWeights!: number[]
-  optionWeightsScaled!: number[]
+  optionWeightsScaled: number[] = []
 
   //TODO: retrieve user vote & show in html
   userVoted!: boolean 

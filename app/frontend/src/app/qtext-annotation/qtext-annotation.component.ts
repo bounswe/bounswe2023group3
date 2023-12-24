@@ -55,9 +55,7 @@ export class QtextAnnotationComponent {
   
   onMouseEnter(event: MouseEvent): void {
     const index = this.getIndexFromMousePosition(event);
-    console.log(index)
     this.hoveredAnnotation = this.findAnnotationByIndex(index);
-    console.log(this.hoveredAnnotation)
   }
 
   getIndexFromMousePosition(event: MouseEvent): number {
