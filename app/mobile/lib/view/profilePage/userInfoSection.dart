@@ -332,7 +332,7 @@ class _UserInfoSectionState extends State<UserInfoSection> {
     } else {
       return Row(
         children: [
-          SizedBox(width: isFollowing ? 50 : 70),
+          SizedBox(width: isFollowing ? 45 : 70),
           ElevatedButton(
             onPressed: () => _toggleFollow(),
             style: ElevatedButton.styleFrom(
