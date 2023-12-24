@@ -5,6 +5,8 @@ import 'package:mobile_app/view/pollView/userInformationWidget.dart';
 import 'package:intl/intl.dart';
 
 import '../constants.dart';
+import '../helpers/dateTime.dart';
+import '../helpers/tag.dart';
 
 class RequestViewHome extends StatelessWidget {
   final String pollId;
@@ -64,59 +66,3 @@ class RequestViewHome extends StatelessWidget {
 
 }
 
-
-class TagListWidget extends StatelessWidget {
-  final List<String> tags;
-  final List<Color> tagColors;
-
-  const TagListWidget({super.key, required this.tags, required this.tagColors});
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(16.0),
-      child: Row(
-        children: [
-          for (int i = 0; i < tags.length; i++)
-            Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 4.0),
-                child: TagWidget(tagText: tags[i], tagColor: tagColors[i])),
-        ],
-      ),
-    );
-  }
-}
-
-class DateTimeWidget extends StatelessWidget {
-  final DateTime dateTime;
-  final Color color;
-
-  const DateTimeWidget({Key? key, required this.dateTime, required this.color}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    String formattedDateTime = DateFormat.yMMMMd('en_US').add_jm().format(dateTime);
-
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 25.0),
-      child: Row(
-        children: [
-          Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(20.0),
-              border: Border.all(color: color),
-              color: color,
-            ),
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text(
-                formattedDateTime,
-                style: const TextStyle(fontSize: 16.0, color: Colors.white),
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
