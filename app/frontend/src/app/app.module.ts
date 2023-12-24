@@ -50,6 +50,7 @@ import { FollowListComponent } from './follow-list/follow-list.component'
 import { MatInputModule } from '@angular/material/input';
 import { QtextAnnotationComponent } from './qtext-annotation/qtext-annotation.component';
 import { NgxAnnotateTextModule } from "ngx-annotate-text";
+import { DeleteConfirmationComponent } from './delete-confirmation/delete-confirmation.component';
 
 @NgModule({
   declarations: [
@@ -93,6 +94,7 @@ import { NgxAnnotateTextModule } from "ngx-annotate-text";
     UserPendingRequestsComponent,
     FollowListComponent,
     QtextAnnotationComponent,
+    DeleteConfirmationComponent,
   ],
   imports: [
     BrowserModule,
