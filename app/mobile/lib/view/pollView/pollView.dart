@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:mobile_app/models/comment.dart';
@@ -31,6 +32,8 @@ class PollPage extends StatefulWidget {
   final int isSettled;
   final bool? approvedStatus;
   final int chosenVoteIndex;
+  final List<List<int>> annotationIndices;
+  final List<String> annotationTexts;
 
   PollPage({
     super.key,
@@ -47,7 +50,7 @@ class PollPage extends StatefulWidget {
     required this.dateTime,
     required this.isSettled,
     this.approvedStatus,
-    required this.chosenVoteIndex,
+    required this.chosenVoteIndex, required this.annotationIndices, required this.annotationTexts,
   });
 
   @override
@@ -87,9 +90,7 @@ class _PollPageState extends State<PollPage> {
             ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              child: Text(widget.postTitle,
-                  style: const TextStyle(
-                      fontSize: 18.0, fontWeight: FontWeight.bold)),
+              child: buildRichText(widget.postTitle, widget.annotationIndices, widget.annotationTexts)
             ),
             TagListWidget(tags: widget.tags, tagColors: widget.tagColors),
             Padding(
@@ -186,6 +187,82 @@ class _PollPageState extends State<PollPage> {
     pollLike.like(widget.pollId);
     print("pressed like");
   }
+
+  RichText buildRichText(String fullText, List<List<int>> indices, List<String> annotationTexts) {
+
+
+    List<TextSpan> textSpans = [];
+
+    int previousIndex = 0;
+
+    for (int i = 0; i < indices.length; i++) {
+      int startIndex = indices[i][0];
+      int endIndex = indices[i][1];
+      String annotationText = annotationTexts[i];
+
+      // Add non-underlined text before the current underlined part
+      textSpans.add(
+        TextSpan(
+          text: fullText.substring(previousIndex, startIndex),
+          style: const TextStyle(color: Colors.black),
+        ),
+      );
+
+      // Add underlined text with tap gesture recognizer
+      textSpans.add(
+        TextSpan(
+          text: fullText.substring(startIndex, endIndex),
+          style: const TextStyle(
+            color: Colors.blue,
+            decoration: TextDecoration.underline,
+          ),
+          recognizer: TapGestureRecognizer()
+            ..onTap = () {
+              // Handle tap on the underlined text
+              _showPopup(context, annotationText);
+              print('Tapped on underlined text from index $startIndex to $endIndex!');
+            },
+        ),
+      );
+
+      // Update the previous index to the end index of the current underlined part
+      previousIndex = endIndex;
+    }
+
+    // Add any remaining non-underlined text after the last underlined part
+    textSpans.add(
+      TextSpan(
+        text: fullText.substring(previousIndex),
+        style: const TextStyle(color: Colors.black),
+      ),
+    );
+
+    return RichText(
+      text: TextSpan(
+        children: textSpans,
+      ),
+    );
+  }
+
+  void _showPopup(BuildContext context, String underlinedText) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          // title: const Text('Popup Title'),
+          content: Text(underlinedText),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text('Close'),
+            ),
+          ],
+        );
+      },
+    );
+  }
 }
 
 class CommentEntryFieldWidget extends StatelessWidget {
@@ -242,6 +319,8 @@ class CommentEntryFieldWidget extends StatelessWidget {
     }
   }
 }
+
+
 
 class LikeCountWidget extends StatelessWidget {
   final int likeCount;
