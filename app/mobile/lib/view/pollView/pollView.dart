@@ -139,7 +139,9 @@ class _PollPageState extends State<PollPage> {
                   // If we run into an error, display it to the user
                   return Text('Error: ${snapshot.error}');
                 } else {
-                  var fetchedComments = snapshot.hasData ? snapshot.data! : [];
+                  var fetchedComments = snapshot.hasData
+                      ? snapshot.data!
+                      : [] as List<CommentData>;
 
                   // Whether we have data or not, display the number of fetchedComments
                   int commentCount = fetchedComments.length;
