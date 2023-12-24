@@ -7,6 +7,18 @@ class Annotation {
     required this.indices,
   });
 
+  /// json is in the format:<p>
+  /// {<p>
+  ///   "body": { <p>
+  ///     "value": "string"<p>
+  ///   },<p>
+  ///   "target": {<p>
+  ///     "selector": {<p>
+  ///       "start": int,<p>
+  ///       "end": int<p>
+  ///     }<p>
+  ///   }<p>
+  /// }<p>
   static Annotation fromJson(Map<String, dynamic> json) {
     var ann = Annotation(
       body: json['body']['value'],

@@ -42,7 +42,7 @@ class _ProfilePageState extends State<ProfilePage> {
   List<PollInfo> createdPolls = [];
   bool isLoadingPolls = false;
   bool isLoadingProfile = false;
-  ProfilePagePollType activeCategory = ProfilePagePollType.Created;
+  ProfilePagePollType activeCategory = ProfilePagePollType.Liked;
   Map<ProfilePagePollType, bool> categoryLocked = {
     ProfilePagePollType.Created: true,
     ProfilePagePollType.Liked: true,
@@ -260,9 +260,8 @@ class _ProfilePageState extends State<ProfilePage> {
                   chosenVoteIndex: post.chosenVoteIndex,
                   commentCount: post.commentCount,
                   annotationIndices:
-                      post.descrAnnotations.map((e) => e.indices).toList(),
-                  annotationTexts:
-                      post.descrAnnotations.map((e) => e.body).toList(),
+                      post.annotations.map((e) => e.indices).toList(),
+                  annotationTexts: post.annotations.map((e) => e.body).toList(),
                 ),
               ),
             ),

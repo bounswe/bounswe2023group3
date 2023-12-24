@@ -34,8 +34,7 @@ class PollInfo {
 
   final int chosenVoteIndex;
 
-  List<Annotation> titleAnnotations = [];
-  List<Annotation> descrAnnotations = [];
+  List<Annotation> annotations = [];
 
   PollInfo.withoutComments({
     required this.userName,
