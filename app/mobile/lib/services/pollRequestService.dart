@@ -12,11 +12,9 @@ class PollRequestService {
 
     // Prepare the data to send to the API
     final Map<String, dynamic> data = {
-      'pol_title': pollData.pollTitle,
-      'question': pollData.pollTitle,
-      'poll_description': pollData.pollDescription,
+      'question': pollData.question,
       'options': pollData.options,
-      'imageURLs': pollData.imageURLs,
+      'image_urls': pollData.imageURLs,
       'tags': pollData.tags,
       'due_date': dueDateString,
     };
