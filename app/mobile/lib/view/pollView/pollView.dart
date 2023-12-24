@@ -119,7 +119,8 @@ class _PollPageState extends State<PollPage> {
             Row(
               children: [
                 LikeCountWidget(likeCount: widget.likeCount),
-                DateTimeWidget(dateTime: DateTime.parse(widget.dateTime), color: blue),
+                DateTimeWidget(
+                    dateTime: DateTime.parse(widget.dateTime), color: blue),
               ],
             ),
             CommentEntryFieldWidget(
@@ -154,8 +155,14 @@ class _PollPageState extends State<PollPage> {
                       if (snapshot.hasData)
                         ...fetchedComments
                             .map((comment) => CommentWidget(
-                                  user: comment.user,
+                                  parentSetState: () {
+                                    setState(() {});
+                                  },
+                                  username: comment.username,
                                   commentText: comment.commentText,
+                                  commentId: comment.commentId,
+                                  dateTime: comment.dateTime,
+                                  userId: comment.userId,
                                 ))
                             .toList(),
                       // If there's no data, there's nothing else to add to the column
