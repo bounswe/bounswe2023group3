@@ -1,43 +1,62 @@
 import 'package:flutter/material.dart';
 import 'package:mobile_app/view/constants.dart';
+import 'package:mobile_app/view/pollRequest/customContainer.dart';
 
 class CustomTextField extends StatelessWidget {
   final TextEditingController controller;
   final FocusNode focusNode;
   final FocusNode? nextFocusNode;
   final int? lines;
-  final Function(String) onChanged;
+  final void Function(String)? onChanged;
+  final void Function()? onTap;
   final String label;
 
+  /// checks for controller is empty.
+  /// if not empty, calls onSubmitted.
+  /// if nextFocusNode is not null, focuses on nextFocusNode.
+  /// see [skipNexWhenEmpty]
+  final void Function(String)? onSubmitted;
+  final bool readOnly;
+
+  /// if true, skips nextFocusNode even if the controller is empty.
+  final bool skipNexWhenEmpty;
   const CustomTextField({
     Key? key,
     required this.controller,
     required this.focusNode,
     this.nextFocusNode,
-    required this.onChanged,
+    this.onChanged,
     required this.label,
-    this.lines,
+    this.lines = 1,
+    this.onSubmitted,
+    this.skipNexWhenEmpty = false,
+    this.readOnly = false,
+    this.onTap,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        color: whitish,
-        borderRadius: BorderRadius.circular(10.0),
-        border: Border.all(
-          color: navy,
-        ),
-      ),
+    return CustomContainer(
+      backgroundColor: whitish,
+      borderRadius: 10.0,
+      borderWidth: 2.0,
+      borderColor: navy,
       child: TextField(
+        onTap: onTap,
+        readOnly: readOnly,
         controller: controller,
         focusNode: focusNode,
         onChanged: onChanged,
-        minLines: lines ?? 1,
-        maxLines: lines == null ? 1 : 7,
-        onSubmitted: (_) {
-          if (nextFocusNode != null && controller.text.isNotEmpty) {
+        minLines: lines,
+        maxLines: lines,
+        onSubmitted: (val) {
+          if ((skipNexWhenEmpty || controller.text.isNotEmpty) &&
+              nextFocusNode != null) {
             FocusScope.of(context).requestFocus(nextFocusNode);
+          }
+          if (controller.text.isNotEmpty && onSubmitted != null) {
+            onSubmitted!(val);
+            return;
           }
         },
         decoration: InputDecoration(
