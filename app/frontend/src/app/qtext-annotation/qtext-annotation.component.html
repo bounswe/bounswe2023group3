@@ -1,5 +1,5 @@
-<div class="row mt-5">
-    <div class="col-12">
+<div>
+    <div>
   
       <ngx-annotate-text
         [(annotations)]="annotations"
@@ -13,20 +13,24 @@
         #annotateText
       >
       </ngx-annotate-text>
-      
+      <button *ngIf="!enterAnnotation"
+      class="button"
+      style="margin-bottom: 10px; margin-top: 10px;"
+      (click)="showInput()"
+    >
+      Add Annotation
+    </button>
     </div>
-    <button *ngIf="!enterAnnotation"
-    class="button"
-    (click)="showInput()"
-  >
-    Add Annotation
-  </button>
+   
+  
   </div>
   
   <div *ngIf="enterAnnotation">
     <input
       type="text"
       class="form-control"
+      style="margin-bottom: 10px; margin-top: 10px;"
+
       [(ngModel)]="newAnotation"
       placeholder="Enter annotation"
     />
@@ -36,6 +40,13 @@
     (click)="addAnnotation(newAnotation)"
   >
     Submit
+  </button>
+  <button
+    type="button"
+    class="btn btn-primary me-2"
+    (click)="closeInput()"
+  >
+    Quit
   </button>
   </div>
   

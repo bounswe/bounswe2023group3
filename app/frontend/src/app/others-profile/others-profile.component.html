@@ -66,7 +66,9 @@
           >
             Liked
           </button>
-          <button class="user-polls-column" [class.blurred]="!isAuthenticated">
+          <button class="user-polls-column" [class.blurred]="!isAuthenticated" (click)="votedPolls()"
+          [class.active]="clickedButton === 'voted'"
+          >
             Voted
           </button>
         </div>

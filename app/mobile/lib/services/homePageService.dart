@@ -55,6 +55,9 @@ class HomePageService {
               'end': annotation['target']['selector']['end'],
             });
           }
+          groupedAnnotations.forEach((source, annotations) {
+            annotations.sort((a, b) => a['start'].compareTo(b['start']));
+          });
         }
       } catch (e) {
         print(e);

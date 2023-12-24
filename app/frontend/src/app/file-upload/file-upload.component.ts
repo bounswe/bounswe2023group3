@@ -39,13 +39,11 @@ export class FileUploadComponent implements OnInit {
   }
 
   onUpload() {
-    console.log(this.file)
     if (this.file) {
       this.fileUploadService.upload(this.file).subscribe(
         (response: any) => {
           if (response) {
             this.shortLink = response.data.url;
-            console.log(this.shortLink);
             this.shortLinkEmitter.emit(this.shortLink);
           } else {
             console.error('Failed to get short link from the response.');

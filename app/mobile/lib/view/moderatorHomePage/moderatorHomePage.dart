@@ -10,6 +10,7 @@ import 'package:mobile_app/view/constants.dart';
 
 import '../errorWidget/errorWidget.dart';
 import '../moderatorApproval/moderatorSettleApproval.dart';
+import '../waitingScreen/fancyWaitingScreen.dart';
 
 class ModeratorHomePage extends StatefulWidget {
   const ModeratorHomePage({Key? key}) : super(key: key);
@@ -176,7 +177,7 @@ class _ModeratorHomePageState extends State<ModeratorHomePage>
   Widget buildRequestsList(AsyncSnapshot<List<RequestViewHome>> snapshot) {
     if (snapshot.connectionState == ConnectionState.waiting) {
       // Show a loading indicator while the data is being fetched
-      return const Center(child: CircularProgressIndicator());
+      return FancyWaitingScreen();
     } else if (snapshot.hasError) {
       // Show an error message if there is an error
       if (snapshot.error is DioException) {
@@ -285,7 +286,7 @@ class _ModeratorHomePageState extends State<ModeratorHomePage>
   Widget buildSettledList(AsyncSnapshot<List<SettleViewHome>> snapshot) {
     if (snapshot.connectionState == ConnectionState.waiting) {
       // Show a loading indicator while the data is being fetched
-      return const Center(child: CircularProgressIndicator());
+      return FancyWaitingScreen();
     } else if (snapshot.hasError) {
       // Show an error message if there is an error
       if (snapshot.error is DioException) {
@@ -396,112 +397,4 @@ class _ModeratorHomePageState extends State<ModeratorHomePage>
   }
 
 }
-// @override
-// Widget build(BuildContext context) {
-//   return FutureBuilder<List<RequestViewHome>>(
-//       future: ModeratorService.getPollRequests(),
-//       builder: (BuildContext context,
-//           AsyncSnapshot<List<RequestViewHome>> snapshot) {
-//         if (snapshot.connectionState == ConnectionState.waiting) {
-//           // Show a loading indicator while the data is being fetched
-//           return const Center(child: CircularProgressIndicator());
-//         } else if (snapshot.hasError) {
-//           // Show an error message if there is an error
-//           return Text('Error: ${snapshot.error}');
-//         } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-//           // Handle the case where no data is available
-//           return const Text('No data available');
-//         } else {
-//           // Build your UI using the fetched data
-//           List<RequestViewHome> requests = snapshot.data!;
-//           return Scaffold(
-//             appBar: AppBar(
-//               title: const Text('Home'),
-//             ),
-//             drawer: const Sidebar(), // Use the custom drawer widget
-//             body: Column(
-//               children: [
-//                 // Scrollable Post Section
-//                 Expanded(
-//                   child: ListView.separated(
-//                     separatorBuilder: (context, index) => const SizedBox(
-//                         height: 20), // Add spacing between posts
-//                     shrinkWrap: true,
-//                     itemCount: requests.length,
-//                     itemBuilder: (context, index) {
-//                       final request = requests[index];
-//                       return SizedBox(
-//                         width: 50,
-//                         height: 250,
-//                         child: Stack(
-//                           children: [
-//                             // Your existing RequestViewHome widget with Expanded
-//                             Expanded(
-//                               child: RequestViewHome(
-//                                 userName: request.userName,
-//                                 userUsername: request.userUsername,
-//                                 profilePictureUrl: request.profilePictureUrl,
-//                                 postTitle: request.postTitle,
-//                                 tags: request.tags,
-//                                 tagColors: request.tagColors,
-//                                 dateTime: request.dateTime,
-//                                 pollId: request.pollId,
-//                                 options: request.options,
-//                                 dueDate: request.dueDate,
-//                               ),
-//                             ),
-//                             // Align the button to the right and bottom of the container
-//                             Align(
-//                               alignment: Alignment.bottomRight,
-//                               child: Padding(
-//                                 padding: const EdgeInsets.all(
-//                                     8.0), // Add padding as needed
-//                                 child: Material(
-//                                   borderRadius: BorderRadius.circular(30.0),
-//                                   // Adjust the value for circular shape
-//                                   color: Colors.blue,
-//                                   // Set the color you want
-//                                   child: InkWell(
-//                                     borderRadius: BorderRadius.circular(30.0),
-//                                     onTap: () {
-//                                       tapOnPoll(
-//                                         context,
-//                                         request.pollId,
-//                                         request.postTitle,
-//                                         request.userName,
-//                                         request.userUsername,
-//                                         request.profilePictureUrl,
-//                                         request.options,
-//                                         request.tags,
-//                                         [],
-//                                         request.tagColors,
-//                                         request.dueDate,
-//                                         request.dateTime
-//                                       );
-//                                     },
-//                                     child: Container(
-//                                       padding: const EdgeInsets.all(8.0),
-//                                       child: const Text(
-//                                         'View Request',
-//                                         style: TextStyle(
-//                                             color: whitish,
-//                                             fontSize: 16.0,
-//                                             fontWeight: FontWeight.bold),
-//                                       ),
-//                                     ),
-//                                   ),
-//                                 ),
-//                               ),
-//                             ),
-//                           ],
-//                         ),
-//                       );
-//                     },
-//                   ),
-//                 ),
-//               ],
-//             ),
-//           );
-//         }
-//       });
-// }
+
