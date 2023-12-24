@@ -7,24 +7,24 @@
     <div class="container">
       <h2 style="border-bottom: 2px solid #000; margin-bottom: 5px">Ranks</h2>
       <div class="buttons" style="overflow: auto; max-height: 250px">
-        <button class="button" style="background-color: #cdf7f6">
-          Football
+          <div  *ngFor="let rank of ranks; let i = index">
+          <button
+          class="button"
+          [ngStyle]="{ 'background-color': getColor(i) }"
+        >
+          {{ rank?.name }}
         </button>
         <div class="rank-info">
-          <b>#35654</b>
+          <b>{{rank?.id}}</b>
           <p style="margin: 0">(with %55 accuracy)</p>
         </div>
-        <button class="button" style="background-color: #e57f84">
-          Basketball
-        </button>
-        <div class="rank-info">
-          <b>#102563</b>
-          <p style="margin: 0">(with %5 accuracy)</p>
         </div>
-        <button class="button" style="background-color: #187795">Sports</button>
-        <div class="rank-info">
-          <b>#132563</b>
-          <p style="margin: 0">(with %32 accuracy)</p>
+
+        <div
+          *ngIf="ranks?.length === 0"
+          style="text-align: center; color: rgb(44, 39, 39)"
+        >
+          This user doesn't have any ranks yet.
         </div>
       </div>
     </div>

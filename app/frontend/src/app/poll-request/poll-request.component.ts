@@ -10,6 +10,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http'
 export class PollRequestComponent implements OnInit {
   pollForm: FormGroup
   no_deadline: boolean = false;
+  shortLink!: string;
 
   constructor(
     public fb: FormBuilder, //for testing, should be fixed later
@@ -22,6 +23,11 @@ export class PollRequestComponent implements OnInit {
       options: this.fb.array([this.fb.control('')]),
       due_date: [''],
     })
+  }
+
+  
+  receiveShortLink(shortLink: string) {
+    this.shortLink = shortLink;
   }
 
   getToken(): string | null {
@@ -57,25 +63,29 @@ export class PollRequestComponent implements OnInit {
   ngOnInit(): void {}
 
   onSubmit() {
-    const formValue = this.pollForm.value
-    const token = this.getToken()
+    const formValue = this.pollForm.value;
+    const token = this.getToken();
     const headers = new HttpHeaders({
       Authorization: `Bearer ${token}`,
-    })
-    const options = { headers }
+    });
+    const options = { headers };
 
     if (
       formValue.tags.length === 0 ||
       formValue.options.length === 0 ||
       formValue.question === ''
     ) {
-      window.alert('Error creating poll: Some fields are empty')
-      console.error('Error creating poll: Some fields empty')
-      return
+      window.alert('Error creating poll: Some fields are empty');
+      console.error('Error creating poll: Some fields empty');
+      return;
+    }
+  
+    if (this.no_deadline) {
+      formValue.due_date = 'No deadline';
     }
 
-    if(this.no_deadline){ //internal server error
-      formValue.due_date = 'No deadline'
+    if (this.shortLink !== null && this.shortLink !== undefined && this.shortLink.trim() !== '') {
+      formValue.image_urls = [this.shortLink];
     }
 
     this.http
@@ -95,6 +105,7 @@ export class PollRequestComponent implements OnInit {
         },
       )
   }
+  
 
   handleCheckboxChange(){
     this.no_deadline = !this.no_deadline

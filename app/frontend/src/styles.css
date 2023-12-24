@@ -204,7 +204,7 @@ body {
 
 .popup .popuptext:hover {
   visibility: visible;
-  background-color: #96b7bb;
+  background-color: #7a9ea5;
 }
 
 @keyframes fadeIn {

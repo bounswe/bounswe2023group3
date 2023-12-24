@@ -3,6 +3,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get_it/get_it.dart';
+import 'package:mobile_app/view/state.dart';
 
 class ApiService {
   static final Dio _dio = Dio();
@@ -48,6 +49,7 @@ class ApiService {
 
   static void logout() {
     setJwtToken('');
+    AppState.logout();
   }
 
   static bool shouldIgnoreInterceptor(Uri uri) {
@@ -61,16 +63,7 @@ class ApiService {
       '/poll',
     ];
     // Check if the current URL should be ignored
-    bool shouldIgnore = ignoredEndpoints.any((endpoint) {
-      if (uri.path.startsWith(endpoint)) {
-        // Exclude '/poll/my-followings' from being ignored
-        if (endpoint == '/poll' && uri.path == '/poll/my-followings') {
-          return false;
-        }
-        return true;
-      }
-      return false;
-    });
+    bool shouldIgnore = ignoredEndpoints.any((endpoint) => uri.path == endpoint);
     return shouldIgnore;
   }
 }

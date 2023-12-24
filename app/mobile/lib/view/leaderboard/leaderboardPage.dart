@@ -4,12 +4,12 @@ import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:mobile_app/models/tag.dart';
 import 'package:mobile_app/services/leaderboardService.dart';
 import 'package:mobile_app/services/tagsRequestService.dart';
+import 'package:mobile_app/view/constants.dart';
 import 'package:mobile_app/view/errorWidget/errorWidget.dart';
 import 'package:mobile_app/view/leaderboard/personData.dart';
 import 'package:mobile_app/view/sidebar/sidebar.dart';
 
-
-
+import '../waitingScreen/fancyWaitingScreen.dart';
 
 class LeaderboardPage extends StatefulWidget {
   final String selectedTagID; // Currently selected tag
@@ -23,14 +23,12 @@ class LeaderboardPage extends StatefulWidget {
 
 class _LeaderboardPageState extends State<LeaderboardPage>
     with SingleTickerProviderStateMixin {
-
-
   late TabController _tabController;
   final TextEditingController _controller = TextEditingController();
-  List<TagData> tags = [];
 
   late String selectedTagID;
   late String selectedTagName;
+  late String globalID;
 
   List<PersonData> globalLeaderboard = [];
 
@@ -38,20 +36,14 @@ class _LeaderboardPageState extends State<LeaderboardPage>
   void initState() {
     super.initState();
     _tabController = TabController(length: 2, initialIndex: 0, vsync: this);
-    WidgetsBinding.instance.addPostFrameCallback((_){
-      _getTagsFuture();
-    });
     selectedTagID = widget.selectedTagID;
     selectedTagName = widget.selectedTagName;
     _controller.text = selectedTagName;
+
+
   }
 
-  _getTagsFuture() async {
-    var result = await TagsRequestService.getTags();
-    setState(() {
-      tags = result;
-    });
-  }
+
 
   @override
   void dispose() {
@@ -59,61 +51,83 @@ class _LeaderboardPageState extends State<LeaderboardPage>
     super.dispose();
   }
 
-
-
   @override
   Widget build(BuildContext context) {
+    List<TagData> tags = [];
+    return FutureBuilder<List<TagData>>(
+        future: TagsRequestService.getTags(),
+        builder: (BuildContext context,
+            AsyncSnapshot<List<TagData>> snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            // Show a loading indicator while the data is being fetched
+            return FancyWaitingScreen();
+          } else if (snapshot.hasError) {
+            // Show an error message if there is an error
+            print(snapshot);
+            return Text('Error: ${snapshot.error}');
+            // } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+            // Handle the case where no data is available
 
+            print("ddd");
+            return const Text('No data available');
+          } else {
+            // Build the ListView
+            // Build your UI using the fetched data
+            List<TagData> tags = snapshot.data!;
 
-    print(tags.map((e) => e.name).toList());
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Leaderboard'),
-        bottom: TabBar(
-          controller: _tabController,
-          tabs: [
-            Tab(text: 'Global'),
-            Tab(text: 'Tag-Specific'),
-          ],
-        ),
-      ),
-      drawer: const Sidebar(), // Use the custom drawer widget
-      body: TabBarView(
-        controller: _tabController,
-        children: [
+            for (int i = tags.length - 1; i >= 0; i--) {
+              if (tags[i].name == "general") {
+                globalID = tags[i].tagId;
+                break;
+              }
+            }
+            return Scaffold(
+              appBar: AppBar(
+                title: Text('Leaderboard'),
+                bottom: TabBar(
+                  controller: _tabController,
+                  tabs: [
+                    Tab(text: 'Global'),
+                    Tab(text: 'Tag-Specific'),
+                  ],
+                ),
+              ),
+              drawer: const Sidebar(), // Use the custom drawer widget
+              body: TabBarView(
+                controller: _tabController,
+                children: [
+                  // First tab: Global Leaderboard
+                  globalLeaderboard.isEmpty
+                      ? FutureBuilder<List<PersonData>>(
+                          future: LeaderboardService.getRankings(
+                              globalID), //global ID
+                          builder: (BuildContext context,
+                              AsyncSnapshot<List<PersonData>> snapshot) {
+                            return buildLeaderboardSnapshot(snapshot);
+                          },
+                        )
+                      : buildLeaderboardTab(globalLeaderboard),
 
-
-          // First tab: Global Leaderboard
-          globalLeaderboard.isEmpty?
-            FutureBuilder<List<PersonData>>(
-              future: LeaderboardService.getRankings("global"),
-              builder: (BuildContext context,
-                  AsyncSnapshot<List<PersonData>> snapshot) {
-                return buildLeaderboardSnapshot(snapshot);
-              },
-            ):
-            buildLeaderboardTab(globalLeaderboard),
-
-
-
-          // Second tab: Tag-Specific Leaderboard
-          FutureBuilder<List<PersonData>>(
-            future: LeaderboardService.getRankings(
-                selectedTagID == "" ? tags[0].tagId : selectedTagID),
-            builder: (BuildContext context,
-                AsyncSnapshot<List<PersonData>> snapshot) {
-              return buildTagLeaderboardSnapshot(snapshot);
-            },
-          ),
-        ],
-      ),
-    );
+                  // Second tab: Tag-Specific Leaderboard
+                  FutureBuilder<List<PersonData>>(
+                    future: LeaderboardService.getRankings(
+                        selectedTagID == "" ? tags[0].tagId : selectedTagID),
+                    builder: (BuildContext context,
+                        AsyncSnapshot<List<PersonData>> snapshot) {
+                      return buildTagLeaderboardSnapshot(snapshot, tags);
+                    },
+                  ),
+                ],
+              ),
+            );
+          }
+        });
   }
 
   Widget buildLeaderboardSnapshot(AsyncSnapshot<List<PersonData>> snapshot) {
     if (snapshot.connectionState == ConnectionState.waiting) {
       // Show a loading indicator while the data is being fetched
-      return const Center(child: CircularProgressIndicator());
+      return FancyWaitingScreen();
     } else if (snapshot.hasError) {
       // Show an error message if there is an error
       if (snapshot.error is DioException) {
@@ -162,10 +176,10 @@ class _LeaderboardPageState extends State<LeaderboardPage>
     );
   }
 
-  Widget buildTagLeaderboardSnapshot(AsyncSnapshot<List<PersonData>> snapshot) {
+  Widget buildTagLeaderboardSnapshot(AsyncSnapshot<List<PersonData>> snapshot, List<TagData> tags) {
     if (snapshot.connectionState == ConnectionState.waiting) {
       // Show a loading indicator while the data is being fetched
-      return const Center(child: CircularProgressIndicator());
+      return FancyWaitingScreen();
     } else if (snapshot.hasError) {
       // Show an error message if there is an error
       if (snapshot.error is DioException) {
@@ -192,12 +206,12 @@ class _LeaderboardPageState extends State<LeaderboardPage>
             setState(() {});
           });
     } else {
-      return buildTagLeaderboardTab(snapshot.data!);
+      return buildTagLeaderboardTab(snapshot.data!, tags);
     }
   }
 
   // Function to build the second tab with tag-specific leaderboard
-  Widget buildTagLeaderboardTab(List<PersonData> tagLeaderboards) {
+  Widget buildTagLeaderboardTab(List<PersonData> tagLeaderboards, List<TagData> tags) {
     return Column(
       children: [
         // Title at the top
@@ -225,7 +239,9 @@ class _LeaderboardPageState extends State<LeaderboardPage>
               ),
             ),
             suggestionsCallback: (pattern) {
-              return tags.map((tag) => tag.name).toList()
+              return tags
+                  .map((tag) => tag.name)
+                  .toList()
                   .where((tagName) =>
                       tagName.toLowerCase().contains(pattern.toLowerCase()))
                   .toList();
@@ -240,9 +256,8 @@ class _LeaderboardPageState extends State<LeaderboardPage>
               _controller.text = suggestion;
               setState(() {
                 selectedTagName = suggestion;
-                selectedTagID = tags
-                    .firstWhere((tag) => tag.name == suggestion)
-                    .tagId;
+                selectedTagID =
+                    tags.firstWhere((tag) => tag.name == suggestion).tagId;
               });
             },
           ),
@@ -254,7 +269,6 @@ class _LeaderboardPageState extends State<LeaderboardPage>
   }
 }
 
-
 // Function to build the table of rankings
 class RankingTable extends StatelessWidget {
   final List<PersonData> leaderboardData;
@@ -262,7 +276,7 @@ class RankingTable extends StatelessWidget {
   const RankingTable({super.key, required this.leaderboardData});
 
   // Function to build a user card
-  Widget buildUserCard(String userName, int userRanking,
+  Widget buildUserCard(int ranking, String username, int score, String userId,
       {Color color = Colors.white}) {
     return Card(
       shape: RoundedRectangleBorder(
@@ -270,8 +284,9 @@ class RankingTable extends StatelessWidget {
       ),
       color: color,
       child: ListTile(
-        leading: Text('$userRanking'),
-        title: Text(userName),
+        leading: Text('$ranking'),
+        title: Text(username),
+        trailing: Text('$score'),
         // Add other user details or metrics here
       ),
     );
@@ -283,7 +298,7 @@ class RankingTable extends StatelessWidget {
       Padding(
         padding: const EdgeInsets.all(8.0),
         child: buildUserCard(
-            'Your User ID', 0), // Replace 'Your User ID' and 0 with actual data
+            0, leaderboardData[0].username, leaderboardData[0].score, leaderboardData[0].userId, color: pink), // Current user's ranking
       ),
 // Scrollable widget for other people's rankings
       Expanded(
@@ -291,12 +306,12 @@ class RankingTable extends StatelessWidget {
           itemCount: leaderboardData.length,
           itemBuilder: (context, index) {
             final user = leaderboardData[index];
-            return buildUserCard(user.name, user.ranking);
+            if (index>0){
+              return buildUserCard(index,user.username, user.score, user.userId);
+            }
           },
         ),
       ),
     ]);
   }
 }
-
-

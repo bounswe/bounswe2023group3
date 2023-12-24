@@ -1,6 +1,9 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http'
 import { Component } from '@angular/core'
 import { ActivatedRoute } from '@angular/router'
+import { ReportUserComponent } from '../report-user/report-user.component'
+import { MatDialog } from '@angular/material/dialog'
+import { AuthService } from '../auth.service'
 
 @Component({
   selector: 'app-poll-view',
@@ -13,19 +16,30 @@ export class PollViewComponent {
   description!: string
   isAuthenticated: boolean = false
   showPopup = false
-
+  userId: string | null = localStorage.getItem('user_id');
   isSettled!: boolean
   comment_time!: string
 
   selectedCommentId: string | null = null
+  creator: any
   constructor(
     private http: HttpClient,
     private route: ActivatedRoute,
+    public dialog: MatDialog,
+    private authService: AuthService,
   ) {
     
   }
 
   ngOnInit() {
+    this.http.get('http://34.105.66.254:1923/poll/'+this.pollId).subscribe(
+      (response: any) => {
+        this.creator = response.creator;
+      },
+      (error) => {
+        console.error('Error fetching poll:', error);
+      }
+    );
 
     if (localStorage.getItem('user_id')) {
       this.isAuthenticated = true
@@ -68,6 +82,40 @@ export class PollViewComponent {
         console.error('Error fetching poll:', error)
       },
     )
+  }
+
+  reportUser(): void {
+    const dialogRef = this.dialog.open(ReportUserComponent, {
+      width: '300px',
+    })
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.sendUserReport(result.reason)
+      } else {
+      }
+    })
+  }
+
+  sendUserReport(rsn : string) {
+   
+
+    const body = {
+      'reason': rsn,
+    }
+
+    console.log(rsn)
+
+    this.http
+      .post('http://34.105.66.254:1923/user/report/' + this.creator.id, body, this.authService.getHeaders())
+      .subscribe(
+        () => {
+          console.log(`Request sent successfully.`)
+        },
+        (error) => {
+          console.error('Error sending request:', error)
+        },
+      )
   }
 
   getToken(): string | null {
@@ -138,5 +186,9 @@ export class PollViewComponent {
 
   isPopupOpen(commentId: string): boolean {
     return this.showPopup && this.selectedCommentId === commentId
+  }
+
+  isCommentOwner(commentUserId: string): boolean {
+    return this.userId === String(commentUserId);
   }
 }

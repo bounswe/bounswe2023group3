@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mobile_app/view/pollView/clickableUsername.dart';
 import 'package:mobile_app/view/pollView/threeDotsOptions.dart';
 import 'package:mobile_app/view/profilePage/profilePictureWidget.dart';
+import 'package:mobile_app/view/state.dart';
 
 import '../settleRequest/settleRequestPage.dart';
 
@@ -37,6 +38,7 @@ class UserInformationWidget extends StatelessWidget {
         children: [
           ClickableUsername(
             username: userUsername,
+            displayName: userName,
             textStyle: const TextStyle(fontWeight: FontWeight.bold),
           ),
           Text(userUsername),
@@ -44,30 +46,39 @@ class UserInformationWidget extends StatelessWidget {
       ),
     );
     if (pollId != "") {
+      rowChildren.add(const SizedBox(
+        width: 180.0,
+      ));
+
       rowChildren.add(
         const Spacer(),
-      );
-      rowChildren.add(
-        ThreeDotsOptions(
-          onSelected: (value) {
-            // Handle the selected option here
-            switch (value) {
-              case "requestToSettle":
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => SettleRequestPage(
-                              pollId: pollId,
-                            )));
-            }
-          },
-        ),
       );
     }
 
     return Container(
       padding: const EdgeInsets.all(16.0),
-      child: Row(children: rowChildren),
+      child: Stack(children: [
+        Row(children: rowChildren),
+        if (pollId != "" && !AppState.isGuest)
+          Positioned(
+            right: 0,
+            top: 5,
+            child: ThreeDotsOptions(
+              onSelected: (value) {
+                // Handle the selected option here
+                switch (value) {
+                  case "requestToSettle":
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => SettleRequestPage(
+                                  pollId: pollId,
+                                )));
+                }
+              },
+            ),
+          ),
+      ]),
     );
   }
 }

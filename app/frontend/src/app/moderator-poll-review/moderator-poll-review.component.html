@@ -30,6 +30,11 @@
           </div>
         </div>
 
+        <div class="poll-item" *ngIf="is_settled">
+          <span class="label">Outcome:</span>
+          <p class="info-text">{{outcome}}</p>
+        </div>
+
         <div class="poll-item">
           <span class="label">Due Date:</span>
           <p class="info-text">{{due_date}}</p>

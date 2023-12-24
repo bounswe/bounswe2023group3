@@ -1,7 +1,8 @@
 // Model class for user data
 class PersonData {
-  final String name;
-  final int ranking;
+  final String username;
+  final int score;
+  final String userId;
 
-  PersonData({required this.name, required this.ranking});
+  PersonData({required this.username, required this.score, required this.userId});
 }

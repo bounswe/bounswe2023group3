@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:mobile_app/models/comment.dart';
 import 'package:mobile_app/services/createCommentService.dart';
 import 'package:mobile_app/services/pollViewHomePageVote.dart';
@@ -11,6 +12,9 @@ import 'package:mobile_app/view/pollView/userInformationWidget.dart';
 import 'package:mobile_app/services/pollViewHomePageLike.dart';
 
 import '../constants.dart';
+import '../helpers/dateTime.dart';
+import '../helpers/tag.dart';
+import '../waitingScreen/fancyWaitingScreen.dart';
 
 class PollPage extends StatefulWidget {
   final String pollId;
@@ -115,7 +119,7 @@ class _PollPageState extends State<PollPage> {
             Row(
               children: [
                 LikeCountWidget(likeCount: widget.likeCount),
-                DateTimeWidget(dateTime: widget.dateTime),
+                DateTimeWidget(dateTime: DateTime.parse(widget.dateTime), color: blue),
               ],
             ),
             CommentEntryFieldWidget(
@@ -262,54 +266,6 @@ class LikeCountWidget extends StatelessWidget {
                   style: const TextStyle(fontSize: 16.0, color: whitish)),
             ),
           ),
-        ],
-      ),
-    );
-  }
-}
-
-class DateTimeWidget extends StatelessWidget {
-  final String dateTime;
-
-  const DateTimeWidget({super.key, required this.dateTime});
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 16.0),
-      child: Row(
-        children: [
-          Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(20.0),
-              border: Border.all(color: pink),
-              color: pink,
-            ),
-            child: Text(dateTime,
-                style: const TextStyle(fontSize: 16.0, color: whitish)),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class TagListWidget extends StatelessWidget {
-  final List<String> tags;
-  final List<Color> tagColors;
-
-  const TagListWidget({super.key, required this.tags, required this.tagColors});
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(16.0),
-      child: Row(
-        children: [
-          for (int i = 0; i < tags.length; i++)
-            Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 4.0),
-                child: TagWidget(tagText: tags[i], tagColor: tagColors[i])),
         ],
       ),
     );
