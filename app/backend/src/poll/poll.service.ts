@@ -560,7 +560,7 @@ export class PollService {
     const votedOption = userId ? (await this.voteService.findOne(poll.id, userId))?.option || null : null;
 
     let voteDistribution = null;
-    if (votedOption) {
+    if (votedOption || poll.is_settled === Settle.SETTLED) {
       voteDistribution = await this.voteService.getVoteRate(pollId);
     }
 
