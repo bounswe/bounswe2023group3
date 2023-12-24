@@ -160,6 +160,7 @@ class _PollPageState extends State<PollPage> {
                                   parentSetState: () {
                                     setState(() {});
                                   },
+                                  pollId: widget.pollId,
                                   username: comment.username,
                                   commentText: comment.commentText,
                                   commentId: comment.commentId,

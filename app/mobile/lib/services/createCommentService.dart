@@ -19,16 +19,16 @@ class PostCommentService {
     }
   }
 
-  static Future<bool> deleteComment(String commentId) async {
-    return false;
-    // final String commentEndpoint = '/comment/$commentId';
+  static Future<bool> deleteComment(String commentId, String pollId) async {
+    // TODO use pollId if needed
+    final String commentEndpoint = '/comment/$commentId';
 
-    // try {
-    //   final Response response = await ApiService.dio.delete(commentEndpoint);
-    //   return response.statusCode == 200;
-    // } catch (e) {
-    //   print('Error: $e');
-    //   return false;
-    // }
+    try {
+      final Response response = await ApiService.dio.delete(commentEndpoint);
+      return response.statusCode == 200;
+    } catch (e) {
+      print('Error: $e');
+      return false;
+    }
   }
 }
