@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { ConflictException, Injectable } from '@nestjs/common';
 import { Poll } from '../poll/entities/poll.entity';
 import { Option } from '../option/entities/option.entity';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -20,6 +20,11 @@ export class RankingService {
 
 
   async findAll(tagID:string, userID:string) {
+    const tag = await this.tagRepository.findOne({where:{id:tagID}});
+    if(!tag){
+      throw new ConflictException('There is no tag with this tagID');
+    }
+
     const currenUser = await this.rankingRepository.findOne({
       where:{
         tag:{id:tagID},
@@ -44,6 +49,19 @@ export class RankingService {
     const response = {"ranking": ranking, "currenUser": currenUser}
 
     return response;
+  }
+
+  async findAllMyRankings(userID:string) {
+    const myRankings = await this.rankingRepository
+    .createQueryBuilder('ranking')
+    .select(['user.id', 'user.username', 'tag.id', 'tag.name', 'ranking.score'])
+    .addSelect('RANK() OVER (PARTITION BY tag.id ORDER BY ranking.score DESC) AS rank')
+    .innerJoin('ranking.user', 'user')
+    .innerJoin('ranking.tag', 'tag')
+    .where('user.id = :userID', { userID })
+    .getRawMany();
+
+    return myRankings;
   }
 
 
