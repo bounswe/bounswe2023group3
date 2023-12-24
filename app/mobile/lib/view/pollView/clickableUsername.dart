@@ -3,9 +3,14 @@ import 'package:mobile_app/view/profilePage/profilePage.dart';
 
 class ClickableUsername extends StatefulWidget {
   final String username;
+  final String displayName;
   final TextStyle? textStyle;
 
-  const ClickableUsername({Key? key, required this.username, this.textStyle})
+  const ClickableUsername(
+      {Key? key,
+      required this.username,
+      required this.displayName,
+      this.textStyle})
       : super(key: key);
 
   @override
@@ -22,7 +27,7 @@ class _ClickableUsernameState extends State<ClickableUsername> {
       onTapUp: (_) => setState(() => isUnderlined = false),
       onTap: () => navigateToProfile(context, widget.username),
       child: Text(
-        widget.username,
+        widget.displayName,
         style: widget.textStyle?.copyWith(
                 decoration: isUnderlined
                     ? TextDecoration.underline

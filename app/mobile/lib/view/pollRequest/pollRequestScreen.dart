@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:mobile_app/services/pollRequestService.dart';
-import 'package:mobile_app/services/tagCompletionService.dart';
 import 'package:mobile_app/view/pollRequest/customTextField.dart';
-import 'package:mobile_app/view/pollRequest/pollCreationData.dart';
+import 'package:mobile_app/view/pollRequest/pollCreationAnnotate.dart';
+import 'package:mobile_app/models/pollCreationData.dart';
 import 'package:mobile_app/view/pollRequest/sectionHeader.dart';
-import 'package:mobile_app/view/state.dart';
 
 import '../constants.dart';
 
@@ -22,7 +20,6 @@ class _PollRequestPageState extends State<PollRequestPage> {
   final _listViewScrollController = ScrollController();
 
   final _pollTitleController = TextEditingController();
-  final _pollDescriptionController = TextEditingController();
   final _pollTagController = TextEditingController();
   final List<TextEditingController> _pollOptionControllers = [
     TextEditingController(),
@@ -34,24 +31,12 @@ class _PollRequestPageState extends State<PollRequestPage> {
 
   final _dateTimeFocus = FocusNode();
   final _pollTitleFocus = FocusNode();
-  final _pollDescriptionFocus = FocusNode();
   final _pollTagFocus = FocusNode();
   final List<FocusNode> _pollOptionFocuses = [
     FocusNode(),
     FocusNode(),
   ];
   final _pollImageUrlFocus = FocusNode();
-
-  void addContentIfExists(
-      {required List<String> targetList,
-      required TextEditingController controller}) {
-    if (controller.text.isNotEmpty) {
-      setState(() {
-        targetList.add(controller.text);
-        controller.clear();
-      });
-    }
-  }
 
   String _formatDateTime(DateTime dateTime) {
     return "${dateTime.year}-${dateTime.month}-${dateTime.day} ${dateTime.hour}"
@@ -115,17 +100,12 @@ class _PollRequestPageState extends State<PollRequestPage> {
       return;
     }
 
-    if (pollData.pollTitle.isEmpty) {
+    if (pollData.question.isEmpty) {
       _showAlert('Title field cannot be empty', () {});
       FocusScope.of(context).requestFocus(_pollTitleFocus);
       return;
     }
 
-    if (pollData.pollDescription.isEmpty) {
-      _showAlert('Description field cannot be empty', () {});
-      FocusScope.of(context).requestFocus(_pollDescriptionFocus);
-      return;
-    }
     if (pollData.tags.isEmpty) {
       _showAlert('At least one tag is required', () {});
       FocusScope.of(context).requestFocus(_pollTagFocus);
@@ -251,24 +231,13 @@ class _PollRequestPageState extends State<PollRequestPage> {
               Row(
                 children: <Widget>[
                   Expanded(
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: whitish,
-                        borderRadius: BorderRadius.circular(10.0),
-                        border: Border.all(
-                          color: navy,
-                        ),
-                      ),
-                      child: TextField(
-                        onTap: _selectDateTime,
-                        controller: _pollCreationDateTimeController,
-                        focusNode: _dateTimeFocus,
-                        decoration: const InputDecoration(
-                          labelText: 'Select Date and Time',
-                          border: OutlineInputBorder(),
-                        ),
-                        readOnly: true, // Prevent manual editing
-                      ),
+                    child: CustomTextField(
+                      nextFocusNode: null,
+                      onTap: _selectDateTime,
+                      controller: _pollCreationDateTimeController,
+                      focusNode: _dateTimeFocus,
+                      label: 'Select Date and Time',
+                      readOnly: true, // Prevent manual editing
                     ),
                   ),
                   IconButton(
@@ -282,20 +251,10 @@ class _PollRequestPageState extends State<PollRequestPage> {
               CustomTextField(
                 controller: _pollTitleController,
                 focusNode: _pollTitleFocus,
-                nextFocusNode: _pollDescriptionFocus,
-                onChanged: (value) => pollData.pollTitle = value,
-                label: 'Enter poll title',
-              ),
-
-              // poll description
-              const SizedBox(height: 16),
-              CustomTextField(
-                controller: _pollDescriptionController,
-                focusNode: _pollDescriptionFocus,
                 nextFocusNode: _pollTagFocus,
-                onChanged: (value) => pollData.pollDescription = value,
-                label: 'Enter poll description',
-                lines: 3,
+                onChanged: (value) => pollData.question = value,
+                label: 'Enter Question',
+                lines: null,
               ),
 
               // added tags
@@ -317,66 +276,33 @@ class _PollRequestPageState extends State<PollRequestPage> {
               ),
 
               // new tag input
-              Container(
-                decoration: BoxDecoration(
-                  color: whitish,
-                  border: Border.all(color: navy),
-                  borderRadius: BorderRadius.circular(4),
-                ),
-                child: TextField(
+              CustomTextField(
+                  label: 'Enter tag',
                   controller: _pollTagController,
                   focusNode: _pollTagFocus,
-                  decoration: const InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: 'Enter tag',
-                  ),
+                  nextFocusNode: _pollOptionFocuses[0],
+                  skipNexWhenEmpty: true,
                   onSubmitted: (value) {
-                    if (value.isNotEmpty) {
-                      setState(() {
-                        pollData.tags.add(value);
-                        _pollTagController.clear();
-                      });
-                      FocusScope.of(context)
-                          .requestFocus(_pollOptionFocuses[0]);
-                    } else {
-                      FocusScope.of(context)
-                          .requestFocus(_pollOptionFocuses[0]);
-                    }
-                  },
-                ),
-              ),
+                    setState(() {
+                      pollData.tags.add(value);
+                      _pollTagController.clear();
+                    });
+                  }),
 
               const SizedBox(height: 16),
               const SectionHeader(headerText: "Options"),
               for (var i = 0; i < _pollOptionControllers.length; i++)
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 8),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: whitish,
-                      border: Border.all(color: navy),
-                      borderRadius: BorderRadius.circular(4),
-                    ),
-                    // padding: const EdgeInsets.fromLTRB(0, 16, 0, 0),
-                    child: TextField(
-                      controller: _pollOptionControllers[i],
-                      focusNode: _pollOptionFocuses[i],
-                      onChanged: (_) => _updateOptionFields(),
-                      onSubmitted: (_) {
-                        if (_pollOptionControllers[i].text.isNotEmpty &&
-                            i < _pollOptionControllers.length - 1) {
-                          FocusScope.of(context)
-                              .requestFocus(_pollOptionFocuses[i + 1]);
-                        } else {
-                          FocusScope.of(context)
-                              .requestFocus(_pollImageUrlFocus);
-                        }
-                      },
-                      decoration: InputDecoration(
-                        border: const OutlineInputBorder(),
-                        labelText: 'Enter option ${i + 1}',
-                      ),
-                    ),
+                  child: CustomTextField(
+                    label: 'Enter option ${i + 1}',
+                    controller: _pollOptionControllers[i],
+                    focusNode: _pollOptionFocuses[i],
+                    onChanged: (_) => _updateOptionFields(),
+                    skipNexWhenEmpty: true,
+                    nextFocusNode: i == _pollOptionControllers.length - 1
+                        ? _pollImageUrlFocus
+                        : _pollOptionFocuses[i + 1],
                   ),
                 ),
 
@@ -384,29 +310,25 @@ class _PollRequestPageState extends State<PollRequestPage> {
               const SizedBox(height: 16),
               const SectionHeader(headerText: "Image URLs"),
               const SizedBox(height: 16),
-              Container(
-                decoration: BoxDecoration(
-                  color: whitish,
-                  border: Border.all(color: navy),
-                  borderRadius: BorderRadius.circular(4),
-                ),
-                child: TextField(
-                  controller: _pollImageUrlController,
-                  focusNode: _pollImageUrlFocus,
-                  decoration: InputDecoration(
-                    border: const OutlineInputBorder(),
-                    labelText: 'URL of image resource',
-                    suffixIcon: IconButton(
-                      icon: const Icon(Icons.add),
-                      onPressed: () => addContentIfExists(
-                        targetList: pollData.imageURLs,
-                        controller: _pollImageUrlController,
-                      ),
+              CustomTextField(
+                controller: _pollImageUrlController,
+                focusNode: _pollImageUrlFocus,
+                nextFocusNode: _pollImageUrlFocus,
+                label: "Enter image URL",
+                onSubmitted: (value) {
+                  pollData.imageURLs.add(value);
+                  _pollImageUrlController.clear();
+                  // show a snackbar to inform the user
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text("Image URL added"),
+                      duration: Duration(seconds: 1),
                     ),
-                  ),
-                ),
+                  );
+                  setState(() {});
+                },
               ),
-
+              // already added image urlss and their previews and delete buttons
               ...pollData.imageURLs.map((url) => ListTile(
                     title: Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -444,7 +366,7 @@ class _PollRequestPageState extends State<PollRequestPage> {
                   )),
 
               const SizedBox(height: 16),
-              // submit and cancel buttons
+              // submit and annotate buttons
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
@@ -452,11 +374,24 @@ class _PollRequestPageState extends State<PollRequestPage> {
                     onPressed: sendForApproval,
                     child: const Text('Send for Approval'),
                   ),
+                  const SizedBox(width: 20),
                   ElevatedButton(
                     onPressed: () {
+                      Navigator.of(context)
+                          .push(MaterialPageRoute(builder: (_) {
+                        return PollCreationAnnotate(pollInfo: pollData);
+                      }));
                       // Handle the Cancel action here
                     },
-                    child: const Text('Cancel'),
+                    child: const Text('Annotate'),
+                  ),
+                  IconButton(
+                    icon: const Icon(Icons.info_outline),
+                    onPressed: () => _showAlert(
+                        "You can select the parts of your"
+                        " poll title and description "
+                        "and add explanations about them.",
+                        () {}),
                   ),
                 ],
               ),

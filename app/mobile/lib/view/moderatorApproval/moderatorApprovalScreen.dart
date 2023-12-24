@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:mobile_app/services/moderatorPollDecision.dart';
 import 'package:mobile_app/view/moderatorApproval/pollData.dart';
 import 'package:mobile_app/view/moderatorApproval/sectionHeader.dart';
+import 'package:mobile_app/view/pollView/pollView.dart';
+import '../helpers/dateTime.dart';
 import 'readOnlyTextField.dart';
 import 'package:dio/dio.dart';
 import 'package:mobile_app/view/constants.dart';
@@ -12,20 +14,21 @@ import 'package:mobile_app/view/constants.dart';
 class ModeratorApprovalScreen extends StatelessWidget {
   final List<Color> tagColors;
   final PollData pollData;
+  final TextEditingController feedbackController = TextEditingController();
 
-  const ModeratorApprovalScreen({
+  ModeratorApprovalScreen({
     super.key,
     required this.tagColors,
     required this.pollData,
 
   });
 
-  void answerPoll(BuildContext context, bool isApproved, String id) async{
+  void answerPoll(BuildContext context, bool isApproved, String id, String feedback) async{
     // Perform email verification and navigate to the next screen if successful
     ModeratorPollDecision moderatorPollDecision = ModeratorPollDecision();
 
     try {
-      Response response = await moderatorPollDecision.answerPoll(isApproved, id);
+      Response response = await moderatorPollDecision.answerPoll(isApproved, id, feedback);
 
       if (response.statusCode == 201) {
 
@@ -69,6 +72,10 @@ class ModeratorApprovalScreen extends StatelessWidget {
             ReadOnlyTextField(
               text: pollData.pollTitle,
             ),
+            const SizedBox(height: 4),
+            const SectionHeader(headerText: "Due Date"),
+            const SizedBox(height: 4),
+            DateTimeWidget(dateTime: DateTime.parse(pollData.dueDate), color: Colors.red),
 
 
             // added tags
@@ -130,6 +137,16 @@ class ModeratorApprovalScreen extends StatelessWidget {
               ),
 
             )),
+            const SizedBox(height: 16),
+            const SectionHeader(headerText: "Feedback"),
+            const SizedBox(height: 4),
+            TextFormField(
+              controller: feedbackController,
+              decoration: const InputDecoration(
+                hintText: 'Enter your feedback...',
+                border: OutlineInputBorder(),
+              ),
+            ),
 
             const SizedBox(height: 16),
             // submit and cancel buttons
@@ -137,11 +154,11 @@ class ModeratorApprovalScreen extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: <Widget>[
                 ElevatedButton(
-                  onPressed: ()=>answerPoll(context, true, pollData.pollId),
+                  onPressed: ()=>answerPoll(context, true, pollData.pollId, feedbackController.text),
                   child: const Text('Approve!'),
                 ),
                 ElevatedButton(
-                  onPressed: ()=>answerPoll(context, false, pollData.pollId),
+                  onPressed: ()=>answerPoll(context, false, pollData.pollId, feedbackController.text),
                   child: const Text('Reject!'),
                 ),
               ],

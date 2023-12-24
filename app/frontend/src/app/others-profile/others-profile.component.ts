@@ -5,6 +5,7 @@ import { Observable } from 'rxjs'
 import { switchMap } from 'rxjs/operators'
 import { User } from '../user-profile/user.model'
 import { UserService } from 'src/services/user-service/user.service'
+import { AuthService } from '../auth.service'
 
 @Component({
   selector: 'app-others-profile',
@@ -15,7 +16,8 @@ export class OthersProfileComponent implements OnInit {
   isAuthenticated: boolean = false
   polls: any[] = []
   user!: User
-  userId = ''
+  userId!: string
+
   self_username = localStorage.getItem('username')
   self_userId = localStorage.getItem('user_id')
   nofFollowers: number = 0
@@ -25,10 +27,13 @@ export class OthersProfileComponent implements OnInit {
   showFollowees: boolean = false
   followList!: any[]
 
+  clickedButton: string = '';
+
   constructor(
     private http: HttpClient,
     private _userService: UserService,
     private route: ActivatedRoute,
+    private authService: AuthService,
   ) {
   }
 
@@ -52,8 +57,9 @@ export class OthersProfileComponent implements OnInit {
             (follower: User) => follower.id,
           )).length
           this.userId = user.id
+          console.log(this.userId)
           this.http
-            .get('http://34.105.66.254:1923/poll/?creatorId=' + this.user?.id+"&?approveStatus=true")
+            .get('http://34.105.66.254:1923/poll/?creatorId=' + this.userId+ '&?approveStatus=true')
             .subscribe(
               (response: any) => {
                 this.polls = response
@@ -97,7 +103,8 @@ export class OthersProfileComponent implements OnInit {
     }
   }
   createdPolls() {
-    this.http.get('http://34.105.66.254:1923/poll/?creatorId='+this.user.id+"&?approveStatus=true").subscribe(
+    this.clickedButton = 'created';
+    this.http.get('http://34.105.66.254:1923/poll/?creatorId='+this.userId+'&?approveStatus=true').subscribe(
       (response: any) => {
         this.polls = response
       },
@@ -108,8 +115,23 @@ export class OthersProfileComponent implements OnInit {
   }
 
   likedPolls() {
+    this.clickedButton = 'liked';
     this.http
-      .get('http://34.105.66.254:1923/poll/?likedById=' + this.user.id+"&?approveStatus=true")
+      .get('http://34.105.66.254:1923/poll/?likedById=' + this.userId+'&?approveStatus=true')
+      .subscribe(
+        (response: any) => {
+          this.polls = response
+        },
+        (error) => {
+          console.error('Error fetching polls:', error)
+        },
+      )
+  }
+
+  votedPolls(){
+    this.clickedButton = 'voted';
+    this.http
+      .get('http://34.105.66.254:1923/poll/?votedById=' + this.userId+'&?approveStatus=true')
       .subscribe(
         (response: any) => {
           this.polls = response

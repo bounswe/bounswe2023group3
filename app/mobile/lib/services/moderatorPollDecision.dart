@@ -4,14 +4,15 @@ import 'package:mobile_app/services/apiService.dart';
 
 class ModeratorPollDecision {
 
-  Future<Response> answerPoll(bool isApproved, String id) async {
+  Future<Response> answerPoll(bool isApproved, String id, String feedback) async {
     String pollAnswerEndpoint =
         '/moderator/approve/$id';
 
 
 
-    final Map<String, bool> data = {
+    final Map<String, dynamic> data = {
       'approveStatus': isApproved,
+      'poll_request_rejection_feedback': feedback,
     };
 
 

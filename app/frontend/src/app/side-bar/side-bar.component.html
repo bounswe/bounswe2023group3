@@ -58,11 +58,6 @@
           <span class="button-text">My Requests</span>
         </button>
 
-        <button class="button" [class.blurred]="!isAuthenticated">
-          <img src="assets/notification.png" alt="Logo" class="logo-image" />
-          <span class="button-text">Notifications</span>
-        </button>
-
         <button class="button" [class.blurred]="!isAuthenticated" (click)="goToSettings()">
           <img src="assets/settings.png" alt="Logo" class="logo-image" />
           <span class="button-text">Settings</span>
@@ -70,7 +65,7 @@
 
         <div style="position: absolute; z-index: 10;">
           <div class="popup" *ngIf="showSettings" style="position: relative; top:-20px; left:50px;
-           background-color: #80bbc4; border: 1px solid black;">
+    border: 1px solid black;">
             <app-settings ></app-settings>
           </div>
         </div>

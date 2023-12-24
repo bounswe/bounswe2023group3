@@ -3,6 +3,8 @@ import 'package:mobile_app/models/pollInfo.dart';
 import 'package:mobile_app/view/moderatorHomePage/requestViewHome.dart';
 import 'package:mobile_app/view/pollView/postOptionWidget.dart';
 
+import '../helpers/tag.dart';
+
 class PendingPollView extends StatefulWidget {
   final String pollId;
   final String postTitle;
