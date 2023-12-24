@@ -468,6 +468,7 @@ export class PollController {
   }
 
   @UseGuards(AuthGuard, VerificationGuard)
+  @ApiQuery({ name: 'is_settled', required: true })
   @ApiResponse({
     status: 200,
     description: 'Polls are fetched successfully.',
@@ -478,9 +479,13 @@ export class PollController {
     description: 'Internal server error, contact with backend team.',
   })
   @Get('not-voted-by-me')
-  public async findPollsIdidNoteVote(@Req() req: any): Promise<any> {
+  public async findPollsIdidNoteVote(
+    @Req() req: any,
+    @Query('is_settled', ParseIntPipe)
+    is_settled?: number,
+  ): Promise<any> {
     const userId = req.user.id;
-    return await this.pollService.findPollsUserdidNotVote(userId);
+    return await this.pollService.findPollsUserdidNotVote(userId, is_settled);
   }
 
   @UseGuards(AuthGuard, VerificationGuard)

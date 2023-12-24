@@ -310,12 +310,13 @@ export class PollService {
     return extendedPolls;
   }
 
-  public async findPollsUserdidNotVote(voterId: string) {
+  public async findPollsUserdidNotVote(voterId: string, is_settled: number) {
+    console.log(is_settled);
     const polls = await this.pollRepository.find({
       where: [
         {
           approveStatus: true,
-          is_settled: 0,
+          is_settled: is_settled,
           votes: {
             user: {
               id: Not(voterId),
@@ -324,7 +325,7 @@ export class PollService {
         },
         {
           approveStatus: true,
-          is_settled: 0,
+          is_settled: is_settled,
           votes: {
             user: {
               id: IsNull(),
@@ -556,8 +557,9 @@ export class PollService {
       throw new NotFoundException('Poll not found');
     }
 
-
-    const votedOption = userId ? (await this.voteService.findOne(poll.id, userId))?.option || null : null;
+    const votedOption = userId
+      ? (await this.voteService.findOne(poll.id, userId))?.option || null
+      : null;
 
     let voteDistribution = null;
     if (votedOption) {
