@@ -1,8 +1,9 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:email_validator/email_validator.dart';
-import 'package:mobile_app/view/login/customTextField.dart';
+import 'package:mobile_app/view/signup/customTextField.dart';
 import 'package:mobile_app/services/signuser.dart';
+import 'package:mobile_app/view/signup/signVerifyScreen.dart';
 
 class SignupScreen extends StatefulWidget {
   const SignupScreen({super.key});
@@ -15,13 +16,23 @@ class _SignupScreenState extends State<SignupScreen> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   final TextEditingController usernameController = TextEditingController();
+  final TextEditingController confirmPasswordController = TextEditingController();
+  final TextEditingController nameController = TextEditingController();
+  final TextEditingController surnameController = TextEditingController();
 
   bool isEmailValid = true;
   bool isPasswordValid = true;
   bool isUsernameValid = true;
+  bool arePasswordsMatch = true;
+
   bool emptyEmail = false;
   bool emptyPassword = false;
   bool emptyUsername = false;
+  bool emptyConfirmPassword = false;
+  bool emptyName = false;
+  bool emptySurname = false;
+
+
   Color lengthColor = Colors.red.shade900;
   Color uppercaseColor = Colors.red.shade900;
   Color lowercaseColor = Colors.red.shade900;
@@ -30,8 +41,7 @@ class _SignupScreenState extends State<SignupScreen> {
 
   void validateEmail(String email) {
     setState(() {
-      emptyPassword = false;
-      emptyUsername = false;
+
       emptyEmail = false;
       if (email.isEmpty) {
         isEmailValid = true;
@@ -40,11 +50,30 @@ class _SignupScreenState extends State<SignupScreen> {
       }
     });
   }
+
+
+  void validateName(String temp){
+    setState(() {
+      emptyName=false;
+    });
+  }
+
+  void validateSurname(String temp){
+    setState(() {
+      emptySurname=false;
+    });
+  }
+
+  void validateConfirmPassword(String confirmPassword){
+    setState(() {
+      emptyConfirmPassword = false;
+      arePasswordsMatch =  passwordController.text == confirmPassword;
+    });
+  }
+
   void validateUsername(String username){
     setState(() {
-      emptyPassword = false;
       emptyUsername = false;
-      emptyEmail = false;
 
       if(username.isEmpty){
         isUsernameValid=true;
@@ -64,8 +93,7 @@ class _SignupScreenState extends State<SignupScreen> {
   void validatePassword(String password) {
     setState(() {
       emptyPassword = false;
-      emptyUsername = false;
-      emptyEmail = false;
+
 
       if(password.isEmpty){
         isPasswordValid=true;
@@ -102,6 +130,10 @@ class _SignupScreenState extends State<SignupScreen> {
       String email = emailController.text;
       String password = passwordController.text;
       String username = usernameController.text;
+      String name = nameController.text;
+      String surname = surnameController.text;
+
+
       if (email.isEmpty) {
         setState(() {
           emptyEmail = true;
@@ -117,17 +149,31 @@ class _SignupScreenState extends State<SignupScreen> {
           emptyUsername = true;
         });
       }
-      if (emptyEmail || emptyPassword || emptyUsername) {
+      if (name.isEmpty) {
+        setState(() {
+          emptyName = true;
+        });
+      }
+      if (surname.isEmpty) {
+        setState(() {
+          emptySurname = true;
+        });
+      }
+
+
+      if (emptyEmail || emptyPassword || emptyUsername || emptyName || emptySurname) {
         return;
       }
       SignUser signUser = SignUser();
       try {
 
-        Response response = await signUser.sign(email, username, password);
+        Response response = await signUser.sign(email, username, password, name, surname);
         if (response.statusCode == 201) {
 
           if (!context.mounted) return;
-          Navigator.pushNamed(context, '/signverify');
+          Navigator.push(context, MaterialPageRoute(builder: (context) => SignVerifyScreen(email: email,)));
+
+          //Navigator.pushNamed(context, '/signverify');
         }
         else if(response.statusCode == 409){
           showErrorMessage(context, "User already exists!");
@@ -170,6 +216,21 @@ class _SignupScreenState extends State<SignupScreen> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 CustomTextField(
+                  labelText: 'Name',
+                  controller: nameController,
+                  errorText: "",
+                  onChanged: validateName,
+                ),
+                const SizedBox(height: 16),
+                CustomTextField(
+                  labelText: 'Surname',
+                  controller: surnameController,
+                  errorText: "",
+                  onChanged: validateSurname,
+                ),
+                const SizedBox(height: 16),
+
+                CustomTextField(
                   labelText: 'Email',
                   controller: emailController,
                   keyboardType: TextInputType.emailAddress,
@@ -193,6 +254,15 @@ class _SignupScreenState extends State<SignupScreen> {
                       ? ""
                       : 'Password must meet the following criteria:',
                 ),
+                const SizedBox(height: 16),
+                CustomTextField(
+                  labelText: 'Confirm Password',
+                  controller: confirmPasswordController,
+                  onChanged: validateConfirmPassword,
+                  errorText: arePasswordsMatch ? "" : 'Passwords do not match!',
+                  obscureText: true,
+                ),
+
                 Text(
                   emptyEmail ? 'Email cannot be empty' : '',
                   style: TextStyle(
@@ -254,13 +324,25 @@ class _SignupScreenState extends State<SignupScreen> {
                 // End of password criteria display
                 const SizedBox(height: 16),
                 ElevatedButton(
-                  onPressed: isEmailValid && isPasswordValid && isUsernameValid ? signup : null,
+                  onPressed: isEmailValid && isPasswordValid && isUsernameValid && arePasswordsMatch ? signup : null,
                   child: const Text('Sign Up'),
                 ),
                 Padding(
                   padding: const EdgeInsets.all(10),
                   child: Column(
                     children: [
+                      Text(
+                        emptyName ? 'Name cannot be empty' : '',
+                        style: TextStyle(
+                          color: Colors.red[900],
+                        ),
+                      ),
+                      Text(
+                        emptySurname ? 'Surname cannot be empty' : '',
+                        style: TextStyle(
+                          color: Colors.red[900],
+                        ),
+                      ),
                       Text(
                         emptyEmail ? 'Email cannot be empty' : '',
                         style: TextStyle(
@@ -269,6 +351,12 @@ class _SignupScreenState extends State<SignupScreen> {
                       ),
                       Text(
                         emptyPassword ? 'Password cannot be empty' : '',
+                        style: TextStyle(
+                          color: Colors.red[900],
+                        ),
+                      ),
+                      Text(
+                        emptyConfirmPassword ? 'Confirm Password cannot be empty' : '',
                         style: TextStyle(
                           color: Colors.red[900],
                         ),
