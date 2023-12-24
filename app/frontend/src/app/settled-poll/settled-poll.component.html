@@ -4,7 +4,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <style>
       .button.clicked {
-        background-color: #b74f6f !important;
+        background-color: #0e7062 !important;
         color: white;
       }
     </style>
@@ -88,18 +88,17 @@
         </p>
       </div>
 
-      <div>
+      <div *ngFor="let option of options; let i = index">
         <button
-          *ngFor="let option of options; let i = index"
-          class="button"
+          [ngClass]="outcome === option.id ? 'button clicked' : 'button'"
           #buttonRef
-          id="'button' + i"
-          (click)="toggleButton(buttonRef)"
-          [disabled]="selectedButton != buttonRef && selectedButton != null"
+          [attr.id]="'button' + i"
+          [disabled]="isClickable"
         >
           {{ option.answer }}
         </button>
       </div>
+      
 
       <input type="hidden" [(ngModel)]="isLikedBy" name="isLiked" />
 

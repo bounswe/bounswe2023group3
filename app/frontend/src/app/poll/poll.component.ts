@@ -9,6 +9,7 @@ import { MatFormFieldModule } from '@angular/material/form-field'
 import { ReportUserComponent } from '../report-user/report-user.component'
 import { AuthService } from '../auth.service'
 import { User } from '../user-profile/user.model'
+import {MatProgressBarModule} from '@angular/material/progress-bar';
 
 @Component({
   selector: 'app-poll',
@@ -27,9 +28,12 @@ export class PollComponent {
   creation_time!: string
   vote_count!: number
   creator!: User
+  isSettled!: boolean 
   isLikedBy!: boolean
   nofLikes: number = 0
   userId!: string | null
+  optionWeights!: number[]
+  optionWeightsScaled!: number[]
 
   //TODO: retrieve user vote & show in html
   userVoted!: boolean 
@@ -91,6 +95,12 @@ export class PollComponent {
       this.vote_count = response.voteCount;
       this.creator = response.creator;
       this.image_urls = response.image_urls;
+      this.user_vote_id = response.votedOption.id;
+      this.isSettled = (response.is_settled != 0);
+      this.userVoted = !(!this.user_vote_id);
+      this.optionWeights = response.voteDistribution.map((x: {id: string, count: string }) => parseInt(x.count));
+      const sum = this.optionWeights.reduce((accumulator, current) => accumulator + current, 0);
+      this.optionWeightsScaled  = this.optionWeights.map(weight => (weight / sum) * 100);
     },
     (error) => {
       console.error('Error fetching poll:', error);
@@ -151,20 +161,26 @@ export class PollComponent {
       },
       (error) => {
         console.error('Error fetching comment count:', error)
-      },
-    )
+      }
+      )
 
-    /*
-    const selectedButtonId = localStorage.getItem('selectedButtonId')
-    if (selectedButtonId) {
+    if (this.user_vote_id) {
       this.selectedButton = document.getElementById(
-        selectedButtonId,
+        this.user_vote_id
       ) as HTMLButtonElement
-      if (this.selectedButton) {
+      if (true) {
         this.selectedButton.classList.add('clicked')
       }
     }
-    */
+    
+    //scale votes
+    
+  }
+  showVote(){
+    if (!this.user_vote_id)
+    {
+
+    }
 
   }
 
