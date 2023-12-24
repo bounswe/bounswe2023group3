@@ -126,7 +126,7 @@ class _ProfilePageState extends State<ProfilePage> {
         slivers: <Widget>[
           SliverToBoxAdapter(
             child: profileInfo == null
-                ? FancyWaitingScreen()
+                ? const Center(child: CircularProgressIndicator())
                 : UserInfoSection(
                     profileInfo: profileInfo!,
                     profilePageReload: () {
