@@ -96,9 +96,11 @@
       <div>
         <button
           *ngFor="let option of options; let i = index"
-          class="button"
+          [ngClass]="user_vote_id === option.id ? 'button clicked' : 'button'"
           #buttonRef
+
           id="'button' + i"
+          [attr.data-vote-id]="option.id"
           (click)="!userVoted && castVote(option.id, buttonRef)"
           [disabled]="selectedButton != buttonRef && selectedButton != null"
         >

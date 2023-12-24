@@ -129,6 +129,9 @@ export class PollComponent {
       this.vote_count = response.vote_count;
       this.creator = response.creator;
       this.image_urls = response.image_urls;
+      this.user_vote_id = response.votedOption.id;
+      this.userVoted = !(!this.user_vote_id);
+      console.log(this.user_vote_id);
     },
     (error) => {
       console.error('Error fetching poll:', error);
@@ -189,20 +192,25 @@ export class PollComponent {
       },
       (error) => {
         console.error('Error fetching comment count:', error)
-      },
-    )
+      }
+      )
 
-    /*
-    const selectedButtonId = localStorage.getItem('selectedButtonId')
-    if (selectedButtonId) {
+    if (this.user_vote_id) {
       this.selectedButton = document.getElementById(
-        selectedButtonId,
+        this.user_vote_id
       ) as HTMLButtonElement
-      if (this.selectedButton) {
+      if (true) {
         this.selectedButton.classList.add('clicked')
       }
     }
-    */
+    
+
+  }
+  showVote(){
+    if (!this.user_vote_id)
+    {
+
+    }
 
   }
 
