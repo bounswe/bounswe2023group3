@@ -71,13 +71,13 @@ class ProfilePagePollsService {
   static Future<List<PollInfo>> getVotedPolls(String userId) async {
     // TODO make filtering
     // TODO handle errors
-    String pollsEndpoint = "/poll";
+    String pollsEndpoint = "/poll?votedById=$userId";
     Response response = await ApiService.dio.get(pollsEndpoint);
     var polls = List.from(response.data).map((e) => PollInfo.fromJson(e));
     var pollsList = polls.toList();
     await addAnnotationToPolls(pollsList);
     // return polls.toList();
-    return [];
+    return pollsList;
   }
 
   static Future<List<PollInfo>> getCreatedPolls(String userId) async {
