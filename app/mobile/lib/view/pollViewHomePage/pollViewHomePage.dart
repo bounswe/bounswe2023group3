@@ -59,6 +59,7 @@ class PollViewHomePage extends StatefulWidget {
     required this.voteCountDistributions,
     required this.myVotedOptionId,
     required this.outcomeOptionId,
+
   });
   _PollViewHomePageState createState() => _PollViewHomePageState();
 }
@@ -96,7 +97,7 @@ class _PollViewHomePageState extends State<PollViewHomePage> {
   void handleUnlikePress(String pollId) async {
     PollViewHomePageLike pollLike = PollViewHomePageLike();
     bool unlikeSuccess =
-    await pollLike.unlike(pollId); // Assuming an unlike method exists
+        await pollLike.unlike(pollId); // Assuming an unlike method exists
     if (unlikeSuccess) {
       setState(() {
         likeCount--;
@@ -112,11 +113,11 @@ class _PollViewHomePageState extends State<PollViewHomePage> {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           UserInformationWidget(
-              userName: widget.userName,
-              userUsername: widget.userUsername,
-              profilePictureUrl: widget.profilePictureUrl,
-              pollId: widget.isSettled == 0 ? widget.pollId : "",
-            ),
+            userName: widget.userName,
+            userUsername: widget.userUsername,
+            profilePictureUrl: widget.profilePictureUrl,
+            pollId: widget.isSettled == 0 ? widget.pollId : "",
+          ),
           Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
               // child: Text(widget.postTitle,
@@ -124,8 +125,8 @@ class _PollViewHomePageState extends State<PollViewHomePage> {
               //     maxLines: 3,
               //     style: const TextStyle(
               //         fontSize: 18.0, fontWeight: FontWeight.bold)),
-              child: buildRichText(widget.postTitle, widget.annotationIndices, widget.annotationTexts)
-          ),
+              child: buildRichText(widget.postTitle, widget.annotationIndices,
+                  widget.annotationTexts)),
           TagListWidget(tags: widget.tags, tagColors: widget.tagColors),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -147,20 +148,21 @@ class _PollViewHomePageState extends State<PollViewHomePage> {
             padding: const EdgeInsets.all(16.0),
             child: didLike
                 ? ElevatedButton.icon(
-              onPressed: () => handleUnlikePress(widget.pollId),
-              icon: const Icon(Icons.thumb_down),
-              label: const Text('Unlike'),
-            )
+                    onPressed: () => handleUnlikePress(widget.pollId),
+                    icon: const Icon(Icons.thumb_down),
+                    label: const Text('Unlike'),
+                  )
                 : ElevatedButton.icon(
-              onPressed: () => handleLikePress(widget.pollId),
-              icon: const Icon(Icons.thumb_up),
-              label: const Text('Like'),
-            ),
+                    onPressed: () => handleLikePress(widget.pollId),
+                    icon: const Icon(Icons.thumb_up),
+                    label: const Text('Like'),
+                  ),
           ),
           Row(
             children: [
               LikeCountWidget(likeCount: likeCount),
-              DateTimeWidget(dateTime: DateTime.parse(widget.dateTime), color: navy),
+              DateTimeWidget(
+                  dateTime: DateTime.parse(widget.dateTime), color: navy),
             ],
           ),
           Padding(
@@ -173,61 +175,70 @@ class _PollViewHomePageState extends State<PollViewHomePage> {
     );
   }
 
+  RichText buildRichText(
+      String fullText, List<List<int>> indices, List<String> annotationTexts) {
+    try {
+      List<TextSpan> textSpans = [];
 
-  RichText buildRichText(String fullText, List<List<int>> indices, List<String> annotationTexts) {
+      int previousIndex = 0;
 
+      for (int i = 0; i < indices.length; i++) {
+        int startIndex = indices[i][0];
+        int endIndex = indices[i][1];
+        String annotationText = annotationTexts[i];
 
-    List<TextSpan> textSpans = [];
+        // Add non-underlined text before the current underlined part
+        textSpans.add(
+          TextSpan(
+            text: fullText.substring(previousIndex, startIndex),
+            style: const TextStyle(color: Colors.black),
+          ),
+        );
 
-    int previousIndex = 0;
+        // Add underlined text with tap gesture recognizer
+        textSpans.add(
+          TextSpan(
+            text: fullText.substring(startIndex, endIndex),
+            style: const TextStyle(
+              color: Colors.blue,
+              decoration: TextDecoration.underline,
+            ),
+            recognizer: TapGestureRecognizer()
+              ..onTap = () {
+                // Handle tap on the underlined text
+                _showPopup(context, annotationText);
+                print(
+                    'Tapped on underlined text from index $startIndex to $endIndex!');
+              },
+          ),
+        );
 
-    for (int i = 0; i < indices.length; i++) {
-      int startIndex = indices[i][0];
-      int endIndex = indices[i][1];
-      String annotationText = annotationTexts[i];
+        // Update the previous index to the end index of the current underlined part
+        previousIndex = endIndex;
+      }
 
-      // Add non-underlined text before the current underlined part
+      // Add any remaining non-underlined text after the last underlined part
       textSpans.add(
         TextSpan(
-          text: fullText.substring(previousIndex, startIndex),
+          text: fullText.substring(previousIndex),
           style: const TextStyle(color: Colors.black),
         ),
       );
 
-      // Add underlined text with tap gesture recognizer
-      textSpans.add(
-        TextSpan(
-          text: fullText.substring(startIndex, endIndex),
-          style: const TextStyle(
-            color: Colors.blue,
-            decoration: TextDecoration.underline,
-          ),
-          recognizer: TapGestureRecognizer()
-            ..onTap = () {
-              // Handle tap on the underlined text
-              _showPopup(context, annotationText);
-              print('Tapped on underlined text from index $startIndex to $endIndex!');
-            },
+      return RichText(
+        text: TextSpan(
+          children: textSpans,
         ),
       );
-
-      // Update the previous index to the end index of the current underlined part
-      previousIndex = endIndex;
     }
-
-    // Add any remaining non-underlined text after the last underlined part
-    textSpans.add(
-      TextSpan(
-        text: fullText.substring(previousIndex),
-        style: const TextStyle(color: Colors.black),
-      ),
-    );
-
-    return RichText(
-      text: TextSpan(
-        children: textSpans,
-      ),
-    );
+    catch (e) {
+      return RichText(
+        text: TextSpan(
+          text: fullText,
+          style: const TextStyle(color: Colors.black),
+        ),
+      );
+    }
   }
 
   void _showPopup(BuildContext context, String underlinedText) {
@@ -250,6 +261,7 @@ class _PollViewHomePageState extends State<PollViewHomePage> {
     );
   }
   void handleOptionPress(String optionId) async {
+
     // Handle option press based on the selected option
     PollViewHomePageVote pollVote = PollViewHomePageVote();
     bool voteSuccess = await pollVote.vote(optionId);
@@ -275,8 +287,6 @@ class _PollViewHomePageState extends State<PollViewHomePage> {
 //}
 }
 
-
-
 class LikeCountWidget extends StatelessWidget {
   final int likeCount;
 
@@ -291,8 +301,8 @@ class LikeCountWidget extends StatelessWidget {
           Container(
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(20.0),
-              border: Border.all(color: pink),
-              color: pink,
+              border: Border.all(color: navy),
+              color: navy,
             ),
             child: Padding(
               padding: const EdgeInsets.all(8.0),

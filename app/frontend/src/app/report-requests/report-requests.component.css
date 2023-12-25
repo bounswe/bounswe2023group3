@@ -4,16 +4,20 @@ body {
  display: flex;
  flex-direction: column;
  height: 100%;
- overflow: auto;
+}
+
+body{
+  overflow:auto; 
 }
 
 .container {
   background-color: #202a40;
-  width: calc(80% - 300px);
+  width: calc(80% - 315px);
   display: flex;
   flex-direction: column;
   align-items: center;
   padding: 25px;
+  min-height: 1000px;
 }
 .page-layout {
   display: flex;
@@ -68,9 +72,42 @@ body {
 }
 
 .date {
-  color: #555;
+  color: #444;
   position: absolute;
+  font-weight: bolder;
   top: 0;
   right: 0;
   margin: 10px;
 }
+
+
+.moderator-requests {
+  display: flex;
+}
+
+.moderator-requests-column {
+  background-color: #9DC0C4;
+  border: solid #202A40 1px;
+  color: #202A40;
+  padding: 10px 15px;
+  margin: 0;
+  cursor: pointer;
+  outline: none;
+  border-radius: 20px;
+  transition: background-color 0.3s;
+}
+
+.moderator-requests-column:hover {
+  background-color: #7a9ea5;
+  text-decoration: underline;
+}
+
+.moderator-requests-column.active {
+  background-color: #9DC0C4; /* Change the background color for the active button */
+  text-decoration: underline;
+}
+
+.button-text {
+  font-size: 16px;
+}
+

@@ -34,6 +34,7 @@ export class PollComponent {
   userId!: string | null
   optionWeights!: number[]
   optionWeightsScaled: number[] = []
+  authPackage = this.authService.getHeaders()
 
   //TODO: retrieve user vote & show in html
   userVoted!: boolean 
@@ -49,19 +50,18 @@ export class PollComponent {
 
   colors: string[] = [
     '#AEEEEE',
-    '#FFDAB9',
     '#E6E6FA',
     '#FADADD',
     '#F08080',
     '#B0C4DE',
     '#FFB6C1',
     '#D7907B',
-    '#DECBB7',
     '#C1EEFF',
-    '#EDDEA4',
     '#F7A072',
     '#9BA0BC',
-    '#F88DAD'
+    '#F88DAD',
+    '#EDDEA4',
+    '#BFCC94',
   ]
 
   constructor(
@@ -77,7 +77,7 @@ export class PollComponent {
 
   ngOnInit() {
 
-    this.http.get('http://34.105.66.254:1938/annotation?pollIDs=http%3A%2F%2F34.105.66.254%3A1923%2F'+this.pollId).subscribe(
+    this.http.get('http://34.105.66.254:1938/annotation?pollIDs=http%3A%2F%2F34.105.66.254%3A1923%2F'+this.pollId,this.authPackage).subscribe(
       (response: any) => {
         this.annotations=response.annotations;
       },
@@ -86,7 +86,7 @@ export class PollComponent {
       }
     );
 
-    this.http.get('http://34.105.66.254:1923/poll/'+this.pollId).subscribe(
+    this.http.get('http://34.105.66.254:1923/poll/'+this.pollId, this.authPackage).subscribe(
     (response: any) => {
       this.question = response.question;
       this.tags = response.tags;
@@ -110,7 +110,7 @@ export class PollComponent {
     if (this.userId) {
       this.isAuthenticated = true
     }
-    this.http.get('http://34.105.66.254:1923/poll/' + this.pollId).subscribe(
+    this.http.get('http://34.105.66.254:1923/poll/' + this.pollId,this.authPackage).subscribe(
       (response: any) => {
         this.question = response.question
         this.tags = response.tags
@@ -186,7 +186,7 @@ export class PollComponent {
 
   openConfirmationDialog(): void {
     const dialogRef = this.dialog.open(ConfirmModelComponent, {
-      width: '300px',
+      width: '400px', height: '200px'
     })
 
     dialogRef.afterClosed().subscribe((result) => {
@@ -196,12 +196,13 @@ export class PollComponent {
       } else {
         console.log('User canceled deletion')
       }
-    })
+    }
+    )
   }
 
   reportUser(): void {
     const dialogRef = this.dialog.open(ReportUserComponent, {
-      width: '300px',
+      width: '400px',
     })
 
     dialogRef.afterClosed().subscribe((result) => {
@@ -214,7 +215,7 @@ export class PollComponent {
 
   settleRequestForm(): void {
     const dialogRef = this.dialog.open(UserSettleRequestComponent, {
-      width: '300px',
+      width: '400px',
     })
 
     dialogRef.afterClosed().subscribe((result) => {
@@ -245,13 +246,15 @@ export class PollComponent {
       .then(response => {
         // Handle the response
         console.log('Vote cast for option ID:', optionId);
+        this.vote_count += 1;
+        this.userVoted = true;  
       })
       .catch(error => {
         // Handle any errors
         console.error('Error casting vote:', error);
       });
     }
-    this.userVoted = true;   
+     
   }
 
   toggleButton(button: HTMLButtonElement) {
@@ -308,13 +311,17 @@ export class PollComponent {
   }
 
   deletePoll() {
-    this.http.delete('http://34.105.66.254:1923/poll/' + this.pollId).subscribe(
+    this.http.delete('http://34.105.66.254:1923/poll/' + this.pollId,this.authPackage).subscribe(
       () => {
         console.log(`Poll deleted successfully.`)
       },
       (error) => {
         console.error('Error deleting poll:', error)
       },
+      () => {
+        // Reload after settling the poll
+        window.location.reload();
+      }
     )
   }
 
@@ -325,7 +332,7 @@ export class PollComponent {
     }
 
     this.http
-      .post('http://34.105.66.254:1923/poll/settle-request/' + this.pollId, body, this.authService.getHeaders())
+      .post('http://34.105.66.254:1923/poll/settle-request/' + this.pollId, body, this.authPackage)
       .subscribe(
         () => {
           console.log(`Request sent ccessfully.`)
@@ -344,7 +351,7 @@ export class PollComponent {
     console.log(rsn)
 
     this.http
-      .post('http://34.105.66.254:1923/user/report/' + this.creator.id, body, this.authService.getHeaders())
+      .post('http://34.105.66.254:1923/user/report/' + this.creator.id, body, this.authPackage)
       .subscribe(
         () => {
           console.log(`Request sent successfully.`)

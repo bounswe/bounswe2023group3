@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http'
-import { Component } from '@angular/core'
+import { Component, ElementRef, ViewChild } from '@angular/core'
 import { UserService } from 'src/services/user-service/user.service'
 import { User } from './user.model'
 import { AuthService } from '../auth.service'
@@ -31,7 +31,8 @@ export class UserProfileComponent {
   shortLink: string = "";
 
   followList!: any[]
-
+  @ViewChild('followeesText', { static: true, read: ElementRef }) followeesText!: ElementRef;
+@ViewChild('followersText', { static: true, read: ElementRef }) followersText!: ElementRef;
 
   constructor(
     private http: HttpClient,
@@ -112,7 +113,8 @@ export class UserProfileComponent {
   }
   votedPolls() {
     this.clickedButton = 'voted';
-    this.http.get('http://34.105.66.254:1923/poll/voted-by-me',this.options).subscribe(
+    console.log(this.options)
+    this.http.get('http://34.105.66.254:1923/poll/?votedById=' + this.user_id+"&?approveStatus=true",this.options).subscribe(
       (response: any) => {
         this.polls = response
       },
@@ -200,4 +202,27 @@ export class UserProfileComponent {
     }
   }
 
+  getPopupTop(element: HTMLElement): { top: number; left: number } {
+    const textRect = element.getBoundingClientRect();
+    const container = element.parentElement;
+  
+    if (container) {
+      const containerRect = container.getBoundingClientRect();
+      const top = textRect.bottom - containerRect.top + window.scrollY + 5;
+  
+      // Calculate the center of the text element
+      const textCenter = textRect.left + textRect.width / 2;
+  
+      // Calculate the left position based on the text center
+      const left = textCenter - containerRect.left;
+  
+      return { top, left };
+    }
+  
+    // Handle the case when the parent element is null
+    const top = textRect.bottom + window.scrollY + 5;
+    const left = textRect.left; // Adjust as needed
+    return { top, left };
+  }
+  
 }

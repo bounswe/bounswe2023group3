@@ -7,7 +7,14 @@
       <div class="container" style="padding: 40px; justify-self: center; margin-left: 240px; margin-right: 260px;">
         <h2>{{ tagName }}</h2>
         <div>
-          <app-poll *ngFor="let poll of polls" [pollId]="poll.id"></app-poll>
+          <div *ngFor="let poll of polls">
+            <ng-container *ngIf="!poll.is_settled; else settledPoll">
+              <app-poll [pollId]="poll.id"></app-poll>
+            </ng-container>
+            <ng-template #settledPoll>
+              <app-settled-poll [pollId]="poll.id"></app-settled-poll>
+            </ng-template>
+          </div>
         </div>
       </div>
 

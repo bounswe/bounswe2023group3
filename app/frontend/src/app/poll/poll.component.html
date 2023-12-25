@@ -14,7 +14,7 @@
       <img
         [class.blurred]="!isAuthenticated"
         class="popup-options"
-        style="float: right; width: 4%;border-radius: 50%; height: 30%; cursor: pointer; background-color: #63989f ; transition: background-color 0.2s;"
+        style="float: right; margin-top: 3px;width: 4%;border-radius: 50%; height: 30%; cursor: pointer; background-color: #63989f ; transition: background-color 0.2s;"
         src="assets/three-dots.png"
         (click)="openPopup()"
       />
@@ -61,12 +61,13 @@
         </div>
       </div>
 
-      <app-qtext-annotation  [text]="question" [pollId]="pollId" [annotationInput]="annotations"></app-qtext-annotation>
+      <app-qtext-annotation [text]="question" [pollId]="pollId" [annotationInput]="annotations"></app-qtext-annotation>
 
       <div style="display: flex; justify-content: space-between">
         <div>
           <!-- The algorithm written below will be changed later  -->
           <button
+          class="tag"
             *ngFor="let tag of tags; let i = index"
             [ngStyle]="{
               'background-color': getColor(tag.name.length + tags.length)
@@ -136,11 +137,13 @@
         class="comment"
           style="
             text-align: center;
-            margin-right: 60px;
-            margin-top: 26px;
+            justify-self: center;
+            margin-right: 50px;
+            margin-top: 25px;
             font-size: small;
+            cursor: pointer
           "
-          style="cursor: pointer" (click)="navigateToPoll()"
+          (click)="navigateToPoll()"
         >
           {{ comment_count }} Comment(s)
         </p>

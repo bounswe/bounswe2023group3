@@ -40,13 +40,12 @@ class PollRequestService {
 
     // Convert the dueDate to a string format that the API expects
     String dueDateString = pollData.dueDate.toIso8601String();
-    String imageUrlsString = pollData.imageURLs.toString();
     // Prepare the data to send to the API
     final Map<String, dynamic> data = {
       'question': pollData.question,
       'description': pollData.question,
       'options': pollData.options,
-      'image_urls': imageUrlsString,
+      'image_urls': pollData.imageURLs,
       'tags': pollData.tags,
       'due_date': dueDateString,
     };
@@ -71,9 +70,9 @@ class PollRequestService {
           "target": {
             "source": "http://34.105.66.254:1923/$poll_id",
             "selector": {
-              "end": annotation.indices[1],
+              "end": annotation.indices[1] == 0 ? 1 : annotation.indices[1],
               "type": "TextPositionSelector",
-              "start": annotation.indices[0]
+              "start": annotation.indices[0] == 0 ? 1 : annotation.indices[0]
             }
           },
           "creator": creator_id

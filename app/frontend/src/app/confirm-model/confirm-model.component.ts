@@ -5,6 +5,7 @@ import { MatDialog, MatDialogModule } from '@angular/material/dialog'
 @Component({
   selector: 'app-confirm-model',
   templateUrl: './confirm-model.component.html',
+  styleUrls: ['./confirm-model.component.css'],
 })
 export class ConfirmModelComponent {
   constructor(

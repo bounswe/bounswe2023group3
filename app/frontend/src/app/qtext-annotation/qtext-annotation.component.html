@@ -1,5 +1,5 @@
-<div >
-    <div #textContainer>
+<div style="margin: 0px;">
+    <div #textContainer style="display: flex; flex-direction: row;">
         <h3 *ngIf="!enterAnnotation" (mouseenter)="onMouseEnter($event)" [matTooltip]="hoveredAnnotation?.label">
           {{text}}
         </h3>
@@ -13,38 +13,43 @@
       </ngx-annotate-text>
       <button *ngIf="!enterAnnotation"
       class="button"
-      style="margin-bottom: 10px; margin-top: 10px;"
+      style="margin-bottom: 10px; margin-top: 10px; transition: background-color 0.2s; width: 100px; margin-left: 10px; min-width: 100px; max-height: 36px; align-self: center;"
       (click)="showInput()"
+      onmouseover="this.style.backgroundColor='#86a8ac';"
+      onmouseout="this.style.backgroundColor='#9DC0C4';"
     >
-      Add Annotation
+      Annotate
     </button>
     </div>
-   
   
   </div>
   
-  <div *ngIf="enterAnnotation">
+  <div *ngIf="enterAnnotation" style="padding: 0px;">
     <input
       type="text"
       class="form-control"
-      style="margin-bottom: 10px; margin-top: 10px;"
+      style="margin-bottom: 10px; margin-top: 10px; border-radius: 16px;"
 
       [(ngModel)]="newAnotation"
       placeholder="Enter annotation"
     />
+    <div style="display: flex; flex-direction: row; justify-content: center;">
+      <button
+      type="button"
+      class="btn btn-secondary me-2"
+      (click)="addAnnotation(newAnotation)"
+      style="width: 80px; margin-right: 10px;"
+    >
+      Submit
+    </button>
     <button
-    type="button"
-    class="btn btn-primary me-2"
-    (click)="addAnnotation(newAnotation)"
-  >
-    Submit
-  </button>
-  <button
-    type="button"
-    class="btn btn-primary me-2"
-    (click)="closeInput()"
-  >
-    Quit
-  </button>
+      type="button"
+      class="btn btn-primary me-2"
+      (click)="closeInput()"
+      style="width: 80px;"
+    >
+      Quit
+    </button>
+    </div>
   </div>
   

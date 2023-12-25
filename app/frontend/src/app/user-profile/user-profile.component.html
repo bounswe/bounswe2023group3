@@ -21,7 +21,7 @@
             "
           />
             <div class="post-content">
-              <b class="name" style="font-size: xx-large; padding-top: 10px">{{
+              <b class="name" style="font-size: xx-large; padding-top: 10px; line-height: 1;">{{
                 this.firstname 
               }} {{ this.lastname }}</b>
               <p class="user-name" style="margin-top: 4px">
@@ -35,17 +35,16 @@
           > Edit Profile </button>
           </ng-container>
           <ng-template #editMode>
-            <div style="display: flex; align-items: flex-start;">
+            <div style="display: flex; justify-content: space-between; align-items: start;  width: 100%;">
               <div style="margin-right: 20px;">
-                <app-file-upload (shortLinkEmitter)="receiveShortLink($event)"></app-file-upload>
+                <app-file-upload (shortLinkEmitter)="receiveShortLink($event)" style="text-align: center;"></app-file-upload>
               </div>
-              <div style="display: flex; flex-direction: row; justify-content: flex-start;">
-                <div style="margin-top: 10px;margin-left: 20px; margin-right: 120px; display: flex; flex-direction: row;">
-                  <input [(ngModel)]="editedFirstname" type="text" class="edit-username" placeholder="Enter your first name"/>
-                  <br>
+              <div style="display: flex; flex-direction: row;">
+                <div style="margin-top: 10px; margin-right: 300px;display: flex; flex-direction: column;">
+                  <input [(ngModel)]="editedFirstname" type="text" class="edit-username" placeholder="Enter your first name" style=" margin-bottom: 10px ;"/>
                   <input [(ngModel)]="editedLastname" type="text" class="edit-username" placeholder="Enter your last name"/>
                 </div>
-                <div style="display: flex; flex-direction: column; align-items: flex-end;">
+                <div style="display: flex; flex-direction: column;">
                   <button class="edit-button" (click)="editProfile()">Save</button>
                   <button class="cancel-button" (click)="cancelEdit()">Cancel</button>
                 </div>
@@ -57,27 +56,25 @@
 
         </div>
 
-        <div style="margin-bottom: 15px; margin-top: 10px; text-align: center">
-          <p class="follow-text" style="margin-right: 100px; cursor: pointer;" (click)="toggleFollowees()">
+        <div style="margin-bottom: 15px; margin-top: 10px; text-align: center; display: flex; justify-content: center; position: relative;">
+
+          <!-- Following Section -->
+          <p #followeesText class="follow-text" style="margin-right: 20px; cursor: pointer;" (click)="toggleFollowees()">
             <b>{{ this.nofFollowees }}</b> followings
           </p>
-          <div style="position: absolute; z-index: 10;">
-            <div class="popup" *ngIf="showFollowees" style="position: relative; top:0px; left:235px;
-              border: 1px solid #232F44;">
-              <app-follow-list  [followList]="followList" [title]="'Following'"></app-follow-list>
-            </div>
+          <div *ngIf="showFollowees" class="popup" [style.top.px]="getPopupTop(followeesText)" [style.left.px]="getPopupTop(followeesText).left -110" style="position: absolute; border: 1px solid #232F44; width: 200px;">
+            <app-follow-list [followList]="followList" [title]="'Following'"></app-follow-list>
           </div>
-
-          <p class="follow-text" style="cursor: pointer;" (click)="toggleFollowers()">
+        
+          <!-- Followers Section -->
+          <p #followersText class="follow-text" style="cursor: pointer;" (click)="toggleFollowers()">
             <b>{{ this.nofFollowers }}</b> followers
           </p>
-        </div>
-        <div style="position: absolute; z-index: 10;">
-          <div class="popup" *ngIf="showFollowers" style="position: relative; top:-15px; left:415px;
-           border: 1px solid #232F44;">
+          <div *ngIf="showFollowers" class="popup" [style.top.px]="getPopupTop(followersText)" [style.left.px]="getPopupTop(followersText).left-110" style="position: absolute; border: 1px solid #232F44; width: 200px;">
             <app-follow-list [followList]="followList" [title]="'My Followers'"></app-follow-list>
           </div>
         </div>
+        
 
         <div class="user-polls">
           <button class="user-polls-column" [class.active]="clickedButton === 'created'" (click)="createdPolls()">
@@ -91,12 +88,19 @@
           </button>
         </div>
         <div>
-          <app-poll *ngFor="let poll of polls" [pollId]="poll.id"></app-poll>
+          <div *ngFor="let poll of polls">
+            <ng-container *ngIf="!poll.is_settled; else settledPoll">
+              <app-poll [pollId]="poll.id"></app-poll>
+            </ng-container>
+            <ng-template #settledPoll>
+              <app-settled-poll [pollId]="poll.id"></app-settled-poll>
+            </ng-template>
+          </div>
         </div>
         <app-scroll-to-top-button></app-scroll-to-top-button>
       </div>
       <div class="fixed-elements" style="display: flex; flex-direction: column">
-        <app-ranks-bar [userId]="user_id"></app-ranks-bar>
+        <app-ranks-bar></app-ranks-bar>
         <app-badges-bar [userId]="user_id"></app-badges-bar>
       </div>
     </div>

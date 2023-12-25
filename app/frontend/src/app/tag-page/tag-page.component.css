@@ -4,6 +4,7 @@
   flex-direction: column;
   width: 100%;
   text-align: center;
+  min-height: 1000px;
 }
 
 .container h2 {

@@ -134,7 +134,7 @@ class _PollPageState extends State<PollPage> {
               children: [
                 LikeCountWidget(likeCount: widget.likeCount),
                 DateTimeWidget(
-                    dateTime: DateTime.parse(widget.dateTime), color: blue),
+                    dateTime: DateTime.parse(widget.dateTime), color: navy),
               ],
             ),
             CommentEntryFieldWidget(
@@ -221,58 +221,67 @@ class _PollPageState extends State<PollPage> {
 
   RichText buildRichText(
       String fullText, List<List<int>> indices, List<String> annotationTexts) {
-    List<TextSpan> textSpans = [];
+    try {
+      List<TextSpan> textSpans = [];
 
-    int previousIndex = 0;
+      int previousIndex = 0;
 
-    for (int i = 0; i < indices.length; i++) {
-      int startIndex = indices[i][0];
-      int endIndex = indices[i][1];
-      String annotationText = annotationTexts[i];
+      for (int i = 0; i < indices.length; i++) {
+        int startIndex = indices[i][0];
+        int endIndex = indices[i][1];
+        String annotationText = annotationTexts[i];
 
-      // Add non-underlined text before the current underlined part
+        // Add non-underlined text before the current underlined part
+        textSpans.add(
+          TextSpan(
+            text: fullText.substring(previousIndex, startIndex),
+            style: const TextStyle(color: Colors.black),
+          ),
+        );
+
+        // Add underlined text with tap gesture recognizer
+        textSpans.add(
+          TextSpan(
+            text: fullText.substring(startIndex, endIndex),
+            style: const TextStyle(
+              color: Colors.blue,
+              decoration: TextDecoration.underline,
+            ),
+            recognizer: TapGestureRecognizer()
+              ..onTap = () {
+                // Handle tap on the underlined text
+                _showPopup(context, annotationText);
+                print(
+                    'Tapped on underlined text from index $startIndex to $endIndex!');
+              },
+          ),
+        );
+
+        // Update the previous index to the end index of the current underlined part
+        previousIndex = endIndex;
+      }
+
+      // Add any remaining non-underlined text after the last underlined part
       textSpans.add(
         TextSpan(
-          text: fullText.substring(previousIndex, startIndex),
+          text: fullText.substring(previousIndex),
           style: const TextStyle(color: Colors.black),
         ),
       );
 
-      // Add underlined text with tap gesture recognizer
-      textSpans.add(
-        TextSpan(
-          text: fullText.substring(startIndex, endIndex),
-          style: const TextStyle(
-            color: Colors.blue,
-            decoration: TextDecoration.underline,
-          ),
-          recognizer: TapGestureRecognizer()
-            ..onTap = () {
-              // Handle tap on the underlined text
-              _showPopup(context, annotationText);
-              print(
-                  'Tapped on underlined text from index $startIndex to $endIndex!');
-            },
+      return RichText(
+        text: TextSpan(
+          children: textSpans,
         ),
       );
-
-      // Update the previous index to the end index of the current underlined part
-      previousIndex = endIndex;
+    } catch (e) {
+      return RichText(
+        text: TextSpan(
+          text: fullText,
+          style: const TextStyle(color: Colors.black),
+        ),
+      );
     }
-
-    // Add any remaining non-underlined text after the last underlined part
-    textSpans.add(
-      TextSpan(
-        text: fullText.substring(previousIndex),
-        style: const TextStyle(color: Colors.black),
-      ),
-    );
-
-    return RichText(
-      text: TextSpan(
-        children: textSpans,
-      ),
-    );
   }
 
   void _showPopup(BuildContext context, String underlinedText) {
@@ -365,8 +374,8 @@ class LikeCountWidget extends StatelessWidget {
           Container(
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(20.0),
-              border: Border.all(color: pink),
-              color: pink,
+              border: Border.all(color: navy),
+              color: navy,
             ),
             child: Padding(
               padding: const EdgeInsets.all(8.0),

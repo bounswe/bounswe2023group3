@@ -5,6 +5,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile_app/models/comment.dart';
 import 'package:mobile_app/services/apiService.dart';
+import 'package:mobile_app/view/constants.dart';
 
 import '../view/pollViewHomePage/pollViewHomePage.dart';
 import 'annotationService.dart';
@@ -24,7 +25,8 @@ class GuestFeedService {
         pollids.add(poll['id']);
       }
       String pollIds = pollids.join(',');
-      const String getAnnotationsEndpoint = 'http://34.105.66.254:1938/annotation';
+      const String getAnnotationsEndpoint =
+          'http://34.105.66.254:1938/annotation';
       Map<String, List<Map<String, dynamic>>> groupedAnnotations = {};
       try {
         Response annotationsResponse = await AnnotationService.dio.get(
@@ -40,7 +42,6 @@ class GuestFeedService {
           List<dynamic> annotations = jsonMap['annotations'];
 
           // Group annotations by target source
-
 
           // Map each annotation to a Dart object and group by source
           for (var annotation in annotations) {
@@ -64,9 +65,12 @@ class GuestFeedService {
       List<PollViewHomePage> posts = [];
       for (var post in postsJson) {
         String pollId = "http://34.105.66.254:1923/${post['id']}";
-        List<Map<String, dynamic>> annotations = groupedAnnotations[pollId] ?? [];
-        List<List<int>> indices = annotations.map<List<int>>((e) => [e['start'], e['end']]).toList();
-        List<String> bodies = annotations.map<String>((e) => e['body']['value']).toList();
+        List<Map<String, dynamic>> annotations =
+            groupedAnnotations[pollId] ?? [];
+        List<List<int>> indices =
+            annotations.map<List<int>>((e) => [e['start'], e['end']]).toList();
+        List<String> bodies =
+            annotations.map<String>((e) => e['body']['value']).toList();
         final creator = post['creator'];
         final List<dynamic> tagsJson = post['tags'];
         final List<dynamic> optionsJson = post['options'];
@@ -88,16 +92,15 @@ class GuestFeedService {
 
         for (var tag in tagsJson) {
           tagsList.add(tag['name']);
-          tagColorsList.add(
-              Colors.blue); // You might want to generate colors dynamically
+          tagColorsList.add(pink);
         }
 
         posts.add(PollViewHomePage(
           pollId: post['id'],
           userName: creator['firstname'] != null || creator['lastname'] != null
               ? ((creator['firstname'] ?? "") +
-              " " +
-              (creator["lastname"] ?? ""))
+                  " " +
+                  (creator["lastname"] ?? ""))
               : creator['username'],
           userUsername: creator['username'],
           profilePictureUrl: creator['profile_picture'] ?? "",

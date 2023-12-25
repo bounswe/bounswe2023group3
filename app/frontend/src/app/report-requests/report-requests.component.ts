@@ -11,6 +11,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 export class ReportRequestsComponent {
   reports!: any[]
   options!: any
+  activeButton: string | null = null;
 
   constructor(private http: HttpClient,
     private authService: AuthService,
@@ -19,6 +20,7 @@ export class ReportRequestsComponent {
     this.http.get('http://34.105.66.254:1923/moderator/reports/',this.options).subscribe(
       (response: any) => {
         this.reports = response
+        this.activeButton = "User Report Requests"
         this.reports.forEach(report => {
           report.creation_date = this.formatDateTime(new Date(report.creation_date))
         });
@@ -54,6 +56,14 @@ export class ReportRequestsComponent {
         console.error('Error approving poll:', error)
       },
     )
+  }
+
+  setActiveButton(buttonName: string): void {
+    this.activeButton = buttonName;
+  }
+
+  isActiveButton(buttonName: string): boolean {
+    return this.activeButton === buttonName;
   }
 
 

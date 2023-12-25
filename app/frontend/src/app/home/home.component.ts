@@ -16,20 +16,15 @@ export class HomeComponent {
   settledMode!: boolean
   options!: any
   query!: string
+  settleEnum!: number
+  user_id!: any
 
 
   constructor(private http: HttpClient,private authService: AuthService) {
     this.options = this.authService.getHeaders();
     this.settledMode = false
 
-    this.http.get('http://34.105.66.254:1923/poll/?approveStatus=true').subscribe(
-      (response: any) => {
-        this.polls = response
-      },
-      (error) => {
-        console.error('Error fetching polls:', error)
-      },
-    )
+    this.followingPolls(this.settledMode)
 
     this.http.get('http://34.105.66.254:1923/ranking/0493fe16-9536-46d9-98cd-bbf1c6e8bd12',this.authService.getHeaders()).subscribe(
       (response: any) => {
@@ -55,36 +50,32 @@ export class HomeComponent {
   }
   ngOnInit() {
     this.settledMode = false
+    this.user_id = localStorage.getItem('user_id')
     if (localStorage.getItem('user_id')) {
       this.isAuthenticated = true
     }
   }
 
   settledPolls(isSettled: boolean) {
-    this.http.get('http://34.105.66.254:1923/poll/?approveStatus=true').subscribe(
-      (response: any) => {
-        this.polls = []
-        for (const r of response) {
-          if (!r.is_settled && !isSettled) {
-            this.polls.push(r)
-            this.settledMode = false
-          }
-          if (r.is_settled==2 && isSettled) {
-            this.polls.push(r)
-            this.settledMode = true
-          }
-        }
-      },
-      (error) => {
-        console.error('Error fetching polls:', error)
-      },
-    )
+    this.isChecked = isSettled
+    this.settledMode = isSettled
+
+    if (this.clickedButton == 'trending') {
+      this.trendingPolls(isSettled)
+
+    } else if (this.clickedButton == 'following') {
+      this.followingPolls(isSettled)
+    }
   }
 
-  trendingPolls() {
+  trendingPolls(isChecked: boolean) {
+    if (isChecked) {
+      this.settleEnum = 2
+    } else {
+      this.settleEnum = 0
+    }
     this.clickedButton = 'trending';
-    this.settledMode = false
-    this.http.get('http://34.105.66.254:1923/poll/?tags='+['Trending']+'&?approveStatus=true').subscribe(
+    this.http.get('http://34.105.66.254:1923/poll/not-voted-by-me/?is_settled=' + this.settleEnum, this.options).subscribe(
       (response: any) => {
         this.polls = response
       },
@@ -93,14 +84,12 @@ export class HomeComponent {
       },
     )
     
-    this.isChecked = this.settledMode;
-    this.toggleChange.emit(this.isChecked);
   }
 
-  followingPolls() {
+  followingPolls(isChecked: boolean) {
     this.clickedButton = 'following';
-    this.settledMode = false
-    this.http.get('http://34.105.66.254:1923/poll/my-followings',this.options).subscribe(
+    if (isChecked) {
+      this.http.get('http://34.105.66.254:1923/poll/?followedById=' + this.user_id + "&is_settled=" + 2 ,this.options).subscribe(
       (response: any) => {
         this.polls = response
       },
@@ -108,9 +97,19 @@ export class HomeComponent {
         console.error('Error fetching polls:', error)
       },
     )
+
+    } else {
+
+      this.http.get('http://34.105.66.254:1923/poll/my-followings',this.options).subscribe(
+      (response: any) => {
+        this.polls = response
+      },
+      (error) => {
+        console.error('Error fetching polls:', error)
+      },
+    )
+    }
     
-    this.isChecked = this.settledMode;
-    this.toggleChange.emit(this.isChecked);
   }
 
   semanticSearchPolls(query: string){
