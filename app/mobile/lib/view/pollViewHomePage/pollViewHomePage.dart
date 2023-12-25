@@ -50,7 +50,9 @@ class PollViewHomePage extends StatefulWidget {
     required this.approvedStatus,
     required this.didLike,
     required this.chosenVoteIndex,
-    required this.commentCount, required this.annotationIndices, required this.annotationTexts,
+    required this.commentCount,
+    required this.annotationIndices,
+    required this.annotationTexts,
   });
   _PollViewHomePageState createState() => _PollViewHomePageState();
 }
@@ -83,7 +85,7 @@ class _PollViewHomePageState extends State<PollViewHomePage> {
   void handleUnlikePress(String pollId) async {
     PollViewHomePageLike pollLike = PollViewHomePageLike();
     bool unlikeSuccess =
-    await pollLike.unlike(pollId); // Assuming an unlike method exists
+        await pollLike.unlike(pollId); // Assuming an unlike method exists
     if (unlikeSuccess) {
       setState(() {
         likeCount--;
@@ -99,11 +101,11 @@ class _PollViewHomePageState extends State<PollViewHomePage> {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           UserInformationWidget(
-              userName: widget.userName,
-              userUsername: widget.userUsername,
-              profilePictureUrl: widget.profilePictureUrl,
-              pollId: widget.isSettled == 0 ? widget.pollId : "",
-            ),
+            userName: widget.userName,
+            userUsername: widget.userUsername,
+            profilePictureUrl: widget.profilePictureUrl,
+            pollId: widget.isSettled == 0 ? widget.pollId : "",
+          ),
           Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
               // child: Text(widget.postTitle,
@@ -111,8 +113,8 @@ class _PollViewHomePageState extends State<PollViewHomePage> {
               //     maxLines: 3,
               //     style: const TextStyle(
               //         fontSize: 18.0, fontWeight: FontWeight.bold)),
-              child: buildRichText(widget.postTitle, widget.annotationIndices, widget.annotationTexts)
-          ),
+              child: buildRichText(widget.postTitle, widget.annotationIndices,
+                  widget.annotationTexts)),
           TagListWidget(tags: widget.tags, tagColors: widget.tagColors),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -132,20 +134,21 @@ class _PollViewHomePageState extends State<PollViewHomePage> {
             padding: const EdgeInsets.all(16.0),
             child: didLike
                 ? ElevatedButton.icon(
-              onPressed: () => handleUnlikePress(widget.pollId),
-              icon: const Icon(Icons.thumb_down),
-              label: const Text('Unlike'),
-            )
+                    onPressed: () => handleUnlikePress(widget.pollId),
+                    icon: const Icon(Icons.thumb_down),
+                    label: const Text('Unlike'),
+                  )
                 : ElevatedButton.icon(
-              onPressed: () => handleLikePress(widget.pollId),
-              icon: const Icon(Icons.thumb_up),
-              label: const Text('Like'),
-            ),
+                    onPressed: () => handleLikePress(widget.pollId),
+                    icon: const Icon(Icons.thumb_up),
+                    label: const Text('Like'),
+                  ),
           ),
           Row(
             children: [
               LikeCountWidget(likeCount: likeCount),
-              DateTimeWidget(dateTime: DateTime.parse(widget.dateTime), color: navy),
+              DateTimeWidget(
+                  dateTime: DateTime.parse(widget.dateTime), color: navy),
             ],
           ),
           Padding(
@@ -158,10 +161,8 @@ class _PollViewHomePageState extends State<PollViewHomePage> {
     );
   }
 
-
-  RichText buildRichText(String fullText, List<List<int>> indices, List<String> annotationTexts) {
-
-
+  RichText buildRichText(
+      String fullText, List<List<int>> indices, List<String> annotationTexts) {
     List<TextSpan> textSpans = [];
 
     int previousIndex = 0;
@@ -191,7 +192,8 @@ class _PollViewHomePageState extends State<PollViewHomePage> {
             ..onTap = () {
               // Handle tap on the underlined text
               _showPopup(context, annotationText);
-              print('Tapped on underlined text from index $startIndex to $endIndex!');
+              print(
+                  'Tapped on underlined text from index $startIndex to $endIndex!');
             },
         ),
       );
@@ -234,6 +236,7 @@ class _PollViewHomePageState extends State<PollViewHomePage> {
       },
     );
   }
+
   void handleOptionPress(String optionId, int index) async {
     // Handle option press based on the selected option
     PollViewHomePageVote pollVote = PollViewHomePageVote();
@@ -252,8 +255,6 @@ class _PollViewHomePageState extends State<PollViewHomePage> {
 //}
 }
 
-
-
 class LikeCountWidget extends StatelessWidget {
   final int likeCount;
 
@@ -268,8 +269,8 @@ class LikeCountWidget extends StatelessWidget {
           Container(
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(20.0),
-              border: Border.all(color: pink),
-              color: pink,
+              border: Border.all(color: navy),
+              color: navy,
             ),
             child: Padding(
               padding: const EdgeInsets.all(8.0),

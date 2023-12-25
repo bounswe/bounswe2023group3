@@ -14,6 +14,7 @@ export class ModeratorPollReviewComponent {
   pollId!: any
   username!: string
   question!: string
+  description!: string
   token!: any
   due_date!: any
   options: any[] = [];
@@ -43,6 +44,7 @@ export class ModeratorPollReviewComponent {
       (response: any) => {
         this.username = response.creator.username
         this.question = response.question
+        this.description = response.description
         this.options = response.options
         this.tags = response.tags
         this.due_date = this.formatDateTime(new Date(response.due_date))

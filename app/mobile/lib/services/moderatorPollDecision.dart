@@ -44,6 +44,17 @@ class ModeratorPollDecision {
     } catch (e) {
       rethrow;
     }
+  }
+  Future<String> getOutcome(String optionId) async {
+      String outcomeEndpoint = '/option/$optionId';
+      try {
+        final Response response = await ApiService.dio.get(
+          outcomeEndpoint,
+        );
+        return response.data['answer'];
+      } catch (e) {
+        rethrow;
+      }
     }
 
 

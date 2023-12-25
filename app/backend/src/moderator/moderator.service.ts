@@ -17,6 +17,7 @@ import { LoginModeratorDto } from './dto/login-moderator.dto';
 import { Report } from '../user/entities/report.entity';
 import { User } from '../user/entities/user.entity';
 import { Settle } from '../poll/enums/settle.enum';
+import { PollService } from '../poll/poll.service';
 
 @Injectable()
 export class ModeratorService {
@@ -31,6 +32,7 @@ export class ModeratorService {
     private readonly userRepository: Repository<User>,
     private mailerService: MailerService,
     private jwtService: JwtService,
+    private readonly pollService: PollService
   ) {}
 
   public async searchModerators(
@@ -196,6 +198,14 @@ export class ModeratorService {
     pollId: string,
     approveDto: ApproveDTO,
   ): Promise<void> {
+    if (approveDto.approveStatus === true) {
+      const poll = await this.pollRepository.findOne({
+        where: {
+          id: pollId,
+        },
+      })
+      await this.pollService.addVectorDB(poll);
+    }
     await this.pollRepository.update(pollId, approveDto);
   }
 

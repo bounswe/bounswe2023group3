@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http'
 import { Component, Input } from '@angular/core'
+import { AuthService } from '../auth.service'
 
 @Component({
   selector: 'app-ranks-bar',
@@ -7,7 +8,6 @@ import { Component, Input } from '@angular/core'
   styleUrls: ['./ranks-bar.component.css'],
 })
 export class RanksBarComponent {
-  @Input() userId!: string
   ranks!: any
 
   colors: string[] = [
@@ -18,12 +18,14 @@ export class RanksBarComponent {
     '#c5d86d',
     '#e57f84',
   ]
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient,private authService: AuthService,) {
+  }
 
   ngOnInit() {
-    this.http.get('http://34.105.66.254:1923/user/' + this.userId).subscribe(
+    this.http.get('http://34.105.66.254:1923/ranking/my-rankings', this.authService.getHeaders()).subscribe(
       (response: any) => {
-        this.ranks = response.rankings
+        console.log(response)
+        this.ranks = response
       },
       (error) => {
         console.error('Error fetching poll:', error)

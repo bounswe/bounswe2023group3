@@ -6,6 +6,7 @@ import { MatDialog, MatDialogModule } from '@angular/material/dialog'
 import { ConfirmModelComponent } from '../confirm-model/confirm-model.component'
 import { UserSettleRequestComponent } from '../user-settle-request/user-settle-request.component'
 import { MatFormFieldModule } from '@angular/material/form-field'
+import { AuthService } from '../auth.service'
 
 @Component({
   selector: 'app-settled-poll',
@@ -26,11 +27,12 @@ export class SettledPollComponent {
   isLikedBy!: boolean
   nofLikes: number = 0
   userId!: string | null
+  user_vote_id!: ''
   isClickable = false
 
   showPopup = false
   isAuthenticated: boolean = false
-
+  authPackage = this.authService.getHeaders()
   outcome: string = ''
   outcomeSource: string = ''
 
@@ -49,6 +51,7 @@ export class SettledPollComponent {
     private http: HttpClient,
     private router: Router,
     private userService: UserService,
+    private authService: AuthService,
     public dialog: MatDialog,
   ) {}
 
@@ -72,7 +75,7 @@ export class SettledPollComponent {
     if (this.userId) {
       this.isAuthenticated = true
     }
-    this.http.get('http://34.105.66.254:1923/poll/' + this.pollId).subscribe(
+    this.http.get('http://34.105.66.254:1923/poll/' + this.pollId, this.authPackage).subscribe(
       (response: any) => {
         this.question = response.question
         this.tags = response.tags
@@ -81,7 +84,6 @@ export class SettledPollComponent {
         this.due_date = response.due_date
         this.vote_count = response.vote_count
         this.creator = response.creator
-
         const time_dif =
           (new Date().valueOf() - new Date(response.creation_date).valueOf()) /
           1000
@@ -131,6 +133,8 @@ export class SettledPollComponent {
         this.selectedButton.classList.add('clicked')
       }
     }
+
+  
   }
 
   toggleButton(button: HTMLButtonElement) {
