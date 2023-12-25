@@ -245,13 +245,15 @@ export class PollComponent {
       .then(response => {
         // Handle the response
         console.log('Vote cast for option ID:', optionId);
+        this.vote_count += 1;
+        this.userVoted = true;  
       })
       .catch(error => {
         // Handle any errors
         console.error('Error casting vote:', error);
       });
     }
-    this.userVoted = true;   
+     
   }
 
   toggleButton(button: HTMLButtonElement) {
