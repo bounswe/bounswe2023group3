@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:mobile_app/services/pollRequestService.dart';
+import 'package:mobile_app/view/pollRequest/customContainer.dart';
 import 'package:mobile_app/view/pollRequest/customTextField.dart';
 import 'package:mobile_app/view/pollRequest/pollCreationAnnotate.dart';
 import 'package:mobile_app/models/pollCreationData.dart';
@@ -32,6 +34,8 @@ class _PollRequestPageState extends State<PollRequestPage> {
   final _dateTimeFocus = FocusNode();
   final _pollTitleFocus = FocusNode();
   final _pollTagFocus = FocusNode();
+  final _tagFieldKey = GlobalKey();
+
   final List<FocusNode> _pollOptionFocuses = [
     FocusNode(),
     FocusNode(),
@@ -215,6 +219,39 @@ class _PollRequestPageState extends State<PollRequestPage> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    // WidgetsBinding.instance.addPostFrameCallback((_) => _scrollToTagField());
+    _pollTagFocus.addListener(() {
+      print("tag field takes the focus");
+      if (_pollTagFocus.hasFocus) {
+        WidgetsBinding.instance
+            .addPostFrameCallback((_) => _scrollToTagField());
+      }
+    });
+  }
+
+  void _scrollToTagField() {
+    // Get the render box of the tag field using the GlobalKey
+    final RenderBox tagRenderBox =
+        _tagFieldKey.currentContext?.findRenderObject() as RenderBox;
+    // Get the render box of the tag field's parent (for example, the ListView itself)
+    final RenderBox parentRenderBox = _listViewScrollController
+        .position.context.storageContext
+        .findRenderObject() as RenderBox;
+    // Get the position of the tag field relative to the screen
+    final Offset tagPosition = tagRenderBox.localToGlobal(Offset.zero);
+    // Convert the tag field's screen position to the parent's coordinate system
+    final Offset positionInParent = parentRenderBox.globalToLocal(tagPosition);
+
+    // _listViewScrollController.animateTo(
+    //   positionInParent.dy,
+    //   duration: Duration(milliseconds: 300),
+    //   curve: Curves.easeInOut,
+    // );
+  }
+
+  @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
@@ -275,19 +312,63 @@ class _PollRequestPageState extends State<PollRequestPage> {
                 }).toList(),
               ),
 
-              // new tag input
-              CustomTextField(
-                  label: 'Enter tag',
-                  controller: _pollTagController,
-                  focusNode: _pollTagFocus,
-                  nextFocusNode: _pollOptionFocuses[0],
-                  skipNexWhenEmpty: true,
-                  onSubmitted: (value) {
+              // tag input.
+              // eslesme varsa onsugeestion selected oluyor ve tag'i ekliyor.
+              // eslesme yokken enter'a basarsa onsubmitted oluyor,
+              // eslesme yokken onsubmitted'da, tag'i eklemiyor, unfocus oluyor.
+              // text field bossa da focus next.
+              CustomContainer(
+                key: _tagFieldKey,
+                child: TypeAheadField(
+                  textFieldConfiguration: TextFieldConfiguration(
+                    controller: _pollTagController,
+                    focusNode: _pollTagFocus,
+                    decoration: const InputDecoration(
+                      border: OutlineInputBorder(),
+                      labelText: 'Enter tag',
+                    ),
+                    onSubmitted: (_) {
+                      if (_pollTagController.text.isEmpty) {
+                        FocusScope.of(context)
+                            .requestFocus(_pollOptionFocuses[0]);
+                      } else {
+                        FocusScope.of(context).unfocus();
+                      }
+                    },
+                  ),
+                  suggestionsCallback: (pattern) async {
+                    return await PollRequestService.getPossibleCompletions(
+                        pattern);
+                  },
+                  itemBuilder: (context, suggestion) {
+                    return ListTile(
+                      title: Text(suggestion),
+                    );
+                  },
+                  onSuggestionSelected: (suggestion) {
                     setState(() {
-                      pollData.tags.add(value);
+                      pollData.tags.add(suggestion);
                       _pollTagController.clear();
                     });
-                  }),
+                    FocusScope.of(context).requestFocus(_pollTagFocus);
+                  },
+                ),
+              ),
+
+              // // new tag input
+              // CustomTextField(
+              //   label: 'Enter tag',
+              //   controller: _pollTagController,
+              //   focusNode: _pollTagFocus,
+              //   nextFocusNode: _pollOptionFocuses[0],
+              //   skipNexWhenEmpty: true,
+              //   onSubmitted: (value) {
+              //     setState(() {
+              //       pollData.tags.add(value);
+              //       _pollTagController.clear();
+              //     });
+              //   },
+              // ),
 
               const SizedBox(height: 16),
               const SectionHeader(headerText: "Options"),
