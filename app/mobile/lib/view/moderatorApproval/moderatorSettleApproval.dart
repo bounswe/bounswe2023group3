@@ -110,18 +110,18 @@ class ModeratorSettleApproval extends StatelessWidget {
 
                     // image url input
                     const SizedBox(height: 16),
-                    const SectionHeader(headerText: "Image URLs"),
+                    const SectionHeader(headerText: "Images"),
                     const SizedBox(height: 16),
 
                     ...pollData.imageURLs.map((url) => ListTile(
                           title: Row(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Expanded(child: Text(url)),
+                              // Expanded(child: Text(url)),
                               const SizedBox(width: 5),
                               // Image preview
                               Container(
-                                width: 50,
+                                width: 500,
                                 decoration: BoxDecoration(
                                   border:
                                       Border.all(color: Colors.grey.shade300),

@@ -20,6 +20,7 @@ class SettleViewHome extends StatelessWidget {
   final String dueDate;
   final String outcome;
   final String outcomeSource;
+  final List<String> imageUrls;
 
   const SettleViewHome({
     super.key,
@@ -32,41 +33,37 @@ class SettleViewHome extends StatelessWidget {
     required this.tagColors,
     required this.dateTime,
     required this.options,
-    required this.dueDate, required this.outcome, required this.outcomeSource,
+    required this.dueDate,
+    required this.outcome,
+    required this.outcomeSource,
+    required this.imageUrls,
   });
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SingleChildScrollView(
-        child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
+        child:
+            Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+          UserInformationWidget(
+            userName: userName,
+            userUsername: userUsername,
+            profilePictureUrl: profilePictureUrl,
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            child: Text(postTitle,
+                style: const TextStyle(
+                    fontSize: 18.0, fontWeight: FontWeight.bold)),
+          ),
+          TagListWidget(tags: tags, tagColors: tagColors),
+          Row(
             children: [
-              UserInformationWidget(
-                userName: userName,
-                userUsername: userUsername,
-                profilePictureUrl: profilePictureUrl,
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                child: Text(postTitle,
-                    style: const TextStyle(
-                        fontSize: 18.0, fontWeight: FontWeight.bold)),
-              ),
-              TagListWidget(tags: tags, tagColors: tagColors),
-              Row(
-                children: [
-                  DateTimeWidget(dateTime: DateTime.parse(dateTime), color: navy),
-                ],
-              ),
-            ]
-        ),
+              DateTimeWidget(dateTime: DateTime.parse(dateTime), color: navy),
+            ],
+          ),
+        ]),
       ),
     );
   }
-
 }
-
-
-
-

@@ -17,9 +17,14 @@ class ModeratorService {
       );
       final List<dynamic> postsJson = response.data;
       List<RequestViewHome> posts = [];
+
       for (var post in postsJson) {
         final creator = post['creator'];
         final List<dynamic> tagsJson = post['tags'];
+
+        List<String> imageUrls = post['image_urls'] != null
+            ? (post['image_urls'] as List).map((e) => e as String).toList()
+            : [];
 
         List<String> tagsList = [];
         List<Color> tagColorsList = [];
@@ -49,6 +54,7 @@ class ModeratorService {
           pollId: post['id'], // You might want to format the date
           options: optionsList,
           dueDate: post['due_date'],
+          imageUrls: imageUrls,
         ));
       }
       return posts;
@@ -84,8 +90,12 @@ class ModeratorService {
         for (var option in post['options']) {
           optionsList.add(option['answer']);
         }
+        List<String> imageUrls = post['image_urls'] != null
+            ? (post['image_urls'] as List).map((e) => e as String).toList()
+            : [];
 
         posts.add(SettleViewHome(
+          imageUrls: imageUrls,
           userName: creator['firstname'] != null || creator['lastname'] != null
               ? ((creator['firstname'] ?? "") +
                   " " +

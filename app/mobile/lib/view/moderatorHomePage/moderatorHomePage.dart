@@ -240,6 +240,7 @@ class _ModeratorHomePageState extends State<ModeratorHomePage>
                         pollId: request.pollId,
                         options: request.options,
                         dueDate: request.dueDate,
+                        imageUrls: request.imageUrls,
                       ),
                       // Align the button to the right and bottom of the container
                       Align(
@@ -264,7 +265,7 @@ class _ModeratorHomePageState extends State<ModeratorHomePage>
                                     request.profilePictureUrl,
                                     request.options,
                                     request.tags,
-                                    [],
+                                    request.imageUrls,
                                     request.tagColors,
                                     request.dueDate,
                                     request.dateTime);
@@ -365,7 +366,9 @@ class _ModeratorHomePageState extends State<ModeratorHomePage>
                           options: request.options,
                           dueDate: request.dueDate,
                           outcome: request.outcome,
-                          outcomeSource: request.outcomeSource),
+                          outcomeSource: request.outcomeSource,
+                          imageUrls: request.imageUrls),
+
                       // Align the button to the right and bottom of the container
                       Align(
                         alignment: Alignment.bottomRight,
@@ -389,7 +392,7 @@ class _ModeratorHomePageState extends State<ModeratorHomePage>
                                     request.profilePictureUrl,
                                     request.options,
                                     request.tags,
-                                    [],
+                                    request.imageUrls,
                                     request.tagColors,
                                     request.dueDate,
                                     request.dateTime,
