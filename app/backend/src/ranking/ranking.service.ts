@@ -6,6 +6,7 @@ import { Ranking } from './entities/ranking.entity';
 import { Repository } from 'typeorm';
 import { Vote } from '../vote/entities/vote.entity';
 import { Tag } from '../tag/entities/tag.entity';
+import { VoteService } from '../vote/vote.service';
 
 @Injectable()
 export class RankingService {
@@ -16,6 +17,7 @@ export class RankingService {
     private readonly voteRepository: Repository<Vote>,
     @InjectRepository(Tag)
     private readonly tagRepository: Repository<Tag>,
+    private readonly voteService: VoteService,
   ){}
 
 
@@ -76,13 +78,17 @@ export class RankingService {
     }
     )
     const userIds: string[] = votes.map((vote) => vote.user.id);
+    if(!userIds.length){
+      return
+    }
     poll.tags.push(await this.tagRepository.findOne({where: {name: "general"}}));
 
-    poll.tags.forEach( async (tag) => {this.updateScoreByTag(tag.id,userIds)});
+    const addition_score = await this.generateScoring(poll.id, option.id, poll.likes.length, poll.comments.length);
+    poll.tags.forEach( async (tag) => {this.updateScoreByTag(tag.id, userIds, addition_score)});
 
   }
 
-  async updateScoreByTag(tagID:string, userIds:string[]){
+  async updateScoreByTag(tagID:string, userIds:string[],addition_score:number){
     userIds.forEach(async (userId) => {
       const ranking: Ranking = await this.rankingRepository.findOne({
         where:{
@@ -96,18 +102,30 @@ export class RankingService {
       }
       )
       if(ranking){
-        ranking.score+=1;
+        ranking.score+=addition_score;
         this.rankingRepository.save(ranking)
       }else{
         const newRanking= this.rankingRepository.create({
           tag: { id: tagID },
           user:{ id: userId },
-          score: 1,
+          score: addition_score,
         });
         this.rankingRepository.save(newRanking);
       }
     });
   
+  }
+
+  async generateScoring(pollID: string,optionID: string,likeCount: number,commentCount:number):Promise<number>{
+    const vote_distribution = await this.voteService.getVoteRate(pollID);
+    const vote_count= await this.voteService.getVoteCount(pollID);
+
+    let base = vote_count/vote_distribution.find(entity => entity.optionId === optionID).count;
+
+    base += base * (3 * commentCount + likeCount) / 10
+
+    return Math.ceil(base)
+
   }
 
 }
