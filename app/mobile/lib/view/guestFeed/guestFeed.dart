@@ -48,7 +48,7 @@ class _GuestFeedState extends State<GuestFeed>
       didLike,
       commentCount,
       annotationIndices,
-      annotationTexts, voteCountDistributions, myVotedOptionId,outcomeOptionId) async {
+      annotationTexts, voteCountDistributions, myVotedOptionId,outcomeOptionId, imageURLs,) async {
     if (!mounted) return;
     Navigator.push(
       context,
@@ -71,6 +71,7 @@ class _GuestFeedState extends State<GuestFeed>
           voteCountDistributions: voteCountDistributions,
           myVotedOptionId: myVotedOptionId,
           outcomeOptionId: outcomeOptionId,
+          imageURLs: imageURLs,
         ),
       ),
     );
@@ -154,7 +155,8 @@ class _GuestFeedState extends State<GuestFeed>
                                     post.annotationTexts,
                                     post.voteCountDistributions,
                                     post.myVotedOptionId,
-                                    post.outcomeOptionId);
+                                    post.outcomeOptionId,
+                                    post.imageURLs);
                               },
                               child: SizedBox(
                                 height: postHeight,
@@ -178,7 +180,7 @@ class _GuestFeedState extends State<GuestFeed>
                                   annotationTexts: post.annotationTexts,
                                   voteCountDistributions: post.voteCountDistributions,
                                   myVotedOptionId: post.myVotedOptionId,
-                                  outcomeOptionId: post.outcomeOptionId,
+                                  outcomeOptionId: post.outcomeOptionId, imageURLs: post.imageURLs,
                                 ),
                               ),
                             ),
@@ -226,6 +228,7 @@ class _GuestFeedState extends State<GuestFeed>
                                     post.voteCountDistributions,
                                     post.myVotedOptionId,
                                     post.outcomeOptionId,
+                                    post.imageURLs
                                 );
                               },
                               child: SizedBox(
@@ -251,6 +254,7 @@ class _GuestFeedState extends State<GuestFeed>
                                   voteCountDistributions: post.voteCountDistributions,
                                   myVotedOptionId: post.myVotedOptionId,
                                   outcomeOptionId: post.outcomeOptionId,
+                                  imageURLs: post.imageURLs,
                                 ),
                               ),
                             ),

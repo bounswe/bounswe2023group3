@@ -51,6 +51,7 @@ class _HomePageState extends State<HomePage>
       myVotedOptionId,
       outcomeOptionId,
       voteCountDistributions,
+      imageURLs
       ) async {
     if (!mounted) return;
     Navigator.push(
@@ -74,6 +75,7 @@ class _HomePageState extends State<HomePage>
             myVotedOptionId: myVotedOptionId,
             outcomeOptionId: outcomeOptionId,
             voteCountDistributions: voteCountDistributions,
+            imageURLs: imageURLs
         ),
       ),
     );
@@ -157,7 +159,8 @@ class _HomePageState extends State<HomePage>
                                     post.annotationTexts,
                                     post.myVotedOptionId,
                                     post.outcomeOptionId,
-                                    post.voteCountDistributions,);
+                                    post.voteCountDistributions,
+                                    post.imageURLs);
                               },
                               child: SizedBox(
                                 height: postHeight,
@@ -181,7 +184,7 @@ class _HomePageState extends State<HomePage>
                                   annotationTexts: post.annotationTexts,
                                   myVotedOptionId: post.myVotedOptionId,
                                   outcomeOptionId: post.outcomeOptionId,
-                                  voteCountDistributions: post.voteCountDistributions,
+                                  voteCountDistributions: post.voteCountDistributions, imageURLs: [],
                                 ),
                               ),
                             ),
@@ -229,6 +232,7 @@ class _HomePageState extends State<HomePage>
                                     post.myVotedOptionId,
                                     post.outcomeOptionId,
                                     post.voteCountDistributions,
+                                    post.imageURLs
                                 );
                               },
                               child: SizedBox(
@@ -254,6 +258,7 @@ class _HomePageState extends State<HomePage>
                                   myVotedOptionId: post.myVotedOptionId,
                                   outcomeOptionId: post.outcomeOptionId,
                                   voteCountDistributions: post.voteCountDistributions,
+                                  imageURLs: post.imageURLs,
                                 ),
                               ),
                             ),

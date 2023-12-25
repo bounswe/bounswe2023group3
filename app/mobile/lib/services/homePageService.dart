@@ -65,6 +65,9 @@ class HomePageService {
       }
       List<PollViewHomePage> posts = [];
       for (var post in postsJson) {
+        List<String> imageUrls = post['image_urls'] != null
+            ? (post['image_urls'] as List).map((e) => e as String).toList()
+            : [];
         String pollId = "http://34.105.66.254:1923/${post['id']}";
         List<Map<String, dynamic>> annotations =
             groupedAnnotations[pollId] ?? [];
@@ -115,6 +118,7 @@ class HomePageService {
           dateTime: post['creation_date'],
           isSettled: post['is_settled'],
           approvedStatus: post['approveStatus'],
+          imageURLs: imageUrls,
 
           didLike:
               post['didLike'] ?? false, // You might want to format the date

@@ -264,6 +264,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   voteCountDistributions: post.voteCountDistributions,
                   myVotedOptionId: post.myVotedOptionId,
                   outcomeOptionId: post.outcomeOptionId,
+                  imageURLs: post.imageUrls,
                 ),
               ),
             ),
@@ -297,6 +298,7 @@ class _ProfilePageState extends State<ProfilePage> {
           voteCountDistributions: poll.voteCountDistributions,
           myVotedOptionId: poll.myVotedOptionId,
           outcomeOptionId: poll.outcomeOptionId,
+          imageURLs: poll.imageUrls,
         ),
       ),
     );
