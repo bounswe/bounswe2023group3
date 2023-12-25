@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile_app/services/apiService.dart';
+import 'package:mobile_app/view/constants.dart';
 
 import '../view/moderatorHomePage/requestViewHome.dart';
 import '../view/moderatorHomePage/settleViewHome.dart';
@@ -25,8 +26,7 @@ class ModeratorService {
 
         for (var tag in tagsJson) {
           tagsList.add(tag['name']);
-          tagColorsList.add(
-              Colors.blue); // You might want to generate colors dynamically
+          tagColorsList.add(pink);
         }
 
         List<String> optionsList = [];
@@ -77,8 +77,7 @@ class ModeratorService {
 
         for (var tag in tagsJson) {
           tagsList.add(tag['name']);
-          tagColorsList.add(
-              Colors.blue); // You might want to generate colors dynamically
+          tagColorsList.add(pink);
         }
 
         List<String> optionsList = [];

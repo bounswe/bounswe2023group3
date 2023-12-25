@@ -123,7 +123,7 @@ class _PollPageState extends State<PollPage> {
               children: [
                 LikeCountWidget(likeCount: widget.likeCount),
                 DateTimeWidget(
-                    dateTime: DateTime.parse(widget.dateTime), color: blue),
+                    dateTime: DateTime.parse(widget.dateTime), color: navy),
               ],
             ),
             CommentEntryFieldWidget(
@@ -345,8 +345,8 @@ class LikeCountWidget extends StatelessWidget {
           Container(
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(20.0),
-              border: Border.all(color: pink),
-              color: pink,
+              border: Border.all(color: navy),
+              color: navy,
             ),
             child: Padding(
               padding: const EdgeInsets.all(8.0),

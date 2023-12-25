@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile_app/services/moderatorService.dart';
@@ -35,7 +37,6 @@ class _ModeratorHomePageState extends State<ModeratorHomePage>
     super.dispose();
   }
 
-
   Future<void> tapOnPoll(
       BuildContext context,
       String pollId,
@@ -53,35 +54,37 @@ class _ModeratorHomePageState extends State<ModeratorHomePage>
       context,
       MaterialPageRoute(
           builder: (context) => ModeratorApprovalScreen(
-            tagColors: const [Colors.pink, Colors.blue],
-            pollData: PollData(
-                pollId: pollId,
-                pollTitle: pollTitle,
-                options: options,
-                tags: tags,
-                imageURLs: imageURLs,
-                dueDate: dueDate,
-                userName: username,
-                userUsername: userUsername,
-                profilePictureUrl: profilePictureUrl,
-                tagColors: tagColors,
-                creationDate: creationDate,
-                outcome: '',
-                outcomeSource: '',
-
-            ),
-          )),
+                tagColors: const [Colors.pink, Colors.blue],
+                pollData: PollData(
+                  pollId: pollId,
+                  pollTitle: pollTitle,
+                  options: options,
+                  tags: tags,
+                  imageURLs: imageURLs,
+                  dueDate: dueDate,
+                  userName: username,
+                  userUsername: userUsername,
+                  profilePictureUrl: profilePictureUrl,
+                  tagColors: tagColors,
+                  creationDate: creationDate,
+                  outcome: '',
+                  outcomeSource: '',
+                ),
+              )),
     );
     setState(() {
       // Refresh the page
     });
-    if(resultMessage!= null){
+    if (resultMessage != null) {
       ScaffoldMessenger.of(context)
         ..removeCurrentSnackBar()
-        ..showSnackBar(SnackBar(content: Text(resultMessage), duration: const Duration(seconds: 3),));
+        ..showSnackBar(SnackBar(
+          content: Text(resultMessage),
+          duration: const Duration(seconds: 3),
+        ));
     }
-
   }
+
   Future<void> tapOnSettle(
       BuildContext context,
       String pollId,
@@ -101,30 +104,33 @@ class _ModeratorHomePageState extends State<ModeratorHomePage>
       context,
       MaterialPageRoute(
           builder: (context) => ModeratorSettleApproval(
-            tagColors: const [Colors.pink, Colors.blue],
-            pollData: PollData(
-                pollId: pollId,
-                pollTitle: pollTitle,
-                options: options,
-                tags: tags,
-                imageURLs: imageURLs,
-                dueDate: dueDate,
-                userName: username,
-                userUsername: userUsername,
-                profilePictureUrl: profilePictureUrl,
-                tagColors: tagColors,
-                creationDate: creationDate,
-                outcome: outcome,
-                outcomeSource: outcomeSource),
-          )),
+                tagColors: const [Colors.pink, Colors.blue],
+                pollData: PollData(
+                    pollId: pollId,
+                    pollTitle: pollTitle,
+                    options: options,
+                    tags: tags,
+                    imageURLs: imageURLs,
+                    dueDate: dueDate,
+                    userName: username,
+                    userUsername: userUsername,
+                    profilePictureUrl: profilePictureUrl,
+                    tagColors: tagColors,
+                    creationDate: creationDate,
+                    outcome: outcome,
+                    outcomeSource: outcomeSource),
+              )),
     );
     setState(() {
       // Refresh the page
     });
-    if(resultMessage!= null){
+    if (resultMessage != null) {
       ScaffoldMessenger.of(context)
         ..removeCurrentSnackBar()
-        ..showSnackBar(SnackBar(content: Text(resultMessage), duration: const Duration(seconds: 3),));
+        ..showSnackBar(SnackBar(
+          content: Text(resultMessage),
+          duration: const Duration(seconds: 3),
+        ));
     }
   }
 
@@ -184,19 +190,25 @@ class _ModeratorHomePageState extends State<ModeratorHomePage>
         DioException e = snapshot.error as DioException;
         if (e.response?.statusMessage != null) {
           String r = e.response!.statusMessage!;
-          return CustomErrorWidget(errorMessage: r, onRetryPressed: () {
-            setState(() {});
-          });
+          return CustomErrorWidget(
+              errorMessage: r,
+              onRetryPressed: () {
+                setState(() {});
+              });
         }
       }
-      return CustomErrorWidget(errorMessage: 'Something went wrong', onRetryPressed: () {
-        setState(() {});
-      });
+      return CustomErrorWidget(
+          errorMessage: 'Something went wrong',
+          onRetryPressed: () {
+            setState(() {});
+          });
     } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
       // Handle the case where no data is available
-      return CustomErrorWidget(errorMessage: 'No data available', onRetryPressed: () {
-        setState(() {});
-      });
+      return CustomErrorWidget(
+          errorMessage: 'No data available',
+          onRetryPressed: () {
+            setState(() {});
+          });
     } else {
       // Build your UI using the fetched data
       List<RequestViewHome> requests = snapshot.data!;
@@ -205,8 +217,8 @@ class _ModeratorHomePageState extends State<ModeratorHomePage>
           // Scrollable Post Section
           Expanded(
             child: ListView.separated(
-              separatorBuilder: (context, index) => const SizedBox(
-                  height: 20), // Add spacing between posts
+              separatorBuilder: (context, index) =>
+                  const SizedBox(height: 20), // Add spacing between posts
               shrinkWrap: true,
               itemCount: requests.length,
               itemBuilder: (context, index) {
@@ -238,7 +250,7 @@ class _ModeratorHomePageState extends State<ModeratorHomePage>
                           child: Material(
                             borderRadius: BorderRadius.circular(30.0),
                             // Adjust the value for circular shape
-                            color: Colors.blue,
+                            color: navy,
                             // Set the color you want
                             child: InkWell(
                               borderRadius: BorderRadius.circular(30.0),
@@ -255,8 +267,7 @@ class _ModeratorHomePageState extends State<ModeratorHomePage>
                                     [],
                                     request.tagColors,
                                     request.dueDate,
-                                    request.dateTime
-                                );
+                                    request.dateTime);
                               },
                               child: Container(
                                 padding: const EdgeInsets.all(8.0),
@@ -270,6 +281,16 @@ class _ModeratorHomePageState extends State<ModeratorHomePage>
                               ),
                             ),
                           ),
+                        ),
+                      ),
+
+                      Positioned(
+                        top: 0,
+                        right: 0,
+                        left: 0,
+                        child: Container(
+                          height: 1,
+                          color: gray,
                         ),
                       ),
                     ],
@@ -293,19 +314,25 @@ class _ModeratorHomePageState extends State<ModeratorHomePage>
         DioException e = snapshot.error as DioException;
         if (e.response?.statusMessage != null) {
           String r = e.response!.statusMessage!;
-          return CustomErrorWidget(errorMessage: r, onRetryPressed: () {
-            setState(() {});
-          });
+          return CustomErrorWidget(
+              errorMessage: r,
+              onRetryPressed: () {
+                setState(() {});
+              });
         }
       }
-      return CustomErrorWidget(errorMessage: 'Something went wrong', onRetryPressed: () {
-        setState(() {});
-      });
+      return CustomErrorWidget(
+          errorMessage: 'Something went wrong',
+          onRetryPressed: () {
+            setState(() {});
+          });
     } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
       // Handle the case where no data is available
-      return CustomErrorWidget(errorMessage: 'No data available', onRetryPressed: () {
-        setState(() {});
-      });
+      return CustomErrorWidget(
+          errorMessage: 'No data available',
+          onRetryPressed: () {
+            setState(() {});
+          });
     } else {
       // Build your UI using the fetched data
       List<SettleViewHome> requests = snapshot.data!;
@@ -314,8 +341,8 @@ class _ModeratorHomePageState extends State<ModeratorHomePage>
           // Scrollable Post Section
           Expanded(
             child: ListView.separated(
-              separatorBuilder: (context, index) => const SizedBox(
-                  height: 20), // Add spacing between posts
+              separatorBuilder: (context, index) =>
+                  const SizedBox(height: 20), // Add spacing between posts
               shrinkWrap: true,
               itemCount: requests.length,
               itemBuilder: (context, index) {
@@ -327,19 +354,18 @@ class _ModeratorHomePageState extends State<ModeratorHomePage>
                     children: [
                       // Your existing RequestViewHome widget with Expanded
                       SettleViewHome(
-                        userName: request.userName,
-                        userUsername: request.userUsername,
-                        profilePictureUrl: request.profilePictureUrl,
-                        postTitle: request.postTitle,
-                        tags: request.tags,
-                        tagColors: request.tagColors,
-                        dateTime: request.dateTime,
-                        pollId: request.pollId,
-                        options: request.options,
-                        dueDate: request.dueDate,
-                        outcome: request.outcome,
-                        outcomeSource: request.outcomeSource
-                      ),
+                          userName: request.userName,
+                          userUsername: request.userUsername,
+                          profilePictureUrl: request.profilePictureUrl,
+                          postTitle: request.postTitle,
+                          tags: request.tags,
+                          tagColors: request.tagColors,
+                          dateTime: request.dateTime,
+                          pollId: request.pollId,
+                          options: request.options,
+                          dueDate: request.dueDate,
+                          outcome: request.outcome,
+                          outcomeSource: request.outcomeSource),
                       // Align the button to the right and bottom of the container
                       Align(
                         alignment: Alignment.bottomRight,
@@ -349,7 +375,7 @@ class _ModeratorHomePageState extends State<ModeratorHomePage>
                           child: Material(
                             borderRadius: BorderRadius.circular(30.0),
                             // Adjust the value for circular shape
-                            color: Colors.blue,
+                            color: navy,
                             // Set the color you want
                             child: InkWell(
                               borderRadius: BorderRadius.circular(30.0),
@@ -368,8 +394,7 @@ class _ModeratorHomePageState extends State<ModeratorHomePage>
                                     request.dueDate,
                                     request.dateTime,
                                     request.outcome,
-                                    request.outcomeSource
-                                );
+                                    request.outcomeSource);
                               },
                               child: Container(
                                 padding: const EdgeInsets.all(8.0),
@@ -385,6 +410,16 @@ class _ModeratorHomePageState extends State<ModeratorHomePage>
                           ),
                         ),
                       ),
+
+                      Positioned(
+                        top: 0,
+                        right: 0,
+                        left: 0,
+                        child: Container(
+                          height: 1,
+                          color: gray,
+                        ),
+                      ),
                     ],
                   ),
                 );
@@ -395,6 +430,4 @@ class _ModeratorHomePageState extends State<ModeratorHomePage>
       );
     }
   }
-
 }
-
