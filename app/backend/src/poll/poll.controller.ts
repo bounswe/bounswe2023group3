@@ -469,7 +469,7 @@ export class PollController {
     });
   }
 
-  @UseGuards(AuthGuard, VerificationGuard)
+
   @ApiQuery({ name: 'is_settled', required: true })
   @ApiResponse({
     status: 200,
@@ -486,8 +486,8 @@ export class PollController {
     @Query('is_settled', ParseIntPipe)
     is_settled?: number,
   ): Promise<any> {
-    const userId = req.user.id;
-    return await this.pollService.findPollsUserdidNotVote(userId, is_settled);
+    const userId = req.user?.sub; // Realize that it is not id instead sub. I do not know why but middleware gives this field.
+    return await this.pollService.findPollsUserdidNotVote(is_settled,userId);
   }
 
   @UseGuards(AuthGuard, VerificationGuard)

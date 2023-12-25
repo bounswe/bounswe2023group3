@@ -90,7 +90,7 @@ class PollInfo {
       tags: tags.map((e) => e['name'] as String).toList(),
       tagIds: tags.map((e) => e['id'] as String).toList(),
       tagColors: tagColorList,
-      voteCount: json['voteCount'],
+      voteCount: json['voteCount'] ?? 0,
       options: options.map((e) => e['answer'] as String).toList(),
       optionIds: options.map((e) => e['id'] as String).toList(),
       // TODO vote_count field'i kontrol edilecek
