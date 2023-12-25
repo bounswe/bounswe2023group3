@@ -2,8 +2,82 @@
     position: absolute;
     background-color: #fff;
     border: 1px solid #ccc;
-    padding: 5px;
     z-index: 9999;
     top: 0;
     left: 0;
 }
+
+/* Styles for the container */
+div {
+    display: flex;
+    flex-direction: column;
+    margin: 10px;
+    padding: 0px;
+  }
+
+  /* Styles for the h3 element */
+  h3 {
+    cursor: pointer;
+    margin: 10px 0;
+    padding: 0px;
+  }
+  
+  /* Styles for the button */
+  .button {
+    background-color: #9DC0C4;
+    border: none;
+    cursor: pointer;
+  }
+  
+  .button:hover {
+    background-color: #86a8ac;
+  }
+  
+  /* Styles for the input and buttons when entering annotation */
+  div[ngIf="enterAnnotation"] {
+    text-align: center;
+    padding: 0px;
+  }
+  
+  input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 5px;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+  }
+  
+  .btn {
+    background-color: #9DC0C4;
+    padding: 10px;
+    border: none;
+    border-radius: 16px;
+    cursor: pointer;
+  }
+  
+  .btn-primary {
+    background-color: #E57F84;
+    color: white;
+  }
+  
+  .btn-secondary {
+    background-color: #30568f;
+    color: white;
+  }
+
+  .btn-primary:hover {
+    background-color: #c55d63;
+  }
+
+  .btn-secondary:hover {
+    background-color: #1e416f;
+  }
+  
+  /* Additional styles for spacing and appearance */
+  .form-control {
+    width: 100%;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+  }
+  

@@ -6,10 +6,21 @@ body {
 }
 .container {
   background-color: #202a40;
-  padding: 20px;
+  padding: 25px;
   margin: 0;
   color: #f7f3f3;
 }
+
+.poll-image {
+  max-width: 50%; /* Ensures the image is responsive */
+  height: auto;    /* Maintains the aspect ratio */
+  border-radius: 10px; /* Optional, for rounded corners */
+  margin-bottom: 10px; /* Spacing below the image */
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
 .button {
   display: block;
   width: 100%;
@@ -25,6 +36,11 @@ body {
 .question:hover {
   text-decoration: underline;
 }
+
+.comment:hover {
+  text-decoration: underline;
+}
+
 .heart-image {
   padding: 2px;
   vertical-align: middle;
@@ -43,7 +59,6 @@ body {
   float: right;
   cursor: pointer;
   margin-right: px;
-  background-color: #f7f3f3;
   border-radius: 5px;
 }
 
@@ -52,8 +67,6 @@ body {
   visibility: visible;
   animation: fadeIn 1s;
   width: 160px;
-  background-color: #f7f3f3;
-  color: black;
   text-align: center;
   border-radius: 8px;
   padding: 8px;
@@ -62,7 +75,6 @@ body {
 
 .popup .popuptext:hover {
   visibility: visible;
-  background-color: rgb(182, 181, 181);
 }
 
 @keyframes fadeIn {

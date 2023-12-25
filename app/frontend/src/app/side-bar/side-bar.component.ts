@@ -38,4 +38,8 @@ export class SideBarComponent {
     localStorage.clear()
     localStorage.setItem('loggedIn', 'false')
   }
+
+  navigateToUserProfile() {
+    this.router.navigate(['/app-user-profile']);
+  }
 }

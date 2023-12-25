@@ -12,6 +12,7 @@ export class ModeratorRequestsComponent {
   polls!: any[]
   options!: any
   outcomeReq: boolean = false
+  activeButton: string | null = null;
 
 
   constructor(private http: HttpClient,
@@ -22,7 +23,7 @@ export class ModeratorRequestsComponent {
     this.http.get('http://34.105.66.254:1923/moderator/polls/',this.options).subscribe(
       (response: any) => {
         this.polls = response
-
+        this.activeButton = "PollCreationRequests"
         this.polls.forEach(poll => {
           poll.creation_date = this.formatDateTime(new Date(poll.creation_date))
         });
@@ -49,6 +50,7 @@ export class ModeratorRequestsComponent {
 
   onPollCreationReq(){
     this.outcomeReq = false
+    this.activeButton = 'PollCreationRequests';
     this.http.get('http://34.105.66.254:1923/moderator/polls/',this.options).subscribe(
       (response: any) => {
         this.polls = response
@@ -101,6 +103,7 @@ export class ModeratorRequestsComponent {
 
   onOutcomeVerifiationReq(){
     this.outcomeReq = true
+    this.activeButton = 'OutcomeVerificationRequests';
     this.http.get('http://34.105.66.254:1923/poll/').subscribe(
       (response: any) => {
 

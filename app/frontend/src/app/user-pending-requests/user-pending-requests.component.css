@@ -3,7 +3,11 @@
   display: flex;
   flex-direction: column;
   align-items: left;
-  padding: 25px;
+  padding-left: 40px;
+  padding-bottom: 40px;
+  padding-right: 40px;
+  padding-top: 35px;
+  min-height: 1000px;
 }
 
 .page-layout {
@@ -59,9 +63,43 @@
 }
 
 .date {
-  color: #555;
+  color: #444;
   position: absolute;
+  font-weight: bolder;
   top: 0;
   right: 0;
   margin: 10px;
+}
+
+.user-requests {
+  display: flex;
+  justify-content: center;
+}
+
+.user-requests-column {
+  background-color: #9DC0C4;
+  border: solid #202A40 1px;
+  color: #202A40;
+  padding: 12px 15px;
+  margin-bottom: 24px;
+  flex-grow: 1;
+  font-size: 18px;
+  cursor: pointer;
+  outline: none;
+  border-radius: 20px;
+  transition: background-color 0.3s;
+}
+
+.user-requests-column:hover {
+  background-color: #7a9ea5;
+  text-decoration: underline;
+}
+
+.user-requests-column.active {
+  background-color: #9DC0C4; /* Change the background color for the active button */
+  text-decoration: underline;
+}
+
+.button-text {
+  font-size: 16px;
 }
