@@ -186,13 +186,13 @@ class _GuestFeedState extends State<GuestFeed>
                         shrinkWrap: true,
                         itemCount: posts
                             .where((post) =>
-                                post.isSettled == 1 &&
+                                post.isSettled == 2 &&
                                 post.approvedStatus == true)
                             .length,
                         itemBuilder: (context, index) {
                           final filteredPosts = posts
                               .where((post) =>
-                                  post.isSettled == 1 &&
+                                  post.isSettled == 2 &&
                                   post.approvedStatus == true)
                               .toList();
                           final post = filteredPosts[index];
