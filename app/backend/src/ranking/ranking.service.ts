@@ -122,7 +122,7 @@ export class RankingService {
 
     let base = vote_count/vote_distribution.find(entity => entity.optionId === optionID).count;
 
-    base += base * (3 * commentCount + likeCount) / 10
+    base += base * (3 * commentCount + likeCount + vote_count) / 10
 
     return Math.ceil(base)
 
