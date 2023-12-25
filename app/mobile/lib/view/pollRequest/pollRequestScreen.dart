@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:mobile_app/services/pollRequestService.dart';
+import 'package:mobile_app/view/pollRequest/customContainer.dart';
 import 'package:mobile_app/view/pollRequest/customTextField.dart';
 import 'package:mobile_app/view/pollRequest/pollCreationAnnotate.dart';
 import 'package:mobile_app/models/pollCreationData.dart';
@@ -32,6 +34,8 @@ class _PollRequestPageState extends State<PollRequestPage> {
   final _dateTimeFocus = FocusNode();
   final _pollTitleFocus = FocusNode();
   final _pollTagFocus = FocusNode();
+  final _tagFieldKey = GlobalKey();
+
   final List<FocusNode> _pollOptionFocuses = [
     FocusNode(),
     FocusNode(),
@@ -214,6 +218,15 @@ class _PollRequestPageState extends State<PollRequestPage> {
     }
   }
 
+  List<String> currentlySuggestedTags = [];
+  void _addSuggestion(String suggestion) {
+    setState(() {
+      pollData.tags.add(suggestion);
+      _pollTagController.clear();
+    });
+    FocusScope.of(context).requestFocus(_pollTagFocus);
+  }
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -275,19 +288,69 @@ class _PollRequestPageState extends State<PollRequestPage> {
                 }).toList(),
               ),
 
-              // new tag input
-              CustomTextField(
-                  label: 'Enter tag',
-                  controller: _pollTagController,
-                  focusNode: _pollTagFocus,
-                  nextFocusNode: _pollOptionFocuses[0],
-                  skipNexWhenEmpty: true,
-                  onSubmitted: (value) {
-                    setState(() {
-                      pollData.tags.add(value);
-                      _pollTagController.clear();
-                    });
-                  }),
+              // tag input.
+              // eslesme varsa onsugeestion selected oluyor ve tag'i ekliyor.
+              // eslesme yokken enter'a basarsa onsubmitted oluyor,
+              // eslesme yokken onsubmitted'da, tag'i eklemiyor, unfocus oluyor.
+              // text field bossa da focus next.
+              CustomContainer(
+                key: _tagFieldKey,
+                child: TypeAheadField(
+                  textFieldConfiguration: TextFieldConfiguration(
+                    controller: _pollTagController,
+                    focusNode: _pollTagFocus,
+                    decoration: const InputDecoration(
+                      border: OutlineInputBorder(),
+                      labelText: 'Enter tag',
+                    ),
+                    onSubmitted: (_) {
+                      print("tag field submitted");
+                      if (_pollTagController.text.isEmpty) {
+                        FocusScope.of(context)
+                            .requestFocus(_pollOptionFocuses[0]);
+                      } else if (currentlySuggestedTags.length == 1) {
+                        _addSuggestion(currentlySuggestedTags[0]);
+                      } else {
+                        // TODO ya da clear'layip sonraki field'a gecebilirz
+                        FocusScope.of(context).unfocus();
+                      }
+                    },
+                  ),
+                  suggestionsCallback: (pattern) async {
+                    var returnedTags =
+                        await PollRequestService.getPossibleCompletions(
+                            pattern);
+                    var filteredTags = returnedTags
+                        .where((tag) => !pollData.tags.contains(tag))
+                        .toList();
+                    currentlySuggestedTags = filteredTags;
+                    return filteredTags;
+                  },
+                  itemBuilder: (context, suggestion) {
+                    return ListTile(
+                      title: Text(suggestion),
+                    );
+                  },
+                  onSuggestionSelected: (suggestion) {
+                    _addSuggestion(suggestion);
+                  },
+                ),
+              ),
+
+              // // new tag input
+              // CustomTextField(
+              //   label: 'Enter tag',
+              //   controller: _pollTagController,
+              //   focusNode: _pollTagFocus,
+              //   nextFocusNode: _pollOptionFocuses[0],
+              //   skipNexWhenEmpty: true,
+              //   onSubmitted: (value) {
+              //     setState(() {
+              //       pollData.tags.add(value);
+              //       _pollTagController.clear();
+              //     });
+              //   },
+              // ),
 
               const SizedBox(height: 16),
               const SectionHeader(headerText: "Options"),
