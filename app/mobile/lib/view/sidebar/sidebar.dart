@@ -186,13 +186,6 @@ class Sidebar extends StatelessWidget {
               height: 6.0,
             ),
             ListTile(
-              leading: const Icon(Icons.notifications),
-              title: const Text('Notifications'),
-              onTap: () {
-                // Navigate to the settings page or perform other actions
-              },
-            ),
-            ListTile(
               leading: const Icon(Icons.settings),
               title: const Text('Settings'),
               onTap: () {
@@ -320,13 +313,6 @@ class Sidebar extends StatelessWidget {
                   builder: (context) => LeaderboardPage(selectedTagName: '',selectedTagID: '',),
                 ),
               );
-            },
-          ),
-          ListTile(
-            leading: const Icon(Icons.notifications),
-            title: const Text('Notifications'),
-            onTap: () {
-              // Navigate to the settings page or perform other actions
             },
           ),
           ListTile(
