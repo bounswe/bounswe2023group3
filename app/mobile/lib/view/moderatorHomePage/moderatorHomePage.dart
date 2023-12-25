@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile_app/services/moderatorService.dart';
@@ -249,7 +251,7 @@ class _ModeratorHomePageState extends State<ModeratorHomePage>
                           child: Material(
                             borderRadius: BorderRadius.circular(30.0),
                             // Adjust the value for circular shape
-                            color: Colors.blue,
+                            color: navy,
                             // Set the color you want
                             child: InkWell(
                               borderRadius: BorderRadius.circular(30.0),
@@ -280,6 +282,16 @@ class _ModeratorHomePageState extends State<ModeratorHomePage>
                               ),
                             ),
                           ),
+                        ),
+                      ),
+
+                      Positioned(
+                        top: 0,
+                        right: 0,
+                        left: 0,
+                        child: Container(
+                          height: 1,
+                          color: gray,
                         ),
                       ),
                     ],
@@ -356,6 +368,7 @@ class _ModeratorHomePageState extends State<ModeratorHomePage>
                           outcome: request.outcome,
                           outcomeSource: request.outcomeSource,
                           imageUrls: request.imageUrls),
+
                       // Align the button to the right and bottom of the container
                       Align(
                         alignment: Alignment.bottomRight,
@@ -365,7 +378,7 @@ class _ModeratorHomePageState extends State<ModeratorHomePage>
                           child: Material(
                             borderRadius: BorderRadius.circular(30.0),
                             // Adjust the value for circular shape
-                            color: Colors.blue,
+                            color: navy,
                             // Set the color you want
                             child: InkWell(
                               borderRadius: BorderRadius.circular(30.0),
@@ -398,6 +411,16 @@ class _ModeratorHomePageState extends State<ModeratorHomePage>
                               ),
                             ),
                           ),
+                        ),
+                      ),
+
+                      Positioned(
+                        top: 0,
+                        right: 0,
+                        left: 0,
+                        child: Container(
+                          height: 1,
+                          color: gray,
                         ),
                       ),
                     ],
