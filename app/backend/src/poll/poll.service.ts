@@ -87,29 +87,31 @@ export class PollService {
     );
 
     savedPoll.tags = tags;
+
+    return await this.pollRepository.save(savedPoll);
+  }
+
+  public async addVectorDB(poll: Poll): Promise<void> {
     try {
       await this.pineconeStore.addDocuments(
         [
           new Document({
-            metadata: { id: savedPoll.id },
+            metadata: { id: poll.id },
             pageContent:
-              savedPoll.question +
+              poll.question +
               ' ' +
-              savedPoll.description +
-              ' ' +
-              savedPoll.tags.map((tag) => tag.name).join(' '),
+              poll.description
           }),
         ],
         {
-          ids: [savedPoll.id],
+          ids: [poll.id],
         },
       );
     } catch (e) {
       console.log(e);
     }
-
-    return await this.pollRepository.save(savedPoll);
   }
+
 
   public async settleRequest(
     user: User,
@@ -656,6 +658,7 @@ export class PollService {
 
   public async syncVectorStore(): Promise<any> {
     const polls = await this.pollRepository.find({
+      where: { approveStatus: true },
       relations: ['options', 'tags'],
     });
 
@@ -665,9 +668,7 @@ export class PollService {
         pageContent:
           poll.question +
           ' ' +
-          poll.description +
-          ' ' +
-          poll.tags.map((tag) => tag.name).join(' '),
+          poll.description
       });
     });
 
@@ -682,7 +683,7 @@ export class PollService {
   ): Promise<Poll[]> {
     const polls = await this.pineconeStore.similaritySearchWithScore(query, 5);
     const pollIDs = polls
-      .filter((result) => result[1] > 0.7)
+      .filter((result) => result[1] > 0.8)
       .map((result) => result[0].metadata.id);
 
     const results = await Promise.all(
