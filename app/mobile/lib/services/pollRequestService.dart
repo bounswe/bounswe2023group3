@@ -70,9 +70,9 @@ class PollRequestService {
           "target": {
             "source": "http://34.105.66.254:1923/$poll_id",
             "selector": {
-              "end": annotation.indices[1],
+              "end": annotation.indices[1] == 0 ? 1 : annotation.indices[1],
               "type": "TextPositionSelector",
-              "start": annotation.indices[0]
+              "start": annotation.indices[0] == 0 ? 1 : annotation.indices[0]
             }
           },
           "creator": creator_id
