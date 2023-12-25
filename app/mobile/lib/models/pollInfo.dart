@@ -24,6 +24,8 @@ class PollInfo {
   final List<dynamic> optionIdCouples;
   final List<int> optionsVoteCount;
 
+  final List<String> imageUrls;
+
   final DateTime dueDate;
   final DateTime creationDate;
 
@@ -59,6 +61,7 @@ class PollInfo {
     required this.tagIds,
     required this.optionsVoteCount,
     required this.chosenVoteIndex,
+    required this.imageUrls,
   });
 
   static PollInfo fromJson(Map<String, dynamic> json) {
@@ -77,8 +80,12 @@ class PollInfo {
     List<dynamic> options = json['options'];
     List<dynamic> tags = json['tags'];
     var creator = json['creator'];
+    List<String> imageUrls = json['image_urls'] != null
+        ? (json['image_urls'] as List).map((e) => e as String).toList()
+        : [];
 
     return PollInfo.withoutComments(
+      imageUrls: imageUrls,
       optionIdCouples: options,
       pollId: json['id'],
       userName: creator['firstname'] != null || creator['lastname'] != null
