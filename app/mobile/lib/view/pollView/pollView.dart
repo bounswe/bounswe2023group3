@@ -116,9 +116,9 @@ class _PollPageState extends State<PollPage> {
                 optionText: widget.postOptions[index]["answer"],
                 isSelected: myVotedOptionId!="" ? true : false,
                 isChosen: myVotedOptionId == widget.postOptions[index]["id"],
-                percentage: voteCountDistributions[widget.postOptions[index]["id"]] != null && voteCount!=0 && myVotedOptionId!="" ?((voteCountDistributions[widget.postOptions[index]["id"]]!/voteCount)*100).round():0,
-                onPressed: () =>
-                    handleOptionPress(widget.postOptions[index]["id"]),
+                percentage: (voteCountDistributions[widget.postOptions[index]["id"]] != null && voteCount!=0 && myVotedOptionId!="") || (widget.isSettled ==2 &&voteCountDistributions[widget.postOptions[index]["id"]] != null && voteCount!=0)?((voteCountDistributions[widget.postOptions[index]["id"]]!/voteCount)*100).round():0,
+                onPressed: widget.isSettled!=2?() =>
+                    handleOptionPress(widget.postOptions[index]["id"]):() => {},
                 isSettled: widget.isSettled,
                 isCorrect: widget.postOptions[index]["id"] == widget.outcomeOptionId,
               ),

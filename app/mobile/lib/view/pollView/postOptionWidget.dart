@@ -84,15 +84,28 @@ class VoteBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (isSettled == 2) {
+    if (isSettled == 2 && percentage != 0) {
       return Container(
         height: 30,
-        width: percentage as double, // Adjust the multiplier as needed
+        width: percentage.toDouble()*3.8, // Adjust the multiplier as needed
         decoration: BoxDecoration(
           border: isChosen ? Border.all(color: pink, width: 3.0) : Border.all(
               color: Colors.black),
           borderRadius: BorderRadius.circular(20.0),
           color: isCorrect ? Colors.green : Colors.red,
+          backgroundBlendMode: BlendMode.srcATop,
+        ),
+      );
+    }
+    else if (isSettled == 2 && percentage == 0) {
+      return Container(
+        height: 30,
+        width: double.infinity, // Adjust the multiplier as needed
+        decoration: BoxDecoration(
+          border: isChosen ? Border.all(color: pink, width: 3.0) : Border.all(
+              color: Colors.black),
+          borderRadius: BorderRadius.circular(20.0),
+          color: isCorrect ? Colors.green : Colors.white,
           backgroundBlendMode: BlendMode.srcATop,
         ),
       );
