@@ -16,6 +16,7 @@ import '../../services/voteDistributionService.dart';
 import '../constants.dart';
 import '../helpers/dateTime.dart';
 import '../helpers/tag.dart';
+import '../moderatorApproval/sectionHeader.dart';
 import '../waitingScreen/fancyWaitingScreen.dart';
 
 class PollPage extends StatefulWidget {
@@ -37,6 +38,7 @@ class PollPage extends StatefulWidget {
   final Map<String,int> voteCountDistributions;
   final String myVotedOptionId;
   final String outcomeOptionId;
+  final List<String> imageURLs;
 
   PollPage({
     super.key,
@@ -58,6 +60,7 @@ class PollPage extends StatefulWidget {
     required this.voteCountDistributions,
     required this.myVotedOptionId,
     required this.outcomeOptionId,
+    required this.imageURLs,
   });
 
   @override
@@ -106,6 +109,37 @@ class _PollPageState extends State<PollPage> {
                 child: buildRichText(widget.postTitle, widget.annotationIndices,
                     widget.annotationTexts)),
             TagListWidget(tags: widget.tags, tagColors: widget.tagColors),
+            const SizedBox(height: 16),
+            const SectionHeader(headerText: "Images"),
+            const SizedBox(height: 16),
+
+            ...widget.imageURLs.map((url) => ListTile(
+              title: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // Expanded(child: Text(url)),
+                  const SizedBox(width: 5),
+                  // Image preview
+                  Container(
+                    width: 300,
+                    decoration: BoxDecoration(
+                      border: Border.all(color: Colors.grey.shade300),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    clipBehavior: Clip.antiAlias,
+                    child: Image.network(
+                      url,
+                      fit: BoxFit.fitWidth,
+                      errorBuilder: (BuildContext context, Object exception,
+                          StackTrace? stackTrace) {
+                        return const Icon(Icons.error_outline,
+                            color: Colors.red);
+                      },
+                    ),
+                  ),
+                ],
+              ),
+            )),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
               child: Text('Votes: ${voteCount}',
