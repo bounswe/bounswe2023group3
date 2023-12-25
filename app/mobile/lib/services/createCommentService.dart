@@ -18,4 +18,16 @@ class PostCommentService {
       rethrow;
     }
   }
+
+  static Future<bool> deleteComment(String commentId) async {
+    final String commentEndpoint = '/comment/$commentId';
+
+    try {
+      final Response response = await ApiService.dio.delete(commentEndpoint);
+      return response.statusCode == 200;
+    } catch (e) {
+      print('Error: $e');
+      return false;
+    }
+  }
 }

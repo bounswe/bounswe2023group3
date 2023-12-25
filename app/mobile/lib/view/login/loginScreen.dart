@@ -80,6 +80,8 @@ class _LoginScreenState extends State<LoginScreen> {
           if (loggedInUserData.statusCode == 200) {
             AppState.isModerator = false;
             AppState.loggedInUserId = loggedInUserData.data['id'];
+            // TODO: insallah dogrudur
+            AppState.loggedInUserUsername = loggedInUserData.data['username'];
             AppState.isGuest = false;
             print("loginScreen.login: ${AppState.loggedInUserId}");
           } else {

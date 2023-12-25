@@ -50,7 +50,9 @@ class PollPage extends StatefulWidget {
     required this.dateTime,
     required this.isSettled,
     this.approvedStatus,
-    required this.chosenVoteIndex, required this.annotationIndices, required this.annotationTexts,
+    required this.chosenVoteIndex,
+    required this.annotationIndices,
+    required this.annotationTexts,
   });
 
   @override
@@ -89,9 +91,9 @@ class _PollPageState extends State<PollPage> {
               pollId: widget.isSettled == 0 ? widget.pollId : "",
             ),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              child: buildRichText(widget.postTitle, widget.annotationIndices, widget.annotationTexts)
-            ),
+                padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                child: buildRichText(widget.postTitle, widget.annotationIndices,
+                    widget.annotationTexts)),
             TagListWidget(tags: widget.tags, tagColors: widget.tagColors),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -120,7 +122,8 @@ class _PollPageState extends State<PollPage> {
             Row(
               children: [
                 LikeCountWidget(likeCount: widget.likeCount),
-                DateTimeWidget(dateTime: DateTime.parse(widget.dateTime), color: blue),
+                DateTimeWidget(
+                    dateTime: DateTime.parse(widget.dateTime), color: blue),
               ],
             ),
             CommentEntryFieldWidget(
@@ -139,7 +142,9 @@ class _PollPageState extends State<PollPage> {
                   // If we run into an error, display it to the user
                   return Text('Error: ${snapshot.error}');
                 } else {
-                  var fetchedComments = snapshot.hasData ? snapshot.data! : [];
+                  var fetchedComments = snapshot.hasData
+                      ? snapshot.data!
+                      : [] as List<CommentData>;
 
                   // Whether we have data or not, display the number of fetchedComments
                   int commentCount = fetchedComments.length;
@@ -155,8 +160,14 @@ class _PollPageState extends State<PollPage> {
                       if (snapshot.hasData)
                         ...fetchedComments
                             .map((comment) => CommentWidget(
-                                  user: comment.user,
+                                  parentSetState: () {
+                                    setState(() {});
+                                  },
+                                  username: comment.username,
                                   commentText: comment.commentText,
+                                  commentId: comment.commentId,
+                                  dateTime: comment.dateTime,
+                                  userId: comment.userId,
                                 ))
                             .toList(),
                       // If there's no data, there's nothing else to add to the column
@@ -188,9 +199,8 @@ class _PollPageState extends State<PollPage> {
     print("pressed like");
   }
 
-  RichText buildRichText(String fullText, List<List<int>> indices, List<String> annotationTexts) {
-
-
+  RichText buildRichText(
+      String fullText, List<List<int>> indices, List<String> annotationTexts) {
     List<TextSpan> textSpans = [];
 
     int previousIndex = 0;
@@ -220,7 +230,8 @@ class _PollPageState extends State<PollPage> {
             ..onTap = () {
               // Handle tap on the underlined text
               _showPopup(context, annotationText);
-              print('Tapped on underlined text from index $startIndex to $endIndex!');
+              print(
+                  'Tapped on underlined text from index $startIndex to $endIndex!');
             },
         ),
       );
@@ -319,8 +330,6 @@ class CommentEntryFieldWidget extends StatelessWidget {
     }
   }
 }
-
-
 
 class LikeCountWidget extends StatelessWidget {
   final int likeCount;
