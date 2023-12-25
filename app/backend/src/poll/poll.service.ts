@@ -681,9 +681,10 @@ export class PollService {
     query: string,
     userId?: string | null,
   ): Promise<Poll[]> {
-    const polls = await this.pineconeStore.similaritySearchWithScore(query, 5);
+    const polls = await this.pineconeStore.similaritySearchWithScore(query, 3);
+    
     const pollIDs = polls
-      .filter((result) => result[1] > 0.8)
+      .filter((result) => result[1] > 0.70)
       .map((result) => result[0].metadata.id);
 
     const results = await Promise.all(
