@@ -6,9 +6,6 @@ import 'readOnlyTextField.dart';
 import 'package:dio/dio.dart';
 import 'package:mobile_app/view/constants.dart';
 
-
-
-
 class ModeratorSettleApproval extends StatelessWidget {
   final List<Color> tagColors;
   final PollData pollData;
@@ -18,28 +15,29 @@ class ModeratorSettleApproval extends StatelessWidget {
     super.key,
     required this.tagColors,
     required this.pollData,
-
   });
 
-  void settlePoll(BuildContext context, bool decision, String feedback, String id) async{
+  void settlePoll(
+      BuildContext context, bool decision, String feedback, String id) async {
     // Perform email verification and navigate to the next screen if successful
     ModeratorPollDecision moderatorPollDecision = ModeratorPollDecision();
 
     try {
-      Response response = await moderatorPollDecision.settlePoll(decision, feedback, id);
+      Response response =
+          await moderatorPollDecision.settlePoll(decision, feedback, id);
 
       if (response.statusCode == 201) {
-
         if (!context.mounted) return;
-        Navigator.pop(context, decision ? "Poll is approved successfully" :"Poll is rejected successfully.");
+        Navigator.pop(
+            context,
+            decision
+                ? "Poll is approved successfully"
+                : "Poll is rejected successfully.");
+      } else {
+        showMessageSnackBar(context,
+            "There is a problem about the existing of poll or the system.");
       }
-
-      else {
-        showMessageSnackBar(context, "There is a problem about the existing of poll or the system.");
-      }
-
-    }
-    catch (e) {
+    } catch (e) {
       showMessageSnackBar(context, "Catch block is executed.");
     }
   }
@@ -51,7 +49,6 @@ class ModeratorSettleApproval extends StatelessWidget {
       ),
     );
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -71,7 +68,6 @@ class ModeratorSettleApproval extends StatelessWidget {
               text: pollData.pollTitle,
             ),
 
-
             // added tags
             const SizedBox(height: 16),
             const SectionHeader(headerText: "Tags"),
@@ -85,11 +81,9 @@ class ModeratorSettleApproval extends StatelessWidget {
               }).toList(),
             ),
 
-
-
             const SizedBox(height: 16),
             const SectionHeader(headerText: "Options"),
-            for (var i = pollData.options.length-1; i >=0 ; i--)
+            for (var i = pollData.options.length - 1; i >= 0; i--)
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 8),
                 child: ReadOnlyTextField(
@@ -99,38 +93,36 @@ class ModeratorSettleApproval extends StatelessWidget {
 
             // image url input
             const SizedBox(height: 16),
-            const SectionHeader(headerText: "Image URLs"),
+            const SectionHeader(headerText: "Images"),
             const SizedBox(height: 16),
 
             ...pollData.imageURLs.map((url) => ListTile(
-              title: Row(
-
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Expanded(child: Text(url)),
-                  const SizedBox(width: 5),
-                  // Image preview
-                  Container(
-                    width: 50,
-                    decoration: BoxDecoration(
-                      border: Border.all(color: Colors.grey.shade300),
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    clipBehavior: Clip.antiAlias,
-                    child: Image.network(
-                      url,
-                      fit: BoxFit.fitWidth,
-                      errorBuilder: (BuildContext context,
-                          Object exception, StackTrace? stackTrace) {
-                        return const Icon(Icons.error_outline,
-                            color: Colors.red);
-                      },
-                    ),
+                  title: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // Expanded(child: Text(url)),
+                      const SizedBox(width: 5),
+                      // Image preview
+                      Container(
+                        width: 300,
+                        decoration: BoxDecoration(
+                          border: Border.all(color: Colors.grey.shade300),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        clipBehavior: Clip.antiAlias,
+                        child: Image.network(
+                          url,
+                          fit: BoxFit.fitWidth,
+                          errorBuilder: (BuildContext context, Object exception,
+                              StackTrace? stackTrace) {
+                            return const Icon(Icons.error_outline,
+                                color: Colors.red);
+                          },
+                        ),
+                      ),
+                    ],
                   ),
-                ],
-              ),
-
-            )),
+                )),
             const SizedBox(height: 4),
             const SectionHeader(headerText: "Outcome"),
             const SizedBox(height: 4),
@@ -143,7 +135,8 @@ class ModeratorSettleApproval extends StatelessWidget {
             const SectionHeader(headerText: "Outcome Source"),
             const SizedBox(height: 4),
             ReadOnlyTextField(
-              text: pollData.outcomeSource, // Use the appropriate field from PollData
+              text: pollData
+                  .outcomeSource, // Use the appropriate field from PollData
             ),
 
             // Feedback field
@@ -164,11 +157,13 @@ class ModeratorSettleApproval extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: <Widget>[
                 ElevatedButton(
-                  onPressed: ()=>settlePoll(context, true, feedbackController.text, pollData.pollId),
+                  onPressed: () => settlePoll(
+                      context, true, feedbackController.text, pollData.pollId),
                   child: const Text('Approve!'),
                 ),
                 ElevatedButton(
-                  onPressed: ()=>settlePoll(context, false, feedbackController.text, pollData.pollId),
+                  onPressed: () => settlePoll(
+                      context, false, feedbackController.text, pollData.pollId),
                   child: const Text('Reject!'),
                 ),
               ],
