@@ -219,6 +219,13 @@ class _PollRequestPageState extends State<PollRequestPage> {
   }
 
   List<String> currentlySuggestedTags = [];
+  void _addSuggestion(String suggestion) {
+    setState(() {
+      pollData.tags.add(suggestion);
+      _pollTagController.clear();
+    });
+    FocusScope.of(context).requestFocus(_pollTagFocus);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -302,10 +309,7 @@ class _PollRequestPageState extends State<PollRequestPage> {
                         FocusScope.of(context)
                             .requestFocus(_pollOptionFocuses[0]);
                       } else if (currentlySuggestedTags.length == 1) {
-                        setState(() {
-                          pollData.tags.add(currentlySuggestedTags[0]);
-                          _pollTagController.clear();
-                        });
+                        _addSuggestion(currentlySuggestedTags[0]);
                       } else {
                         // TODO ya da clear'layip sonraki field'a gecebilirz
                         FocusScope.of(context).unfocus();
@@ -328,11 +332,7 @@ class _PollRequestPageState extends State<PollRequestPage> {
                     );
                   },
                   onSuggestionSelected: (suggestion) {
-                    setState(() {
-                      pollData.tags.add(suggestion);
-                      _pollTagController.clear();
-                    });
-                    FocusScope.of(context).requestFocus(_pollTagFocus);
+                    _addSuggestion(suggestion);
                   },
                 ),
               ),
