@@ -18,6 +18,7 @@ export class AuthService {
     return this.http.post<any>(`${this.apiUrl}/login`, credentials).pipe(
       tap((response: any) => {
         localStorage.setItem('authToken', response.access_token)
+        console.log(response.access_token)
         localStorage.setItem('loggedIn', 'true')
         localStorage.setItem('moderatorloggedIn', 'false')
         localStorage.setItem('user_id', response.user.id)
@@ -54,9 +55,11 @@ export class AuthService {
   getHeaders(): any {
     if (this.getToken()) {
       const headers = new HttpHeaders({
-        Authorization: `Bearer ${this.getToken()}`,
+        'Authorization': `Bearer ${this.getToken()}`,
+        'Content-Type': 'application/json'
       })
       const options = { headers }
+      console.log(options)
       return options
     }
   }

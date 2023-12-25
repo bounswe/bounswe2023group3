@@ -34,6 +34,7 @@ export class PollComponent {
   userId!: string | null
   optionWeights!: number[]
   optionWeightsScaled: number[] = []
+  authPackage = this.authService.getHeaders()
 
   //TODO: retrieve user vote & show in html
   userVoted!: boolean 
@@ -77,7 +78,7 @@ export class PollComponent {
 
   ngOnInit() {
 
-    this.http.get('http://34.105.66.254:1938/annotation?pollIDs=http%3A%2F%2F34.105.66.254%3A1923%2F'+this.pollId).subscribe(
+    this.http.get('http://34.105.66.254:1938/annotation?pollIDs=http%3A%2F%2F34.105.66.254%3A1923%2F'+this.pollId,this.authPackage).subscribe(
       (response: any) => {
         this.annotations=response.annotations;
       },
@@ -86,7 +87,7 @@ export class PollComponent {
       }
     );
 
-    this.http.get('http://34.105.66.254:1923/poll/'+this.pollId).subscribe(
+    this.http.get('http://34.105.66.254:1923/poll/'+this.pollId, this.authPackage).subscribe(
     (response: any) => {
       this.question = response.question;
       this.tags = response.tags;
@@ -110,7 +111,7 @@ export class PollComponent {
     if (this.userId) {
       this.isAuthenticated = true
     }
-    this.http.get('http://34.105.66.254:1923/poll/' + this.pollId).subscribe(
+    this.http.get('http://34.105.66.254:1923/poll/' + this.pollId,this.authPackage).subscribe(
       (response: any) => {
         this.question = response.question
         this.tags = response.tags
@@ -245,13 +246,15 @@ export class PollComponent {
       .then(response => {
         // Handle the response
         console.log('Vote cast for option ID:', optionId);
+        this.vote_count += 1;
+        this.userVoted = true;  
       })
       .catch(error => {
         // Handle any errors
         console.error('Error casting vote:', error);
       });
     }
-    this.userVoted = true;   
+     
   }
 
   toggleButton(button: HTMLButtonElement) {
@@ -308,7 +311,7 @@ export class PollComponent {
   }
 
   deletePoll() {
-    this.http.delete('http://34.105.66.254:1923/poll/' + this.pollId).subscribe(
+    this.http.delete('http://34.105.66.254:1923/poll/' + this.pollId,this.authPackage).subscribe(
       () => {
         console.log(`Poll deleted successfully.`)
       },
@@ -325,7 +328,7 @@ export class PollComponent {
     }
 
     this.http
-      .post('http://34.105.66.254:1923/poll/settle-request/' + this.pollId, body, this.authService.getHeaders())
+      .post('http://34.105.66.254:1923/poll/settle-request/' + this.pollId, body, this.authPackage)
       .subscribe(
         () => {
           console.log(`Request sent ccessfully.`)
@@ -344,7 +347,7 @@ export class PollComponent {
     console.log(rsn)
 
     this.http
-      .post('http://34.105.66.254:1923/user/report/' + this.creator.id, body, this.authService.getHeaders())
+      .post('http://34.105.66.254:1923/user/report/' + this.creator.id, body, this.authPackage)
       .subscribe(
         () => {
           console.log(`Request sent successfully.`)
