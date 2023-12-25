@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mobile_app/models/pollInfo.dart';
+import 'package:mobile_app/view/constants.dart';
 import 'package:mobile_app/view/moderatorHomePage/requestViewHome.dart';
 import 'package:mobile_app/view/pollView/postOptionWidget.dart';
 
@@ -44,6 +45,8 @@ class _PendingPollViewState extends State<PendingPollView> {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
+          Container(height: 1, color: gray),
+          const SizedBox(height: 15),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16.0),
             child: Text(

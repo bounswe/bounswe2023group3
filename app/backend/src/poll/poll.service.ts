@@ -676,14 +676,20 @@ export class PollService {
     });
   }
 
-  public async searchSemanticPolls(query: string): Promise<Poll[]> {
-    let results = await this.pineconeStore.similaritySearchWithScore(query, 5);
-    results = results
+  public async searchSemanticPolls(
+    query: string,
+    userId?: string | null,
+  ): Promise<Poll[]> {
+    const polls = await this.pineconeStore.similaritySearchWithScore(query, 5);
+    const pollIDs = polls
       .filter((result) => result[1] > 0.7)
       .map((result) => result[0].metadata.id);
-    return await this.pollRepository.find({
-      where: { id: In(results) },
-      relations: ['options', 'tags', 'creator', 'likes', 'comments', 'votes'],
-    });
+
+    const results = await Promise.all(
+      pollIDs.map(async (pollId) => {
+        return await this.findPollById(pollId, userId);
+      }),
+    );
+    return results;
   }
 }

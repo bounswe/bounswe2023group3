@@ -60,7 +60,7 @@ import { OptionService } from '../option/option.service';
     GoogleGenerativeAIEmbeddings,
     RankingService,
     VoteService,
-    OptionService
+    OptionService,
   ],
   exports: [PollService],
 })
@@ -72,6 +72,7 @@ export class PollModule implements NestModule {
         { path: '/poll', method: RequestMethod.GET },
         { path: '/poll/:param', method: RequestMethod.GET },
         { path: '/poll/not-voted-by-me', method: RequestMethod.GET },
+        { path: '/poll/pinecone/search', method: RequestMethod.GET },
       );
   }
 }

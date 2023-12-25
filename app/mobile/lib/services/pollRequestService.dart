@@ -5,6 +5,35 @@ import 'annotationService.dart';
 import 'package:mobile_app/models/annotation.dart';
 
 class PollRequestService {
+  static List<String> allTags = [];
+  static bool allTagsLoaded = false;
+
+  static Future<void> reloadAllTags() async {
+    const String tagEndPoint = '/tag';
+    try {
+      final Response response = await ApiService.dio.get(tagEndPoint);
+      final List<dynamic> tags = response.data;
+      allTags = tags.map((tag) => tag['name'].toString()).toList();
+    } catch (e) {
+      print('Error: $e');
+      rethrow;
+    }
+    // dont touch the boolean, just reload all tags asynchrnously
+  }
+
+  /// Get a list of possible completions for the tag field of the poll
+  static Future<List<String>> getPossibleCompletions(String prefix) async {
+    if (allTagsLoaded) {
+      reloadAllTags();
+    } else {
+      await reloadAllTags();
+      allTagsLoaded = true;
+    }
+    return allTags
+        .where((tag) => tag.toLowerCase().startsWith(prefix.toLowerCase()))
+        .toList();
+  }
+
   static Future<Response> createPoll(PollCreationData pollData) async {
     const String createPollEndpoint =
         '/poll'; // This will be the actual endpoint
@@ -15,6 +44,7 @@ class PollRequestService {
     // Prepare the data to send to the API
     final Map<String, dynamic> data = {
       'question': pollData.question,
+      'description': pollData.question,
       'options': pollData.options,
       'image_urls': imageUrlsString,
       'tags': pollData.tags,
@@ -30,8 +60,7 @@ class PollRequestService {
       String creator_id = response.data['creator']['id'];
       String poll_id = response.data['id'];
       List<Annotation> annotations = pollData.annotations;
-      const String annotationEndpoint =
-          'http://34.105.66.254:1938/annotation';
+      const String annotationEndpoint = 'http://34.105.66.254:1938/annotation';
       for (Annotation annotation in annotations) {
         final Map<String, dynamic> data = {
           "body": {
@@ -51,13 +80,15 @@ class PollRequestService {
         };
 
         try {
-          final Response response = await Dio().post(annotationEndpoint, data: data);
+          final Response response =
+              await Dio().post(annotationEndpoint, data: data);
           if (response.statusCode == 201) {
             // Handle success
             print('Annotation posted successfully!');
           } else {
             // Handle other status codes
-            print('Failed to post annotation. Status code: ${response.statusCode}');
+            print(
+                'Failed to post annotation. Status code: ${response.statusCode}');
           }
         } catch (e) {
           // Handle exceptions

@@ -63,8 +63,10 @@ export class PollController {
   @Post('pinecone/search')
   public async pineconeSearch(
     @Query('searchQuery') searchQuery: string,
+    @Req() req: any,
   ): Promise<Poll[]> {
-    return await this.pollService.searchSemanticPolls(searchQuery);
+    const userId = req.user?.sub; // Realize that it is not id instead sub. I do not know why but middleware gives this field.
+    return await this.pollService.searchSemanticPolls(searchQuery, userId);
   }
 
   @UseGuards(AuthGuard, VerificationGuard)

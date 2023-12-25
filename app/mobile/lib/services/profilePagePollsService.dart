@@ -99,14 +99,13 @@ class ProfilePagePollsService {
   }
 
   static Future<List<PollInfo>> getPendingPolls(String userId) async {
-    String pollsEndpoint = "/poll?creatorId=$userId";
+    String pollsEndpoint = "/poll/my-polls/pending";
     try {
       // Perform the GET request with the userId as a query parameter
       Response response = await ApiService.dio.get(pollsEndpoint);
       // Map the response data to PollInfo objects
-      var polls = List.from(response.data)
-          .map((e) => PollInfo.fromJson(e))
-          .where((element) => element.isPending);
+      var polls = List.from(response.data).map((e) => PollInfo.fromJson(e));
+      // .where((element) => element.isPending);
 
       var pollsList = polls.toList();
       // TODO
