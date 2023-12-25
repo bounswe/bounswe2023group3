@@ -6,6 +6,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile_app/models/comment.dart';
 import 'package:mobile_app/services/apiService.dart';
+import 'package:mobile_app/view/constants.dart';
 
 import '../view/pollViewHomePage/pollViewHomePage.dart';
 import 'annotationService.dart';
@@ -80,8 +81,7 @@ class HomePageService {
 
         for (var tag in tagsJson) {
           tagsList.add(tag['name']);
-          tagColorsList.add(
-              Colors.blue); // You might want to generate colors dynamically
+          tagColorsList.add(pink);
         }
 
         posts.add(PollViewHomePage(
