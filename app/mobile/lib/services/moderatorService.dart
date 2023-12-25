@@ -91,8 +91,12 @@ class ModeratorService {
         for (var option in post['options']) {
           optionsList.add(option['answer']);
         }
+        List<String> imageUrls = post['image_urls'] != null
+            ? (post['image_urls'] as List).map((e) => e as String).toList()
+            : [];
 
         posts.add(SettleViewHome(
+          imageUrls: imageUrls,
           userName: creator['firstname'] != null || creator['lastname'] != null
               ? ((creator['firstname'] ?? "") +
                   " " +
