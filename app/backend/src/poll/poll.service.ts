@@ -120,7 +120,7 @@ export class PollService {
       where: { id: id, creator: { id: user.id } },
       relations: ['options'],
     });
-    console.log(poll);
+
     if (!poll) {
       throw new NotFoundException('Poll not found.');
     }
@@ -232,7 +232,7 @@ export class PollService {
       const followings =
         await this.userService.getUsersFollowedById(followedById);
       const followingIds = followings.map((obj) => obj.id);
-      console.log(followingIds);
+
       whereClause.creator = {
         id: In([...followingIds]),
       };
@@ -310,57 +310,82 @@ export class PollService {
     return extendedPolls;
   }
 
-  public async findPollsUserdidNotVote(voterId: string, is_settled: number) {
-    console.log(is_settled);
-    const polls = await this.pollRepository.find({
-      where: [
-        {
-          approveStatus: true,
-          is_settled: is_settled,
-          votes: {
-            user: {
-              id: Not(voterId),
+  public async findPollsUserdidNotVote(is_settled: number,voterId?: string,) {
+    let polls : Poll[];
+    if(voterId){
+      polls = await this.pollRepository.find({
+        where: [
+          {
+            approveStatus: true,
+            is_settled: is_settled,
+            votes: {
+              user: {
+                id: Not(voterId),
+              },
             },
           },
-        },
-        {
-          approveStatus: true,
-          is_settled: is_settled,
-          votes: {
-            user: {
-              id: IsNull(),
+          {
+            approveStatus: true,
+            is_settled: is_settled,
+            votes: {
+              user: {
+                id: IsNull(),
+              },
             },
           },
-        },
-      ],
-      relations: [
-        'options',
-        'tags',
-        'creator',
-        'votes',
-        'votes.user',
-        'votes.option',
-        'likes',
-        'likes.user',
-        'comments',
-      ],
-    });
+        ],
+        relations: [
+          'options',
+          'tags',
+          'creator',
+          'likes',
+          'likes.user',
+          'comments',
+        ],
+      });
+    }else{
+      polls = await this.pollRepository.find({
+        where: {
+            approveStatus: true,
+            is_settled: is_settled,
+            },
+        relations: [
+          'options',
+          'tags',
+          'creator',
+          'likes',
+          'likes.user',
+          'comments',
+        ],
+      });      
+    }
 
-    const extendedPolls = polls.map((poll) => {
+
+    let extendedPolls = await Promise.all(
+      polls.map(async (poll) => {
       return {
         ...poll,
-        votedOption:
-          poll.votes
-            .filter((vote) => vote.user && vote.user.id == voterId)
-            .map((vote) => vote.option.id)[0] || null,
-        didLike: poll.likes.some(
-          (like) => like.user && like.user.id == voterId,
-        ),
-        voteCount: poll.votes.length,
+        didLike: null,
+        voteCount: await this.voteService.getVoteCount(poll.id),
         likeCount: poll.likes.length,
         commentCount: poll.comments.length,
+        votedOption:null,
+        votedDistribution: is_settled ?  await this.voteService.getVoteRate(poll.id): null,
       };
-    });
+    }));
+
+
+    if(voterId){
+      extendedPolls = extendedPolls.map((poll) => {
+        return {
+          ...poll,
+          didLike: poll.likes.some(
+            (like) => like.user && like.user.id == voterId,
+          ),
+        };
+      });
+    }
+
 
     return extendedPolls.sort((a, b) => b.voteCount - a.voteCount);
   }
@@ -406,7 +431,7 @@ export class PollService {
       const followings =
         await this.userService.getUsersFollowedById(followedById);
       const followingIds = followings.map((obj) => obj.id);
-      console.log(followingIds);
+
       whereClause.creator = {
         id: In([...followingIds]),
       };
