@@ -63,7 +63,6 @@ export class SettledPollComponent {
     private userService: UserService,
     private authService: AuthService,
     public dialog: MatDialog,
-    private authService: AuthService,
   ) {}
 
   openConfirmationDialog(): void {
