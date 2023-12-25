@@ -50,19 +50,18 @@ export class PollComponent {
 
   colors: string[] = [
     '#AEEEEE',
-    '#FFDAB9',
     '#E6E6FA',
     '#FADADD',
     '#F08080',
     '#B0C4DE',
     '#FFB6C1',
     '#D7907B',
-    '#DECBB7',
     '#C1EEFF',
-    '#EDDEA4',
     '#F7A072',
     '#9BA0BC',
-    '#F88DAD'
+    '#F88DAD',
+    '#EDDEA4',
+    '#BFCC94',
   ]
 
   constructor(
@@ -187,7 +186,7 @@ export class PollComponent {
 
   openConfirmationDialog(): void {
     const dialogRef = this.dialog.open(ConfirmModelComponent, {
-      width: '300px',
+      width: '400px', height: '200px'
     })
 
     dialogRef.afterClosed().subscribe((result) => {
@@ -197,12 +196,13 @@ export class PollComponent {
       } else {
         console.log('User canceled deletion')
       }
-    })
+    }
+    )
   }
 
   reportUser(): void {
     const dialogRef = this.dialog.open(ReportUserComponent, {
-      width: '300px',
+      width: '400px',
     })
 
     dialogRef.afterClosed().subscribe((result) => {
@@ -215,7 +215,7 @@ export class PollComponent {
 
   settleRequestForm(): void {
     const dialogRef = this.dialog.open(UserSettleRequestComponent, {
-      width: '300px',
+      width: '400px',
     })
 
     dialogRef.afterClosed().subscribe((result) => {
@@ -318,6 +318,10 @@ export class PollComponent {
       (error) => {
         console.error('Error deleting poll:', error)
       },
+      () => {
+        // Reload after settling the poll
+        window.location.reload();
+      }
     )
   }
 

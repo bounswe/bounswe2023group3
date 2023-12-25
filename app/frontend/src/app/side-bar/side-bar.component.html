@@ -10,19 +10,14 @@
         style="display: flex; align-items: start; padding-top: 10px"
         [class.blurred]="!isAuthenticated"
       >
+      <a [attr.href]="'/app-user-profile/'">
         <img
           class="user-avatar-style"
           [src]="profile_picture ? profile_picture : 'assets/unknown.jpg'"
           alt="User Avatar"
-          style="
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            margin-right: 5px;
-            margin-top: 5px;
-            margin-bottom: 20px;
-          "
+          style="width: 60px; height: 60px; border-radius: 50%; margin-right: 5px; margin-top: 5px; margin-bottom: 20px;"
         />
+      </a>
         <div
           class="post-content"
           style="
@@ -32,10 +27,10 @@
             margin-left: 5px;
           "
         >
-          <b class="name" style="font-size: medium; margin-top: 15px"
+          <b class="name" style="font-size: medium; margin-top: 15px; cursor: pointer;" (click)="navigateToUserProfile()"
             >{{ this.firstname }} {{ this.lastname }}</b
           >
-          <p class="user-name" style="margin-top: 2px">
+          <p class="user-name" style="margin-top: 2px; cursor: pointer;" (click)="navigateToUserProfile()">
             &#64;{{ this.username }}
           </p>
         </div>

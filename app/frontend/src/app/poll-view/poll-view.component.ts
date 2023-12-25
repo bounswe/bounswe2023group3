@@ -158,18 +158,19 @@ export class PollViewComponent {
     const options = { headers }
 
     this.http
-      .delete(`http://34.105.66.254:1923/comment/${this.pollId}`, options)
+      .delete(`http://34.105.66.254:1923/comment/${commentId}`, options)
       .subscribe(
         (response) => {
           console.log('Comment deleted', response)
-          // Remove the deleted comment from the local array
-          this.comments = this.comments.filter(
-            (comment) => comment.id !== commentId,
-          )
         },
         (error) => {
           console.error('Error deleting comment', error)
+          console.log(commentId)
         },
+        () => {
+          // Reload after deleting the comment
+          window.location.reload();
+        }
       )
   }
 

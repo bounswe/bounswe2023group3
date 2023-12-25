@@ -1,46 +1,49 @@
 :host {
-    font-family: 'Arial', sans-serif;
-  }
+  font-family: 'Arial', sans-serif;
+}
 
-  ::ng-deep .mat-mdc-dialog-container {
-    --mdc-dialog-container-color: #202a40;
-  }
+::ng-deep .mat-mdc-dialog-container {
+  --mdc-dialog-container-color: #202a40; /* Set the background color of the whole container */
+}
+
+[mat-dialog-title] {
+  color: white;
+  text-align: center;
+}
+
+mat-form-field {
+  width: 100%; /* Make the form field take the full width */
+}
 
 mat-dialog-content {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-  
-  /* Add this style to your component's CSS file */
-mat-form-field .mat-form-field-wrapper {
-    background-color: #ccc; /* Set the background color for the entire mat-form-field */
-    border-radius: 8px; /* Adjust the border-radius as needed */
-  }
-  
-  /* Optional: Adjust the input style */
-  mat-form-field .mat-input-element {
-    background-color: transparent; /* Set the background color of the input itself */
-    border: none; /* Remove the input border if needed */
-    padding: 8px; /* Add padding to the input */
-    box-sizing: border-box; /* Include padding and border in the total width/height */
-  }
-  
-  mat-dialog-actions {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-top: 16px;
-  }
-  
-  button {
-    background-color: #9dc0c4;
-    color: #202a40;
-    border: none;
-    padding: 10px 16px;
-    font-size: 16px;
-    border-radius: 16px;
-    margin-bottom: 8px;
-    cursor: pointer;
-  }
-  
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%; /* Make the content take the full width */
+}
+
+/* Optional: Adjust the input style */
+mat-form-field .mat-input-element {
+  background-color: transparent;
+  border: none;
+  padding: 4px;
+  width: 100%; /* Make the input take the full width */
+}
+
+mat-dialog-actions {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 16px;
+}
+
+button {
+  background-color: #9dc0c4;
+  color: #202a40;
+  border: none;
+  padding: 10px 16px;
+  font-size: 16px;
+  border-radius: 16px;
+  margin-bottom: 8px;
+  cursor: pointer;
+}

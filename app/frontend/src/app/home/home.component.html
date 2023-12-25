@@ -7,7 +7,7 @@
         <div style="display: flex; align-items: center; justify-content: flex-end;">
           <p [class.fade-in]="isChecked" style="margin-right: 10px; position: relative; top: 7px;">{{ settledMode ? 'Settled' : 'Ongoing' }}</p>
           <label class="switch">
-            <input type="checkbox" [(ngModel)]="isChecked" (change)="settledPolls(isChecked)">
+            <input type="checkbox" [(ngModel)]="isChecked" (change) = "settledPolls(isChecked)">
             <span class="slider"></span>
           </label>
         </div>
@@ -28,15 +28,15 @@
                 left: 10px;
                 top: 50%;
                 transform: translateY(-50%);
-                width: 18px;
-                height: 18px;
+                width: 20px;
+                height: 20px;
               "
             />
             <input
               id="searchInput"
               [(ngModel)]="query"
               (keyup.enter)="semanticSearchPolls(query)"
-              style="border-radius: 15px; text-align: left; padding-left: 30px; cursor: pointer;"
+              style="border-radius: 20px; text-align: left; padding-left: 35px; cursor: pointer; font-size: medium;"
               placeholder="What are you looking for?"
             />
           </div>
@@ -48,14 +48,14 @@
               class="user-polls-column default"
               [class.blurred]="!isAuthenticated"
               [class.active]="clickedButton === 'following'"
-              (click)="followingPolls()"
+              (click)="followingPolls(isChecked)"
             >
               <span class="button-text">Following</span>
             </button>
             <button 
               class="user-polls-column"
               [class.active]="clickedButton === 'trending'"
-              (click)="trendingPolls()"
+              (click)="trendingPolls(isChecked)"
             >
               <span class="button-text">Trending</span>
             </button>

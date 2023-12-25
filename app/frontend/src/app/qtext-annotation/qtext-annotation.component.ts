@@ -61,9 +61,15 @@ export class QtextAnnotationComponent {
   getIndexFromMousePosition(event: MouseEvent): number {
     if (this.textContainer) {
       const rect = this.textContainer.nativeElement.getBoundingClientRect();
-      const mouseX = event.clientX - rect.left;
+      // Adjust for padding
+      const paddingLeft = parseFloat(window.getComputedStyle(this.textContainer.nativeElement).paddingLeft);
+      const fontSize = parseFloat(window.getComputedStyle(this.textContainer.nativeElement).fontSize);
+      const mouseX = event.clientX - rect.left - paddingLeft;
       const charWidth = rect.width / this.text.length;
-      const index = Math.floor(mouseX / charWidth);
+      const spacing = charWidth - fontSize; // Adjust for spacing between characters
+      // Ensure index is within bounds
+      const index = Math.max(0, Math.min(this.text.length - 1, Math.floor((mouseX - spacing / 2) / charWidth)));
+
   
       return index;
     }

@@ -3,6 +3,7 @@
   flex-direction: column;
   align-items: center;
   max-height: 200px; /* Set a maximum height for the follower list */
+  max-width: 300px; 
   overflow-y: auto; /* Add a vertical scrollbar when needed */
 }
 

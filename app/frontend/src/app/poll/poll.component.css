@@ -6,32 +6,70 @@ body {
 }
 .container {
   background-color: #63989f;
-  padding: 20px;
+  padding: 25px;
   margin: 0;
 }
-.button {
-  display: block;
-  width: 100%;
-  padding: 10px;
-  margin-bottom: 10px;
-  background-color: #9dc0c4;
-  text-align: center;
-  cursor: pointer;
-  border-radius: 15px;
-  border: none;
-}
+
 .comment:hover {
   text-decoration: underline;
 }
 
 .poll-image {
-  max-width: 100%; /* Ensures the image is responsive */
+  max-width: 50%; /* Ensures the image is responsive */
   height: auto;    /* Maintains the aspect ratio */
   border-radius: 10px; /* Optional, for rounded corners */
   margin-bottom: 10px; /* Spacing below the image */
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .heart-image {
   padding: 2px;
   vertical-align: middle;
 }
+
+.heart-image:hover {
+  filter: brightness(120%);
+  transition: filter 0.2s ease;
+}
+
+.mat-progress-bar {
+  height: 10px; /* Adjust the height as needed */
+  border-radius: 5px; /* Rounded corners */
+}
+
+.button {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  text-align: center;
+  cursor: pointer;
+  border-radius: 15px;
+  border: none;
+  transition: background-color 0.2s; /* Add a transition for smoother color change */
+}
+
+.button.clicked {
+  background-color: #b74f6f;
+  color: white;
+}
+
+.button:hover {
+  background-color: #86a8ac;
+}
+
+.button span {
+  vertical-align: middle;
+}
+
+.button:disabled {
+  opacity: 0.7; /* Adjust the opacity for disabled buttons */
+  cursor: not-allowed;
+}
+
+.progress-bar-container {
+  margin-bottom: 20px;
+}
+
