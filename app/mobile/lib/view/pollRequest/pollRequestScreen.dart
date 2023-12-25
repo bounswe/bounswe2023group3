@@ -218,38 +218,7 @@ class _PollRequestPageState extends State<PollRequestPage> {
     }
   }
 
-  @override
-  void initState() {
-    super.initState();
-    // WidgetsBinding.instance.addPostFrameCallback((_) => _scrollToTagField());
-    _pollTagFocus.addListener(() {
-      print("tag field takes the focus");
-      if (_pollTagFocus.hasFocus) {
-        WidgetsBinding.instance
-            .addPostFrameCallback((_) => _scrollToTagField());
-      }
-    });
-  }
-
-  void _scrollToTagField() {
-    // Get the render box of the tag field using the GlobalKey
-    final RenderBox tagRenderBox =
-        _tagFieldKey.currentContext?.findRenderObject() as RenderBox;
-    // Get the render box of the tag field's parent (for example, the ListView itself)
-    final RenderBox parentRenderBox = _listViewScrollController
-        .position.context.storageContext
-        .findRenderObject() as RenderBox;
-    // Get the position of the tag field relative to the screen
-    final Offset tagPosition = tagRenderBox.localToGlobal(Offset.zero);
-    // Convert the tag field's screen position to the parent's coordinate system
-    final Offset positionInParent = parentRenderBox.globalToLocal(tagPosition);
-
-    // _listViewScrollController.animateTo(
-    //   positionInParent.dy,
-    //   duration: Duration(milliseconds: 300),
-    //   curve: Curves.easeInOut,
-    // );
-  }
+  List<String> currentlySuggestedTags = [];
 
   @override
   Widget build(BuildContext context) {
@@ -328,10 +297,17 @@ class _PollRequestPageState extends State<PollRequestPage> {
                       labelText: 'Enter tag',
                     ),
                     onSubmitted: (_) {
+                      print("tag field submitted");
                       if (_pollTagController.text.isEmpty) {
                         FocusScope.of(context)
                             .requestFocus(_pollOptionFocuses[0]);
+                      } else if (currentlySuggestedTags.length == 1) {
+                        setState(() {
+                          pollData.tags.add(currentlySuggestedTags[0]);
+                          _pollTagController.clear();
+                        });
                       } else {
+                        // TODO ya da clear'layip sonraki field'a gecebilirz
                         FocusScope.of(context).unfocus();
                       }
                     },
@@ -343,6 +319,7 @@ class _PollRequestPageState extends State<PollRequestPage> {
                     var filteredTags = returnedTags
                         .where((tag) => !pollData.tags.contains(tag))
                         .toList();
+                    currentlySuggestedTags = filteredTags;
                     return filteredTags;
                   },
                   itemBuilder: (context, suggestion) {
