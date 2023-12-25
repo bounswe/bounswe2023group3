@@ -35,6 +35,7 @@ class PollViewHomePage extends StatefulWidget {
   final Map<String,int> voteCountDistributions;
   final String myVotedOptionId;
   final String outcomeOptionId;
+  final List<String> imageURLs;
 
 
   const PollViewHomePage({
@@ -58,7 +59,7 @@ class PollViewHomePage extends StatefulWidget {
     required this.annotationTexts,
     required this.voteCountDistributions,
     required this.myVotedOptionId,
-    required this.outcomeOptionId,
+    required this.outcomeOptionId, required this.imageURLs,
 
   });
   _PollViewHomePageState createState() => _PollViewHomePageState();
