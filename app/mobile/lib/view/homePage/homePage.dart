@@ -46,9 +46,11 @@ class _HomePageState extends State<HomePage>
       isSettled,
       didLike,
       commentCount,
-      chosenVoteIndex,
       annotationIndices,
       annotationTexts,
+      myVotedOptionId,
+      outcomeOptionId,
+      voteCountDistributions,
       ) async {
     if (!mounted) return;
     Navigator.push(
@@ -67,9 +69,11 @@ class _HomePageState extends State<HomePage>
           likeCount: likeCount,
           dateTime: dateTime,
           isSettled: isSettled,
-          chosenVoteIndex: chosenVoteIndex,
           annotationIndices: annotationIndices,
           annotationTexts: annotationTexts,
+            myVotedOptionId: myVotedOptionId,
+            outcomeOptionId: outcomeOptionId,
+            voteCountDistributions: voteCountDistributions,
         ),
       ),
     );
@@ -149,9 +153,11 @@ class _HomePageState extends State<HomePage>
                                     post.isSettled,
                                     post.didLike,
                                     post.commentCount,
-                                    post.chosenVoteIndex,
-                                post.annotationIndices,
-                                post.annotationTexts);
+                                    post.annotationIndices,
+                                    post.annotationTexts,
+                                    post.myVotedOptionId,
+                                    post.outcomeOptionId,
+                                    post.voteCountDistributions,);
                               },
                               child: SizedBox(
                                 height: postHeight,
@@ -171,9 +177,11 @@ class _HomePageState extends State<HomePage>
                                   approvedStatus: post.approvedStatus,
                                   didLike: post.didLike,
                                   commentCount: post.commentCount,
-                                  chosenVoteIndex: post.chosenVoteIndex,
                                   annotationIndices: post.annotationIndices,
                                   annotationTexts: post.annotationTexts,
+                                  myVotedOptionId: post.myVotedOptionId,
+                                  outcomeOptionId: post.outcomeOptionId,
+                                  voteCountDistributions: post.voteCountDistributions,
                                 ),
                               ),
                             ),
@@ -216,9 +224,11 @@ class _HomePageState extends State<HomePage>
                                     post.isSettled,
                                     post.didLike,
                                     post.commentCount,
-                                    post.chosenVoteIndex,
                                     post.annotationIndices,
-                                    post.annotationTexts
+                                    post.annotationTexts,
+                                    post.myVotedOptionId,
+                                    post.outcomeOptionId,
+                                    post.voteCountDistributions,
                                 );
                               },
                               child: SizedBox(
@@ -239,9 +249,11 @@ class _HomePageState extends State<HomePage>
                                   approvedStatus: post.approvedStatus,
                                   didLike: post.didLike,
                                   commentCount: post.commentCount,
-                                  chosenVoteIndex: post.chosenVoteIndex,
                                   annotationIndices: post.annotationIndices,
                                   annotationTexts: post.annotationTexts,
+                                  myVotedOptionId: post.myVotedOptionId,
+                                  outcomeOptionId: post.outcomeOptionId,
+                                  voteCountDistributions: post.voteCountDistributions,
                                 ),
                               ),
                             ),
