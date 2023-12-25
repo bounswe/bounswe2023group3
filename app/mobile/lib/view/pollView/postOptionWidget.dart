@@ -7,6 +7,7 @@ class PostOptionWidget extends StatelessWidget {
   final int percentage;
   final bool isSelected;
   final bool isChosen;
+  final bool isCorrect;
   final int isSettled;
   //final bool isCorrect;
 
@@ -18,7 +19,7 @@ class PostOptionWidget extends StatelessWidget {
     required this.isSelected,
     required this.isChosen,
     required this.isSettled,
-    //required this.isCorrect,
+    required this.isCorrect,
   }) : super(key: key);
 
   @override
@@ -29,23 +30,14 @@ class PostOptionWidget extends StatelessWidget {
         onTap: onPressed,
         child: Container(
           height: 30,
+
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(20.0),
-            border: Border.all(color: isChosen ? Colors.blue : Colors.grey),
-            color: isChosen ? Colors.blue : Colors.grey[200],
+            color: Colors.white,
           ),
           child: Stack(
             children: [
-              if (isSettled == 1)
-                Container(
-                  height: 30,
-                  width: percentage * 2, // Adjust the multiplier as needed
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(20.0),
-                    color: blue, //isCorrect? Colors.green: Colors.red,
-                    backgroundBlendMode: BlendMode.srcATop,
-                  ),
-                ),
+              VoteBar(percentage: percentage, isChosen: isChosen, isCorrect: isCorrect, isSelected: isSelected, isSettled: isSettled,),
               Positioned.fill(
                 child: Center(
                   child: Text(
@@ -56,7 +48,7 @@ class PostOptionWidget extends StatelessWidget {
                   ),
                 ),
               ),
-              if (isSettled == 1)
+              if (isSettled == 2 || isSelected)
                 Positioned(
                   right: 0,
                   top: 0,
@@ -78,5 +70,48 @@ class PostOptionWidget extends StatelessWidget {
         ),
       ),
     );
+  }
+}
+
+
+class VoteBar extends StatelessWidget {
+  final percentage;
+  final isChosen;
+  final isCorrect;
+  final isSelected;
+  final isSettled;
+  const VoteBar ({super.key, required this.percentage, this.isChosen, this.isCorrect, this.isSelected,this.isSettled});
+
+  @override
+  Widget build(BuildContext context) {
+    if (isSettled == 2) {
+      return Container(
+        height: 30,
+        width: percentage as double, // Adjust the multiplier as needed
+        decoration: BoxDecoration(
+          border: isChosen ? Border.all(color: pink, width: 3.0) : Border.all(
+              color: Colors.black),
+          borderRadius: BorderRadius.circular(20.0),
+          color: isCorrect ? Colors.green : Colors.red,
+          backgroundBlendMode: BlendMode.srcATop,
+        ),
+      );
+    }
+    else if (isSelected) {
+      return Container(
+        height: 30,
+        width: percentage.toDouble()*3.8, // Adjust the multiplier as needed
+        decoration: BoxDecoration(
+          border: isChosen ? Border.all(color: pink, width: 3.0) : Border.all(
+              color: Colors.black),
+          borderRadius: BorderRadius.circular(20.0),
+          color: isChosen ? pink : Colors.grey,
+          backgroundBlendMode: BlendMode.srcATop,
+        ),
+      );
+    }
+    else {
+      return Container();
+    }
   }
 }

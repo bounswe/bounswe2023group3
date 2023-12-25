@@ -23,8 +23,16 @@ class LeaderboardService {
       final Map<String,dynamic> leaderboardJson = response.data;
 
       final rankingJson = leaderboardJson['ranking'];
-      final currentUserTemp = leaderboardJson['currenUser'];
-      final PersonData currentUser = new PersonData(username: currentUserTemp["user"]["username"], score: currentUserTemp["score"], userId: currentUserTemp["user"]["id"]);
+      final currentUserTemp = leaderboardJson['currenUser'] ??{};
+
+      PersonData currentUser;
+      if(currentUserTemp.length == 0){
+        currentUser = new PersonData(username: "", score: 0, userId: "");
+      }
+      else{
+        currentUser = new PersonData(username: currentUserTemp["user"]["username"], score: currentUserTemp["score"], userId: currentUserTemp["user"]["id"]);
+      }
+
       List<PersonData> rankingData = [];
       rankingData.add(currentUser);
       for (var ranking in rankingJson) {

@@ -65,7 +65,7 @@ class _PendingPollViewState extends State<PendingPollView> {
               isChosen: false,
               percentage: 0,
               onPressed: () {},
-              isSettled: 0,
+              isSettled: 0, isCorrect: false,
             ),
           Padding(
             padding: const EdgeInsets.all(16.0),

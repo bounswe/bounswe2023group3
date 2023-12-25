@@ -12,6 +12,7 @@ import 'package:mobile_app/view/pollView/postOptionWidget.dart';
 import 'package:mobile_app/view/pollView/userInformationWidget.dart';
 import 'package:mobile_app/services/pollViewHomePageLike.dart';
 
+import '../../services/voteDistributionService.dart';
 import '../constants.dart';
 import '../helpers/dateTime.dart';
 import '../helpers/tag.dart';
@@ -31,9 +32,11 @@ class PollPage extends StatefulWidget {
   final String dateTime;
   final int isSettled;
   final bool? approvedStatus;
-  final int chosenVoteIndex;
   final List<List<int>> annotationIndices;
   final List<String> annotationTexts;
+  final Map<String,int> voteCountDistributions;
+  final String myVotedOptionId;
+  final String outcomeOptionId;
 
   PollPage({
     super.key,
@@ -50,9 +53,11 @@ class PollPage extends StatefulWidget {
     required this.dateTime,
     required this.isSettled,
     this.approvedStatus,
-    required this.chosenVoteIndex,
     required this.annotationIndices,
     required this.annotationTexts,
+    required this.voteCountDistributions,
+    required this.myVotedOptionId,
+    required this.outcomeOptionId,
   });
 
   @override
@@ -60,8 +65,11 @@ class PollPage extends StatefulWidget {
 }
 
 class _PollPageState extends State<PollPage> {
-  late int chosenVoteIndex;
   late List<CommentData> comments;
+  late String myVotedOptionId;
+  late Map<String, int> voteCountDistributions;
+  late int voteCount;
+
   Future<List<CommentData>> fetchComments() async {
     comments = await PollCommentService.getComments(widget.pollId);
     return comments;
@@ -71,7 +79,10 @@ class _PollPageState extends State<PollPage> {
   void initState() {
     super.initState();
     comments = [];
-    chosenVoteIndex = widget.chosenVoteIndex;
+    myVotedOptionId = widget.myVotedOptionId;
+    voteCountDistributions = widget.voteCountDistributions;
+    voteCount = widget.voteCount;
+
   }
 
   @override
@@ -97,19 +108,19 @@ class _PollPageState extends State<PollPage> {
             TagListWidget(tags: widget.tags, tagColors: widget.tagColors),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              child: Text('Vote Count: ${widget.voteCount}',
+              child: Text('Votes: ${voteCount}',
                   style: const TextStyle(fontSize: 16.0)),
             ),
             for (int index = 0; index < widget.postOptions.length; index++)
               PostOptionWidget(
-                //(100*int.parse(widget.postOptions[index]["voteCount"])/widget.voteCount).toInt()
                 optionText: widget.postOptions[index]["answer"],
-                isSelected: chosenVoteIndex >= 0 ? true : false,
-                isChosen: chosenVoteIndex == index,
-                percentage: 30,
+                isSelected: myVotedOptionId!="" ? true : false,
+                isChosen: myVotedOptionId == widget.postOptions[index]["id"],
+                percentage: voteCountDistributions[widget.postOptions[index]["id"]] != null && voteCount!=0 && myVotedOptionId!="" ?((voteCountDistributions[widget.postOptions[index]["id"]]!/voteCount)*100).round():0,
                 onPressed: () =>
-                    handleOptionPress(widget.postOptions[index]["id"], index),
+                    handleOptionPress(widget.postOptions[index]["id"]),
                 isSettled: widget.isSettled,
+                isCorrect: widget.postOptions[index]["id"] == widget.outcomeOptionId,
               ),
             Padding(
               padding: const EdgeInsets.all(16.0),
@@ -182,16 +193,25 @@ class _PollPageState extends State<PollPage> {
     );
   }
 
-  void handleOptionPress(String optionId, int index) async {
+  void handleOptionPress(String optionId) async {
     // Handle option press based on the selected option
     PollViewHomePageVote pollVote = PollViewHomePageVote();
     bool voteSuccess = await pollVote.vote(optionId);
+    VoteDistributionService voteDistributionService = VoteDistributionService();
+    voteCountDistributions= await voteDistributionService.getVoteDistribution(widget.pollId);
+
+
+
+
+
     if (voteSuccess) {
       setState(() {
-        chosenVoteIndex = index;
+        myVotedOptionId = optionId;
+        voteCount++;
       });
     }
   }
+
 
   void handleLikePress() {
     PollViewHomePageLike pollLike = PollViewHomePageLike();

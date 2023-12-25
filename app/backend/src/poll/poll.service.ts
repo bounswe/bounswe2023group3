@@ -152,7 +152,7 @@ export class PollService {
   ): Promise<void> {
     const poll = await this.pollRepository.findOne({
       where: { id },
-      relations: ['options', 'tags'],
+      relations: ['options', 'tags','likes','comments'],
     });
 
     if (!poll) {

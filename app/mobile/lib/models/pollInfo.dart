@@ -22,7 +22,6 @@ class PollInfo {
   final List<String> optionIds;
   final List<String> options;
   final List<dynamic> optionIdCouples;
-  final List<int> optionsVoteCount;
 
   final List<String> imageUrls;
 
@@ -34,9 +33,12 @@ class PollInfo {
   final int isSettled;
   final bool didlike;
 
-  final int chosenVoteIndex;
 
   List<Annotation> annotations = [];
+
+  final String myVotedOptionId;
+  final String outcomeOptionId;
+  final Map<String,int> voteCountDistributions;
 
   PollInfo.withoutComments({
     required this.userName,
@@ -59,8 +61,9 @@ class PollInfo {
     required this.optionIds,
     required this.optionIdCouples,
     required this.tagIds,
-    required this.optionsVoteCount,
-    required this.chosenVoteIndex,
+    required this.voteCountDistributions,
+    required this.myVotedOptionId,
+    required this.outcomeOptionId,
     required this.imageUrls,
   });
 
@@ -79,6 +82,20 @@ class PollInfo {
     }
     List<dynamic> options = json['options'];
     List<dynamic> tags = json['tags'];
+
+
+
+    //NEWLY ADDED
+    final List<Map<String, dynamic>> votesJson = json['voteDistribution'] ?? [];
+    Map<String,int> voteCountDistributions = {};
+
+    if(votesJson!=[]) {
+      for (var vote in votesJson) {
+        voteCountDistributions[vote["optionId"]] = vote["count"];
+      }
+    }
+    final myVotedOptionID = json['votedOption']?["id"] ?? "";
+
     var creator = json['creator'];
     List<String> imageUrls = json['image_urls'] != null
         ? (json['image_urls'] as List).map((e) => e as String).toList()
@@ -101,8 +118,7 @@ class PollInfo {
       options: options.map((e) => e['answer'] as String).toList(),
       optionIds: options.map((e) => e['id'] as String).toList(),
       // TODO vote_count field'i kontrol edilecek
-      optionsVoteCount:
-          options.map((e) => (e['voteCount'] ?? 0) as int).toList(),
+
       likeCount: json['likeCount'] ?? 0,
       dueDate: DateTime.parse(json['due_date']),
       creationDate: DateTime.parse(json['creation_date']),
@@ -114,7 +130,9 @@ class PollInfo {
       approvedStatus: json['approveStatus'] ?? false,
       isSettled: json['is_settled'] ?? 0,
       didlike: json['didLike'] ?? false,
-      chosenVoteIndex: -1, //json['chosenVoteIndex']
-    );
+      voteCountDistributions: json['voteCountDistributions'] ?? {},
+      myVotedOptionId: myVotedOptionID,
+      outcomeOptionId: json['outcome'] ?? "",
+      );
   }
 }
