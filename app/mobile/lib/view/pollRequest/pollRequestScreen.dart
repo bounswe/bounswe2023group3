@@ -337,8 +337,13 @@ class _PollRequestPageState extends State<PollRequestPage> {
                     },
                   ),
                   suggestionsCallback: (pattern) async {
-                    return await PollRequestService.getPossibleCompletions(
-                        pattern);
+                    var returnedTags =
+                        await PollRequestService.getPossibleCompletions(
+                            pattern);
+                    var filteredTags = returnedTags
+                        .where((tag) => !pollData.tags.contains(tag))
+                        .toList();
+                    return filteredTags;
                   },
                   itemBuilder: (context, suggestion) {
                     return ListTile(
