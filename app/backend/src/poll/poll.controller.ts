@@ -545,6 +545,32 @@ export class PollController {
   }
 
   @UseGuards(AuthGuard, VerificationGuard)
+  @ApiResponse({
+    status: 200,
+    description: 'Polls are fetched successfully.',
+    type: [GetPollResponseDto],
+  })
+  @ApiResponse({
+    status: 500,
+    description: 'Internal server error, contact with backend team.',
+  })
+  @Get('my-followings2')
+  public async findPollsOfUsersIFollow2(@Req() req: any): Promise<any> {
+    const userId = req.user.id;
+    return await this.pollService.findAll({
+      creatorId: null,
+      approveStatus: true,
+      likedById: null,
+      votedById: null,
+      followedById: userId,
+      sortString: null,
+      is_settled: null,
+      tags: null,
+      userId,
+    });
+  }
+
+  @UseGuards(AuthGuard, VerificationGuard)
   @ApiQuery({ name: 'pageSize', required: true })
   @ApiQuery({ name: 'pageNum', required: true })
   @ApiResponse({
