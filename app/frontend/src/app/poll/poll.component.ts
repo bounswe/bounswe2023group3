@@ -117,7 +117,7 @@ export class PollComponent {
         this.options = response.options
 
         this.due_date = this.formatDateTime(new Date(response.due_date))
-        this.vote_count = response.vote_count
+        this.vote_count = response.voteCount
 
         this.creator = response.creator
 
@@ -285,8 +285,8 @@ export class PollComponent {
     this.isLikedBy = !this.isLikedBy //change the like status
   }
 
-  goToTag(tagName: string) {
-    this.router.navigate(['/app-tag-page', tagName])
+  goToTag(tagName: string, tagId: string) {
+    this.router.navigate(['/app-tag-page', tagName, tagId])
   }
 
   navigateToProfile(user: string) {

@@ -68,7 +68,7 @@ const routes: Routes = [
     component: PollViewComponent,
   },
   {
-    path: 'app-tag-page/:tagName',
+    path: 'app-tag-page/:tagName/:tagId',
     component: TagPageComponent,
   },
   {
