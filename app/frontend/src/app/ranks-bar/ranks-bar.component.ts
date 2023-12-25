@@ -11,12 +11,12 @@ export class RanksBarComponent {
   ranks!: any
 
   colors: string[] = [
-    '#f2545b',
-    '#276fbf',
-    '#585191',
-    '#da9f93',
-    '#c5d86d',
+    '#EDDEA4',
+    '#F7A072',
     '#e57f84',
+    '#876194',
+    '#076D9C',
+    '#00665E',
   ]
   constructor(private http: HttpClient) {}
 

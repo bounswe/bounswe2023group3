@@ -6,6 +6,8 @@ import { MatDialog, MatDialogModule } from '@angular/material/dialog'
 import { ConfirmModelComponent } from '../confirm-model/confirm-model.component'
 import { UserSettleRequestComponent } from '../user-settle-request/user-settle-request.component'
 import { MatFormFieldModule } from '@angular/material/form-field'
+import { AuthService } from '../auth.service'
+import { ReportUserComponent } from '../report-user/report-user.component'
 
 @Component({
   selector: 'app-settled-poll',
@@ -14,6 +16,7 @@ import { MatFormFieldModule } from '@angular/material/form-field'
 })
 export class SettledPollComponent {
   @Input() pollId!: string
+  image_urls: string[] = []
   selectedButton: HTMLButtonElement | null = null
   question!: string
   tags!: any[]
@@ -34,15 +37,22 @@ export class SettledPollComponent {
   outcome: string = ''
   outcomeSource: string = ''
 
+  annotations: any[] =[]
+
   colors: string[] = [
     '#AEEEEE',
-    '#FFDAB9',
     '#E6E6FA',
-    '#98FB98',
     '#FADADD',
     '#F08080',
     '#B0C4DE',
     '#FFB6C1',
+    '#D7907B',
+    '#C1EEFF',
+    '#F7A072',
+    '#9BA0BC',
+    '#F88DAD',
+    '#EDDEA4',
+    '#BFCC94',
   ]
 
   constructor(
@@ -50,11 +60,12 @@ export class SettledPollComponent {
     private router: Router,
     private userService: UserService,
     public dialog: MatDialog,
+    private authService: AuthService,
   ) {}
 
   openConfirmationDialog(): void {
     const dialogRef = this.dialog.open(ConfirmModelComponent, {
-      width: '300px',
+      width: '400px', height: '200px'
     })
 
     dialogRef.afterClosed().subscribe((result) => {
@@ -72,6 +83,16 @@ export class SettledPollComponent {
     if (this.userId) {
       this.isAuthenticated = true
     }
+    this.http.get('http://34.105.66.254:1938/annotation?pollIDs=http%3A%2F%2F34.105.66.254%3A1923%2F'+this.pollId).subscribe(
+      (response: any) => {
+        this.annotations=response.annotations;
+      },
+      (error) => {
+        console.error('Error fetching poll:', error);
+      }
+    );
+
+
     this.http.get('http://34.105.66.254:1923/poll/' + this.pollId).subscribe(
       (response: any) => {
         this.question = response.question
@@ -81,6 +102,7 @@ export class SettledPollComponent {
         this.due_date = response.due_date
         this.vote_count = response.vote_count
         this.creator = response.creator
+        this.image_urls = response.image_urls;
 
         const time_dif =
           (new Date().valueOf() - new Date(response.creation_date).valueOf()) /
@@ -192,5 +214,42 @@ export class SettledPollComponent {
         console.error('Error deleting poll:', error)
       },
     )
+  }
+
+  reportUser(): void {
+    const dialogRef = this.dialog.open(ReportUserComponent, {
+      width: '400px',
+    })
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.sendUserReport(result.reason)
+      } else {
+      }
+    })
+  }
+
+  sendUserReport(rsn : string) {
+    const body = {
+      'reason': rsn,
+    }
+
+    console.log(rsn)
+
+    this.http
+      .post('http://34.105.66.254:1923/user/report/' + this.creator.id, body, this.authService.getHeaders())
+      .subscribe(
+        () => {
+          console.log(`Request sent successfully.`)
+        },
+        (error) => {
+          console.error('Error sending request:', error)
+        },
+      )
+  }
+
+  isCurrentUserCreator(): boolean {
+    // Check if there is a valid userId and creator, and if their ids match
+    return this.userId === this.creator.id;
   }
 }

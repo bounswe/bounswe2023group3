@@ -35,10 +35,12 @@
               formControlName="description"
               placeholder="Enter Your Description"
               style="margin-bottom: 30px;"
-              required
             />
 
-            <app-file-upload (shortLinkEmitter)="receiveShortLink($event)"></app-file-upload>
+            <div style="justify-content: left;">
+              <app-file-upload (shortLinkEmitter)="receiveShortLink($event)" style="margin-right: 10px;"></app-file-upload>
+            </div>
+            
 
             <!-- Add Tags -->
             <div formArrayName="tags">
@@ -167,15 +169,6 @@
                 margin-left: 5px;
               "
             >
-              <input
-                type="checkbox"
-                id="no_deadline"
-                name="no_deadline"
-                (change)="handleCheckboxChange()"
-                style="margin-right: 8px; cursor: pointer"
-              />
-              No deadline
-            </p>
 
             <input
               class="poll-info"

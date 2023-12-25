@@ -11,12 +11,12 @@ export class TagsBarComponent {
   tags!: any
 
   colors: string[] = [
+    '#EDDEA4',
+    '#F7A072',
     '#e57f84',
-    '#b4869f',
-    '#30568f',
-    '#c64191',
-    '#d7907b',
-    '#f9c784',
+    '#876194',
+    '#076D9C',
+    '#00665E',
   ]
   constructor(
     private http: HttpClient,
@@ -33,12 +33,27 @@ export class TagsBarComponent {
       },
     )*/
     this.tags = [
-      { name: 'Movies' },
-      { name: 'Football' },
-      { name: 'Sports' },
-      { name: 'Music' },
-      { name: 'TV Shows' },
-      { name: 'Finance' },
+      { name: 'movies' },
+      { name: 'weather' },
+      { name: 'football' },
+      { name: 'sports' },
+      { name: 'music' },
+      { name: 'tv shows' },
+      { name: 'finance' },
+      { name: 'basketball' },
+      { name: 'tv series' },
+      { name: 'fashion' },
+      { name: 'magazine' },
+      { name: 'games' },
+      { name: 'computer science' },
+      { name: 'entertainment' },
+      { name: 'anime' },
+      { name: 'technology' },
+      { name: 'books' },
+      { name: 'literature' },
+      { name: 'education' },
+      { name: 'business' },
+      { name: 'video games' },
     ]
   }
 

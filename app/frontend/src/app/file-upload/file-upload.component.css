@@ -30,5 +30,9 @@
     background-color: #c55d63;
   }
   
+  .text-left {
+    text-align: left;
+    margin-left: 8px;
+  }
 
   

@@ -6,7 +6,7 @@
       <app-moderator-side-bar ></app-moderator-side-bar>
       <div class="container" style="padding: 40px; justify-self: center; margin-left: 240px;">
         <div class="moderator-requests">
-          <button class="moderator-requests-column" style="border: solid 1px; transition: background-color 0.2s;">
+          <button class="moderator-requests-column" [class.active]="isActiveButton('User Report Requests')" (click)="setActiveButton('User Report Requests')" style="border: solid 1px; transition: background-color 0.2s;">
             User Report Requests
           </button>
         </div>
@@ -19,7 +19,9 @@
           <button class="details-button" (click)="handleApproval(report.id)">Approve</button>
           <button class="disapprove-button">Disapprove</button>
         </div>
+        <app-scroll-to-top-button></app-scroll-to-top-button>
       </div>
+      
     </div>
   </body>
 </html>

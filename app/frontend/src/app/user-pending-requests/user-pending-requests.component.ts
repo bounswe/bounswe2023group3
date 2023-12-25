@@ -10,6 +10,9 @@ import { ActivatedRoute, Router } from '@angular/router'
 })
 export class UserPendingRequestsComponent {polls!: any[]
   options!: any
+  username: any
+  user_id!: any
+  activeButton: string | null = null;
 
 
   constructor(private http: HttpClient,
@@ -18,6 +21,8 @@ export class UserPendingRequestsComponent {polls!: any[]
     private route: ActivatedRoute,) {
       this.options=this.authService.getHeaders()
     this.onPollCreationReq()
+    this.username = localStorage.getItem('username')
+    this.user_id = localStorage.getItem('user_id')
   }
 
   formatDateTime(date: Date): string {
@@ -31,6 +36,7 @@ export class UserPendingRequestsComponent {polls!: any[]
   }
 
   onPollCreationReq(){
+    this.activeButton = 'PollCreationRequests';
     this.http.get('http://34.105.66.254:1923/poll/my-polls/pending',this.options).subscribe(
       (response: any) => {
         this.polls = response
@@ -82,8 +88,21 @@ export class UserPendingRequestsComponent {polls!: any[]
   }
   
 
-  onOutcomeVerifiationReq(){
-    this.polls = []
+  onOutcomeVerifiationReq() {
+    this.activeButton = 'OutcomeVerificationRequests';
+    this.http.get('http://34.105.66.254:1923/poll/?creatorId='+this.user_id+"&is_settled=1",this.options).subscribe(
+      (response: any) => {
+        this.polls = response
+        this.polls.forEach(poll => {
+          poll.creation_date = this.formatDateTime(new Date(poll.creation_date))
+        });
+        console.log('Fetched polls:', this.polls)
+      },
+      (error) => {
+        console.error('Error fetching polls:', error)
+      },
+    )
   }
+  
 
 }

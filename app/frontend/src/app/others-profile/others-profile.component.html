@@ -12,7 +12,7 @@
             alt="User Avatar"
           />
           <div class="post-content">
-            <b class="name" style="font-size: xx-large; padding-top: 10px"
+            <b class="name" style="font-size: xx-large; padding-top: 10px; line-height: 1;"
               >{{ this.user? this.user.firstname : '' }} {{ this.user? this.user.lastname : '' }}</b
             >
             <!-- add the Actual Name of the user after it is implemented in the backend -->
@@ -30,30 +30,26 @@
           ></button>
         </div>
 
-        <div style="margin-bottom: 15px; margin-top: 10px; text-align: center">
-          <p class="follow-text" style="margin-right: 100px; cursor: pointer;" (click)="toggleFollowees()">
+        <div style="margin-bottom: 15px; margin-top: 10px; text-align: center; display: flex; justify-content: center; position: relative;">
+
+          <!-- Following Section -->
+          <p #followeesText class="follow-text" style="margin-right: 20px; cursor: pointer;" (click)="toggleFollowees()">
             <b>{{ this.nofFollowees }}</b> followings
           </p>
-
-          <div style="position: absolute; z-index: 10;">
-            <div class="popup" *ngIf="showFollowees" style="position: relative; top:0px; left:235px;
-             background-color: #9DC0C4; border: 1px solid #202A40;">
-              <app-follow-list  [followList]="followList" [title]="'Following'"></app-follow-list>
-            </div>
+          <div *ngIf="showFollowees" class="popup" [style.top.px]="getPopupTop(followeesText)" [style.left.px]="getPopupTop(followeesText).left -110" style="position: absolute; border: 1px solid #232F44; width: 200px;">
+            <app-follow-list [followList]="followList" [title]="'Following'"></app-follow-list>
           </div>
-
-          <p class="follow-text" style="cursor: pointer;" (click)="toggleFollowers()">
+        
+          <!-- Followers Section -->
+          <p #followersText class="follow-text" style="cursor: pointer;" (click)="toggleFollowers()">
             <b>{{ this.nofFollowers }}</b> followers
           </p>
-
-          <div style="position: absolute; z-index: 10;">
-            <div class="popup" *ngIf="showFollowers" style="position: relative; top:0px; left:405px;
-             background-color: #9DC0C4; border: 1px solid #202A40; ">
-              <app-follow-list [followList]="followList" [title]="'Followers'"></app-follow-list>
-            </div>
+          <div *ngIf="showFollowers" class="popup" [style.top.px]="getPopupTop(followersText)" [style.left.px]="getPopupTop(followersText).left-110" style="position: absolute; border: 1px solid #232F44; width: 200px;">
+            <app-follow-list [followList]="followList" [title]="'My Followers'"></app-follow-list>
           </div>
-
         </div>
+
+
         <div class="user-polls">
           <button class="user-polls-column" [class.active]="clickedButton === 'created'" (click)="createdPolls()">
             Created
@@ -73,7 +69,14 @@
           </button>
         </div>
         <div>
-          <app-poll *ngFor="let poll of polls" [pollId]="poll.id"></app-poll>
+          <div *ngFor="let poll of polls">
+            <ng-container *ngIf="!poll.is_settled; else settledPoll">
+              <app-poll [pollId]="poll.id"></app-poll>
+            </ng-container>
+            <ng-template #settledPoll>
+              <app-settled-poll [pollId]="poll.id"></app-settled-poll>
+            </ng-template>
+          </div>
         </div>
         <app-scroll-to-top-button></app-scroll-to-top-button>
       </div>

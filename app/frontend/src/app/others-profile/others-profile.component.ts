@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http'
-import { Component, OnInit } from '@angular/core'
+import { Component, OnInit, ElementRef, ViewChild } from '@angular/core'
 import { ActivatedRoute } from '@angular/router'
 import { Observable } from 'rxjs'
 import { switchMap } from 'rxjs/operators'
@@ -28,6 +28,9 @@ export class OthersProfileComponent implements OnInit {
   followList!: any[]
 
   clickedButton: string = '';
+  @ViewChild('followeesText', { static: true, read: ElementRef }) followeesText!: ElementRef;
+  @ViewChild('followersText', { static: true, read: ElementRef }) followersText!: ElementRef;
+  
 
   constructor(
     private http: HttpClient,
@@ -172,6 +175,29 @@ export class OthersProfileComponent implements OnInit {
       },
     )
     }
+  }
+
+  getPopupTop(element: HTMLElement): { top: number; left: number } {
+    const textRect = element.getBoundingClientRect();
+    const container = element.parentElement;
+  
+    if (container) {
+      const containerRect = container.getBoundingClientRect();
+      const top = textRect.bottom - containerRect.top + window.scrollY + 5;
+  
+      // Calculate the center of the text element
+      const textCenter = textRect.left + textRect.width / 2;
+  
+      // Calculate the left position based on the text center
+      const left = textCenter - containerRect.left;
+  
+      return { top, left };
+    }
+  
+    // Handle the case when the parent element is null
+    const top = textRect.bottom + window.scrollY + 5;
+    const left = textRect.left; // Adjust as needed
+    return { top, left };
   }
   
 }

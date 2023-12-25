@@ -35,6 +35,11 @@
           <p class="info-text">{{outcome}}</p>
         </div>
 
+        <div class="poll-item" *ngIf="is_settled">
+          <span class="label">Outcome Source:</span>
+          <p class="info-text">{{outcome_source}}</p>
+        </div>
+
         <div class="poll-item">
           <span class="label">Due Date:</span>
           <p class="info-text">{{due_date}}</p>
@@ -43,7 +48,7 @@
 
         <div class="action-button" style="margin-top: 20px;">
           <button class="action-button approve-button" (click)="onApprove()">Approve</button>
-          <button class="action-button reject-button" (click)="onReject()">Reject</button>
+          <button class="action-button reject-button" (click)="onReject()">Disapprove</button>
         </div>
       </div>
     </div>

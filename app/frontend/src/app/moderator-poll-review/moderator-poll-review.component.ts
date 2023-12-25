@@ -20,6 +20,7 @@ export class ModeratorPollReviewComponent {
   tags: any[] = [];
   is_settled!: number
   outcome!: any
+  outcome_source!: any
 
   constructor(
     private http: HttpClient,
@@ -47,10 +48,11 @@ export class ModeratorPollReviewComponent {
         this.tags = response.tags
         this.due_date = this.formatDateTime(new Date(response.due_date))
         this.is_settled = response.is_settled
+        this.outcome_source = response.outcome_source
         if(this.is_settled){
           this.http.get('http://34.105.66.254:1923/option/' + response.outcome ).subscribe(
             (outcomeResponse: any) => {
-                  this.outcome = outcomeResponse.answer 
+                  this.outcome = outcomeResponse.answer
             },
             (error) => {
               console.error('Error fetching poll:', error)
@@ -102,8 +104,11 @@ export class ModeratorPollReviewComponent {
         (error) => {
           console.error('Error deleting poll:', error)
         },
+        () => {
+          // Redirect after completing the request
+          this.router.navigate(['/app-moderator-requests']);
+        }
       )
-      window.location.reload()
       return
     }
 
