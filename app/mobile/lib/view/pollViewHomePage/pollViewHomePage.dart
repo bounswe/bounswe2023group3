@@ -1,6 +1,7 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile_app/models/comment.dart';
+import 'package:mobile_app/services/voteDistributionService.dart';
 import 'package:mobile_app/view/constants.dart';
 import 'package:mobile_app/view/pollView/commentWidget.dart';
 import 'package:mobile_app/view/pollView/tagWidget.dart';
@@ -28,10 +29,13 @@ class PollViewHomePage extends StatefulWidget {
   final int isSettled;
   final bool? approvedStatus;
   final bool didLike;
-  final int chosenVoteIndex;
   final int commentCount;
   final List<List<int>> annotationIndices;
   final List<String> annotationTexts;
+  final Map<String,int> voteCountDistributions;
+  final String myVotedOptionId;
+  final String outcomeOptionId;
+
 
   const PollViewHomePage({
     super.key,
@@ -49,8 +53,12 @@ class PollViewHomePage extends StatefulWidget {
     required this.isSettled,
     required this.approvedStatus,
     required this.didLike,
-    required this.chosenVoteIndex,
-    required this.commentCount, required this.annotationIndices, required this.annotationTexts,
+    required this.commentCount,
+    required this.annotationIndices,
+    required this.annotationTexts,
+    required this.voteCountDistributions,
+    required this.myVotedOptionId,
+    required this.outcomeOptionId,
   });
   _PollViewHomePageState createState() => _PollViewHomePageState();
 }
@@ -58,14 +66,19 @@ class PollViewHomePage extends StatefulWidget {
 class _PollViewHomePageState extends State<PollViewHomePage> {
   late int likeCount;
   late bool didLike;
-  late int chosenVoteIndex;
+  late String myVotedOptionId;
+  late Map<String, int> voteCountDistributions;
+  late int voteCount;
+
 
   @override
   void initState() {
     super.initState();
     likeCount = widget.likeCount;
     didLike = widget.didLike;
-    chosenVoteIndex = widget.chosenVoteIndex;
+    myVotedOptionId = widget.myVotedOptionId;
+    voteCountDistributions = widget.voteCountDistributions;
+    voteCount = widget.voteCount;
   }
 
   void handleLikePress(String pollId) async {
@@ -116,18 +129,20 @@ class _PollViewHomePageState extends State<PollViewHomePage> {
           TagListWidget(tags: widget.tags, tagColors: widget.tagColors),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16.0),
-            child: Text('Vote Count: ${widget.voteCount}',
+            child: Text('Votes: ${voteCount}',
                 style: const TextStyle(fontSize: 16.0)),
           ),
           for (int index = 0; index < widget.postOptions.length; index++)
             PostOptionWidget(
                 optionText: widget.postOptions[index]["answer"],
-                isSelected: chosenVoteIndex >= 0 ? true : false,
-                isChosen: chosenVoteIndex == index,
-                percentage: 30,
+                isSelected: myVotedOptionId!="" ? true : false,
+                isChosen: myVotedOptionId == widget.postOptions[index]["id"],
+                percentage: voteCountDistributions[widget.postOptions[index]["id"]] != null && voteCount!=0 && myVotedOptionId!="" ?((voteCountDistributions[widget.postOptions[index]["id"]]!/voteCount)*100).round():0,
                 onPressed: () =>
-                    handleOptionPress(widget.postOptions[index]["id"], index),
-                isSettled: widget.isSettled),
+                    handleOptionPress(widget.postOptions[index]["id"]),
+                isSettled: widget.isSettled,
+                isCorrect: widget.postOptions[index]["id"] == widget.outcomeOptionId,
+                ),
           Padding(
             padding: const EdgeInsets.all(16.0),
             child: didLike
@@ -234,13 +249,21 @@ class _PollViewHomePageState extends State<PollViewHomePage> {
       },
     );
   }
-  void handleOptionPress(String optionId, int index) async {
+  void handleOptionPress(String optionId) async {
     // Handle option press based on the selected option
     PollViewHomePageVote pollVote = PollViewHomePageVote();
     bool voteSuccess = await pollVote.vote(optionId);
+    VoteDistributionService voteDistributionService = VoteDistributionService();
+    voteCountDistributions= await voteDistributionService.getVoteDistribution(widget.pollId);
+
+
+
+
+
     if (voteSuccess) {
       setState(() {
-        chosenVoteIndex = index;
+        myVotedOptionId = optionId;
+        voteCount++;
       });
     }
   }

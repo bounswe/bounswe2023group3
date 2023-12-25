@@ -5,16 +5,23 @@ import 'package:mobile_app/services/apiService.dart';
 
 class PollViewHomePageVote{
   Future<bool> vote(String optionID) async {
-    final String voteEndPoint = '/vote/$optionID';
+    final String voteEndPoint = '/vote';
 
     try {
+
       final Response response = await ApiService.dio.post(
         voteEndPoint,
+        data: {
+          'option_id': optionID,
+        },
       );
       print(response.statusCode);
 
-      if (response.statusCode == 201) {
-        return true; // Like successful
+      if (response.statusCode == 201 || response.statusCode == 200) {
+        return true; // vote successful
+      }
+      else if(response.statusCode == 409){
+        return false; // vote unsuccessful
       }
     } catch (e) {
       print('Error: $e');

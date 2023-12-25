@@ -71,6 +71,18 @@ class GuestFeedService {
         final List<dynamic> tagsJson = post['tags'];
         final List<dynamic> optionsJson = post['options'];
 
+        //NEWLY ADDED
+        final List<dynamic> votesJson = post['voteDistribution'] ?? [];
+        Map<String,int> voteCountDistributions = {};
+
+        if(votesJson!=[]) {
+          for (var vote in votesJson) {
+            voteCountDistributions[vote["optionId"]] = int.parse(vote["count"]);
+          }
+        }
+        final myVotedOptionID = post['votedOption']?["id"] ?? "";
+
+
         List<String> tagsList = [];
         List<Color> tagColorsList = [];
 
@@ -100,9 +112,11 @@ class GuestFeedService {
           isSettled: post['is_settled'],
           approvedStatus: post['approveStatus'],
           didLike: false, // You might want to format the date
-          chosenVoteIndex: -1, //it will be post['chosenVoteIndex']
           annotationIndices: indices,
           annotationTexts: bodies,
+          voteCountDistributions: voteCountDistributions,
+          myVotedOptionId: myVotedOptionID,
+          outcomeOptionId: post['outcome'] ?? "",
         ));
       }
       print(posts);

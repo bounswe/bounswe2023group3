@@ -47,9 +47,8 @@ class _GuestFeedState extends State<GuestFeed>
       isSettled,
       didLike,
       commentCount,
-      chosenVoteIndex,
       annotationIndices,
-      annotationTexts) async {
+      annotationTexts, voteCountDistributions, myVotedOptionId,outcomeOptionId) async {
     if (!mounted) return;
     Navigator.push(
       context,
@@ -67,9 +66,11 @@ class _GuestFeedState extends State<GuestFeed>
           likeCount: likeCount,
           dateTime: dateTime,
           isSettled: isSettled,
-          chosenVoteIndex: chosenVoteIndex,
           annotationIndices: annotationIndices,
           annotationTexts: annotationTexts,
+          voteCountDistributions: voteCountDistributions,
+          myVotedOptionId: myVotedOptionId,
+          outcomeOptionId: outcomeOptionId,
         ),
       ),
     );
@@ -149,9 +150,11 @@ class _GuestFeedState extends State<GuestFeed>
                                     post.isSettled,
                                     post.didLike,
                                     post.commentCount,
-                                    post.chosenVoteIndex,
                                     post.annotationIndices,
-                                    post.annotationTexts);
+                                    post.annotationTexts,
+                                    post.voteCountDistributions,
+                                    post.myVotedOptionId,
+                                    post.outcomeOptionId);
                               },
                               child: SizedBox(
                                 height: postHeight,
@@ -171,9 +174,11 @@ class _GuestFeedState extends State<GuestFeed>
                                   approvedStatus: post.approvedStatus,
                                   didLike: post.didLike,
                                   commentCount: post.commentCount,
-                                  chosenVoteIndex: post.chosenVoteIndex,
                                   annotationIndices: post.annotationIndices,
                                   annotationTexts: post.annotationTexts,
+                                  voteCountDistributions: post.voteCountDistributions,
+                                  myVotedOptionId: post.myVotedOptionId,
+                                  outcomeOptionId: post.outcomeOptionId,
                                 ),
                               ),
                             ),
@@ -216,9 +221,11 @@ class _GuestFeedState extends State<GuestFeed>
                                     post.isSettled,
                                     post.didLike,
                                     post.commentCount,
-                                    post.chosenVoteIndex,
                                     post.annotationIndices,
-                                    post.annotationTexts
+                                    post.annotationTexts,
+                                    post.voteCountDistributions,
+                                    post.myVotedOptionId,
+                                    post.outcomeOptionId,
                                 );
                               },
                               child: SizedBox(
@@ -239,9 +246,11 @@ class _GuestFeedState extends State<GuestFeed>
                                   approvedStatus: post.approvedStatus,
                                   didLike: post.didLike,
                                   commentCount: post.commentCount,
-                                  chosenVoteIndex: post.chosenVoteIndex,
                                   annotationIndices: post.annotationIndices,
                                   annotationTexts: post.annotationTexts,
+                                  voteCountDistributions: post.voteCountDistributions,
+                                  myVotedOptionId: post.myVotedOptionId,
+                                  outcomeOptionId: post.outcomeOptionId,
                                 ),
                               ),
                             ),

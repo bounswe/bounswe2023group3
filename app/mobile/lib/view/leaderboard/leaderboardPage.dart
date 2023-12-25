@@ -8,6 +8,7 @@ import 'package:mobile_app/view/constants.dart';
 import 'package:mobile_app/view/errorWidget/errorWidget.dart';
 import 'package:mobile_app/view/leaderboard/personData.dart';
 import 'package:mobile_app/view/sidebar/sidebar.dart';
+import 'package:mobile_app/view/state.dart';
 
 import '../waitingScreen/fancyWaitingScreen.dart';
 
@@ -82,6 +83,7 @@ class _LeaderboardPageState extends State<LeaderboardPage>
               }
             }
             return Scaffold(
+              resizeToAvoidBottomInset: true,
               appBar: AppBar(
                 title: Text('Leaderboard'),
                 bottom: TabBar(
@@ -160,6 +162,7 @@ class _LeaderboardPageState extends State<LeaderboardPage>
 
   // Function to build the leaderboard for a specific tab
   Widget buildLeaderboardTab(List<PersonData> leaderboardData) {
+    print(leaderboardData);
     return Column(
       children: [
         // Title at the top
@@ -172,8 +175,9 @@ class _LeaderboardPageState extends State<LeaderboardPage>
         ),
         // Current user's ranking (Replace this with your logic) and tag-specific rankings
         RankingTable(leaderboardData: leaderboardData),
-      ],
-    );
+
+      ],);
+
   }
 
   Widget buildTagLeaderboardSnapshot(AsyncSnapshot<List<PersonData>> snapshot, List<TagData> tags) {
@@ -294,24 +298,29 @@ class RankingTable extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var rest = leaderboardData.sublist(1);
     return Column(children: [
       Padding(
         padding: const EdgeInsets.all(8.0),
         child: buildUserCard(
-            0, leaderboardData[0].username, leaderboardData[0].score, leaderboardData[0].userId, color: pink), // Current user's ranking
+            0, AppState.loggedInUserUsername, leaderboardData[0].score, AppState.loggedInUserId, color: pink), // Current user's ranking
       ),
 // Scrollable widget for other people's rankings
-      Expanded(
-        child: ListView.builder(
-          itemCount: leaderboardData.length,
-          itemBuilder: (context, index) {
-            final user = leaderboardData[index];
-            if (index>0){
+       SizedBox(
+          height:340.0,
+          child: ListView.builder(
+            shrinkWrap: true,
+            itemCount: rest.length,
+
+            itemBuilder: (context, index) {
+              final user = rest[index];
+
               return buildUserCard(index,user.username, user.score, user.userId);
-            }
-          },
+
+            },
+          ),
         ),
-      ),
+
     ]);
   }
 }

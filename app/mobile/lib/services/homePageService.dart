@@ -75,6 +75,18 @@ class HomePageService {
         final List<dynamic> tagsJson = post['tags'];
         final List<dynamic> optionsJson = post['options'];
 
+        //NEWLY ADDED
+
+        final List<dynamic> votesJson = post['voteDistribution'] ?? [];
+        Map<String,int> voteCountDistributions = {};
+
+        if(votesJson!=[]) {
+          for (var vote in votesJson) {
+            voteCountDistributions[vote["optionId"]] = int.parse(vote["count"]);
+          }
+        }
+        final myVotedOptionID = post['votedOption']?["id"] ?? "";
+
         List<String> tagsList = [];
         List<Color> tagColorsList = [];
 
@@ -103,9 +115,15 @@ class HomePageService {
           dateTime: post['creation_date'],
           isSettled: post['is_settled'],
           approvedStatus: post['approveStatus'],
+
           didLike:
               post['didLike'] ?? false, // You might want to format the date
-          chosenVoteIndex: -1, //it will be post['chosenVoteIndex']
+
+          //NEWLY ADDED
+          voteCountDistributions: voteCountDistributions,
+          myVotedOptionId: myVotedOptionID,
+          outcomeOptionId: post['outcome'] ?? "",
+
           annotationIndices: indices,
           annotationTexts: bodies,
         ));
