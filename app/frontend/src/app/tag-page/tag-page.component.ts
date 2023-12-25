@@ -13,6 +13,7 @@ import { AuthService } from '../auth.service'
 export class TagPageComponent {
   polls!: any[]
   tagName: string = ''
+  tagId: string = ''
   leaders!: any[]
 
   constructor(
@@ -33,7 +34,8 @@ export class TagPageComponent {
         },
       )
 
-      this.http.get('http://34.105.66.254:1923/ranking/',this.authService.getHeaders()).subscribe(
+      this.tagId = params['tagId']
+      this.http.get('http://34.105.66.254:1923/ranking/'+this.tagId,this.authService.getHeaders()).subscribe(
         (response: any) => {
           this.leaders = response.ranking
           console.log(this.leaders)

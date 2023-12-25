@@ -50,14 +50,11 @@
                 class="tag-item"
               >
                 <div class="tag-input-container">
-                  <input
-                    class="poll-info"
-                    type="text"
-                    [formControlName]="i"
-                    placeholder="Enter a tag"
-                    style="width: calc(100% - 70px); margin-right: 12px"
-                    required
-                  />
+                  <select class="poll-info" [formControlName]="i" style="margin-right: 5px; height: 40px;">
+                    <option *ngFor="let tagOption of tag_data" [value]="tagOption.name">
+                      {{ tagOption.name }}
+                    </option>
+                  </select>
                   <button
                     class="delete-button"
                     type="button"

@@ -16,6 +16,10 @@
           <span class="label">Poll Question:</span>
           <p class="info-text">{{question}}</p>
         </div>
+        <div class="poll-item">
+          <span class="label">Description:</span>
+          <p class="info-text">{{description}}</p>
+        </div>
         <div *ngIf="options && options.length > 0">
           <div class="poll-item" *ngFor="let option of options; let i = index">
             <span class="label">Option #{{ i + 1 }}:</span>

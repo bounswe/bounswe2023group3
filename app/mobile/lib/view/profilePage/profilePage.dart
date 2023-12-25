@@ -291,6 +291,8 @@ class _ProfilePageState extends State<ProfilePage> {
           dateTime: poll.dueDate.toString(),
           isSettled: poll.isSettled,
           chosenVoteIndex: poll.chosenVoteIndex,
+          annotationIndices: poll.annotations.map((e) => e.indices).toList(),
+          annotationTexts: poll.annotations.map((e) => e.body).toList(),
         ),
       ),
     );

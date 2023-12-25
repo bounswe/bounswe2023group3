@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile_app/services/apiService.dart';
+import 'package:mobile_app/view/constants.dart';
 
 import '../view/moderatorHomePage/requestViewHome.dart';
 import '../view/moderatorHomePage/settleViewHome.dart';
@@ -16,17 +17,21 @@ class ModeratorService {
       );
       final List<dynamic> postsJson = response.data;
       List<RequestViewHome> posts = [];
+
       for (var post in postsJson) {
         final creator = post['creator'];
         final List<dynamic> tagsJson = post['tags'];
+
+        List<String> imageUrls = post['image_urls'] != null
+            ? (post['image_urls'] as List).map((e) => e as String).toList()
+            : [];
 
         List<String> tagsList = [];
         List<Color> tagColorsList = [];
 
         for (var tag in tagsJson) {
           tagsList.add(tag['name']);
-          tagColorsList.add(
-              Colors.blue); // You might want to generate colors dynamically
+          tagColorsList.add(pink);
         }
 
         List<String> optionsList = [];
@@ -49,6 +54,7 @@ class ModeratorService {
           pollId: post['id'], // You might want to format the date
           options: optionsList,
           dueDate: post['due_date'],
+          imageUrls: imageUrls,
         ));
       }
       return posts;
@@ -77,16 +83,19 @@ class ModeratorService {
 
         for (var tag in tagsJson) {
           tagsList.add(tag['name']);
-          tagColorsList.add(
-              Colors.blue); // You might want to generate colors dynamically
+          tagColorsList.add(pink);
         }
 
         List<String> optionsList = [];
         for (var option in post['options']) {
           optionsList.add(option['answer']);
         }
+        List<String> imageUrls = post['image_urls'] != null
+            ? (post['image_urls'] as List).map((e) => e as String).toList()
+            : [];
 
         posts.add(SettleViewHome(
+          imageUrls: imageUrls,
           userName: creator['firstname'] != null || creator['lastname'] != null
               ? ((creator['firstname'] ?? "") +
                   " " +

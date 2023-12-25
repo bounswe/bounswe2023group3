@@ -61,7 +61,7 @@ export class TagsBarComponent {
     return this.colors[i % this.colors.length]
   }
 
-  goToTag(tagName: string) {
-    this.router.navigate(['/app-tag-page', tagName])
+  goToTag(tagName: string,tagId: string) {
+    this.router.navigate(['/app-tag-page', tagName, tagId])
   }
 }

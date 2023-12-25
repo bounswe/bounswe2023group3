@@ -24,6 +24,8 @@ class PollInfo {
   final List<dynamic> optionIdCouples;
   final List<int> optionsVoteCount;
 
+  final List<String> imageUrls;
+
   final DateTime dueDate;
   final DateTime creationDate;
 
@@ -59,6 +61,7 @@ class PollInfo {
     required this.tagIds,
     required this.optionsVoteCount,
     required this.chosenVoteIndex,
+    required this.imageUrls,
   });
 
   static PollInfo fromJson(Map<String, dynamic> json) {
@@ -77,8 +80,12 @@ class PollInfo {
     List<dynamic> options = json['options'];
     List<dynamic> tags = json['tags'];
     var creator = json['creator'];
+    List<String> imageUrls = json['image_urls'] != null
+        ? (json['image_urls'] as List).map((e) => e as String).toList()
+        : [];
 
     return PollInfo.withoutComments(
+      imageUrls: imageUrls,
       optionIdCouples: options,
       pollId: json['id'],
       userName: creator['firstname'] != null || creator['lastname'] != null
@@ -90,7 +97,7 @@ class PollInfo {
       tags: tags.map((e) => e['name'] as String).toList(),
       tagIds: tags.map((e) => e['id'] as String).toList(),
       tagColors: tagColorList,
-      voteCount: json['voteCount'],
+      voteCount: json['voteCount'] ?? 0,
       options: options.map((e) => e['answer'] as String).toList(),
       optionIds: options.map((e) => e['id'] as String).toList(),
       // TODO vote_count field'i kontrol edilecek

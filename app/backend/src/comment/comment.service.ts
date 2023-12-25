@@ -43,21 +43,13 @@ export class CommentService {
     return await this.commentRepository.save(newLike);
   }
 
-  async remove(pollID: string, userID: string) {
-    const poll = this.pollService.findPollById(pollID);
+  async remove(commentID: string, userID: string) {
+    const comment = await this.commentRepository.findOne({where:{id:commentID}});
 
-    if (!poll) {
-      throw new ConflictException('There is no poll with this id');
+    if (!comment) {
+      throw new ConflictException('There is no comment with this id');
     }
 
-    const commentToBeDeleted = await this.commentRepository.findOne({
-      where: { poll: { id: pollID }, user: { id: userID } },
-    });
-
-    if (!commentToBeDeleted) {
-      throw new ConflictException('User has not commented on this poll');
-    }
-
-    return await this.commentRepository.remove(commentToBeDeleted);
+    return await this.commentRepository.remove(comment);
   }
 }

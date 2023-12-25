@@ -18,6 +18,7 @@ class RequestViewHome extends StatelessWidget {
   final List<Color> tagColors;
   final String dateTime;
   final List<String> options;
+  final List<String> imageUrls;
   final String dueDate;
 
   const RequestViewHome({
@@ -32,37 +33,34 @@ class RequestViewHome extends StatelessWidget {
     required this.dateTime,
     required this.options,
     required this.dueDate,
+    required this.imageUrls,
   });
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            UserInformationWidget(
-              userName: userName,
-              userUsername: userUsername,
-              profilePictureUrl: profilePictureUrl,
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              child: Text(postTitle,
-                  style: const TextStyle(
-                      fontSize: 18.0, fontWeight: FontWeight.bold)),
-            ),
-            TagListWidget(tags: tags, tagColors: tagColors),
-            Row(
-              children: [
-                DateTimeWidget(dateTime: DateTime.parse(dateTime), color: navy),
-              ],
-            ),
-        ]
-        ),
+        child:
+            Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+          UserInformationWidget(
+            userName: userName,
+            userUsername: userUsername,
+            profilePictureUrl: profilePictureUrl,
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            child: Text(postTitle,
+                style: const TextStyle(
+                    fontSize: 18.0, fontWeight: FontWeight.bold)),
+          ),
+          TagListWidget(tags: tags, tagColors: tagColors),
+          Row(
+            children: [
+              DateTimeWidget(dateTime: DateTime.parse(dateTime), color: navy),
+            ],
+          ),
+        ]),
       ),
     );
   }
-
 }
-
