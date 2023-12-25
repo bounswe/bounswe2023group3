@@ -11,7 +11,7 @@
           class="button"
           *ngFor="let tag of tags; let i = index"
           [ngStyle]="{ 'background-color': getColor(i) }"
-          (click)="goToTag(tag.name)"
+          (click)="goToTag(tag.name,tag.id)"
         >
           {{ tag.name }}
         </button>

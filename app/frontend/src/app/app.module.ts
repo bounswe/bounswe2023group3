@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core'
 import { FormsModule, ReactiveFormsModule } from '@angular/forms'
 import { BrowserModule } from '@angular/platform-browser'
-
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { AppRoutingModule } from './app-routing.module'
 import { AppComponent } from './app.component'
 import { SideBarComponent } from './side-bar/side-bar.component'
@@ -50,6 +50,8 @@ import { FollowListComponent } from './follow-list/follow-list.component'
 import { MatInputModule } from '@angular/material/input';
 import { QtextAnnotationComponent } from './qtext-annotation/qtext-annotation.component';
 import { NgxAnnotateTextModule } from "ngx-annotate-text";
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { DeleteConfirmationComponent } from './delete-confirmation/delete-confirmation.component';
 
 @NgModule({
   declarations: [
@@ -93,6 +95,7 @@ import { NgxAnnotateTextModule } from "ngx-annotate-text";
     UserPendingRequestsComponent,
     FollowListComponent,
     QtextAnnotationComponent,
+    DeleteConfirmationComponent,
   ],
   imports: [
     BrowserModule,
@@ -104,7 +107,10 @@ import { NgxAnnotateTextModule } from "ngx-annotate-text";
     MatDialogModule,
     MatFormFieldModule,
     MatInputModule,
-    NgxAnnotateTextModule
+    MatProgressBarModule,
+    NgxAnnotateTextModule,
+    NgxAnnotateTextModule,
+    MatTooltipModule
   ],
   providers: [AuthService],
   bootstrap: [AppComponent],

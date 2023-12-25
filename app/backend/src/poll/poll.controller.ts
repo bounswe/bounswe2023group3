@@ -63,8 +63,10 @@ export class PollController {
   @Post('pinecone/search')
   public async pineconeSearch(
     @Query('searchQuery') searchQuery: string,
+    @Req() req: any,
   ): Promise<Poll[]> {
-    return await this.pollService.searchSemanticPolls(searchQuery);
+    const userId = req.user?.sub; // Realize that it is not id instead sub. I do not know why but middleware gives this field.
+    return await this.pollService.searchSemanticPolls(searchQuery, userId);
   }
 
   @UseGuards(AuthGuard, VerificationGuard)
@@ -154,6 +156,7 @@ export class PollController {
   @ApiQuery({ name: 'likedById', required: false })
   @ApiQuery({ name: 'votedById', required: false })
   @ApiQuery({ name: 'followedById', required: false })
+  @ApiQuery({ name: 'is_settled', required: false })
   @ApiQuery({ name: 'sort', required: false })
   @ApiQuery({ name: 'tags', required: false })
   @ApiResponse({
@@ -176,6 +179,8 @@ export class PollController {
     votedById?: string,
     @Query('followedById', new ParseUUIDPipe({ optional: true }))
     followedById?: string,
+    @Query('is_settled', new ParseIntPipe({ optional: true }))
+    is_settled?: string,
     @Query('sort')
     sortString?: string,
     @Query('tags', new ParseArrayPipe({ optional: true }))
@@ -190,6 +195,7 @@ export class PollController {
       followedById,
       sortString,
       tags,
+      is_settled,
       userId,
     });
   }
@@ -199,6 +205,7 @@ export class PollController {
   @ApiQuery({ name: 'creatorId', required: false })
   @ApiQuery({ name: 'likedById', required: false })
   @ApiQuery({ name: 'votedById', required: false })
+  @ApiQuery({ name: 'is_settled', required: false })
   @ApiQuery({ name: 'followedById', required: false })
   @ApiQuery({ name: 'sort', required: false })
   @ApiQuery({ name: 'tags', required: false })
@@ -226,6 +233,8 @@ export class PollController {
     votedById?: string,
     @Query('followedById', new ParseUUIDPipe({ optional: true }))
     followedById?: string,
+    @Query('is_settled', new ParseIntPipe({ optional: true }))
+    is_settled?: string,
     @Query('sort')
     sortString?: string,
     @Query('tags', new ParseArrayPipe({ optional: true }))
@@ -240,6 +249,7 @@ export class PollController {
       followedById,
       sortString,
       tags,
+      is_settled,
       userId,
       pageSize,
       pageNum,
@@ -268,6 +278,7 @@ export class PollController {
       followedById: null,
       sortString: null,
       tags: null,
+      is_settled: 0,
       userId: creatorId,
     });
   }
@@ -301,6 +312,7 @@ export class PollController {
       followedById: null,
       sortString: null,
       tags: null,
+      is_settled: 0,
       userId: creatorId,
       pageSize,
       pageNum,
@@ -353,6 +365,7 @@ export class PollController {
       votedById: null,
       followedById: null,
       sortString: null,
+      is_settled: 0,
       tags: null,
       userId,
     });
@@ -387,6 +400,7 @@ export class PollController {
       followedById: null,
       sortString: null,
       tags: null,
+      is_settled: 0,
       userId,
       pageSize,
       pageNum,
@@ -413,6 +427,7 @@ export class PollController {
       votedById: userId,
       followedById: null,
       sortString: null,
+      is_settled: 0,
       tags: null,
       userId,
     });
@@ -447,6 +462,7 @@ export class PollController {
       followedById: null,
       sortString: null,
       tags: null,
+      is_settled: 0,
       userId,
       pageSize,
       pageNum,
@@ -454,6 +470,7 @@ export class PollController {
   }
 
   @UseGuards(AuthGuard, VerificationGuard)
+  @ApiQuery({ name: 'is_settled', required: true })
   @ApiResponse({
     status: 200,
     description: 'Polls are fetched successfully.',
@@ -464,9 +481,13 @@ export class PollController {
     description: 'Internal server error, contact with backend team.',
   })
   @Get('not-voted-by-me')
-  public async findPollsIdidNoteVote(@Req() req: any): Promise<any> {
+  public async findPollsIdidNoteVote(
+    @Req() req: any,
+    @Query('is_settled', ParseIntPipe)
+    is_settled?: number,
+  ): Promise<any> {
     const userId = req.user.id;
-    return await this.pollService.findPollsUserdidNotVote(userId);
+    return await this.pollService.findPollsUserdidNotVote(userId, is_settled);
   }
 
   @UseGuards(AuthGuard, VerificationGuard)
@@ -517,6 +538,7 @@ export class PollController {
       votedById: null,
       followedById: userId,
       sortString: null,
+      is_settled: 0,
       tags: null,
       userId,
     });
@@ -551,6 +573,7 @@ export class PollController {
       followedById: userId,
       sortString: null,
       tags: null,
+      is_settled: 0,
       userId,
       pageSize,
       pageNum,

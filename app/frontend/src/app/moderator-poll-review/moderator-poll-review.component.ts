@@ -83,6 +83,10 @@ export class ModeratorPollReviewComponent {
         (error) => {
           console.error('Error approving poll:', error)
         },
+        () => {
+          // Redirect after completing the request
+          this.router.navigate(['/app-moderator-requests']);
+        }
       )
     }
     onReject(){

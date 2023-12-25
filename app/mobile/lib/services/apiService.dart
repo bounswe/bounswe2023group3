@@ -23,7 +23,7 @@ class ApiService {
     dio.interceptors.add(InterceptorsWrapper(
       onRequest:
           (RequestOptions options, RequestInterceptorHandler handler) async {
-        if (!shouldIgnoreInterceptor(options.uri)) {
+        if (!shouldIgnoreInterceptor(options.uri, options.method)) {
           options.headers['Authorization'] = 'Bearer ${await getToken()}';
         }
         return handler.next(options);
@@ -52,7 +52,7 @@ class ApiService {
     AppState.logout();
   }
 
-  static bool shouldIgnoreInterceptor(Uri uri) {
+  static bool shouldIgnoreInterceptor(Uri uri, String method) {
     List<String> ignoredEndpoints = [
       '/auth/login',
       '/auth/register',
@@ -63,6 +63,9 @@ class ApiService {
       '/poll',
     ];
     // Check if the current URL should be ignored
+    if (uri.path == '/poll' && method == 'POST') {
+      return false;
+    }
     bool shouldIgnore = ignoredEndpoints.any((endpoint) => uri.path == endpoint);
     return shouldIgnore;
   }

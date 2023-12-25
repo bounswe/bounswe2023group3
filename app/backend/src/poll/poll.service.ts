@@ -201,6 +201,7 @@ export class PollService {
     followedById,
     tags,
     sortString,
+    is_settled,
     userId,
   }) {
     const whereClause: any = {};
@@ -213,6 +214,10 @@ export class PollService {
 
     if (approveStatus != null) {
       whereClause.approveStatus = approveStatus;
+    }
+
+    if (is_settled != null) {
+      whereClause.is_settled = is_settled;
     }
 
     if (likedById) {
@@ -267,7 +272,7 @@ export class PollService {
         tags.every((tag) => poll.tags.some((tagItem) => tagItem.name === tag)),
       );
     }
-    
+
     let extendedPolls = await Promise.all(
       polls.map(async (poll) => {
         return {
@@ -277,37 +282,41 @@ export class PollService {
           voteCount: await this.voteService.getVoteCount(poll.id),
           votedOption: null,
           didLike: null,
-          voteDistribution: poll.is_settled === Settle.SETTLED ? await this.voteService.getVoteRate(poll.id) : null
+          voteDistribution:
+            poll.is_settled === Settle.SETTLED
+              ? await this.voteService.getVoteRate(poll.id)
+              : null,
         };
-      })
+      }),
     );
 
-    if(userId){
+    if (userId) {
       extendedPolls = await Promise.all(
         extendedPolls.map(async (poll) => {
-          const votedOption = (await this.voteService.findOne(poll.id, userId))?.option ?? null;
+          const votedOption =
+            (await this.voteService.findOne(poll.id, userId))?.option ?? null;
           if (!poll.voteDistribution && votedOption) {
             poll.voteDistribution = await this.voteService.getVoteRate(poll.id);
           }
           return {
             ...poll,
-            votedOption:votedOption,
+            votedOption: votedOption,
             didLike: poll.likes.some((like) => like.user?.id === userId),
           };
-        })
-      );      
+        }),
+      );
     }
-
-
-
 
     return extendedPolls;
   }
 
-  public async findPollsUserdidNotVote(voterId: string) {
+  public async findPollsUserdidNotVote(voterId: string, is_settled: number) {
+    console.log(is_settled);
     const polls = await this.pollRepository.find({
       where: [
         {
+          approveStatus: true,
+          is_settled: is_settled,
           votes: {
             user: {
               id: Not(voterId),
@@ -315,6 +324,8 @@ export class PollService {
           },
         },
         {
+          approveStatus: true,
+          is_settled: is_settled,
           votes: {
             user: {
               id: IsNull(),
@@ -351,7 +362,7 @@ export class PollService {
       };
     });
 
-    return extendedPolls;
+    return extendedPolls.sort((a, b) => b.voteCount - a.voteCount);
   }
 
   public async findAllWithPagination({
@@ -362,6 +373,7 @@ export class PollService {
     followedById,
     tags,
     sortString,
+    is_settled,
     userId,
     pageSize,
     pageNum,
@@ -376,6 +388,10 @@ export class PollService {
 
     if (approveStatus != null) {
       whereClause.approveStatus = approveStatus;
+    }
+
+    if (is_settled != null) {
+      whereClause.is_settled = is_settled;
     }
 
     if (likedById) {
@@ -541,10 +557,12 @@ export class PollService {
       throw new NotFoundException('Poll not found');
     }
 
-    const votedOption = (await this.voteService.findOne(poll.id, userId))?.option || null;
-  
+    const votedOption = userId
+      ? (await this.voteService.findOne(poll.id, userId))?.option || null
+      : null;
+
     let voteDistribution = null;
-    if (votedOption) {
+    if (votedOption || poll.is_settled === Settle.SETTLED) {
       voteDistribution = await this.voteService.getVoteRate(pollId);
     }
 
@@ -633,14 +651,20 @@ export class PollService {
     });
   }
 
-  public async searchSemanticPolls(query: string): Promise<Poll[]> {
-    let results = await this.pineconeStore.similaritySearchWithScore(query, 5);
-    results = results
+  public async searchSemanticPolls(
+    query: string,
+    userId?: string | null,
+  ): Promise<Poll[]> {
+    const polls = await this.pineconeStore.similaritySearchWithScore(query, 5);
+    const pollIDs = polls
       .filter((result) => result[1] > 0.7)
       .map((result) => result[0].metadata.id);
-    return await this.pollRepository.find({
-      where: { id: In(results) },
-      relations: ['options', 'tags', 'creator', 'likes', 'comments', 'votes'],
-    });
+
+    const results = await Promise.all(
+      pollIDs.map(async (pollId) => {
+        return await this.findPollById(pollId, userId);
+      }),
+    );
+    return results;
   }
 }
