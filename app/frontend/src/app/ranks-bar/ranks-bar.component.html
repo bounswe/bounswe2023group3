@@ -6,20 +6,23 @@
   <body>
     <div class="container">
       <h2 style="border-bottom: 2px solid #000; margin-bottom: 5px">Ranks</h2>
-      <div class="buttons" style="overflow: auto; max-height: 250px">
+      <div class="buttons" style="overflow: auto; max-height: 250px"  *ngIf="ranks?.length != 0">
           <div  *ngFor="let rank of ranks; let i = index">
           <button
           class="button"
           [ngStyle]="{ 'background-color': getColor(i) }"
         >
-          {{ rank?.name }}
+          {{ rank?.tag_name }}
         </button>
         <div class="rank-info">
 
-          <b>{{rank?.id}}</b>
+          <b># {{rank?.rank}}</b>
+          <p>Score: {{rank?.ranking_score}}</p>
 
         </div>
         </div>
+
+      </div>
 
         <div
           *ngIf="ranks?.length === 0"
@@ -27,7 +30,7 @@
         >
           This user doesn't have any ranks yet.
         </div>
-      </div>
+
     </div>
   </body>
 </html>
