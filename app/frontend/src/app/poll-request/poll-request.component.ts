@@ -11,6 +11,7 @@ export class PollRequestComponent implements OnInit {
   pollForm: FormGroup
   no_deadline: boolean = false;
   shortLink!: string;
+  tag_data!: {id: string, name:string}[];
 
   constructor(
     public fb: FormBuilder, //for testing, should be fixed later
@@ -18,7 +19,7 @@ export class PollRequestComponent implements OnInit {
   ) {
     this.pollForm = this.fb.group({
       question: ['', Validators.required],
-      description: ['', Validators.required],
+      description: [''],
       tags: this.fb.array([this.fb.control('')]),
       options: this.fb.array([this.fb.control('')]),
       due_date: [''],
@@ -60,7 +61,18 @@ export class PollRequestComponent implements OnInit {
     options.removeAt(index)
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.http.get<{id: string, name:string}[]>('http://34.105.66.254:1923/tag').subscribe(
+      (response: {id: string, name:string}[]) => {
+        this.tag_data = response;
+      },
+      (error) => {
+        console.error('Error fetching tags:', error)
+      },
+    )
+
+
+  }
 
   onSubmit() {
     const formValue = this.pollForm.value;
