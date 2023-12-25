@@ -112,7 +112,8 @@ export class UserProfileComponent {
   }
   votedPolls() {
     this.clickedButton = 'voted';
-    this.http.get('http://34.105.66.254:1923/poll/voted-by-me',this.options).subscribe(
+    console.log(this.options)
+    this.http.get('http://34.105.66.254:1923/poll/?votedById=' + this.user_id+"&?approveStatus=true",this.options).subscribe(
       (response: any) => {
         this.polls = response
       },
