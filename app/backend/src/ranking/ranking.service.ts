@@ -51,19 +51,20 @@ export class RankingService {
     return response;
   }
 
-  async findAllMyRankings(userID:string) {
+  async findAllMyRankings(userId:string) {
     const myRankings = await this.rankingRepository
-    .createQueryBuilder('ranking')
-    .select(['user.id', 'user.username', 'tag.id', 'tag.name', 'ranking.score'])
-    .addSelect('RANK() OVER (PARTITION BY tag.id ORDER BY ranking.score DESC) AS rank')
-    .innerJoin('ranking.user', 'user')
-    .innerJoin('ranking.tag', 'tag')
-    .where('user.id = :userID', { userID })
+    .createQueryBuilder('rankings')
+    .select(['tags.id tag_id', 'tags.name tag_name','users.id user_id','users.username user_username', 'rankings.score ranking_score'])
+    .addSelect('(RANK() OVER (PARTITION BY tags.id ORDER BY rankings.score DESC)) AS "rank"')
+    .innerJoin('rankings.user', 'users')
+    .innerJoin('rankings.tag', 'tags')
+    .orderBy('tags.id, "rank"')
     .getRawMany();
 
-    return myRankings;
+    const filteredResults = myRankings.filter(result => result.user_id === userId);
+    return filteredResults;
   }
-
+ 
 
   async settlePoints(poll: Poll,option: Option){
     const votes : Vote[] = await this.voteRepository.find({
