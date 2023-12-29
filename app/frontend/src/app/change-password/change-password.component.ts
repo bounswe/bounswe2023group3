@@ -2,6 +2,8 @@ import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../auth.service';
+import { environment } from 'src/environments/environment'
+
 
 @Component({
   selector: 'app-change-password',
@@ -13,6 +15,7 @@ export class ChangePasswordComponent {
   password: string = ''
   passwordConfirm: string = ''
   options!: any
+  apiUrl = environment.apiBaseUrl;
   
   constructor(
     private http: HttpClient,
@@ -23,7 +26,7 @@ export class ChangePasswordComponent {
   }
 
   onSubmit(){
-    this.http.put('http://34.105.66.254:1923/user/password',{"oldPassword":this.oldPassword,"password":this.password,
+    this.http.put(this.apiUrl + '/user/password',{"oldPassword":this.oldPassword,"password":this.password,
     "passwordConfirm":this.passwordConfirm},this.options).subscribe(
       (response: any) => {
           window.location.reload()

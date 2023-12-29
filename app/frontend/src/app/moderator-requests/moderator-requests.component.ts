@@ -2,6 +2,8 @@ import { Component } from '@angular/core'
 import { HttpClient } from '@angular/common/http'
 import { AuthService } from '../auth.service'
 import { ActivatedRoute, Router } from '@angular/router'
+import { environment } from 'src/environments/environment'
+
 
 @Component({
   selector: 'app-moderator-requests',
@@ -13,6 +15,7 @@ export class ModeratorRequestsComponent {
   options!: any
   outcomeReq: boolean = false
   activeButton: string | null = null;
+  apiUrl = environment.apiBaseUrl;
 
 
   constructor(private http: HttpClient,
@@ -20,7 +23,7 @@ export class ModeratorRequestsComponent {
     private router: Router,
     private route: ActivatedRoute,) {
       this.options=this.authService.getHeaders()
-    this.http.get('http://34.105.66.254:1923/moderator/polls/',this.options).subscribe(
+    this.http.get(this.apiUrl + '/moderator/polls/',this.options).subscribe(
       (response: any) => {
         this.polls = response
         this.activeButton = "PollCreationRequests"
@@ -51,7 +54,7 @@ export class ModeratorRequestsComponent {
   onPollCreationReq(){
     this.outcomeReq = false
     this.activeButton = 'PollCreationRequests';
-    this.http.get('http://34.105.66.254:1923/moderator/polls/',this.options).subscribe(
+    this.http.get(this.apiUrl + '/moderator/polls/',this.options).subscribe(
       (response: any) => {
         this.polls = response
         this.polls.forEach(poll => {
@@ -68,7 +71,7 @@ export class ModeratorRequestsComponent {
   handleDisapprove(pollId: any){
 
     if(this.outcomeReq){
-      this.http.post('http://34.105.66.254:1923/poll/settle/'+pollId,
+      this.http.post(this.apiUrl + '/poll/settle/'+pollId,
       {
         "decision": false,
         "settle_poll_request_feedback": "not a good to time to settle it"
@@ -87,7 +90,7 @@ export class ModeratorRequestsComponent {
       return
     }
 
-    this.http.delete('http://34.105.66.254:1923/poll/'+pollId,this.options).subscribe(
+    this.http.delete(this.apiUrl + '/poll/'+pollId,this.options).subscribe(
       (response: any) => {
       },
       (error) => {
@@ -104,7 +107,7 @@ export class ModeratorRequestsComponent {
   onOutcomeVerifiationReq(){
     this.outcomeReq = true
     this.activeButton = 'OutcomeVerificationRequests';
-    this.http.get('http://34.105.66.254:1923/poll/').subscribe(
+    this.http.get(this.apiUrl + '/poll/').subscribe(
       (response: any) => {
 
         this.polls = []

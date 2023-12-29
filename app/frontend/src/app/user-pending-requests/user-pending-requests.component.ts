@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { HttpClient } from '@angular/common/http'
 import { AuthService } from '../auth.service'
 import { ActivatedRoute, Router } from '@angular/router'
+import { environment } from 'src/environments/environment'
+
 
 @Component({
   selector: 'app-user-pending-requests',
@@ -14,6 +16,7 @@ export class UserPendingRequestsComponent {polls!: any[]
   user_id!: any
   activeButton: string | null = null;
 
+  apiUrl = environment.apiBaseUrl;
 
   constructor(private http: HttpClient,
     private authService: AuthService,
@@ -37,7 +40,7 @@ export class UserPendingRequestsComponent {polls!: any[]
 
   onPollCreationReq(){
     this.activeButton = 'PollCreationRequests';
-    this.http.get('http://34.105.66.254:1923/poll/my-polls/pending',this.options).subscribe(
+    this.http.get(this.apiUrl + '/poll/my-polls/pending',this.options).subscribe(
       (response: any) => {
         this.polls = response
         this.polls.forEach(poll => {
@@ -53,7 +56,7 @@ export class UserPendingRequestsComponent {polls!: any[]
 
   deletePoll(pollId: any) {
     console.log(pollId);
-    this.http.delete('http://34.105.66.254:1923/poll/' + pollId, this.options).subscribe(
+    this.http.delete(this.apiUrl + '/poll/' + pollId, this.options).subscribe(
       (response: any) => {
         // Remove the deleted poll from the local array
         this.polls = this.polls.filter(poll => poll.id !== pollId);
@@ -72,7 +75,7 @@ export class UserPendingRequestsComponent {polls!: any[]
   
   // Move the code for fetching data to a separate method
   loadData() {
-    this.http.get('http://34.105.66.254:1923/poll/my-polls/pending',this.options).subscribe(
+    this.http.get(this.apiUrl + '/poll/my-polls/pending',this.options).subscribe(
         (response: any) => {
           this.polls = []
           for (const r of response) {
@@ -90,7 +93,7 @@ export class UserPendingRequestsComponent {polls!: any[]
 
   onOutcomeVerifiationReq() {
     this.activeButton = 'OutcomeVerificationRequests';
-    this.http.get('http://34.105.66.254:1923/poll/?creatorId='+this.user_id+"&is_settled=1",this.options).subscribe(
+    this.http.get(this.apiUrl + '/poll/?creatorId='+this.user_id+"&is_settled=1",this.options).subscribe(
       (response: any) => {
         this.polls = response
         this.polls.forEach(poll => {

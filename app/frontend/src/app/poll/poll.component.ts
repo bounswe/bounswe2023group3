@@ -10,6 +10,8 @@ import { ReportUserComponent } from '../report-user/report-user.component'
 import { AuthService } from '../auth.service'
 import { User } from '../user-profile/user.model'
 import {MatProgressBarModule} from '@angular/material/progress-bar';
+import { environment } from 'src/environments/environment'
+
 
 @Component({
   selector: 'app-poll',
@@ -35,6 +37,8 @@ export class PollComponent {
   optionWeights!: number[]
   optionWeightsScaled: number[] = []
   authPackage = this.authService.getHeaders()
+  apiUrl = environment.apiBaseUrl;
+  annotationUrl = environment.annotationUrl;
 
   //TODO: retrieve user vote & show in html
   userVoted!: boolean 
@@ -77,7 +81,7 @@ export class PollComponent {
 
   ngOnInit() {
 
-    this.http.get('http://34.105.66.254:1938/annotation?pollIDs=http%3A%2F%2F34.105.66.254%3A1923%2F'+this.pollId,this.authPackage).subscribe(
+    this.http.get(this.annotationUrl + '/annotation?pollIDs=http%3A%2F%2F34.105.66.254%3A1923%2F'+this.pollId,this.authPackage).subscribe(
       (response: any) => {
         this.annotations=response.annotations;
       },
@@ -86,7 +90,7 @@ export class PollComponent {
       }
     );
 
-    this.http.get('http://34.105.66.254:1923/poll/'+this.pollId, this.authPackage).subscribe(
+    this.http.get(this.apiUrl + '/poll/'+this.pollId, this.authPackage).subscribe(
     (response: any) => {
       this.question = response.question;
       this.tags = response.tags;
@@ -110,7 +114,7 @@ export class PollComponent {
     if (this.userId) {
       this.isAuthenticated = true
     }
-    this.http.get('http://34.105.66.254:1923/poll/' + this.pollId,this.authPackage).subscribe(
+    this.http.get(this.apiUrl + '/poll/' + this.pollId,this.authPackage).subscribe(
       (response: any) => {
         this.question = response.question
         this.tags = response.tags
@@ -155,7 +159,7 @@ export class PollComponent {
         }
       })
 
-    this.http.get('http://34.105.66.254:1923/comment/' + this.pollId).subscribe(
+    this.http.get(this.apiUrl + '/comment/' + this.pollId).subscribe(
       (response: any) => {
         this.comment_count = response.length
       },
@@ -311,7 +315,7 @@ export class PollComponent {
   }
 
   deletePoll() {
-    this.http.delete('http://34.105.66.254:1923/poll/' + this.pollId,this.authPackage).subscribe(
+    this.http.delete(this.apiUrl + '/poll/' + this.pollId,this.authPackage).subscribe(
       () => {
         console.log(`Poll deleted successfully.`)
       },
@@ -332,7 +336,7 @@ export class PollComponent {
     }
 
     this.http
-      .post('http://34.105.66.254:1923/poll/settle-request/' + this.pollId, body, this.authPackage)
+      .post(this.apiUrl + '/poll/settle-request/' + this.pollId, body, this.authPackage)
       .subscribe(
         () => {
           console.log(`Request sent ccessfully.`)
@@ -351,7 +355,7 @@ export class PollComponent {
     console.log(rsn)
 
     this.http
-      .post('http://34.105.66.254:1923/user/report/' + this.creator.id, body, this.authPackage)
+      .post(this.apiUrl + '/user/report/' + this.creator.id, body, this.authPackage)
       .subscribe(
         () => {
           console.log(`Request sent successfully.`)

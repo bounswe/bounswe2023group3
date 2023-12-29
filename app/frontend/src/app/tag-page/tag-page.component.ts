@@ -4,6 +4,8 @@ import { ActivatedRoute } from '@angular/router'
 import { Observable } from 'rxjs'
 import { switchMap } from 'rxjs/operators'
 import { AuthService } from '../auth.service'
+import { environment } from 'src/environments/environment'
+
 
 @Component({
   selector: 'app-tag-page',
@@ -16,6 +18,8 @@ export class TagPageComponent {
   tagId: string = ''
   leaders!: any[]
 
+  apiUrl = environment.apiBaseUrl;
+
   constructor(
     private http: HttpClient,
     private route: ActivatedRoute,
@@ -25,7 +29,7 @@ export class TagPageComponent {
   ngOnInit() {
     this.route.params.subscribe((params) => {
       this.tagName = params['tagName']
-      this.http.get('http://34.105.66.254:1923/poll/?tags=' + [String(this.tagName)]+"&?approveStatus=true").subscribe(
+      this.http.get(this.apiUrl + '/poll/?tags=' + [String(this.tagName)]+"&?approveStatus=true").subscribe(
         (response: any) => {
           this.polls = response
         },
@@ -35,7 +39,7 @@ export class TagPageComponent {
       )
 
       this.tagId = params['tagId']
-      this.http.get('http://34.105.66.254:1923/ranking/'+this.tagId,this.authService.getHeaders()).subscribe(
+      this.http.get(this.apiUrl + '/ranking/'+this.tagId,this.authService.getHeaders()).subscribe(
         (response: any) => {
           this.leaders = response.ranking
           console.log(this.leaders)

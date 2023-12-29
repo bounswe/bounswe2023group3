@@ -3,6 +3,7 @@ import { Component, ElementRef, ViewChild } from '@angular/core'
 import { UserService } from 'src/services/user-service/user.service'
 import { User } from './user.model'
 import { AuthService } from '../auth.service'
+import { environment } from 'src/environments/environment'
 
 @Component({
   selector: 'app-user-profile',
@@ -31,6 +32,8 @@ export class UserProfileComponent {
   shortLink: string = "";
 
   followList!: any[]
+  apiUrl = environment.apiBaseUrl;
+
   @ViewChild('followeesText', { static: true, read: ElementRef }) followeesText!: ElementRef;
 @ViewChild('followersText', { static: true, read: ElementRef }) followersText!: ElementRef;
 
@@ -58,7 +61,7 @@ export class UserProfileComponent {
   }
 
   ngOnInit(){
-    this.http.get('http://34.105.66.254:1923/user/'+this.user_id).subscribe(
+    this.http.get(this.apiUrl + '/user/'+this.user_id).subscribe(
       (response: any) => {
         this.username = response.username
         this.firstname = response.firstname
@@ -71,7 +74,7 @@ export class UserProfileComponent {
       },
     )
 
-    this.http.get('http://34.105.66.254:1923/poll/?creatorId='+this.user_id+"&?approveStatus=true").subscribe(
+    this.http.get(this.apiUrl + '/poll/?creatorId='+this.user_id+"&?approveStatus=true").subscribe(
       (response: any) => {
         this.polls = response
       },
@@ -89,7 +92,7 @@ export class UserProfileComponent {
 
   createdPolls() {
     this.clickedButton = 'created';
-    this.http.get('http://34.105.66.254:1923/poll/?creatorId='+this.user_id+"&?approveStatus=true").subscribe(
+    this.http.get(this.apiUrl + '/poll/?creatorId='+this.user_id+"&?approveStatus=true").subscribe(
       (response: any) => {
         this.polls = response
       },
@@ -101,7 +104,7 @@ export class UserProfileComponent {
   likedPolls() {
     this.clickedButton = 'liked';
     this.http
-      .get('http://34.105.66.254:1923/poll/?likedById=' + this.user_id+"&?approveStatus=true")
+      .get(this.apiUrl + '/poll/?likedById=' + this.user_id+"&?approveStatus=true")
       .subscribe(
         (response: any) => {
           this.polls = response
@@ -114,7 +117,7 @@ export class UserProfileComponent {
   votedPolls() {
     this.clickedButton = 'voted';
     console.log(this.options)
-    this.http.get('http://34.105.66.254:1923/poll/?votedById=' + this.user_id+"&?approveStatus=true",this.options).subscribe(
+    this.http.get(this.apiUrl + '/poll/?votedById=' + this.user_id+"&?approveStatus=true",this.options).subscribe(
       (response: any) => {
         this.polls = response
       },
@@ -158,7 +161,7 @@ export class UserProfileComponent {
         body.profile_picture = this.shortLink;
       }
       
-      this.http.put('http://34.105.66.254:1923/user/',body,this.options).subscribe(
+      this.http.put(this.apiUrl + '/user/',body,this.options).subscribe(
       (response: any) => {
        
       },
@@ -175,7 +178,7 @@ export class UserProfileComponent {
     this.showFollowees = false
     this.followList = []
     if(this.showFollowers){
-      this.http.get('http://34.105.66.254:1923/user/'+this.user_id).subscribe(
+      this.http.get(this.apiUrl + '/user/'+this.user_id).subscribe(
       (response: any) => {
         this.followList= response.followers
       },
@@ -191,7 +194,7 @@ export class UserProfileComponent {
     this.showFollowers = false
     this.followList = []
     if(this.showFollowees){
-      this.http.get('http://34.105.66.254:1923/user/'+this.user_id).subscribe(
+      this.http.get(this.apiUrl + '/user/'+this.user_id).subscribe(
       (response: any) => {
         this.followList= response.followings
       },

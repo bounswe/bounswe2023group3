@@ -3,6 +3,7 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { DeleteConfirmationComponent } from '../delete-confirmation/delete-confirmation.component';
+import { environment } from 'src/environments/environment'
 
 
 @Component({
@@ -11,6 +12,8 @@ import { DeleteConfirmationComponent } from '../delete-confirmation/delete-confi
   styleUrls: ['./settings.component.css']
 })
 export class SettingsComponent {
+
+  apiUrl = environment.apiBaseUrl;
 
   user_id!: any
   constructor(private router: Router, private http: HttpClient, private dialog: MatDialog) {
@@ -32,7 +35,7 @@ export class SettingsComponent {
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
         // User clicked 'Yes' in the confirmation dialog
-        this.http.delete('http://34.105.66.254:1923/user/' + this.user_id).subscribe(
+        this.http.delete(this.apiUrl + '/user/' + this.user_id).subscribe(
           (response: any) => {
             // Handle success if needed
             console.log('Account deleted successfully:', response);

@@ -8,6 +8,7 @@ import { UserSettleRequestComponent } from '../user-settle-request/user-settle-r
 import { MatFormFieldModule } from '@angular/material/form-field'
 import { AuthService } from '../auth.service'
 import { ReportUserComponent } from '../report-user/report-user.component'
+import { environment } from 'src/environments/environment'
 
 
 @Component({
@@ -40,6 +41,9 @@ export class SettledPollComponent {
   outcomeSource: string = ''
 
   annotations: any[] =[]
+
+  apiUrl = environment.apiBaseUrl;
+  annotationUrl = environment.annotationUrl;
 
   colors: string[] = [
     '#AEEEEE',
@@ -85,7 +89,7 @@ export class SettledPollComponent {
     if (this.userId) {
       this.isAuthenticated = true
     }
-    this.http.get('http://34.105.66.254:1938/annotation?pollIDs=http%3A%2F%2F34.105.66.254%3A1923%2F'+this.pollId).subscribe(
+    this.http.get(this.annotationUrl + '/annotation?pollIDs=http%3A%2F%2F34.105.66.254%3A1923%2F'+this.pollId).subscribe(
       (response: any) => {
         this.annotations=response.annotations;
       },
@@ -95,7 +99,7 @@ export class SettledPollComponent {
     );
 
 
-    this.http.get('http://34.105.66.254:1923/poll/' + this.pollId, this.authPackage).subscribe(
+    this.http.get(this.apiUrl + '/poll/' + this.pollId, this.authPackage).subscribe(
       (response: any) => {
         this.question = response.question
         this.tags = response.tags
@@ -137,7 +141,7 @@ export class SettledPollComponent {
         }
       })
 
-    this.http.get('http://34.105.66.254:1923/comment/' + this.pollId).subscribe(
+    this.http.get(this.apiUrl + '/comment/' + this.pollId).subscribe(
       (response: any) => {
         this.comment_count = response.length
       },
@@ -210,7 +214,7 @@ export class SettledPollComponent {
   }
 
   deletePoll() {
-    this.http.delete('http://34.105.66.254:1923/poll/' + this.pollId).subscribe(
+    this.http.delete(this.apiUrl + '/poll/' + this.pollId).subscribe(
       () => {
         console.log(`Poll deleted successfully.`)
       },
@@ -241,7 +245,7 @@ export class SettledPollComponent {
     console.log(rsn)
 
     this.http
-      .post('http://34.105.66.254:1923/user/report/' + this.creator.id, body, this.authService.getHeaders())
+      .post(this.apiUrl +'/user/report/' + this.creator.id, body, this.authService.getHeaders())
       .subscribe(
         () => {
           console.log(`Request sent successfully.`)
