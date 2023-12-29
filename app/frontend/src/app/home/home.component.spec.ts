@@ -15,11 +15,13 @@ import { SideBarComponent } from '../side-bar/side-bar.component'
 import { TagsBarComponent } from '../tags-bar/tags-bar.component'
 import { LeaderboardBarComponent } from '../leaderboard-bar/leaderboard-bar.component'
 import { of } from 'rxjs'
+import { environment } from 'src/environments/environment'
 
 describe('HomeComponent', () => {
   let component: HomeComponent
   let fixture: ComponentFixture<HomeComponent>
   let httpTestingController: HttpTestingController
+  let apiUrl = environment.apiBaseUrl;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -53,10 +55,9 @@ describe('HomeComponent', () => {
       of(mockResponse),
     )
 
-    component.trendingPolls()
 
     expect(httpClientSpy).toHaveBeenCalledWith(
-      'http://34.105.66.254:1923/poll/',
+      apiUrl + '/poll/',
     )
 
     expect(component.polls.length).toEqual(1)

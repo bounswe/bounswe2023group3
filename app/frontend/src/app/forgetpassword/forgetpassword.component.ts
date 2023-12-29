@@ -1,6 +1,8 @@
 import { Component } from '@angular/core'
 import { HttpClient } from '@angular/common/http'
 import { Router } from '@angular/router'
+import { environment } from 'src/environments/environment'
+
 
 @Component({
   selector: 'app-forget-password',
@@ -10,6 +12,8 @@ import { Router } from '@angular/router'
 export class ForgetpasswordComponent {
   email!: string
   errorMessage: string = ''
+  apiUrl = environment.apiBaseUrl;
+
   constructor(
     private http: HttpClient,
     private router: Router,
@@ -22,7 +26,7 @@ export class ForgetpasswordComponent {
 
     // Send a POST request to the backend for authentication
     this.http
-      .post('http://34.105.66.254:1923/auth/forgot-password', userCredentials)
+      .post(this.apiUrl + '/auth/forgot-password', userCredentials)
       .subscribe(
         (response: any) => {
           // Authentication successful, you can handle the response here

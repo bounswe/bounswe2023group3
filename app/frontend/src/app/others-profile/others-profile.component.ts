@@ -1,11 +1,11 @@
 import { HttpClient } from '@angular/common/http'
 import { Component, OnInit, ElementRef, ViewChild } from '@angular/core'
 import { ActivatedRoute } from '@angular/router'
-import { Observable } from 'rxjs'
-import { switchMap } from 'rxjs/operators'
 import { User } from '../user-profile/user.model'
 import { UserService } from 'src/services/user-service/user.service'
 import { AuthService } from '../auth.service'
+import { environment } from 'src/environments/environment'
+
 
 @Component({
   selector: 'app-others-profile',
@@ -26,6 +26,7 @@ export class OthersProfileComponent implements OnInit {
   showFollowers: boolean = false
   showFollowees: boolean = false
   followList!: any[]
+  apiUrl = environment.apiBaseUrl;
 
   clickedButton: string = '';
   @ViewChild('followeesText', { static: true, read: ElementRef }) followeesText!: ElementRef;
@@ -62,7 +63,7 @@ export class OthersProfileComponent implements OnInit {
           this.userId = user.id
           console.log(this.userId)
           this.http
-            .get('http://34.105.66.254:1923/poll/?creatorId=' + this.userId+ '&?approveStatus=true')
+            .get(this.apiUrl + '/poll/?creatorId=' + this.userId+ '&?approveStatus=true')
             .subscribe(
               (response: any) => {
                 this.polls = response
@@ -107,7 +108,7 @@ export class OthersProfileComponent implements OnInit {
   }
   createdPolls() {
     this.clickedButton = 'created';
-    this.http.get('http://34.105.66.254:1923/poll/?creatorId='+this.userId+'&?approveStatus=true').subscribe(
+    this.http.get(this.apiUrl + '/poll/?creatorId='+this.userId+'&?approveStatus=true').subscribe(
       (response: any) => {
         this.polls = response
       },
@@ -120,7 +121,7 @@ export class OthersProfileComponent implements OnInit {
   likedPolls() {
     this.clickedButton = 'liked';
     this.http
-      .get('http://34.105.66.254:1923/poll/?likedById=' + this.userId+'&?approveStatus=true')
+      .get(this.apiUrl + '/poll/?likedById=' + this.userId+'&?approveStatus=true')
       .subscribe(
         (response: any) => {
           this.polls = response
@@ -134,7 +135,7 @@ export class OthersProfileComponent implements OnInit {
   votedPolls(){
     this.clickedButton = 'voted';
     this.http
-      .get('http://34.105.66.254:1923/poll/?votedById=' + this.userId+'&?approveStatus=true')
+      .get(this.apiUrl + '/poll/?votedById=' + this.userId+'&?approveStatus=true')
       .subscribe(
         (response: any) => {
           this.polls = response
@@ -150,7 +151,7 @@ export class OthersProfileComponent implements OnInit {
     this.showFollowees = false
     this.followList = []
     if(this.showFollowers){
-      this.http.get('http://34.105.66.254:1923/user/'+this.userId).subscribe(
+      this.http.get(this.apiUrl + '/user/'+this.userId).subscribe(
       (response: any) => {
         this.followList= response.followers
       },
@@ -166,7 +167,7 @@ export class OthersProfileComponent implements OnInit {
     this.showFollowers = false
     this.followList = []
     if(this.showFollowees){
-      this.http.get('http://34.105.66.254:1923/user/'+this.userId).subscribe(
+      this.http.get(this.apiUrl + '/user/'+this.userId).subscribe(
       (response: any) => {
         this.followList= response.followings
       },

@@ -3,6 +3,8 @@ import { HttpClient } from '@angular/common/http'
 import { Router } from '@angular/router'
 import { FormBuilder, FormGroup, Validators } from '@angular/forms'
 import { AuthService } from '../auth.service'
+import { environment } from 'src/environments/environment'
+
 
 @Component({
   selector: 'app-verify',
@@ -13,6 +15,7 @@ export class VerifyComponent {
   verificationForm: FormGroup
   errorMessage: string = ''
   options!: any
+  apiUrl = environment.apiBaseUrl;
 
   constructor(
     private http: HttpClient,
@@ -41,7 +44,7 @@ export class VerifyComponent {
 
     // Send a POST request to the backend for authentication
     this.http
-      .post('http://34.105.66.254:1923/auth/verify', userCredentials, this.options)
+      .post(this.apiUrl + '/auth/verify', userCredentials, this.options)
       .subscribe(
         (response: any) => {
           // Authentication successful, you can handle the response here

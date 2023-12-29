@@ -9,11 +9,13 @@ import {
   HttpTestingController,
 } from '@angular/common/http/testing'
 import { FormControl, ReactiveFormsModule } from '@angular/forms'
+import { environment } from 'src/environments/environment'
 
 describe('PollRequestComponent', () => {
   let component: PollRequestComponent
   let fixture: ComponentFixture<PollRequestComponent>
   let httpTestingController: HttpTestingController
+  let apiUrl = environment.apiBaseUrl;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -46,7 +48,7 @@ describe('PollRequestComponent', () => {
 
     component.onSubmit()
 
-    httpTestingController.expectNone('http://34.105.66.254:1923/poll')
+    httpTestingController.expectNone(apiUrl + '/poll')
     httpTestingController.verify()
   }))
 })

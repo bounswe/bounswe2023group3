@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, ElementRef, Input, SimpleChanges, ViewChild } from '@angular/core';
 import { NgxAnnotateTextComponent, Annotation } from 'ngx-annotate-text';
+import { environment } from 'src/environments/environment'
 
 @Component({
   selector: 'app-qtext-annotation',
@@ -25,6 +26,9 @@ export class QtextAnnotationComponent {
   newAnotation!: string
 
   hoveredAnnotation!: any
+
+  apiUrl = environment.apiBaseUrl;
+  annotationUrl = environment.annotationUrl;
 
   constructor(
     private http: HttpClient,
@@ -100,14 +104,14 @@ export class QtextAnnotationComponent {
       return;
     }
 
-    this.http.post('http://34.105.66.254:1938/annotation',
+    this.http.post(this.annotationUrl + '/annotation',
     {"body": {
       "type": "TextualBody",
       "value": this.newAnotation,
       "format": "text/plain"
     },
     "target": {
-      "source": "http://34.105.66.254:1923/"+this.pollId,
+      "source": this.apiUrl + this.pollId,
       "selector": {
         "end": selection.endIndex,
         "type": "TextPositionSelector",

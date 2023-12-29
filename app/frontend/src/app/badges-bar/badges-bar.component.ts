@@ -1,5 +1,7 @@
 import { HttpClient } from '@angular/common/http'
 import { Component, Input } from '@angular/core'
+import { environment } from 'src/environments/environment'
+
 
 @Component({
   selector: 'app-badges-bar',
@@ -9,6 +11,8 @@ import { Component, Input } from '@angular/core'
 export class BadgesBarComponent {
   @Input() userId!: string
   badges!: any
+  apiUrl = environment.apiBaseUrl;
+  
 
   colors: string[] = [
     '#f2545b',
@@ -21,7 +25,7 @@ export class BadgesBarComponent {
   constructor(private http: HttpClient) {}
 
   ngOnInit() {
-    this.http.get('http://34.105.66.254:1923/user/' + this.userId).subscribe(
+    this.http.get(this.apiUrl + '/user/' + this.userId).subscribe(
       (response: any) => {
         this.badges = response.badges
       },

@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core'
 import { FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms'
 import { HttpClient, HttpHeaders } from '@angular/common/http'
+import { environment } from 'src/environments/environment'
+
 
 @Component({
   selector: 'app-poll-request',
@@ -12,6 +14,7 @@ export class PollRequestComponent implements OnInit {
   no_deadline: boolean = false;
   shortLink!: string;
   tag_data!: {id: string, name:string}[];
+  apiUrl = environment.apiBaseUrl;
 
   constructor(
     public fb: FormBuilder, //for testing, should be fixed later
@@ -62,7 +65,7 @@ export class PollRequestComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.http.get<{id: string, name:string}[]>('http://34.105.66.254:1923/tag').subscribe(
+    this.http.get<{id: string, name:string}[]>(this.apiUrl + '/tag').subscribe(
       (response: {id: string, name:string}[]) => {
         this.tag_data = response;
       },
@@ -101,7 +104,7 @@ export class PollRequestComponent implements OnInit {
     }
 
     this.http
-      .post('http://34.105.66.254:1923/poll', formValue, options)
+      .post(this.apiUrl + '/poll', formValue, options)
       .subscribe(
         (response) => {
           console.log('Poll created', response)

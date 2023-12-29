@@ -3,6 +3,7 @@ import { Component } from '@angular/core'
 import { ActivatedRoute } from '@angular/router';
 import { AuthService } from '../auth.service';
 import { Router } from '@angular/router';
+import { environment } from 'src/environments/environment'
 
 @Component({
   selector: 'app-moderator-poll-review',
@@ -22,6 +23,7 @@ export class ModeratorPollReviewComponent {
   is_settled!: number
   outcome!: any
   outcome_source!: any
+  apiUrl = environment.apiBaseUrl;
 
   constructor(
     private http: HttpClient,
@@ -41,7 +43,7 @@ export class ModeratorPollReviewComponent {
       })
 
       
-    this.http.get('http://34.105.66.254:1923/poll/' + this.pollId).subscribe(
+    this.http.get(this.apiUrl + '/poll/' + this.pollId).subscribe(
       (response: any) => {
         this.username = response.creator.username
         this.question = response.question
@@ -52,7 +54,7 @@ export class ModeratorPollReviewComponent {
         this.is_settled = response.is_settled
         this.outcome_source = response.outcome_source
         if(this.is_settled){
-          this.http.get('http://34.105.66.254:1923/option/' + response.outcome ).subscribe(
+          this.http.get(this.apiUrl + '/option/' + response.outcome ).subscribe(
             (outcomeResponse: any) => {
                   this.outcome = outcomeResponse.answer
             },
@@ -70,7 +72,7 @@ export class ModeratorPollReviewComponent {
 
     onApprove(){
       if(this.is_settled==1){
-          this.http.post('http://34.105.66.254:1923/poll/settle/'+this.pollId,{'decision': true,
+          this.http.post(this.apiUrl + '/poll/settle/'+this.pollId,{'decision': true,
         'settle_poll_request_feedback': "xx"},this.token).subscribe(
           (response: any) => {
           },
@@ -81,7 +83,7 @@ export class ModeratorPollReviewComponent {
         return
       }
 
-      this.http.post('http://34.105.66.254:1923/moderator/approve/'+this.pollId,{'approveStatus': true},this.token).subscribe(
+      this.http.post(this.apiUrl + '/moderator/approve/'+this.pollId,{'approveStatus': true},this.token).subscribe(
         (response: any) => {
         },
         (error) => {
@@ -96,7 +98,7 @@ export class ModeratorPollReviewComponent {
     onReject(){
       
     if(this.is_settled==1){
-      this.http.post('http://34.105.66.254:1923/poll/settle/'+this.pollId,
+      this.http.post(this.apiUrl + '/poll/settle/'+this.pollId,
       {
         "decision": false,
         "settle_poll_request_feedback": "not a good to time to settle it"
@@ -114,7 +116,7 @@ export class ModeratorPollReviewComponent {
       return
     }
 
-      this.http.post('http://34.105.66.254:1923/moderator/approve/'+this.pollId,{'approveStatus': false, 
+      this.http.post(this.apiUrl + '/moderator/approve/'+this.pollId,{'approveStatus': false, 
       "poll_request_rejection_feedback": "not a precise poll"}, this.token).subscribe(
         (response: any) => {
         },
@@ -123,7 +125,7 @@ export class ModeratorPollReviewComponent {
         },
       )
 
-      this.http.delete('http://34.105.66.254:1923/poll/'+this.pollId,this.token).subscribe(
+      this.http.delete(this.apiUrl + '/poll/'+this.pollId,this.token).subscribe(
         (response: any) => {
         },
         (error) => {
