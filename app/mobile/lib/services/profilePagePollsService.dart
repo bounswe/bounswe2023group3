@@ -7,7 +7,7 @@ class ProfilePagePollsService {
   static Future<Map<String, List<Annotation>>> getGroupedAnnotations(
       List<String> pollIds) async {
     const String getAnnotationsEndpoint =
-        'http://34.105.66.254:1938/annotation';
+        'http://34.118.192.246:1938/annotation';
 
     String pollIdsString = pollIds.join(',');
     Map<String, List<Annotation>> groupedAnnotations = {};
