@@ -1,6 +1,8 @@
 import { HttpClient } from '@angular/common/http'
 import { Component, Input } from '@angular/core'
 import { AuthService } from '../auth.service'
+import { environment } from 'src/environments/environment'
+
 
 @Component({
   selector: 'app-ranks-bar',
@@ -9,6 +11,8 @@ import { AuthService } from '../auth.service'
 })
 export class RanksBarComponent {
   ranks!: any
+
+  apiUrl = environment.apiBaseUrl;
 
   colors: string[] = [
     '#EDDEA4',
@@ -22,7 +26,7 @@ export class RanksBarComponent {
   }
 
   ngOnInit() {
-    this.http.get('http://34.105.66.254:1923/ranking/my-rankings', this.authService.getHeaders()).subscribe(
+    this.http.get(this.apiUrl + '/ranking/my-rankings', this.authService.getHeaders()).subscribe(
       (response: any) => {
         console.log(response)
         this.ranks = response

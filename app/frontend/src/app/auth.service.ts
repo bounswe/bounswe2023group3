@@ -2,13 +2,15 @@ import { Injectable } from '@angular/core'
 import { HttpClient, HttpHeaders } from '@angular/common/http'
 import { Observable, of } from 'rxjs'
 import { catchError, tap } from 'rxjs/operators'
+import { environment } from 'src/environments/environment'
+
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
   private user: any
-  private apiUrl = 'http://34.105.66.254:1923/auth'
+  private apiUrl = environment.apiBaseUrl + "/auth";
 
   constructor(private http: HttpClient) {}
 
@@ -35,7 +37,7 @@ export class AuthService {
   moderatorLogin(email: string, password: string): Observable<any> {
     const credentials = { email, password }
     return this.http
-      .post<any>(`http://34.105.66.254:1923/moderator/login`, credentials)
+      .post<any>(environment.apiBaseUrl + `/moderator/login`, credentials)
       .pipe(
         tap((response: any) => {
           localStorage.setItem('authToken', response.access_token)

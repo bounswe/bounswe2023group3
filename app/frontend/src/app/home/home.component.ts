@@ -1,6 +1,8 @@
 import { HttpClient } from '@angular/common/http'
 import { Component, Input, EventEmitter, Output } from '@angular/core'
 import { AuthService } from '../auth.service'
+import { environment } from 'src/environments/environment'
+
 
 @Component({
   selector: 'app-home',
@@ -18,6 +20,7 @@ export class HomeComponent {
   query!: string
   settleEnum!: number
   user_id!: any
+  apiUrl = environment.apiBaseUrl;
 
 
   constructor(private http: HttpClient,private authService: AuthService) {
@@ -26,7 +29,7 @@ export class HomeComponent {
 
     this.followingPolls(this.settledMode)
 
-    this.http.get('http://34.105.66.254:1923/ranking/0493fe16-9536-46d9-98cd-bbf1c6e8bd12',this.authService.getHeaders()).subscribe(
+    this.http.get(this.apiUrl + '/ranking/0493fe16-9536-46d9-98cd-bbf1c6e8bd12',this.authService.getHeaders()).subscribe(
       (response: any) => {
         this.leaders = response.ranking
         console.log(this.leaders)
@@ -75,7 +78,7 @@ export class HomeComponent {
       this.settleEnum = 0
     }
     this.clickedButton = 'trending';
-    this.http.get('http://34.105.66.254:1923/poll/not-voted-by-me/?is_settled=' + this.settleEnum, this.options).subscribe(
+    this.http.get(this.apiUrl + '/poll/not-voted-by-me/?is_settled=' + this.settleEnum, this.options).subscribe(
       (response: any) => {
         this.polls = response
       },
@@ -89,7 +92,7 @@ export class HomeComponent {
   followingPolls(isChecked: boolean) {
     this.clickedButton = 'following';
     if (isChecked) {
-      this.http.get('http://34.105.66.254:1923/poll/?followedById=' + this.user_id + "&is_settled=" + 2 ,this.options).subscribe(
+      this.http.get(this.apiUrl + '/poll/?followedById=' + this.user_id + "&is_settled=" + 2 ,this.options).subscribe(
       (response: any) => {
         this.polls = response
       },
@@ -100,7 +103,7 @@ export class HomeComponent {
 
     } else {
 
-      this.http.get('http://34.105.66.254:1923/poll/my-followings',this.options).subscribe(
+      this.http.get(this.apiUrl + '/poll/my-followings',this.options).subscribe(
       (response: any) => {
         this.polls = response
       },
@@ -119,7 +122,7 @@ export class HomeComponent {
     {
       query
     }
-    this.http.post("http://34.105.66.254:1923/poll/pinecone/search", payload,this.options).subscribe(
+    this.http.post(this.apiUrl + "/poll/pinecone/search", payload,this.options).subscribe(
       (response: any) => {
         this.polls = response
       },

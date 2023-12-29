@@ -4,6 +4,8 @@ import { ActivatedRoute } from '@angular/router'
 import { ReportUserComponent } from '../report-user/report-user.component'
 import { MatDialog } from '@angular/material/dialog'
 import { AuthService } from '../auth.service'
+import { environment } from 'src/environments/environment'
+
 
 @Component({
   selector: 'app-poll-view',
@@ -19,6 +21,7 @@ export class PollViewComponent {
   userId: string | null = localStorage.getItem('user_id');
   isSettled!: boolean
   comment_time!: string
+  apiUrl = environment.apiBaseUrl;
 
   selectedCommentId: string | null = null
   creator: any
@@ -32,7 +35,7 @@ export class PollViewComponent {
   }
 
   ngOnInit() {
-    this.http.get('http://34.105.66.254:1923/poll/'+this.pollId).subscribe(
+    this.http.get(this.apiUrl + '/poll/'+this.pollId).subscribe(
       (response: any) => {
         this.creator = response.creator;
       },
@@ -48,7 +51,7 @@ export class PollViewComponent {
       this.pollId = params['pollId']
     })
 
-    this.http.get('http://34.105.66.254:1923/poll/' + this.pollId).subscribe(
+    this.http.get(this.apiUrl + '/poll/' + this.pollId).subscribe(
       (response: any) => {
         if(response.is_settled!=0){
           this.isSettled = true
@@ -59,7 +62,7 @@ export class PollViewComponent {
         console.error('Error fetching poll:', error)
       },
     )
-    this.http.get('http://34.105.66.254:1923/comment/' + this.pollId).subscribe(
+    this.http.get(this.apiUrl + '/comment/' + this.pollId).subscribe(
       (response: any) => {
         this.comments = response
 
@@ -107,7 +110,7 @@ export class PollViewComponent {
     console.log(rsn)
 
     this.http
-      .post('http://34.105.66.254:1923/user/report/' + this.creator.id, body, this.authService.getHeaders())
+      .post(this.apiUrl + '/user/report/' + this.creator.id, body, this.authService.getHeaders())
       .subscribe(
         () => {
           console.log(`Request sent successfully.`)
@@ -137,7 +140,7 @@ export class PollViewComponent {
     console.log(body)
 
     this.http
-      .post('http://34.105.66.254:1923/comment/' + this.pollId, body, options)
+      .post(this.apiUrl + '/comment/' + this.pollId, body, options)
       .subscribe(
         (response) => {
           console.log('Comment created', response)
@@ -158,7 +161,7 @@ export class PollViewComponent {
     const options = { headers }
 
     this.http
-      .delete(`http://34.105.66.254:1923/comment/${commentId}`, options)
+      .delete(this.apiUrl + `/comment/${commentId}`, options)
       .subscribe(
         (response) => {
           console.log('Comment deleted', response)
