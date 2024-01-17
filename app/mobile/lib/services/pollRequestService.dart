@@ -59,7 +59,7 @@ class PollRequestService {
       String creator_id = response.data['creator']['id'];
       String poll_id = response.data['id'];
       List<Annotation> annotations = pollData.annotations;
-      const String annotationEndpoint = 'http://34.118.192.246:1938/annotation';
+      const String annotationEndpoint = 'http://34.29.3.88:1938/annotation';
       for (Annotation annotation in annotations) {
         final Map<String, dynamic> data = {
           "body": {
@@ -68,7 +68,7 @@ class PollRequestService {
             "format": "text/plain"
           },
           "target": {
-            "source": "http://34.118.192.246:1923/$poll_id",
+            "source": "http://34.29.3.88:1923/$poll_id",
             "selector": {
               "end": annotation.indices[1] == 0 ? 1 : annotation.indices[1],
               "type": "TextPositionSelector",

@@ -5,7 +5,7 @@ import 'package:get_it/get_it.dart';
 class AnnotationService {
   static final Dio _dio = Dio();
   static final GetIt getIt = GetIt.instance;
-  static String baseUrl = 'http://34.118.192.246:1938/';
+  static String baseUrl = 'http://34.29.3.88:1938/';
 
   // static void setup() {
   //   getIt.registerSingleton<Dio>(_dio);
