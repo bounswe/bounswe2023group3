@@ -8,7 +8,7 @@ import 'package:mobile_app/view/state.dart';
 class ApiService {
   static final Dio _dio = Dio();
   static final GetIt getIt = GetIt.instance;
-  static String baseUrl = 'http://34.118.192.246:1923/';
+  static String baseUrl = 'http://34.29.3.88:1923/';
   static String jwtToken = '';
 
   static void setup() {
