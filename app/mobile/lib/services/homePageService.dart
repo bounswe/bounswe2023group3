@@ -27,7 +27,7 @@ class HomePageService {
       }
       String pollIds = pollids.join(',');
       const String getAnnotationsEndpoint =
-          'http://34.29.3.88:1938/annotation';
+          'http://3.72.76.16:1938/annotation';
       Map<String, List<Map<String, dynamic>>> groupedAnnotations = {};
       try {
         Response annotationsResponse = await AnnotationService.dio.get(
@@ -68,7 +68,7 @@ class HomePageService {
         List<String> imageUrls = post['image_urls'] != null
             ? (post['image_urls'] as List).map((e) => e as String).toList()
             : [];
-        String pollId = "http://34.29.3.88:1923/${post['id']}";
+        String pollId = "http://3.72.76.16:1923/${post['id']}";
         List<Map<String, dynamic>> annotations =
             groupedAnnotations[pollId] ?? [];
         List<List<int>> indices =

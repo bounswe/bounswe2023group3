@@ -7,7 +7,7 @@ class ProfilePagePollsService {
   static Future<Map<String, List<Annotation>>> getGroupedAnnotations(
       List<String> pollIds) async {
     const String getAnnotationsEndpoint =
-        'http://34.29.3.88:1938/annotation';
+        'http://3.72.76.16:1938/annotation';
 
     String pollIdsString = pollIds.join(',');
     Map<String, List<Annotation>> groupedAnnotations = {};
@@ -51,7 +51,7 @@ class ProfilePagePollsService {
     var groupedAnnotatinos = await getGroupedAnnotations(pollIds);
 
     polls.forEach((poll) {
-      String dictKey = "http://34.105.66.254:1923/${poll.pollId}";
+      String dictKey = "http://3.72.76.16:1923/${poll.pollId}";
       poll.annotations = groupedAnnotatinos[dictKey] ?? [];
     });
     print(polls);
